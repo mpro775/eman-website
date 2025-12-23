@@ -22,7 +22,8 @@ const FloatingSkillCard = ({ icon, label, className, delay }: {
         className={`absolute z-30 ${className}`}
         initial={{ opacity: 0, scale: 0.5, x: 20 }}
         animate={{ opacity: 1, scale: 1, x: 0 }}
-        transition={{ duration: 0.6, delay }}
+        exit={{ opacity: 0, scale: 0.5, x: 20 }}
+        transition={{ duration: 0.5 }}
     >
         <motion.div
             className="relative"
