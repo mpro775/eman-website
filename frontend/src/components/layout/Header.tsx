@@ -120,7 +120,7 @@ const Header: React.FC = () => {
     setIsMobileMenuOpen(false);
   };
 
-  // Animation variants
+  // Animation variants - RTL: slide from right
   const mobileMenuVariants = {
     closed: {
       opacity: 0,
@@ -141,7 +141,7 @@ const Header: React.FC = () => {
   };
 
   const menuItemVariants = {
-    closed: { opacity: 0, x: 20 },
+    closed: { opacity: 0, x: -20 },
     open: (i: number) => ({
       opacity: 1,
       x: 0,
@@ -162,30 +162,30 @@ const Header: React.FC = () => {
       >
         <Container>
           <nav className="flex items-center justify-between">
-            {/* Mobile Menu Button - Left Side (shows on mobile) */}
-            <motion.button
-              className="lg:hidden flex items-center justify-center w-10 h-10 text-text-primary hover:text-accent-pink transition-colors duration-300 z-[110]"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              whileTap={{ scale: 0.95 }}
-              aria-label={isMobileMenuOpen ? "إغلاق القائمة" : "فتح القائمة"}
+            {/* Logo - Right Side (RTL: appears first = right) */}
+            <motion.div
+              className="flex-shrink-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
             >
-              {isMobileMenuOpen ? (
-                <HiX className="text-2xl" />
-              ) : (
-                <HiMenuAlt3 className="text-2xl" />
-              )}
-            </motion.button>
-
-            {/* CV Download - Left Side (hidden on mobile, shown on desktop) */}
-            <motion.a
-              href="#cv"
-              className="hidden lg:flex items-center gap-2 text-text-primary text-base font-normal transition-all duration-300 hover:text-accent-cyan hover:-translate-y-0.5 flex-shrink-0"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span>السيفي</span>
-              <HiDownload className="text-xl" />
-            </motion.a>
+              <img
+                src={logoImage}
+                alt="Eman Logo"
+                className="h-10 sm:h-12 md:h-[50px] w-auto object-contain transition-all duration-300 hover:scale-105"
+                style={{
+                  filter: "drop-shadow(0 0 10px rgba(198, 117, 136, 0.3))",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.filter =
+                    "drop-shadow(0 0 15px rgba(198, 117, 136, 0.5))";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.filter =
+                    "drop-shadow(0 0 10px rgba(198, 117, 136, 0.3))";
+                }}
+              />
+            </motion.div>
 
             {/* Navigation Links - Center (Desktop only) */}
             <ul className="hidden lg:flex items-center gap-6 xl:gap-8 list-none m-0 p-0 flex-1 justify-center">
@@ -228,30 +228,30 @@ const Header: React.FC = () => {
               })}
             </ul>
 
-            {/* Logo - Right Side */}
-            <motion.div
-              className="flex-shrink-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
+            {/* CV Download - Left Side (RTL: appears last = left) */}
+            <motion.a
+              href="#cv"
+              className="hidden lg:flex items-center gap-2 text-text-primary text-base font-normal transition-all duration-300 hover:text-accent-cyan hover:-translate-y-0.5 flex-shrink-0"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <img
-                src={logoImage}
-                alt="Eman Logo"
-                className="h-10 sm:h-12 md:h-[50px] w-auto object-contain transition-all duration-300 hover:scale-105"
-                style={{
-                  filter: "drop-shadow(0 0 10px rgba(198, 117, 136, 0.3))",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.filter =
-                    "drop-shadow(0 0 15px rgba(198, 117, 136, 0.5))";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.filter =
-                    "drop-shadow(0 0 10px rgba(198, 117, 136, 0.3))";
-                }}
-              />
-            </motion.div>
+              <HiDownload className="text-xl" />
+              <span>السيفي</span>
+            </motion.a>
+
+            {/* Mobile Menu Button - Left Side (shows on mobile) */}
+            <motion.button
+              className="lg:hidden flex items-center justify-center w-10 h-10 text-text-primary hover:text-accent-pink transition-colors duration-300 z-[110]"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              whileTap={{ scale: 0.95 }}
+              aria-label={isMobileMenuOpen ? "إغلاق القائمة" : "فتح القائمة"}
+            >
+              {isMobileMenuOpen ? (
+                <HiX className="text-2xl" />
+              ) : (
+                <HiMenuAlt3 className="text-2xl" />
+              )}
+            </motion.button>
           </nav>
         </Container>
       </header>
@@ -269,9 +269,9 @@ const Header: React.FC = () => {
               onClick={() => setIsMobileMenuOpen(false)}
             />
 
-            {/* Mobile Menu Panel */}
+            {/* Mobile Menu Panel - RTL: slide from right */}
             <motion.div
-              className="fixed top-0 left-0 bottom-0 w-[280px] sm:w-[320px] bg-bg-primary/95 backdrop-blur-lg z-[106] lg:hidden shadow-2xl"
+              className="fixed top-0 right-0 bottom-0 w-[280px] sm:w-[320px] bg-bg-primary/95 backdrop-blur-lg z-[106] lg:hidden shadow-2xl"
               variants={mobileMenuVariants}
               initial="closed"
               animate="open"
