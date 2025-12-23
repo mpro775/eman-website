@@ -1,0 +1,285 @@
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap");
+@import "tailwindcss";
+
+/* 1. الخطوط */
+
+/* 2. الثيم */
+@theme {
+  /* تعريف الخطوط */
+  --font-arabic: "Tajawal", sans-serif;
+  --font-english: "Urbanist", sans-serif;
+  --font-heading: "Urbanist", "Tajawal", sans-serif;
+
+  /* أحجام النصوص */
+  --text-hero: clamp(3rem, 7vw, 5rem);
+  --text-big-bg: clamp(5rem, 15vw, 12rem);
+
+  /* الألوان */
+  --color-bg-primary: #0a0a0f;
+  --color-bg-secondary: #1a0e2e;
+  --color-bg-tertiary: #1e1e2e;
+
+  /* ألوان التمييز */
+  --color-accent-pink: #d9778b; /* Adjusted to match the salmon/pink in image */
+  --color-accent-pink-light: #eebecb;
+  --color-accent-pink-dark: #b55a6d;
+  --color-accent-cyan: #00f0ff;
+  --color-accent-cyan-light: #00d9ff;
+  --color-accent-cyan-dark: #00bcd4;
+  --color-accent-purple: #9d4edd;
+  --color-accent-purple-light: #c77dff;
+
+  /* ألوان النصوص */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #b4b4b4;
+  --color-text-muted: #7a7a7a;
+
+  /* التدرجات */
+  --image-gradient-primary: linear-gradient(
+    135deg,
+    #1a0e2e 0%,
+    #0a0a0f 50%,
+    #2e0e1e 100%
+  );
+  --image-gradient-button: linear-gradient(135deg, #d9778b 0%, #b55a6d 100%);
+  --image-gradient-button-hover: linear-gradient(
+    135deg,
+    #eebecb 0%,
+    #d9778b 100%
+  );
+  --image-gradient-hero: radial-gradient(
+      ellipse at top right,
+      #2e0e1e 0%,
+      transparent 50%
+    ),
+    radial-gradient(ellipse at bottom left, #1a0e2e 0%, transparent 50%);
+  --image-gradient-text-pink: linear-gradient(135deg, #eebecb 0%, #d9778b 100%);
+  --image-radial-hero: radial-gradient(
+    circle at 50% 40%,
+    #2a1635 0%,
+    #0a0a0f 60%
+  );
+
+  /* الظلال */
+  --shadow-glow-pink: 0 0 20px rgba(217, 119, 139, 0.5),
+    0 0 40px rgba(217, 119, 139, 0.3);
+  --shadow-dock: 0 10px 40px rgba(0, 0, 0, 0.5);
+
+  --animate-spin-slow: spin 3s linear infinite;
+
+  /* Admin Colors */
+  --color-admin-bg-primary: #0a0a14;
+  --color-admin-bg-secondary: #151520;
+  --color-admin-bg-tertiary: #1a1a2e;
+  --color-admin-bg-card: rgba(30, 30, 46, 0.7);
+  --color-admin-bg-card-hover: rgba(37, 37, 56, 0.9);
+  --color-admin-sidebar-bg: linear-gradient(180deg, #0d0d1a 0%, #151525 100%);
+  --color-admin-border: rgba(77, 77, 119, 0.3);
+  --color-admin-border-light: rgba(90, 90, 136, 0.5);
+  --color-admin-border-focus: #4a9eff;
+  --color-admin-text-primary: #f0f0f3;
+  --color-admin-text-secondary: #b8b8c8;
+  --color-admin-text-muted: #888899;
+  --color-admin-accent-blue: #4a9eff;
+  --color-admin-accent-purple: #9d4edd;
+  --color-admin-accent-green: #10b981;
+  --color-admin-accent-orange: #f59e0b;
+  --color-admin-danger: #ef4444;
+  --color-admin-success: #10b981;
+  --color-admin-warning: #f59e0b;
+  --color-admin-info: #4a9eff;
+  
+  /* Admin Gradients */
+  --gradient-admin-card: linear-gradient(135deg, rgba(74, 158, 255, 0.05) 0%, rgba(157, 78, 221, 0.05) 100%);
+  --gradient-admin-button: linear-gradient(135deg, #4a9eff 0%, #6b5eff 100%);
+  --gradient-admin-button-hover: linear-gradient(135deg, #5ba8ff 0%, #7c6fff 100%);
+  --gradient-admin-accent: linear-gradient(90deg, #4a9eff 0%, #9d4edd 50%, #4a9eff 100%);
+  
+  /* Admin Shadows */
+  --shadow-admin-card: 0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(74, 158, 255, 0.1);
+  --shadow-admin-card-hover: 0 12px 48px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(74, 158, 255, 0.2);
+  --shadow-admin-glow-blue: 0 0 20px rgba(74, 158, 255, 0.3), 0 0 40px rgba(74, 158, 255, 0.1);
+  --shadow-admin-glow-purple: 0 0 20px rgba(157, 78, 221, 0.3), 0 0 40px rgba(157, 78, 221, 0.1);
+  
+  /* Admin Animations */
+  --animate-fade-in: fadeIn 0.3s ease-in;
+  --animate-slide-up: slideUp 0.4s ease-out;
+  --animate-scale-in: scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 3. القواعد الأساسية */
+@layer base {
+  * {
+    @apply m-0 p-0 box-border;
+  }
+  html {
+    direction: rtl;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply font-heading bg-bg-primary text-text-primary overflow-x-hidden;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading font-bold;
+    line-height: 1.2;
+  }
+  /* هنا كان الخطأ وتم إصلاحه */
+  button {
+    @apply bg-transparent border-0 cursor-pointer;
+    font-family: inherit;
+  }
+  a {
+    @apply text-inherit no-underline;
+  }
+  img {
+    @apply max-w-full h-auto block;
+  }
+  *:focus-visible {
+    @apply outline-2 outline-accent-pink outline-offset-2;
+  }
+}
+
+@layer utilities {
+  /* Scroll Snapping - Desktop Only */
+  @media (min-width: 1024px) {
+    .scroll-container {
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      overflow-y: scroll;
+      height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .scroll-section {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    /* Hide scrollbar for scroll-container */
+    .scroll-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .scroll-container {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
+
+  /* Mobile: Normal scroll without snapping */
+  @media (max-width: 1023px) {
+    .scroll-container {
+      scroll-snap-type: none;
+      height: auto;
+      overflow-y: auto;
+    }
+
+    .scroll-section {
+      scroll-snap-align: none;
+      scroll-snap-stop: normal;
+    }
+  }
+
+  /* Default scrollbar styles for non-scroll-container elements */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-bg-primary;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  .mask-gradient-bottom {
+    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  }
+  
+  /* Admin Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes scaleIn {
+    from {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes gradientShift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+  
+  @keyframes expandWidth {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 75%;
+    }
+  }
+  
+  /* Glassmorphism effect for admin */
+  .glass-effect {
+    background: rgba(30, 30, 46, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(77, 77, 119, 0.3);
+  }
+  
+  .glass-effect-strong {
+    background: rgba(21, 21, 32, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(90, 90, 136, 0.5);
+  }
+}
+

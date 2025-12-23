@@ -1,0 +1,20 @@
+# Robots.txt for Eman Portfolio Website
+# https://eman.dev
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin/*
+
+# Sitemap
+Sitemap: https://eman.dev/sitemap.xml
+
+# Crawl-delay for polite bots
+Crawl-delay: 1
+
+# Block specific bots if needed
+User-agent: GPTBot
+Disallow: /admin/
+
+User-agent: ChatGPT-User
+Disallow: /admin/

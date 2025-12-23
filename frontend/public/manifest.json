@@ -1,0 +1,44 @@
+{
+  "name": "إيمان - مصممة UI/UX ومطورة تطبيقات",
+  "short_name": "إيمان",
+  "description": "خبيرة في تصميم واجهات المستخدم وتجربة المستخدم (UI/UX) وتطوير تطبيقات الموبايل",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["design", "development", "business", "education"],
+  "shortcuts": [
+    {
+      "name": "المدونة",
+      "short_name": "مدونة",
+      "description": "اقرأ أحدث المقالات",
+      "url": "/blog",
+      "icons": [{ "src": "/logo.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "معرض الأعمال",
+      "short_name": "أعمال",
+      "description": "استعرض المشاريع",
+      "url": "/portfolio/ux-ui",
+      "icons": [{ "src": "/logo.png", "sizes": "96x96" }]
+    }
+  ]
+}
