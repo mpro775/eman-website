@@ -11,29 +11,84 @@ import uxUiDesignerImage from "../../assets/images/UxUiDesginer.png";
 import appDeveloperImage from "../../assets/images/appDeveloper.png";
 import graphicDesignerImage from "../../assets/images/GraphicDesginer.png";
 
-// مكون فرعي للبطاقات العائمة
-const FloatingImage = ({ src, alt, className, delay, width }: any) => (
+// مكون فرعي للبطاقات العائمة مع تأثير Liquid Glass
+const FloatingSkillCard = ({ icon, label, className, delay }: {
+    icon: string;
+    label: string;
+    className: string;
+    delay: number;
+}) => (
     <motion.div
-        className={`absolute z-20 ${className}`}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, delay }}
+        className={`absolute z-30 ${className}`}
+        initial={{ opacity: 0, scale: 0.5, x: 20 }}
+        animate={{ opacity: 1, scale: 1, x: 0 }}
+        transition={{ duration: 0.6, delay }}
     >
-        <motion.img
-            src={src}
-            alt={alt}
-            className="drop-shadow-2xl h-auto"
-            style={{ width: width || "140px" }}
-            animate={{
-                y: [0, -15, 0],
-            }}
+        <motion.div
+            className="relative"
+            animate={{ y: [0, -12, 0] }}
             transition={{
                 duration: 3.5,
                 repeat: Infinity,
                 ease: "easeInOut",
                 delay: delay,
             }}
-        />
+        >
+            {/* بطاقة Liquid Glass */}
+            <div
+                className="relative rounded-full overflow-visible flex items-center justify-center"
+                style={{
+                    width: '226px',
+                    height: '51px',
+                    borderRadius: '47px',
+                    padding: '9.4px',
+                    gap: '9.4px',
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 50%, rgba(255,255,255,0.01) 100%)',
+                    backdropFilter: 'blur(16px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(16px) saturate(180%)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    boxShadow: `
+                        0 8px 32px rgba(0,0,0,0.25),
+                        inset 0 1px 1px rgba(255,255,255,0.15),
+                        inset 0 -1px 1px rgba(0,0,0,0.1)
+                    `,
+                }}
+            >
+                {/* تأثير الانعكاس في الأعلى */}
+                <div
+                    className="absolute top-0 left-0 right-0 h-1/2 rounded-t-full pointer-events-none"
+                    style={{
+                        background: 'linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%)',
+                    }}
+                />
+
+                {/* النص */}
+                <span
+                    className="relative font-english font-semibold italic"
+                    style={{
+                        fontSize: '18px',
+                        color: '#9d7bbb',
+                        textShadow: '0 1px 2px rgba(0,0,0,0.3)',
+                    }}
+                >
+                    {label}
+                </span>
+            </div>
+
+            {/* الأيقونة - في الزاوية العلوية اليسرى */}
+            <img
+                src={icon}
+                alt={label}
+                className="absolute drop-shadow-2xl"
+                style={{
+                    rotate: '-15deg',
+                    width: '53px',
+                    height: '53px',
+                    left: '-15px',
+                    top: '-20px',
+                }}
+            />
+        </motion.div>
     </motion.div>
 );
 
@@ -62,10 +117,10 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
         about: {
             x: "0%",
             y: 0,
-            left: "0%",
+            left: "-20%",
             bottom: "0px",
             width: "100%",
-            height: "750px",
+            height: "850px",
             scale: 1,
         },
     };
@@ -338,25 +393,22 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                             </motion.div>
 
                             {/* البطاقات العائمة */}
-                            <FloatingImage
-                                src={uxUiDesignerImage}
-                                alt="UX/UI Designer"
-                                className="left-[35%] top-[10%]"
-                                width="140px"
+                            <FloatingSkillCard
+                                icon={uxUiDesignerImage}
+                                label="UX/UI Designer"
+                                className="left-[35%] top-[60%]"
                                 delay={0.4}
                             />
-                            <FloatingImage
-                                src={appDeveloperImage}
-                                alt="App Developer"
-                                className="left-[5%] top-[40%]"
-                                width="150px"
+                            <FloatingSkillCard
+                                icon={appDeveloperImage}
+                                label="App Developer"
+                                className="left-[10%] top-[70%]"
                                 delay={0.7}
                             />
-                            <FloatingImage
-                                src={graphicDesignerImage}
-                                alt="Graphic Designer"
-                                className="left-[30%] bottom-[15%]"
-                                width="145px"
+                            <FloatingSkillCard
+                                icon={graphicDesignerImage}
+                                label="Graphic Designer"
+                                className="left-[33%] bottom-[12%]"
                                 delay={1.0}
                             />
                         </>
@@ -429,7 +481,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                                 padding: '16px 40px',
                                 fontSize: '18px',
                                 gap: '10px',
-                                boxShadow: '0 4px 20px rgba(217,119,139,0.4), inset 0 1px 1px rgba(255,255,255,0.3)'
+                                boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.3)'
                             }}
                         >
                             <HiArrowUpRight style={{ fontSize: '22px' }} />
