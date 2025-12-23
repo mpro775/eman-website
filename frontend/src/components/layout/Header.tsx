@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { HiDownload, HiMenuAlt3, HiX } from "react-icons/hi";
 import Container from "../common/Container";
 import logoImage from "../../assets/images/logo.png";
+import downloadIcon from "../../assets/images/download.png";
 
 const Header: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>("home");
@@ -188,7 +189,7 @@ const Header: React.FC = () => {
             </motion.div>
 
             {/* Navigation Links - Center (Desktop only) */}
-            <ul className="hidden lg:flex items-center gap-6 xl:gap-8 list-none m-0 p-0 flex-1 justify-center">
+            <ul className="hidden lg:flex items-center gap-10 xl:gap-14 list-none m-0 p-0 flex-1 justify-center">
               {navLinks.map((link, index) => {
                 const isActive = activeSection === link.id;
                 return (
@@ -202,26 +203,17 @@ const Header: React.FC = () => {
                       href={link.href}
                       onClick={(e) => handleNavClick(e, link.id)}
                       className={`
-                        text-base font-normal py-2 transition-all duration-300 relative whitespace-nowrap
+                        text-xl transition-all duration-300 relative whitespace-nowrap font-arabic
                         ${isActive
-                          ? "text-accent-pink font-medium"
-                          : "text-text-primary hover:text-accent-pink"
+                          ? "font-bold"
+                          : "text-white hover:text-[#C67588] font-normal"
                         }
                       `}
+                      style={{
+                        color: isActive ? "#C67588" : undefined, // Explicit active color
+                      }}
                     >
                       {link.name}
-                      {isActive && (
-                        <motion.span
-                          className="absolute bottom-0 right-0 left-0 h-0.5 bg-accent-pink"
-                          layoutId="activeSection"
-                          initial={false}
-                          transition={{
-                            type: "spring",
-                            stiffness: 380,
-                            damping: 30,
-                          }}
-                        />
-                      )}
                     </a>
                   </motion.li>
                 );
@@ -231,12 +223,26 @@ const Header: React.FC = () => {
             {/* CV Download - Left Side (RTL: appears last = left) */}
             <motion.a
               href="#cv"
-              className="hidden lg:flex items-center gap-2 text-text-primary text-base font-normal transition-all duration-300 hover:text-accent-cyan hover:-translate-y-0.5 flex-shrink-0"
+              className="hidden lg:flex items-center gap-3 text-white transition-all duration-300 hover:text-accent-pink flex-shrink-0"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <HiDownload className="text-xl" />
-              <span>السيفي</span>
+              <span
+                style={{
+                  fontFamily: '"Urbanist", "Tajawal", sans-serif',
+                  fontWeight: 600,
+                  fontSize: '24px',
+                  lineHeight: '100%',
+                  letterSpacing: '0%',
+                }}
+              >
+                السيفي
+              </span>
+              <img
+                src={downloadIcon}
+                alt="Download"
+                className="w-6 h-6 object-contain"
+              />
             </motion.a>
 
             {/* Mobile Menu Button - Left Side (shows on mobile) */}

@@ -49,7 +49,7 @@ const HeroSection: React.FC = () => {
         <div
           className="absolute left-1/2 flex flex-col items-center z-10"
           style={{
-            top: '80px',
+            top: '120px', // Lowered significantly
             transform: 'translateX(-50%)',
           }}
         >
@@ -66,17 +66,17 @@ const HeroSection: React.FC = () => {
               alt="Spark"
               className="absolute"
               style={{
-                top: '-14px',
-                right: '-18px',
-                width: '28px',
-                height: '28px',
+                top: '-18px',
+                right: '-20px',
+                width: '32px',
+                height: '32px',
               }}
             />
             <div
               className="bg-white/5 border border-white/40 backdrop-blur-md rounded-full"
-              style={{ padding: '8px 28px' }}
+              style={{ padding: '8px 32px' }}
             >
-              <span className="text-white font-medium" style={{ fontSize: '18px' }}>
+              <span className="text-white font-medium shadow-none" style={{ fontSize: '20px' }}>
                 مرحباً
               </span>
             </div>
@@ -84,18 +84,23 @@ const HeroSection: React.FC = () => {
 
           {/* أنا إيمان */}
           <motion.h2
-            className="font-heading text-white text-center"
+            className="text-white text-center"
             style={{
-              fontSize: '80px',
-              lineHeight: '1',
-              marginTop: '4px',
+              fontFamily: '"Urbanist", "Tajawal", sans-serif',
+              fontWeight: 600,
+              fontSize: '83.48px',
+              lineHeight: '140%', // Increased from 100% to prevent clipping
+              letterSpacing: '-0.015em',
+              marginTop: '16px',
+              paddingTop: '10px',    // Added padding to prevent top clipping
+              paddingBottom: '10px', // Added padding to prevent bottom clipping
             }}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3 }}
           >
             أنا{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-pink to-accent-pink-dark">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-pink to-accent-pink-dark inline-block relative py-1">
               إيمان.
             </span>
           </motion.h2>
@@ -104,22 +109,22 @@ const HeroSection: React.FC = () => {
         {/* UX/UI Designer - النص الكبير */}
         <motion.div
           className="absolute w-full text-center pointer-events-none select-none z-[1]"
-          style={{ top: '210px' }}
+          style={{ top: '300px' }} // Increased top spacing to prevent overlap
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
           <h1
-            className="font-english text-white"
+            className="text-white"
             style={{
-              fontSize: '140px',
-              fontWeight: 700,
-              lineHeight: '1',
-              letterSpacing: '-0.03em',
+              fontFamily: '"Urbanist", "Tajawal", sans-serif',
+              fontWeight: 600,
+              fontSize: '83.48px',
+              lineHeight: '100%',
+              letterSpacing: '-0.015em',
             }}
           >
-            UX/UI{" "}
-            <span style={{ fontWeight: 300 }}>Designer</span>
+            UX/UI Designer
           </h1>
         </motion.div>
 
@@ -129,8 +134,8 @@ const HeroSection: React.FC = () => {
           alt="Arrow decoration"
           className="absolute z-10"
           style={{
-            left: '100px',
-            top: '360px',
+            left: '360px', // Moved much closer to text
+            top: '340px',
             width: '100px',
             height: '60px',
           }}
@@ -145,7 +150,7 @@ const HeroSection: React.FC = () => {
           style={{
             right: '50px',
             top: '400px',
-            maxWidth: '340px',
+            maxWidth: '450px', // Increased to prevent wrapping
           }}
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -157,50 +162,56 @@ const HeroSection: React.FC = () => {
             alt="Quote"
             className="block"
             style={{
-              width: '52px',
-              height: '52px',
-              marginBottom: '20px',
-              marginLeft: 'auto',
+              width: '36px',
+              height: '36px',
+              marginBottom: '24px', // Gap between icon and text
+              marginRight: 'auto',   // Push to left
+              marginLeft: '0',
             }}
           />
           <p
-            className="text-white font-arabic"
+            className="text-white"
             style={{
-              fontSize: '24px',
-              lineHeight: '1.7',
+              fontFamily: '"Urbanist", "Tajawal", sans-serif',
               fontWeight: 400,
+              fontSize: '24px',
+              lineHeight: '111%',
+              letterSpacing: '-0.015em',
+              textAlign: 'right',
+              direction: 'rtl',
             }}
           >
-            أؤمن بأن جوهر التصميم يكمن
+            أؤمــــن بــأن جوهــــــــــر التـــصميم يكمــــــــن
             <br />
-            في <span className="font-medium text-accent-pink-light">الإحساس</span>، لذا أعمل على تصميم
+            في <span className="font-medium text-accent-pink-light">الإحساس</span>، لذا أعمل على تصميـــــم
             <br />
-            تجارب رقمية واعية، وبناء واجهات
+            تجــارب رقميــــة واعيـــــة، وبناء واجهــــــات
             <br />
-            مستخدم تعكس هوية العلامة
+            مســــــتخدم تعكـــــس هويــــة الـــعلامــــــة
             <br />
-            التجارية بدقة وتوازن بين الجمال
+            التجاريــــة بدقــــــة وتـــــــوازن بين الجمـــــال
             <br />
             والوضوح.
           </p>
         </motion.div>
+
 
         {/* الصورة الشخصية - أسفل المنتصف */}
         <motion.div
           className="absolute z-[15] left-1/2"
           style={{
             bottom: '0px',
-            transform: 'translateX(-50%)',
-            width: '480px',
+            width: '906.4px',
+            height: '605.3px',
           }}
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 50, x: "-50%" }}
+          animate={{ opacity: 1, y: 0, x: "-50%" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <img
             src={heroImage}
             alt="Eman UI Designer"
-            className="w-full h-auto object-contain grayscale contrast-100 brightness-90"
+            className="w-full h-full object-contain grayscale contrast-100 brightness-90"
           />
         </motion.div>
 
@@ -208,22 +219,22 @@ const HeroSection: React.FC = () => {
         <motion.div
           className="absolute z-20 left-1/2"
           style={{
-            bottom: '40px',
-            transform: 'translateX(-50%)',
+            bottom: '48px', // Slightly higher
+            // transform removed from style to avoid conflict
           }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 20, x: "-50%" }} // Added x: -50% here
+          animate={{ opacity: 1, y: 0, x: "-50%" }} // Added x: -50% here
           transition={{ delay: 0.8 }}
         >
           <div
             className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-full shadow-2xl shadow-black/50 flex items-center"
-            style={{ padding: '6px', gap: '4px' }}
+            style={{ padding: '6px', gap: '6px' }}
           >
             {/* زر تواصل معي */}
             <a
               href="#contact"
               className="text-white font-medium transition-all hover:bg-white/10 rounded-full"
-              style={{ padding: '14px 36px', fontSize: '18px' }}
+              style={{ padding: '16px 40px', fontSize: '18px' }}
             >
               تواصل معي
             </a>
@@ -231,9 +242,9 @@ const HeroSection: React.FC = () => {
             {/* زر أعمالي */}
             <button
               className="bg-gradient-to-r from-accent-pink to-accent-pink-dark text-white font-bold rounded-full flex items-center transition-all hover:scale-105 hover:shadow-glow-pink"
-              style={{ padding: '14px 36px', fontSize: '18px', gap: '8px' }}
+              style={{ padding: '16px 40px', fontSize: '18px', gap: '10px' }}
             >
-              <HiArrowUpRight style={{ fontSize: '20px' }} />
+              <HiArrowUpRight style={{ fontSize: '22px' }} />
               <span>أعمالي</span>
             </button>
           </div>
