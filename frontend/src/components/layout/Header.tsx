@@ -4,11 +4,13 @@ import { HiDownload, HiMenuAlt3, HiX } from "react-icons/hi";
 import Container from "../common/Container";
 import logoImage from "../../assets/images/logo.png";
 import downloadIcon from "../../assets/images/download.png";
+import { useView } from "../../context/ViewContext";
 
 const Header: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>("home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const { setIsAboutView } = useView();
 
   const navLinks = useMemo(
     () => [
@@ -111,12 +113,23 @@ const Header: React.FC = () => {
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+
+    // Handle Hero/About toggle
+    if (id === 'about') {
+      setIsAboutView(true);
+      setActiveSection('about');
+    } else if (id === 'home') {
+      setIsAboutView(false);
+      setActiveSection('home');
+    } else {
+      // For other sections, scroll to them normally
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
     }
     setIsMobileMenuOpen(false);
   };
