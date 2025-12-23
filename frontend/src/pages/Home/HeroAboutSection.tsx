@@ -334,27 +334,6 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                                         على تصميم تجارب رقمية واعية، وبناء واجهات مستـــخدم تعكس
                                         هويــة العلامة التجاريــة بدقـــة وتـــوازن بين الجمال والوضوح.
                                     </p>
-
-                                    {/* الأزرار */}
-                                    <div className="flex flex-row-reverse justify-end items-center gap-5">
-                                        <a
-                                            href="#contact"
-                                            className="px-8 py-3.5 rounded-full border border-white/20 text-white font-arabic text-lg hover:bg-white/5 hover:border-white/40 transition-all duration-300"
-                                        >
-                                            تواصل معي
-                                        </a>
-                                        <a
-                                            href="#portfolio"
-                                            className="group relative px-8 py-3.5 rounded-full overflow-hidden text-white font-arabic text-lg font-bold shadow-[var(--shadow-glow-pink)] transition-transform hover:scale-105"
-                                            style={{ background: "linear-gradient(135deg, #d9778b 0%, #b55a6d 100%)" }}
-                                        >
-                                            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                                            <span className="relative flex items-center gap-2">
-                                                <HiArrowUpRight className="text-xl" />
-                                                أعمالي
-                                            </span>
-                                        </a>
-                                    </div>
                                 </div>
                             </motion.div>
 
@@ -386,7 +365,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
 
                 {/* ================= الصورة الشخصية (مشتركة - تتحرك) ================= */}
                 <motion.div
-                    className="absolute z-[15]"
+                    className="absolute z-[25]"
                     initial={false}
                     animate={isAboutView ? "about" : "hero"}
                     variants={imageVariants}
@@ -400,38 +379,64 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                 </motion.div>
 
                 {/* ================= الدوك العائم (مشترك - يتحرك) ================= */}
-                <AnimatePresence>
-                    {!isAboutView && (
-                        <motion.div
-                            className="absolute z-20 left-1/2"
-                            style={{ bottom: '48px' }}
-                            initial={{ opacity: 0, y: 20, x: "-50%" }}
-                            animate={{ opacity: 1, y: 0, x: "-50%" }}
-                            exit={{ opacity: 0, y: 20 }}
-                            transition={{ duration: 0.5 }}
+                <motion.div
+                    className="absolute z-30"
+                    initial={false}
+                    animate={{
+                        left: isAboutView ? '70%' : '50%',
+                        bottom: isAboutView ? '400px' : '48px',
+                        x: '-50%',
+                        scale: isAboutView ? 0.7 : 1,
+                    }}
+                    transition={{ duration: transitionDuration, ease: transitionEase }}
+                >
+                    {/* Liquid Glass Container */}
+                    <div
+                        className="relative rounded-full flex items-center overflow-hidden"
+                        style={{
+                            padding: '6px',
+                            gap: '6px',
+                            background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.02) 100%)',
+                            backdropFilter: 'blur(20px) saturate(180%)',
+                            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                            border: '1px solid rgba(255,255,255,0.18)',
+                            boxShadow: `
+                                0 8px 32px rgba(0,0,0,0.3),
+                                inset 0 1px 1px rgba(255,255,255,0.2),
+                                inset 0 -1px 1px rgba(0,0,0,0.1),
+                                0 0 40px rgba(217,119,139,0.15)
+                            `,
+                        }}
+                    >
+                        {/* Highlight overlay for liquid effect */}
+                        <div
+                            className="absolute top-0 left-0 right-0 h-1/2 rounded-t-full pointer-events-none"
+                            style={{
+                                background: 'linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 100%)',
+                            }}
+                        />
+
+                        <a
+                            href="#contact"
+                            className="relative text-white font-medium transition-all hover:bg-white/15 rounded-full"
+                            style={{ padding: '16px 40px', fontSize: '18px' }}
                         >
-                            <div
-                                className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-full shadow-2xl shadow-black/50 flex items-center"
-                                style={{ padding: '6px', gap: '6px' }}
-                            >
-                                <a
-                                    href="#contact"
-                                    className="text-white font-medium transition-all hover:bg-white/10 rounded-full"
-                                    style={{ padding: '16px 40px', fontSize: '18px' }}
-                                >
-                                    تواصل معي
-                                </a>
-                                <button
-                                    className="bg-gradient-to-r from-accent-pink to-accent-pink-dark text-white font-bold rounded-full flex items-center transition-all hover:scale-105 hover:shadow-glow-pink"
-                                    style={{ padding: '16px 40px', fontSize: '18px', gap: '10px' }}
-                                >
-                                    <HiArrowUpRight style={{ fontSize: '22px' }} />
-                                    <span>أعمالي</span>
-                                </button>
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                            تواصل معي
+                        </a>
+                        <button
+                            className="relative bg-gradient-to-r from-accent-pink to-accent-pink-dark text-white font-bold rounded-full flex items-center transition-all hover:scale-105"
+                            style={{
+                                padding: '16px 40px',
+                                fontSize: '18px',
+                                gap: '10px',
+                                boxShadow: '0 4px 20px rgba(217,119,139,0.4), inset 0 1px 1px rgba(255,255,255,0.3)'
+                            }}
+                        >
+                            <HiArrowUpRight style={{ fontSize: '22px' }} />
+                            <span>أعمالي</span>
+                        </button>
+                    </div>
+                </motion.div>
 
             </div>
         </section>
