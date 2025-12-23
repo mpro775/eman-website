@@ -4,7 +4,6 @@ import { HiArrowUpRight } from "react-icons/hi2";
 
 // استيراد الصور
 import heroImage from "../../assets/images/image.png";
-import emanImage from "../../assets/images/eman.png";
 import sparkImage from "../../assets/images/1.svg";
 import arrowImage from "../../assets/images/2.svg";
 import quoteIcon from "../../assets/images/3.png";
@@ -109,16 +108,36 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                     }}
                 />
 
-                {/* خلفية الإضاءة الوردية */}
-                <div
+                {/* خلفية الإضاءة الوردية - تتحرك خلف الصورة في About */}
+                <motion.div
                     className="absolute pointer-events-none z-0"
+                    animate={{
+                        bottom: isAboutView ? '0px' : '-100px',
+                        left: isAboutView ? '-10%' : '50%',
+                        transform: isAboutView ? 'translateX(0%)' : 'translateX(-50%)',
+                    }}
+                    transition={{ duration: transitionDuration, ease: transitionEase }}
                     style={{
-                        bottom: '-100px',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
                         width: '900px',
-                        height: '500px',
-                        background: 'radial-gradient(ellipse, rgba(217, 119, 139, 0.6) 0%, transparent 60%)',
+                        height: '600px',
+                        background: 'radial-gradient(ellipse, rgba(217, 119, 139, 0.7) 0%, transparent 70%)',
+                        filter: 'blur(100px)',
+                    }}
+                />
+
+                {/* خلفية إضاءة بنفسجية إضافية - تظهر في About لتغطية المنطقة الداكنة */}
+                <motion.div
+                    className="absolute pointer-events-none z-0"
+                    animate={{
+                        opacity: isAboutView ? 1 : 0,
+                    }}
+                    transition={{ duration: transitionDuration, ease: transitionEase }}
+                    style={{
+                        top: '20%',
+                        left: '-5%',
+                        width: '600px',
+                        height: '600px',
+                        background: 'radial-gradient(circle, rgba(157, 78, 221, 0.5) 0%, transparent 60%)',
                         filter: 'blur(120px)',
                     }}
                 />
@@ -374,7 +393,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                     transition={{ duration: transitionDuration, ease: transitionEase }}
                 >
                     <img
-                        src={isAboutView ? emanImage : heroImage}
+                        src={heroImage}
                         alt="Eman UI Designer"
                         className="w-full h-full object-contain grayscale contrast-100 brightness-90"
                     />
