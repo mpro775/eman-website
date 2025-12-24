@@ -6,6 +6,7 @@ import Container from "../../components/common/Container";
 import phoneIcon from "../../assets/images/PhoneCall.svg";
 import emailIcon from "../../assets/images/email.svg";
 import behanceIcon from "../../assets/images/behance.svg";
+import logo from "../../assets/images/logo.png";
 
 const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -102,7 +103,7 @@ const ContactSection: React.FC = () => {
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
             {/* Right Side - Contact Info */}
             <motion.div
-              className="order-2 lg:order-1"
+              className="order-1 lg:order-1"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -121,13 +122,13 @@ const ContactSection: React.FC = () => {
               </p>
 
               {/* Contact Details */}
-              <div className="space-y-6 mb-8">
+              <div className="space-y-6 mb-8" dir="rtl">
                 {/* Phone */}
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 bg-[#1a1a2e] rounded-2xl flex items-center justify-center border border-white/10">
                     <img src={phoneIcon} alt="Phone" className="w-7 h-7" />
                   </div>
-                  <div className="text-left">
+                  <div className="text-right">
                     <p className="text-text-muted text-xs mb-1">تواصل معي</p>
                     <p className="text-white font-medium">+1-202-555-0190</p>
                   </div>
@@ -138,7 +139,7 @@ const ContactSection: React.FC = () => {
                   <div className="w-16 h-16 bg-[#1a1a2e] rounded-2xl flex items-center justify-center border border-white/10">
                     <img src={emailIcon} alt="Email" className="w-7 h-7" />
                   </div>
-                  <div className="text-left">
+                  <div className="text-right">
                     <p className="text-text-muted text-xs mb-1">أرسل لي رسالة</p>
                     <p className="text-white font-medium">emyjameel1@gmail.com</p>
                   </div>
@@ -179,37 +180,37 @@ const ContactSection: React.FC = () => {
 
             {/* Left Side - Contact Form */}
             <motion.div
-              className="order-1 lg:order-2"
+              className="order-2 lg:order-2"
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               {/* Form Heading */}
-              <h3 className="text-white text-lg md:text-xl font-medium mb-6 text-right flex items-center justify-end gap-2">
-                <span>فقط قل مرحباً</span>
+              <h3 className="text-white text-lg md:text-xl font-medium mb-6 flex items-center justify-end gap-2 flex-row-reverse">
                 <span className="text-2xl">👋</span>
+                <span>فقط قل مرحباً</span>
               </h3>
 
               {/* Form */}
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4" dir="rtl">
                 {/* Row 1: Name & Email */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="الإيميل"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full bg-transparent border border-white/20 rounded-lg px-4 py-3 text-white placeholder:text-text-muted text-right focus:border-accent-pink focus:outline-none transition-colors duration-300"
-                  />
                   <input
                     type="text"
                     name="name"
                     placeholder="الاسم الكامل"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full bg-transparent border border-white/20 rounded-lg px-4 py-3 text-white placeholder:text-text-muted text-right focus:border-accent-pink focus:outline-none transition-colors duration-300"
+                    className="w-full bg-[#1a1a2e] border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-text-muted text-right focus:border-accent-pink focus:outline-none transition-colors duration-300"
+                  />
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="الإيميل"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full bg-[#1a1a2e] border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-text-muted text-right focus:border-accent-pink focus:outline-none transition-colors duration-300"
                   />
                 </div>
 
@@ -220,36 +221,40 @@ const ContactSection: React.FC = () => {
                   placeholder="العنوان"
                   value={formData.address}
                   onChange={handleChange}
-                  className="w-full bg-transparent border border-white/20 rounded-lg px-4 py-3 text-white placeholder:text-text-muted text-right focus:border-accent-pink focus:outline-none transition-colors duration-300"
+                  className="w-full bg-[#1a1a2e] border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-text-muted text-right focus:border-accent-pink focus:outline-none transition-colors duration-300"
                 />
 
                 {/* Row 3: Service & Budget */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <select
-                    name="budget"
-                    value={formData.budget}
-                    onChange={handleChange}
-                    className="w-full bg-transparent border border-white/20 rounded-lg px-4 py-3 text-text-muted text-right focus:border-accent-pink focus:outline-none transition-colors duration-300 appearance-none cursor-pointer"
-                    style={{ direction: "rtl" }}
-                  >
-                    <option value="" disabled>الميزانية</option>
-                    <option value="500-1000">500$ - 1000$</option>
-                    <option value="1000-5000">1000$ - 5000$</option>
-                    <option value="5000+">5000$+</option>
-                  </select>
-                  <select
-                    name="service"
-                    value={formData.service}
-                    onChange={handleChange}
-                    className="w-full bg-transparent border border-white/20 rounded-lg px-4 py-3 text-text-muted text-right focus:border-accent-pink focus:outline-none transition-colors duration-300 appearance-none cursor-pointer"
-                    style={{ direction: "rtl" }}
-                  >
-                    <option value="" disabled>الخدمة</option>
-                    <option value="ui-design">تصميم واجهات</option>
-                    <option value="ux-design">تصميم تجربة المستخدم</option>
-                    <option value="branding">الهوية البصرية</option>
-                    <option value="app-design">تصميم تطبيقات</option>
-                  </select>
+                  <div className="relative">
+                    <select
+                      name="service"
+                      value={formData.service}
+                      onChange={handleChange}
+                      className="w-full bg-[#1a1a2e] border border-white/10 rounded-xl px-5 py-4 text-text-muted text-right focus:border-accent-pink focus:outline-none transition-colors duration-300 appearance-none cursor-pointer"
+                    >
+                      <option value="" disabled>الخدمة</option>
+                      <option value="ui-design">تصميم واجهات</option>
+                      <option value="ux-design">تصميم تجربة المستخدم</option>
+                      <option value="branding">الهوية البصرية</option>
+                      <option value="app-design">تصميم تطبيقات</option>
+                    </select>
+                    <HiChevronLeft className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-xl rotate-[-90deg]" />
+                  </div>
+                  <div className="relative">
+                    <select
+                      name="budget"
+                      value={formData.budget}
+                      onChange={handleChange}
+                      className="w-full bg-[#1a1a2e] border border-white/10 rounded-xl px-5 py-4 text-text-muted text-right focus:border-accent-pink focus:outline-none transition-colors duration-300 appearance-none cursor-pointer"
+                    >
+                      <option value="" disabled>الميزانية</option>
+                      <option value="500-1000">500$ - 1000$</option>
+                      <option value="1000-5000">1000$ - 5000$</option>
+                      <option value="5000+">5000$+</option>
+                    </select>
+                    <HiChevronLeft className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-xl rotate-[-90deg]" />
+                  </div>
                 </div>
 
                 {/* Row 4: Message */}
@@ -258,8 +263,8 @@ const ContactSection: React.FC = () => {
                   placeholder="الرسالة"
                   value={formData.message}
                   onChange={handleChange}
-                  rows={4}
-                  className="w-full bg-transparent border border-white/20 rounded-lg px-4 py-3 text-white placeholder:text-text-muted text-right focus:border-accent-pink focus:outline-none transition-colors duration-300 resize-none"
+                  rows={5}
+                  className="w-full bg-[#1a1a2e] border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-text-muted text-right focus:border-accent-pink focus:outline-none transition-colors duration-300 resize-none"
                 />
 
                 {/* Submit Button */}
@@ -277,9 +282,35 @@ const ContactSection: React.FC = () => {
       </div>
 
       {/* Footer Section */}
-      <footer id="footer" className="relative w-full bg-gradient-to-b from-[#1a1025] via-[#15101f] to-[#0d0d14]">
-        {/* Purple gradient overlay at top */}
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-accent-purple/10 to-transparent pointer-events-none"></div>
+      <footer id="footer" className="relative w-full bg-gradient-to-b from-[#1a1025] via-[#15101f] to-[#0d0d14] overflow-hidden rounded-t-[50px]">
+        {/* Blur Effect - Right Side */}
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            width: '1136px',
+            height: '568px',
+            top: '-599px',
+            left: '838px',
+            transform: 'rotate(-58.77deg)',
+            background: 'linear-gradient(177.25deg, rgba(187, 161, 254, 0.8) 2.26%, rgba(33, 13, 83, 0.8) 97.74%)',
+            filter: 'blur(488px)',
+            borderRadius: '50%',
+          }}
+        ></div>
+        {/* Blur Effect - Left Side (Mirrored) */}
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            width: '1136px',
+            height: '568px',
+            top: '-599px',
+            left: '-838px',
+            transform: 'rotate(58.77deg)',
+            background: 'linear-gradient(177.25deg, rgba(187, 161, 254, 0.8) 2.26%, rgba(33, 13, 83, 0.8) 97.74%)',
+            filter: 'blur(488px)',
+            borderRadius: '50%',
+          }}
+        ></div>
 
         {/* Main Footer Content */}
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16">
@@ -344,9 +375,7 @@ const ContactSection: React.FC = () => {
             <div className="lg:order-1 text-right">
               {/* Logo */}
               <div className="mb-6">
-                <h3 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-accent-pink to-accent-pink-light font-arabic">
-                  إيمـان
-                </h3>
+                <img src={logo} alt="Eman Logo" className="h-16 w-auto ml-auto" />
               </div>
 
               {/* Description */}
@@ -377,7 +406,7 @@ const ContactSection: React.FC = () => {
           <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-muted">
               {/* Copyright */}
-              <p className="text-center md:text-left order-2 md:order-1">
+              <p className="text-center md:text-right order-2 md:order-1">
                 Copyright© 2025 وكالة سمارت ديف
               </p>
 
