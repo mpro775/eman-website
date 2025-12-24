@@ -70,9 +70,20 @@ const TestimonialsSection: React.FC = () => {
             id="testimonials"
             className="scroll-section relative min-h-screen w-full bg-bg-primary overflow-hidden flex items-center justify-center py-20"
         >
-            {/* Background gradient effects */}
-            <div className="absolute top-0 left-0 w-[40%] h-[60%] bg-accent-purple/15 blur-[150px] rounded-full pointer-events-none z-0"></div>
-            <div className="absolute bottom-0 right-0 w-[30%] h-[40%] bg-accent-pink/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
+            {/* Bottom-Left Blur Glow Effect */}
+            <div
+                className="absolute pointer-events-none"
+                style={{
+                    width: "1136px",
+                    height: "568px",
+                    top: "-366px",
+                    left: "-466px",
+                    transform: "rotate(121.23deg)",
+                    background: "linear-gradient(177.25deg, rgba(187, 161, 254, 0.8) 2.26%, rgba(33, 13, 83, 0.8) 97.74%)",
+                    filter: "blur(488px)",
+                    borderRadius: "50%",
+                }}
+            ></div>
 
             <Container>
                 {/* Section Title */}

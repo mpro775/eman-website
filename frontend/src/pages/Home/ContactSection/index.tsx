@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
+import { useContactForm } from "../../../hooks";
 import { Container, SectionTitle } from "../../../components";
 import ContactForm from "./ContactForm";
 import ContactInfo from "./ContactInfo";
@@ -10,25 +11,7 @@ import FooterContent from "./FooterContent";
  * Main entry point for the contact and footer area
  */
 const ContactSection: React.FC = () => {
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        service: "",
-        budget: "",
-        address: "",
-        message: "",
-    });
-
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-    ) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log("Form submitted:", formData);
-    };
+    const { formData, handleChange, handleSubmit } = useContactForm();
 
     return (
         <section id="contact" className="scroll-section relative w-full overflow-hidden">

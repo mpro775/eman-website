@@ -4,9 +4,9 @@ import { Container, SectionTitle } from "../../../components";
 import ServiceCard, { type ServiceItem } from "./ServiceCard";
 
 // Assets
-import iconDigitalMarketing from "../../../assets/images/Group 9.png";
-import iconGraphicDesign from "../../../assets/images/Group 10 (1).png";
-import iconUXUI from "../../../assets/images/Group 10.png";
+import iconDigitalMarketing from "../../../assets/images/digital_Service.png";
+import iconGraphicDesign from "../../../assets/images/graghic_Service.png";
+import iconUXUI from "../../../assets/images/ui_ux_Service.png";
 
 // Service data
 const services: ServiceItem[] = [
@@ -64,8 +64,23 @@ const ServicesSection: React.FC = () => {
         <section
             id="services"
             ref={ref}
-            className="scroll-section relative min-h-screen w-full bg-gradient-to-b from-[#1a0e2e] via-[#0f0a1a] to-[#0a0a0f] flex items-center justify-center pt-[100px] pb-20"
+            className="scroll-section relative min-h-screen w-full bg-gradient-to-b from-[#1a0e2e] via-[#0f0a1a] to-[#0a0a0f] flex items-center justify-center pt-[100px] pb-20 overflow-hidden"
         >
+            {/* Bottom-Left Blur Glow Effect */}
+            <div
+                className="absolute pointer-events-none"
+                style={{
+                    width: "1136px",
+                    height: "568px",
+                    top: "466px",
+                    left: "-466px",
+                    transform: "rotate(121.23deg)",
+                    background: "linear-gradient(177.25deg, rgba(187, 161, 254, 0.8) 2.26%, rgba(33, 13, 83, 0.8) 97.74%)",
+                    filter: "blur(488px)",
+                    borderRadius: "50%",
+                }}
+            ></div>
+
             <Container>
                 <motion.div
                     variants={containerVariants}

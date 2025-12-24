@@ -22,18 +22,11 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, variants }) => {
             <div className="bg-[#1e1e2e]/90 backdrop-blur-sm border border-accent-purple/30 rounded-2xl p-6 lg:p-8 h-full flex flex-col hover:border-accent-purple/50 transition-all duration-300 hover:shadow-[0_0_25px_rgba(157,78,221,0.3)]">
                 {/* Service Icon in gradient circle */}
                 <div className="mb-6 flex items-center justify-start">
-                    <div
-                        className="relative w-16 h-16 lg:w-20 lg:h-20 rounded-full flex items-center justify-center overflow-hidden flex-shrink-0"
-                        style={{
-                            background:
-                                "linear-gradient(to right, rgba(157,78,221,1) 0%, rgba(255,105,180,0.9) 50%, rgba(255,165,0,0.8) 100%)",
-                            boxShadow: "0 0 20px rgba(157,78,221,0.6)",
-                        }}
-                    >
+                    <div className="relative w-16 h-16 lg:w-20 lg:h-20 flex items-center justify-center flex-shrink-0">
                         <img
                             src={service.icon}
                             alt={service.englishTitle}
-                            className="w-10 h-10 lg:w-12 lg:h-12 object-contain filter brightness-0 invert"
+                            className="w-full h-full object-contain"
                         />
                     </div>
                 </div>

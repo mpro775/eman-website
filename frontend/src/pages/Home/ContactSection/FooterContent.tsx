@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
     FaFacebookF,
     FaTwitter,
@@ -7,6 +7,7 @@ import {
     FaWhatsapp,
     FaInstagram,
 } from "react-icons/fa";
+import { useNewsletter } from "../../../hooks";
 import logo from "../../../assets/images/logo.png";
 import subtractIcon from "../../../assets/images/Subtract.svg";
 
@@ -30,7 +31,7 @@ interface ImportantLink {
  * Footer content component with logo, description, social links, and navigation
  */
 const FooterContent: React.FC = () => {
-    const [newsletterEmail, setNewsletterEmail] = useState("");
+    const { email: newsletterEmail, handleEmailChange, handleSubmit: handleNewsletterSubmit } = useNewsletter();
 
     const footerSocialLinks: SocialLink[] = [
         { icon: FaFacebookF, href: "#" },
@@ -54,13 +55,8 @@ const FooterContent: React.FC = () => {
         { label: "emanjameel.com", href: "https://emanjameel.com" },
     ];
 
-    const handleNewsletterSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log("Newsletter subscription:", newsletterEmail);
-        setNewsletterEmail("");
-    };
-
     return (
+
         <footer
             id="footer"
             className="relative w-full bg-gradient-to-b from-[#1a1025] via-[#15101f] to-[#0d0d14] overflow-hidden rounded-t-[50px]"
@@ -155,8 +151,9 @@ const FooterContent: React.FC = () => {
                                         type="email"
                                         placeholder="البريد الإلكتروني"
                                         value={newsletterEmail}
-                                        onChange={(e) => setNewsletterEmail(e.target.value)}
+                                        onChange={handleEmailChange}
                                         className="w-full bg-white rounded-xl px-4 py-3 pl-14 text-black placeholder:text-black text-right focus:outline-none transition-colors duration-300"
+
                                         style={{
                                             fontFamily: "Urbanist, sans-serif",
                                             fontWeight: 400,

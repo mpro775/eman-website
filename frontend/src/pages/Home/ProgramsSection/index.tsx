@@ -28,8 +28,20 @@ const ProgramsSection: React.FC = () => {
             id="programs"
             className="scroll-section relative min-h-screen w-full bg-bg-primary overflow-hidden flex flex-col items-center justify-center py-20"
         >
-            {/* Background glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[50%] bg-accent-purple/5 blur-[150px] rounded-full pointer-events-none z-0"></div>
+            {/* Bottom-Left Blur Glow Effect */}
+            <div
+                className="absolute pointer-events-none"
+                style={{
+                    width: "1136px",
+                    height: "568px",
+                    top: "566px",
+                    left: "9    66px",
+                    transform: "rotate(121.23deg)",
+                    background: "linear-gradient(177.25deg, rgba(187, 161, 254, 0.8) 2.26%, rgba(33, 13, 83, 0.8) 97.74%)",
+                    filter: "blur(488px)",
+                    borderRadius: "50%",
+                }}
+            ></div>
 
             <Container>
                 {/* Section Title */}
