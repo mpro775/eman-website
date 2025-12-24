@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "../../components/layout/Header";
-import Footer from "../../components/layout/Footer";
 import HeroAboutSection from "./HeroAboutSection";
 import ProgramsSection from "./ProgramsSection";
 import ExperienceSection from "./ExperienceSection";
@@ -56,12 +55,9 @@ const HomeContent: React.FC = () => {
         {/* Blog Section */}
         <BlogSection />
 
-        {/* Contact Section */}
+        {/* Contact Section (includes Footer) */}
         <ContactSection />
       </main>
-
-      {/* Footer */}
-      <Footer />
     </div>
   );
 };

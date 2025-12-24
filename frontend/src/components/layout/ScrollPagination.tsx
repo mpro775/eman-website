@@ -15,7 +15,6 @@ const sections: Section[] = [
   { id: "programs", name: "البرامج" },
   { id: "blog", name: "المدونة" },
   { id: "contact", name: "تواصل معي" },
-  { id: "footer", name: "الفوتر" },
 ];
 
 const ScrollPagination: React.FC = () => {
@@ -27,14 +26,14 @@ const ScrollPagination: React.FC = () => {
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
             setActiveSection(entry.target.id);
           }
         });
       },
       {
-        threshold: 0.5,
-        rootMargin: "-20% 0px -20% 0px",
+        threshold: [0.3, 0.5, 0.7],
+        rootMargin: "-10% 0px -10% 0px",
       }
     );
 
@@ -46,7 +45,22 @@ const ScrollPagination: React.FC = () => {
       }
     });
 
+    // Handle scroll to bottom for last section
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = window.innerHeight;
+
+      // If near the bottom of the page, activate the last section
+      if (scrollTop + clientHeight >= scrollHeight - 100) {
+        setActiveSection("contact");
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
     return () => {
+      window.removeEventListener("scroll", handleScroll);
       if (observerRef.current) {
         sections.forEach((section) => {
           const element = document.getElementById(section.id);
