@@ -8,9 +8,12 @@ interface Section {
 
 const sections: Section[] = [
   { id: "home", name: "الرئيسية" },
-  { id: "about", name: "من أنا" },
   { id: "experience", name: "الخبرات العملية" },
+  { id: "services", name: "الخدمات" },
   { id: "portfolio", name: "أعمالي" },
+  { id: "testimonials", name: "آراء العملاء" },
+  { id: "programs", name: "البرامج" },
+  { id: "blog", name: "المدونة" },
   { id: "contact", name: "تواصل معي" },
   { id: "footer", name: "الفوتر" },
 ];
@@ -65,6 +68,9 @@ const ScrollPagination: React.FC = () => {
     }
   };
 
+  const isFirstItem = (index: number) => index === 0;
+  const isLastItem = (index: number) => index === sections.length - 1;
+
   return (
     <div className="hidden lg:flex fixed right-6 top-1/2 -translate-y-1/2 z-[90] flex-col gap-4">
       {sections.map((section, index) => {
@@ -83,22 +89,37 @@ const ScrollPagination: React.FC = () => {
             <motion.div
               className={`
                 w-3 h-3 rounded-full transition-all duration-300
-                ${
-                  isActive
-                    ? "bg-accent-pink scale-125 shadow-glow-pink"
-                    : "bg-white/30 hover:bg-white/50"
+                ${isActive
+                  ? "bg-accent-pink scale-125 shadow-glow-pink"
+                  : "bg-white/30 hover:bg-white/50"
                 }
               `}
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.9 }}
             />
 
-            {/* Active indicator line */}
-            {isActive && (
+            {/* Line BEFORE active dot - only show if not first item */}
+            {isActive && !isFirstItem(index) && (
               <motion.div
-                className="absolute right-1/2 top-1/2 -translate-y-1/2 w-8 h-0.5 bg-accent-pink"
-                initial={{ width: 0 }}
-                animate={{ width: 32 }}
+                className="absolute left-1/2 bottom-full -translate-x-1/2 w-0.5"
+                style={{
+                  background: 'linear-gradient(to top, var(--color-accent-pink), transparent)',
+                }}
+                initial={{ height: 0 }}
+                animate={{ height: 16 }}
+                transition={{ duration: 0.3 }}
+              />
+            )}
+
+            {/* Line AFTER active dot - only show if not last item */}
+            {isActive && !isLastItem(index) && (
+              <motion.div
+                className="absolute left-1/2 top-full -translate-x-1/2 w-0.5"
+                style={{
+                  background: 'linear-gradient(to bottom, var(--color-accent-pink), transparent)',
+                }}
+                initial={{ height: 0 }}
+                animate={{ height: 16 }}
                 transition={{ duration: 0.3 }}
               />
             )}
