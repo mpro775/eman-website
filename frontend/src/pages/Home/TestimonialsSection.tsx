@@ -50,8 +50,8 @@ const TestimonialsSection: React.FC = () => {
       diff > testimonials.length / 2
         ? diff - testimonials.length
         : diff < -testimonials.length / 2
-        ? diff + testimonials.length
-        : diff;
+          ? diff + testimonials.length
+          : diff;
 
     if (normalizedDiff === 0) {
       return {
@@ -102,9 +102,18 @@ const TestimonialsSection: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-accent-pink text-2xl md:text-3xl font-medium">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3">
             آراء العملاء
           </h2>
+          {/* الخط تحت العنوان - متدرج */}
+          <div
+            className="h-[3px] rounded-full mt-2"
+            style={{
+              background: 'linear-gradient(to left, #6366f1, #8b5cf6, transparent)',
+              width: '100%',
+              maxWidth: '280px',
+            }}
+          />
         </motion.div>
 
         {/* Testimonials Carousel */}
@@ -132,30 +141,27 @@ const TestimonialsSection: React.FC = () => {
                   >
                     {/* Card */}
                     <div
-                      className={`relative bg-[#1a1a2e]/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 border transition-all duration-300 ${
-                        index === activeIndex
-                          ? "border-white/20 shadow-2xl"
-                          : "border-white/10"
-                      }`}
+                      className={`relative bg-[#1a1a2e]/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 border transition-all duration-300 ${index === activeIndex
+                        ? "border-white/20 shadow-2xl"
+                        : "border-white/10"
+                        }`}
                     >
                       {/* Avatar */}
                       <div className="flex justify-center mb-6">
                         <div className="relative">
                           <div
-                            className={`absolute inset-0 rounded-full transition-opacity duration-300 ${
-                              index === activeIndex
-                                ? "bg-gradient-to-r from-cyan-400 to-cyan-600 blur-md opacity-60"
-                                : "opacity-0"
-                            }`}
+                            className={`absolute inset-0 rounded-full transition-opacity duration-300 ${index === activeIndex
+                              ? "bg-gradient-to-r from-cyan-400 to-cyan-600 blur-md opacity-60"
+                              : "opacity-0"
+                              }`}
                           ></div>
                           <img
                             src={testimonial.avatar}
                             alt={testimonial.name}
-                            className={`relative w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-2 transition-all duration-300 ${
-                              index === activeIndex
-                                ? "border-cyan-400"
-                                : "border-white/30"
-                            }`}
+                            className={`relative w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-2 transition-all duration-300 ${index === activeIndex
+                              ? "border-cyan-400"
+                              : "border-white/30"
+                              }`}
                           />
                         </div>
                       </div>
@@ -191,11 +197,10 @@ const TestimonialsSection: React.FC = () => {
             <button
               key={index}
               onClick={() => setActiveIndex(index)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === activeIndex
-                  ? "bg-accent-pink w-6"
-                  : "bg-white/30 hover:bg-white/50"
-              }`}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${index === activeIndex
+                ? "bg-accent-pink w-6"
+                : "bg-white/30 hover:bg-white/50"
+                }`}
               aria-label={`Go to testimonial ${index + 1}`}
             />
           ))}

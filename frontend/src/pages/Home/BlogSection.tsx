@@ -45,15 +45,24 @@ const BlogSection: React.FC = () => {
       <Container>
         {/* Section Title */}
         <motion.div
-          className="text-right mb-12 md:mb-16"
+          className="text-right mb-16"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-accent-pink text-2xl md:text-3xl font-medium">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3">
             المدونة
           </h2>
+          {/* الخط تحت العنوان - متدرج */}
+          <div
+            className="h-[3px] rounded-full mt-2"
+            style={{
+              background: 'linear-gradient(to left, #6366f1, #8b5cf6, transparent)',
+              width: '100%',
+              maxWidth: '200px',
+            }}
+          />
         </motion.div>
 
         {/* Blog Grid */}

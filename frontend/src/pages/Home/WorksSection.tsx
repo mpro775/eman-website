@@ -92,13 +92,20 @@ const WorksSection: React.FC = () => {
           {/* العنوان الرئيسي */}
           <motion.div
             variants={itemVariants}
-            className="mb-16 text-right flex justify-end"
+            className="mb-16 text-right"
           >
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 relative inline-block">
               أعمالي
-              {/* الخط الأرجواني تحت العنوان */}
-              <span className="absolute bottom-[-8px] right-0 w-20 h-0.5 bg-accent-purple"></span>
             </h2>
+            {/* الخط تحت العنوان - متدرج */}
+            <div
+              className="h-[3px] rounded-full mt-2"
+              style={{
+                background: 'linear-gradient(to left, #6366f1, #8b5cf6, transparent)',
+                width: '100%',
+                maxWidth: '200px',
+              }}
+            />
           </motion.div>
 
           {/* Carousel Container */}
@@ -136,20 +143,18 @@ const WorksSection: React.FC = () => {
                       onClick={() => handleCardClick(index, work.slug)}
                     >
                       <div
-                        className={`relative rounded-2xl overflow-hidden backdrop-blur-md border transition-all duration-300 cursor-pointer ${
-                          isActive
-                            ? "bg-[#2a1a3e]/95 border-accent-purple/60 shadow-[0_0_50px_rgba(157,78,221,0.6)]"
-                            : "bg-[#1e1e2e]/90 border-accent-purple/20 hover:border-accent-purple/40"
-                        }`}
+                        className={`relative rounded-2xl overflow-hidden backdrop-blur-md border transition-all duration-300 cursor-pointer ${isActive
+                          ? "bg-[#2a1a3e]/95 border-accent-purple/60 shadow-[0_0_50px_rgba(157,78,221,0.6)]"
+                          : "bg-[#1e1e2e]/90 border-accent-purple/20 hover:border-accent-purple/40"
+                          }`}
                       >
                         {/* Card Image Container */}
                         <div className="relative w-full aspect-[4/3] flex items-center justify-center p-6 md:p-8 bg-gradient-to-b from-transparent to-black/20">
                           <img
                             src={work.image}
                             alt={work.title}
-                            className={`w-full h-full object-contain transition-all duration-300 ${
-                              isActive ? "scale-105" : "scale-100"
-                            }`}
+                            className={`w-full h-full object-contain transition-all duration-300 ${isActive ? "scale-105" : "scale-100"
+                              }`}
                           />
                         </div>
 
@@ -221,11 +226,10 @@ const WorksSection: React.FC = () => {
                 <button
                   key={index}
                   onClick={() => setActiveIndex(index)}
-                  className={`transition-all duration-300 rounded-full ${
-                    index === activeIndex
-                      ? "w-10 md:w-12 h-1.5 md:h-2 bg-accent-pink"
-                      : "w-6 md:w-8 h-1.5 md:h-2 bg-white/40 hover:bg-white/60"
-                  }`}
+                  className={`transition-all duration-300 rounded-full ${index === activeIndex
+                    ? "w-10 md:w-12 h-1.5 md:h-2 bg-accent-pink"
+                    : "w-6 md:w-8 h-1.5 md:h-2 bg-white/40 hover:bg-white/60"
+                    }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
               ))}
