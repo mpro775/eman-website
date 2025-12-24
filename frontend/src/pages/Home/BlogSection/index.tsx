@@ -1,0 +1,85 @@
+import React from "react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { Container, SectionTitle } from "../../../components";
+import BlogCard, { type BlogPost } from "./BlogCard";
+
+// Mock data
+const blogPosts: BlogPost[] = [
+    {
+        id: 1,
+        title: "A Decisive Victory for Progressive Policies",
+        category: "Politics",
+        image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=250&fit=crop",
+        comments: 124,
+        likes: "10k",
+    },
+    {
+        id: 2,
+        title: "Tech Giants Unveil Cutting-Edge AI Innovations",
+        category: "Technology",
+        image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=250&fit=crop",
+        comments: 124,
+        likes: "10k",
+    },
+    {
+        id: 3,
+        title: "COVID-19 Variants",
+        category: "Health",
+        image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=250&fit=crop",
+        comments: 124,
+        likes: "10k",
+    },
+];
+
+/**
+ * Blog teaser section with recent posts
+ */
+const BlogSection: React.FC = () => {
+    return (
+        <section
+            id="blog"
+            className="scroll-section relative min-h-screen w-full bg-bg-primary overflow-hidden flex flex-col items-center justify-center py-20"
+        >
+            {/* Background gradients */}
+            <div className="absolute top-0 right-0 w-[30%] h-[40%] bg-accent-purple/10 blur-[150px] rounded-full pointer-events-none z-0"></div>
+            <div className="absolute bottom-0 left-0 w-[25%] h-[30%] bg-accent-pink/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
+
+            <Container>
+                {/* Section Title */}
+                <SectionTitle title="المدونة" maxWidth="200px" />
+
+                {/* Blog Feed Grid */}
+                <motion.div
+                    className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                    {blogPosts.map((post, index) => (
+                        <BlogCard key={post.id} post={post} index={index} />
+                    ))}
+                </motion.div>
+
+                {/* Action Link */}
+                <motion.div
+                    className="flex justify-center mt-12 md:mt-16"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.6 }}
+                >
+                    <Link
+                        to="/blog"
+                        className="bg-transparent border border-accent-pink text-accent-pink px-8 py-3 rounded-full font-medium transition-all duration-300 hover:bg-accent-pink hover:text-white hover:shadow-glow-pink"
+                    >
+                        عرض جميع المدونات
+                    </Link>
+                </motion.div>
+            </Container>
+        </section>
+    );
+};
+
+export default BlogSection;

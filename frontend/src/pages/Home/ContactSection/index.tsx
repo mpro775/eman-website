@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import Container from "../../../components/common/Container";
+import { Container, SectionTitle } from "../../../components";
 import ContactForm from "./ContactForm";
 import ContactInfo from "./ContactInfo";
 import FooterContent from "./FooterContent";
@@ -39,26 +39,8 @@ const ContactSection: React.FC = () => {
 
                 <Container>
                     {/* Section Title */}
-                    <motion.div
-                        className="text-right mb-16"
-                        initial={{ opacity: 0, y: -20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5 }}
-                    >
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3">
-                            تواصل معي
-                        </h2>
-                        {/* Gradient underline */}
-                        <div
-                            className="h-[3px] rounded-full mt-2"
-                            style={{
-                                background: "linear-gradient(to left, #6366f1, #8b5cf6, transparent)",
-                                width: "100%",
-                                maxWidth: "250px",
-                            }}
-                        />
-                    </motion.div>
+                    <SectionTitle title="تواصل معي" maxWidth="250px" />
+
 
                     {/* Main Content - Two Columns */}
                     <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
