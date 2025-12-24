@@ -1,34 +1,40 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Container from "../../components/common/Container";
-import tempImage from "../../assets/images/temp.png";
 
-// Programs data - using temp.png as placeholder for all
+// Import program icons
+import aiIcon from "../../assets/images/ai.png";
+import figmaIcon from "../../assets/images/figma.png";
+import indesignIcon from "../../assets/images/id.png";
+import photoshopIcon from "../../assets/images/photoshop.png";
+import vscodeIcon from "../../assets/images/vscode.png";
+
+// Programs data with actual icons
 const programs = [
   {
     id: 1,
     name: "VS Code",
-    image: tempImage,
+    image: vscodeIcon,
   },
   {
     id: 2,
     name: "InDesign",
-    image: tempImage,
+    image: indesignIcon,
   },
   {
     id: 3,
     name: "Illustrator",
-    image: tempImage,
+    image: aiIcon,
   },
   {
     id: 4,
     name: "Photoshop",
-    image: tempImage,
+    image: photoshopIcon,
   },
   {
     id: 5,
     name: "Figma",
-    image: tempImage,
+    image: figmaIcon,
   },
 ];
 
