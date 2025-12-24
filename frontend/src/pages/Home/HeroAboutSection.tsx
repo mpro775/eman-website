@@ -345,7 +345,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                         <>
                             {/* العنوان "من أنا" */}
                             <motion.div
-                                className="absolute right-[50px] top-[50px] z-20"
+                                className="absolute right-[50px] top-[100px] z-20"
                                 initial="hidden"
                                 animate="visible"
                                 exit="hidden"
@@ -362,7 +362,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
 
                             {/* الصندوق الشفاف مع المحتوى */}
                             <motion.div
-                                className="absolute right-[50px] top-[120px] z-20 w-[50%]"
+                                className="absolute right-[50px] top-[150px] z-20 w-[50%]"
                                 initial="hidden"
                                 animate="visible"
                                 exit="hidden"
@@ -436,8 +436,8 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                     className="absolute z-30"
                     initial={false}
                     animate={{
-                        left: isAboutView ? '70%' : '50%',
-                        bottom: isAboutView ? '400px' : '48px',
+                        left: isAboutView ? '60%' : '50%',
+                        bottom: isAboutView ? '340px' : '48px',
                         x: '-50%',
                         scale: isAboutView ? 0.7 : 1,
                     }}
