@@ -86,21 +86,21 @@ const WorksSection: React.FC = () => {
 
                             {/* Navigation Arrows */}
                             <button
-                                onClick={() => setActiveIndex((prev) => (prev - 1 + works.length) % works.length)}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-accent-purple/20 hover:bg-accent-purple/40 backdrop-blur-md border border-accent-purple/30 flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
-                                aria-label="Previous slide"
-                            >
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M15 18l-6-6 6-6" />
-                                </svg>
-                            </button>
-                            <button
                                 onClick={() => setActiveIndex((prev) => (prev + 1) % works.length)}
-                                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-accent-purple/20 hover:bg-accent-purple/40 backdrop-blur-md border border-accent-purple/30 flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
+                                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-accent-purple/20 hover:bg-accent-purple/40 backdrop-blur-md border border-accent-purple/30 flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
                                 aria-label="Next slide"
                             >
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M9 18l6-6-6-6" />
+                                </svg>
+                            </button>
+                            <button
+                                onClick={() => setActiveIndex((prev) => (prev - 1 + works.length) % works.length)}
+                                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-accent-purple/20 hover:bg-accent-purple/40 backdrop-blur-md border border-accent-purple/30 flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
+                                aria-label="Previous slide"
+                            >
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M15 18l-6-6 6-6" />
                                 </svg>
                             </button>
                         </div>

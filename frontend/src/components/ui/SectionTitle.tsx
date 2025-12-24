@@ -5,6 +5,7 @@ interface SectionTitleProps {
     title: string;
     maxWidth?: string;
     variants?: Variants;
+    centered?: boolean;
 }
 
 /**
@@ -14,6 +15,7 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
     title,
     maxWidth = "300px",
     variants,
+    centered = false,
 }) => {
     const defaultVariants: Variants = {
         hidden: { opacity: 0, y: -20 },
@@ -27,16 +29,18 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
     return (
         <motion.div
             variants={variants || defaultVariants}
-            className="mb-16 text-right"
+            className={`mb-16 ${centered ? 'text-center' : 'text-right'}`}
         >
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 relative inline-block">
                 {title}
             </h2>
             {/* Gradient underline */}
             <div
-                className="h-[3px] rounded-full mt-2"
+                className={`h-[3px] rounded-full mt-2 ${centered ? 'mx-auto' : ''}`}
                 style={{
-                    background: "linear-gradient(to left, #6366f1, #8b5cf6, transparent)",
+                    background: centered
+                        ? "linear-gradient(to right, transparent, #8b5cf6, #6366f1, #8b5cf6, transparent)"
+                        : "linear-gradient(to left, #6366f1, #8b5cf6, transparent)",
                     width: "100%",
                     maxWidth: maxWidth,
                 }}
