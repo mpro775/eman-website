@@ -118,9 +118,25 @@ const Header: React.FC = () => {
     if (id === 'about') {
       setIsAboutView(true);
       setActiveSection('about');
+      // Scroll to home section (where about is displayed)
+      const element = document.getElementById('home');
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
     } else if (id === 'home') {
       setIsAboutView(false);
       setActiveSection('home');
+      // Scroll to home section
+      const element = document.getElementById('home');
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
     } else {
       // For other sections, scroll to them normally
       const element = document.getElementById(id);
