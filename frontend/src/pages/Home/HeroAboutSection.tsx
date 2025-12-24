@@ -139,7 +139,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
     return (
         <section
             id="home"
-            className="scroll-section relative w-full min-h-screen bg-bg-primary overflow-hidden flex items-center justify-center"
+            className="scroll-section relative w-full min-h-screen bg-bg-primary overflow-hidden flex items-end justify-center"
         >
             {/* Canvas Container - 1444px × 918px */}
             <div

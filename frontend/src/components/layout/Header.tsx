@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { HiDownload, HiMenuAlt3, HiX } from "react-icons/hi";
 import Container from "../common/Container";
 import logoImage from "../../assets/images/logo.png";
-import downloadIcon from "../../assets/images/download.png";
+import downloadIcon from "../../assets/images/download.svg";
 import { useView } from "../../context/ViewContext";
 
 const Header: React.FC = () => {
@@ -236,11 +236,12 @@ const Header: React.FC = () => {
             {/* CV Download - Left Side (RTL: appears last = left) */}
             <motion.a
               href="#cv"
-              className="hidden lg:flex items-center gap-3 text-white transition-all duration-300 hover:text-accent-pink flex-shrink-0"
+              className="hidden lg:flex items-center gap-3 text-white transition-all duration-300 hover:text-accent-pink flex-shrink-0 group"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <span
+                className="transition-colors duration-300"
                 style={{
                   fontFamily: '"Urbanist", "Tajawal", sans-serif',
                   fontWeight: 600,
@@ -254,7 +255,7 @@ const Header: React.FC = () => {
               <img
                 src={downloadIcon}
                 alt="Download"
-                className="w-6 h-6 object-contain"
+                className="w-6 h-6 object-contain transition-all duration-300 group-hover:[filter:brightness(0)_saturate(100%)_invert(58%)_sepia(34%)_saturate(752%)_hue-rotate(305deg)_brightness(94%)_contrast(87%)]"
               />
             </motion.a>
 
