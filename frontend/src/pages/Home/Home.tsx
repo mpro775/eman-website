@@ -1,16 +1,18 @@
 import React from "react";
-import Header from "../../components/layout/Header";
+import { Header, ScrollPagination } from "../../components";
+import { useSEO } from "../../hooks";
+import { ViewProvider, useView } from "../../context";
+
+// Section imports from new folder structure
 import HeroAboutSection from "./HeroAboutSection";
-import ProgramsSection from "./ProgramsSection";
 import ExperienceSection from "./ExperienceSection";
 import ServicesSection from "./ServicesSection";
 import WorksSection from "./WorksSection";
 import TestimonialsSection from "./TestimonialsSection";
+import ProgramsSection from "./ProgramsSection";
 import BlogSection from "./BlogSection";
 import ContactSection from "./ContactSection";
-import ScrollPagination from "../../components/layout/ScrollPagination";
-import { useSEO } from "../../hooks/useSEO";
-import { ViewProvider, useView } from "../../context/ViewContext";
+
 
 // Inner component that uses the context
 const HomeContent: React.FC = () => {
