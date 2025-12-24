@@ -35,7 +35,6 @@ const FooterContent: React.FC = () => {
 
     const footerSocialLinks: SocialLink[] = [
         { icon: FaFacebookF, href: "#" },
-        { icon: FaYoutube, href: "#" },
         { icon: FaWhatsapp, href: "#" },
         { icon: FaInstagram, href: "#" },
         { icon: FaTwitter, href: "#" },

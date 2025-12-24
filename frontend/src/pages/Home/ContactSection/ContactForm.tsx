@@ -113,13 +113,22 @@ const ContactForm: React.FC<ContactFormProps> = ({
                 />
 
                 {/* Submit Button */}
-                <button
-                    type="submit"
-                    className="bg-gradient-to-r from-accent-pink to-accent-pink-dark text-white px-8 py-3 rounded-full font-semibold flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-glow-pink"
-                >
-                    <HiArrowLeft className="text-lg" />
-                    <span>أرسل الرسالة</span>
-                </button>
+                <div className="flex justify-end">
+                    <button
+                        type="submit"
+                        className="bg-gradient-to-r from-accent-pink to-accent-pink-dark text-white text-sm font-semibold flex items-center justify-center gap-3 transition-all duration-300 hover:scale-105 hover:shadow-glow-pink"
+                        style={{
+                            width: "197px",
+                            height: "72px",
+                            borderRadius: "12px",
+                            paddingLeft: "36px",
+                            paddingRight: "36px",
+                        }}
+                    >
+                        <span>أرسل الرسالة</span>
+                        <HiArrowLeft className="text-lg" />
+                    </button>
+                </div>
             </form>
         </div>
     );
