@@ -2,7 +2,6 @@ import React from "react";
 import {
     FaFacebookF,
     FaTwitter,
-    FaYoutube,
     FaBehance,
     FaWhatsapp,
     FaInstagram,

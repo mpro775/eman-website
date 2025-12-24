@@ -1,9 +1,11 @@
-export enum MessageStatus {
-  NEW = 'new',
-  READ = 'read',
-  REPLIED = 'replied',
-  ARCHIVED = 'archived',
-}
+export const MessageStatus = {
+  NEW: 'new',
+  READ: 'read',
+  REPLIED: 'replied',
+  ARCHIVED: 'archived',
+} as const;
+
+export type MessageStatus = typeof MessageStatus[keyof typeof MessageStatus];
 
 export interface ContactMessage {
   _id: string;

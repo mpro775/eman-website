@@ -8,7 +8,7 @@ import { Card } from '../../components/ui/Card';
 import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
 import { useUIStore } from '../../../store/ui.store';
 import { blogService } from '../../../services/blog.service';
-import {  PostStatus, type BlogCategory, type BlogTag } from '../../../types/blog.types';
+import { PostStatus, type BlogCategory, type BlogTag } from '../../../types/blog.types';
 
 export const PostForm = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,14 +18,28 @@ export const PostForm = () => {
 
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<BlogCategory[]>([]);
-  const [tags, setTags] = useState<BlogTag[]>([]);
-  const [formData, setFormData] = useState({
+  const [_tags, setTags] = useState<BlogTag[]>([]);
+  const [formData, setFormData] = useState<{
+    title: string;
+    summary: string;
+    content: string;
+    featuredImage: string;
+    category: string;
+    tags: string[];
+    publishDate: string;
+    status: PostStatus;
+    readTime: number;
+    seo: {
+      metaTitle: string;
+      metaDescription: string;
+    };
+  }>({
     title: '',
     summary: '',
     content: '',
     featuredImage: '',
     category: '',
-    tags: [] as string[],
+    tags: [],
     publishDate: '',
     status: PostStatus.DRAFT,
     readTime: 0,
@@ -75,7 +89,7 @@ export const PostForm = () => {
         tags:
           post.tags?.map((tag) => (typeof tag === 'object' ? tag._id : tag)) || [],
         publishDate: post.publishDate || '',
-        status: post.status,
+        status: post.status as PostStatus,
         readTime: post.readTime || 0,
         seo: post.seo || { metaTitle: '', metaDescription: '' },
       });

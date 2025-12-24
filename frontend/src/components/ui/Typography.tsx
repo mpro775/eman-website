@@ -17,10 +17,10 @@ export const Heading: React.FC<HeadingProps> = ({
   glowColor = 'pink',
   gradient = false,
 }) => {
-  const Tag = `h${level}` as keyof JSX.IntrinsicElements;
-  
+  const Tag = `h${level}` as React.ElementType;
+
   const baseClasses = 'font-heading font-bold leading-tight m-0';
-  
+
   const sizeClasses = {
     1: 'text-4xl sm:text-5xl lg:text-6xl xl:text-7xl tracking-tight',
     2: 'text-3xl sm:text-4xl lg:text-5xl xl:text-6xl tracking-tight',
@@ -29,7 +29,7 @@ export const Heading: React.FC<HeadingProps> = ({
     5: 'text-lg sm:text-xl lg:text-2xl xl:text-3xl',
     6: 'text-base sm:text-lg lg:text-xl xl:text-2xl',
   };
-  
+
   const glowClasses = glow ? (glowColor === 'pink' ? 'text-glow-pink' : 'text-glow-cyan') : '';
   const gradientClasses = gradient ? 'gradient-text' : '';
 
@@ -64,7 +64,7 @@ export const Text: React.FC<TextProps> = ({
   as: Component = 'p',
 }) => {
   const baseClasses = 'font-arabic leading-relaxed m-0';
-  
+
   const sizeClasses = {
     xs: 'text-xs',
     sm: 'text-sm',
@@ -72,7 +72,7 @@ export const Text: React.FC<TextProps> = ({
     lg: 'text-lg',
     xl: 'text-xl',
   };
-  
+
   const weightClasses = {
     light: 'font-light',
     normal: 'font-normal',
@@ -80,7 +80,7 @@ export const Text: React.FC<TextProps> = ({
     semibold: 'font-semibold',
     bold: 'font-bold',
   };
-  
+
   const colorClasses = {
     primary: 'text-text-primary',
     secondary: 'text-text-secondary',

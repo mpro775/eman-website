@@ -1,8 +1,10 @@
-export enum PostStatus {
-  DRAFT = 'draft',
-  PUBLISHED = 'published',
-  ARCHIVED = 'archived',
-}
+export const PostStatus = {
+  DRAFT: 'draft',
+  PUBLISHED: 'published',
+  ARCHIVED: 'archived',
+} as const;
+
+export type PostStatus = typeof PostStatus[keyof typeof PostStatus];
 
 export interface Post {
   _id: string;
@@ -60,7 +62,7 @@ export interface CreatePostDto {
   };
 }
 
-export interface UpdatePostDto extends Partial<CreatePostDto> {}
+export interface UpdatePostDto extends Partial<CreatePostDto> { }
 
 export interface FilterPostDto {
   page?: number;

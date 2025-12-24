@@ -24,11 +24,7 @@ const Footer: React.FC = () => {
     { name: "استشارات تصميم", href: "#" },
   ];
 
-  const contactLinks = [
-    { name: "للتواصل", href: "#contact" },
-    { name: "المدونة", href: "#blog" },
-    { name: "معرض الأعمال", href: "#portfolio" },
-  ];
+
 
   const socialLinks = [
     { icon: FaFacebookF, href: "#" },

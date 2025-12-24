@@ -1,7 +1,9 @@
-export enum SubscriberStatus {
-  SUBSCRIBED = 'subscribed',
-  UNSUBSCRIBED = 'unsubscribed',
-}
+export const SubscriberStatus = {
+  SUBSCRIBED: 'subscribed',
+  UNSUBSCRIBED: 'unsubscribed',
+} as const;
+
+export type SubscriberStatus = typeof SubscriberStatus[keyof typeof SubscriberStatus];
 
 export interface NewsletterSubscriber {
   _id: string;
