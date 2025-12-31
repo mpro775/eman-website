@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import FloatingSkillCard from "./FloatingSkillCard";
+import SkillCard from "./SkillCard";
 
 // Image imports
 import uxUiDesignerImage from "../../../assets/images/UxUiDesginer.png";
@@ -14,81 +14,118 @@ interface AboutViewProps {
     };
 }
 
+// بيانات المهارات
+const skillsData = [
+    {
+        id: 1,
+        icon: uxUiDesignerImage,
+        title: "UX/UI Designer",
+        description: "تصميم تجربة المستخدم وواجهات الاستخدام للتطبيقات والمواقع بدءاً من دراسة المستخدم وتحليل الاحتياجات، وصولاً إلى تصميم واجهات واضحة، سهلة، وقابلة للتنفيذ.",
+        position: { top: "120px", left: "80px" },
+        delay: 0.2,
+    },
+    {
+        id: 2,
+        icon: graphicDesignerImage,
+        title: "Graphic Designer",
+        description: "تصميم الجرافيكس والمواد البصرية المختلفة، بما في ذلك الهوية البصرية، تصاميم السوشيال ميديا والمحتوى المرئي الذي يوضح الفكرة ويعزز العلامة.",
+        position: { top: "120px", right: "80px" },
+        delay: 0.4,
+    },
+    {
+        id: 3,
+        icon: uxUiDesignerImage,
+        title: "Automation",
+        description: "أتمتة العمليات الرقمية لتسهيل العمل، تحسين سير المهام، وربط الأدوات والأنظمة لزيادة الكفاءة وتقليل الوقت والجهد.",
+        position: { top: "320px", left: "60px" },
+        delay: 0.6,
+    },
+    {
+        id: 4,
+        icon: appDeveloperImage,
+        title: "App Developer",
+        description: "تصميم وتحليل وتطوير تطبيقات الموبايل بدءاً من الفكرة والتخطيط وصولاً إلى تطبيق جاهز للاستخدام.",
+        position: { top: "380px", right: "100px" },
+        delay: 0.8,
+    },
+    {
+        id: 5,
+        icon: uxUiDesignerImage,
+        title: "UX/UI Designer",
+        description: "تصميم تجربة المستخدم وواجهات الاستخدام للتطبيقات والمواقع بدءاً من دراسة المستخدم وتحليل الاحتياجات، وصولاً إلى تصميم واجهات واضحة، سهلة، وقابلة للتنفيذ.",
+        position: { bottom: "120px", left: "50%", transform: "translateX(-50%)" } as React.CSSProperties,
+        delay: 1.0,
+    },
+];
+
 /**
- * About view content - displays the "من أنا" (Who Am I) section
- * Includes: Section title, info card, floating skill cards
+ * Skills view content - displays the "مهاراتي" (My Skills) section
+ * Includes: Section title, skill cards with animations
+ * Supports RTL for Arabic content
  */
 const AboutView: React.FC<AboutViewProps> = ({ aboutElementsVariants }) => {
     return (
         <>
-            {/* Section title "من أنا" */}
+            {/* Section title "مهاراتي" */}
             <motion.div
-                className="absolute right-[50px] top-[100px] z-20"
+                className="absolute right-[50px] top-[50px] z-20"
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
                 variants={aboutElementsVariants}
                 transition={{ duration: 0.5 }}
             >
-                <div className="relative inline-block">
-                    <h2 className="text-2xl md:text-3xl text-white font-arabic font-bold pb-2 pl-4">
-                        مـــن أنا
+                <div className="relative inline-block" style={{ direction: "rtl" }}>
+                    <h2
+                        className="text-white font-arabic font-bold pb-2"
+                        style={{
+                            fontSize: "48px",
+                            fontWeight: 700,
+                            letterSpacing: "0.02em",
+                        }}
+                    >
+                        مهاراتي
                     </h2>
-                    <span className="absolute bottom-1 right-0 w-12 h-1 bg-gradient-to-l from-[var(--color-accent-purple)] to-transparent rounded-full"></span>
+                    <span className="absolute bottom-1 right-0 w-16 h-1 bg-gradient-to-l from-[var(--color-accent-purple)] to-transparent rounded-full"></span>
                 </div>
             </motion.div>
 
-            {/* Transparent box with content */}
+            {/* Name badge near the image */}
             <motion.div
-                className="absolute right-[50px] top-[150px] z-20 w-[50%]"
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                variants={aboutElementsVariants}
-                transition={{ duration: 0.6, delay: 0.2 }}
+                className="absolute z-[26]"
+                style={{ left: "42%", top: "45%" }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
             >
-                <div className="relative rounded-[3rem] border border-white/10 bg-white/[0.02] backdrop-blur-sm p-6 md:p-10 lg:p-12 overflow-hidden group hover:border-white/20 transition-colors duration-500">
-                    {/* Light glow effect */}
-                    <div className="absolute -top-20 -right-20 w-60 h-60 bg-[var(--color-accent-pink)] opacity-[0.08] blur-[80px] rounded-full pointer-events-none" />
-
-                    {/* Arabic name */}
-                    <h1 className="text-5xl md:text-6xl lg:text-[5rem] font-arabic font-bold text-[var(--color-accent-pink)] mb-0 leading-tight drop-shadow-lg">
-                        إيمان جميل
+                <div
+                    className="text-center"
+                    style={{ direction: "rtl" }}
+                >
+                    <h1
+                        className="font-arabic font-bold text-white"
+                        style={{
+                            fontSize: "42px",
+                            textShadow: "0 4px 20px rgba(0,0,0,0.5)",
+                        }}
+                    >
+                        إيــمان جميــل
                     </h1>
-
-                    {/* Job title */}
-                    <h2 className="text-3xl md:text-4xl lg:text-[3.5rem] font-english font-medium text-white mb-8 tracking-wide leading-tight">
-                        UX/UI Designer
-                    </h2>
-
-                    {/* Description text */}
-                    <p className="text-[var(--color-text-secondary)] font-arabic text-lg md:text-xl leading-relaxed mb-10 max-w-xl text-justify opacity-90 font-light">
-                        أؤمـــن بأن جوهـــر التصميم يكمـــن في الإحساس، لذا أعمل على تصميم
-                        تجارب رقمية واعية، وبناء واجهات مستـــخدم تعكس هويــة العلامة
-                        التجاريــة بدقـــة وتـــوازن بين الجمال والوضوح.
-                    </p>
                 </div>
             </motion.div>
 
-            {/* Floating Skill Cards */}
-            <FloatingSkillCard
-                icon={uxUiDesignerImage}
-                label="UX/UI Designer"
-                className="left-[35%] top-[60%]"
-                delay={0.4}
-            />
-            <FloatingSkillCard
-                icon={appDeveloperImage}
-                label="App Developer"
-                className="left-[10%] top-[70%]"
-                delay={0.7}
-            />
-            <FloatingSkillCard
-                icon={graphicDesignerImage}
-                label="Graphic Designer"
-                className="left-[33%] bottom-[12%]"
-                delay={1.0}
-            />
+            {/* Skill Cards */}
+            {skillsData.map((skill) => (
+                <SkillCard
+                    key={skill.id}
+                    icon={skill.icon}
+                    title={skill.title}
+                    description={skill.description}
+                    position={skill.position}
+                    delay={skill.delay}
+                />
+            ))}
         </>
     );
 };

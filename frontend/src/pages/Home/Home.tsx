@@ -48,12 +48,6 @@ const HomeContent: React.FC = () => {
         <ProgramsSection />
 
 
-
-
-
-
-
-
         {/* Blog Section */}
         <BlogSection />
 

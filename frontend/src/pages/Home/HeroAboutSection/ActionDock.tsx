@@ -22,10 +22,11 @@ const ActionDock: React.FC<ActionDockProps> = ({
             className="absolute z-30"
             initial={false}
             animate={{
-                left: isAboutView ? "60%" : "50%",
-                bottom: isAboutView ? "340px" : "48px",
+                left: "50%",
+                bottom: isAboutView ? "-100px" : "48px",
                 x: "-50%",
-                scale: isAboutView ? 0.7 : 1,
+                scale: 1,
+                opacity: isAboutView ? 0 : 1,
             }}
             transition={{ duration: transitionDuration, ease: transitionEase }}
         >

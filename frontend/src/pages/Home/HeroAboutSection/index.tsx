@@ -6,6 +6,7 @@ import HeroView from "./HeroView";
 import AboutView from "./AboutView";
 import ActionDock from "./ActionDock";
 import BackgroundGlows from "./BackgroundGlows";
+import BottomBlurEffect from "./BottomBlurEffect";
 
 // Image import
 import heroImage from "../../../assets/images/image.png";
@@ -39,11 +40,11 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
         about: {
             x: "0%",
             y: 0,
-            left: "-20%",
+            left: "25%",
             bottom: "0px",
-            width: "100%",
-            height: "850px",
-            scale: 1,
+            width: "55%",
+            height: "auto",
+            scale: 1.1,
         },
     };
 
@@ -102,6 +103,13 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                         className="w-full h-full object-contain grayscale contrast-100 brightness-90"
                     />
                 </motion.div>
+
+                {/* Bottom Blur Effect - appears in Skills view */}
+                <BottomBlurEffect
+                    isVisible={isAboutView}
+                    transitionDuration={transitionDuration}
+                    transitionEase={transitionEase}
+                />
 
                 {/* Floating Action Dock (shared - animates between views) */}
                 <ActionDock
