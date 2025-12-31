@@ -117,7 +117,7 @@
   .cursor-pointer,
   [onclick],
   label[for] {
-    cursor: url('/src/assets/images/cursor.svg') 4 3, pointer;
+    cursor: url('/src/assets/images/pointer_cursor.svg') 14 6, pointer;
   }
 
   /* مؤشر النصوص وحقول الإدخال */

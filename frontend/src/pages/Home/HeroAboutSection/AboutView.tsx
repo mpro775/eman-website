@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import SkillCard from "./SkillCard";
+import { useMediaQuery } from "../../../hooks";
 
 // Image imports
 import uxUiDesignerImage from "../../../assets/images/UxUiDesginer.png";
@@ -64,11 +65,13 @@ const skillsData = [
  * Supports RTL for Arabic content
  */
 const AboutView: React.FC<AboutViewProps> = ({ aboutElementsVariants }) => {
+    const isMobile = useMediaQuery("(max-width: 1024px)");
+
     return (
-        <>
+        <div className={isMobile ? "relative w-full h-full flex flex-col items-center pt-20 pb-10 gap-6 overflow-y-auto" : ""}>
             {/* Section title "مهاراتي" */}
             <motion.div
-                className="absolute right-[50px] top-[50px] z-20"
+                className={isMobile ? "relative mb-8 text-center z-20" : "absolute right-[50px] top-[50px] z-20"}
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
@@ -79,7 +82,7 @@ const AboutView: React.FC<AboutViewProps> = ({ aboutElementsVariants }) => {
                     <h2
                         className="text-white font-arabic font-bold pb-2"
                         style={{
-                            fontSize: "48px",
+                            fontSize: isMobile ? "36px" : "48px",
                             fontWeight: 700,
                             letterSpacing: "0.02em",
                         }}
@@ -90,10 +93,10 @@ const AboutView: React.FC<AboutViewProps> = ({ aboutElementsVariants }) => {
                 </div>
             </motion.div>
 
-            {/* Name badge near the image */}
+            {/* Name badge near the image - Hide on small mobile if blocking, or adjust position */}
             <motion.div
-                className="absolute z-[26]"
-                style={{ left: "42%", top: "45%" }}
+                className={isMobile ? "relative mb-4 z-[26] order-first" : "absolute z-[26]"}
+                style={isMobile ? {} : { left: "42%", top: "45%" }}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
@@ -106,7 +109,7 @@ const AboutView: React.FC<AboutViewProps> = ({ aboutElementsVariants }) => {
                     <h1
                         className="font-arabic font-bold text-white"
                         style={{
-                            fontSize: "42px",
+                            fontSize: isMobile ? "32px" : "42px",
                             textShadow: "0 4px 20px rgba(0,0,0,0.5)",
                         }}
                     >
@@ -122,11 +125,11 @@ const AboutView: React.FC<AboutViewProps> = ({ aboutElementsVariants }) => {
                     icon={skill.icon}
                     title={skill.title}
                     description={skill.description}
-                    position={skill.position}
+                    position={isMobile ? { position: "relative", transform: "none", left: "auto", top: "auto", right: "auto", bottom: "auto", marginTop: "10px", margin: "0 auto", width: "90%", maxWidth: "340px" } : skill.position}
                     delay={skill.delay}
                 />
             ))}
-        </>
+        </div>
     );
 };
 

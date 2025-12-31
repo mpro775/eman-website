@@ -2,4 +2,5 @@
 export { useSEO } from './useSEO';
 export { useContactForm } from './useContactForm';
 export { useNewsletter } from './useNewsletter';
+export { useMediaQuery } from './useMediaQuery';
 

@@ -65,8 +65,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
         >
             {/* Canvas Container - 1444px × 918px */}
             <div
-                className="relative w-full max-w-[1444px] mx-auto overflow-visible"
-                style={{ height: "918px" }}
+                className="relative w-full max-w-[1444px] mx-auto overflow-visible h-auto min-h-screen lg:h-[918px] lg:min-h-0"
             >
                 {/* Background Glow Effects */}
                 <BackgroundGlows
