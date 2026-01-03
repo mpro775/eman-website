@@ -1,40 +1,45 @@
 import React from "react";
 import { motion } from "framer-motion";
+import bottomBlurEffect from "../../../assets/BottomBlurEffect.svg";
 
-interface BottomBlurEffectProps {
+interface GlowDomeEffectProps {
     isVisible: boolean;
     transitionDuration: number;
     transitionEase: [number, number, number, number];
 }
 
 /**
- * Gradient blur effect positioned at the bottom of the hero image
- * Creates an atmospheric purple glow effect as per Figma specifications
+ * Arc / Dome glow effect using SVG asset from Figma
  */
-const BottomBlurEffect: React.FC<BottomBlurEffectProps> = ({
+const GlowDomeEffect: React.FC<GlowDomeEffectProps> = ({
     isVisible,
     transitionDuration,
     transitionEase,
 }) => {
     return (
         <motion.div
-            className="absolute pointer-events-none z-[24]"
+            className="pointer-events-none absolute z-[26]"
             initial={{ opacity: 0 }}
             animate={{ opacity: isVisible ? 1 : 0 }}
             transition={{ duration: transitionDuration, ease: transitionEase }}
             style={{
-                width: "710.48px",
-                height: "355.24px",
-                bottom: "0px",
                 left: "50%",
-                transform: "translateX(-50%) rotate(-0.24deg)",
-                background: "linear-gradient(177.25deg, rgba(187, 161, 254, 0.8) 2.26%, rgba(33, 13, 83, 0.8) 97.74%)",
-                backdropFilter: "blur(488.2px)",
-                WebkitBackdropFilter: "blur(488.2px)",
-                borderRadius: "50% 50% 0 0",
+                bottom: "-55%",
+                transform: "translateX(-50%)",
             }}
-        />
+        >
+            <img
+                src={bottomBlurEffect}
+                alt=""
+                style={{
+                    width: "1000px",  // Original SVG width
+                    height: "722px",  // Original SVG height
+                    transform: "scale(2)",  // Double the size
+                    transformOrigin: "center bottom",  // Scale from bottom center
+                }}
+            />
+        </motion.div>
     );
 };
 
-export default BottomBlurEffect;
+export default GlowDomeEffect;

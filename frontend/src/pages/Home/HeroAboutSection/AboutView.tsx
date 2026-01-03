@@ -93,24 +93,49 @@ const AboutView: React.FC<AboutViewProps> = ({ aboutElementsVariants }) => {
                 </div>
             </motion.div>
 
-            {/* Name badge near the image - Hide on small mobile if blocking, or adjust position */}
+            {/* Name badge - Liquid Glass button style */}
             <motion.div
                 className={isMobile ? "relative mb-4 z-[26] order-first" : "absolute z-[26]"}
-                style={isMobile ? {} : { left: "42%", top: "45%" }}
+                style={isMobile ? {} : {
+                    top: "468.51px",
+                    left: "636.43px"
+                }}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
             >
+                {/* Liquid Glass Button Container */}
                 <div
-                    className="text-center"
-                    style={{ direction: "rtl" }}
+                    className="relative flex items-center justify-center cursor-pointer"
+                    style={{
+                        width: "171.14px",
+                        height: "38.72px",
+                        borderRadius: "23.46px",
+                        padding: "4.69px",
+                        gap: "4.69px",
+                        background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)",
+                        backdropFilter: "blur(20px)",
+                        WebkitBackdropFilter: "blur(20px)",
+                        border: "1px solid rgba(255,255,255,0.2)",
+                        boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.2)",
+                    }}
                 >
-                    <h1
-                        className="font-arabic font-bold text-white"
+                    {/* Top reflection effect */}
+                    <div
+                        className="absolute top-0 left-0 right-0 h-1/2 rounded-t-[23.46px] pointer-events-none"
                         style={{
-                            fontSize: isMobile ? "32px" : "42px",
-                            textShadow: "0 4px 20px rgba(0,0,0,0.5)",
+                            background: "linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 100%)",
+                        }}
+                    />
+
+                    {/* Name text */}
+                    <h1
+                        className="font-arabic font-bold text-white text-center"
+                        style={{
+                            fontSize: isMobile ? "14px" : "16px",
+                            textShadow: "0 2px 10px rgba(0,0,0,0.3)",
+                            direction: "rtl",
                         }}
                     >
                         إيــمان جميــل

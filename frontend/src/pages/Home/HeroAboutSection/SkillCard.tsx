@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import frameButtonSvg from "../../../assets/Frame_button.png";
 
 interface SkillCardProps {
     icon: string;
@@ -47,8 +48,8 @@ const SkillCard: React.FC<SkillCardProps> = ({
                 <div
                     className="relative overflow-hidden"
                     style={{
-                        width: "260px",
-                        height: "160px",
+                        width: "340px",
+                        height: "180px",
                         borderRadius: "17.86px",
                         padding: "12px 16px",
                         background: "linear-gradient(242.45deg, #3B3156 38.21%, #000000 98.39%)",
@@ -65,45 +66,29 @@ const SkillCard: React.FC<SkillCardProps> = ({
                         }}
                     />
 
-                    {/* Liquid Glass Button - at top of card */}
+                    {/* Liquid Glass Button - using SVG from Figma */}
                     <div className="relative mb-3 flex justify-center">
-                        <div
-                            className="relative rounded-full overflow-visible flex items-center justify-center cursor-pointer transition-all hover:scale-105"
-                            style={{
-                                width: "180px",
-                                height: "40px",
-                                borderRadius: "47px",
-                                padding: "8px 16px",
-                                background:
-                                    "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 50%, rgba(255,255,255,0.01) 100%)",
-                                backdropFilter: "blur(16px) saturate(180%)",
-                                WebkitBackdropFilter: "blur(16px) saturate(180%)",
-                                border: "1px solid rgba(255,255,255,0.12)",
-                                boxShadow: `
-                                    0 8px 32px rgba(0,0,0,0.25),
-                                    inset 0 1px 1px rgba(255,255,255,0.15),
-                                    inset 0 -1px 1px rgba(0,0,0,0.1)
-                                `,
-                            }}
-                        >
-                            {/* Top reflection effect */}
-                            <div
-                                className="absolute top-0 left-0 right-0 h-1/2 rounded-t-full pointer-events-none"
+                        <div className="relative flex items-center justify-center cursor-pointer transition-all hover:scale-105">
+                            {/* Button SVG Background */}
+                            <img
+                                src={frameButtonSvg}
+                                alt=""
                                 style={{
-                                    background:
-                                        "linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%)",
+                                    width: "180px",   // عدّل العرض كما تريد
+                                    height: "45px",   // عدّل الارتفاع كما تريد
                                 }}
                             />
 
-
-
-                            {/* Label text */}
+                            {/* Label text - positioned on top of SVG */}
                             <span
-                                className="relative font-english font-semibold italic text-center"
+                                className="absolute font-english font-bold text-center"
                                 style={{
+                                    fontFamily: "'Urbanist', sans-serif",
+                                    fontWeight: 700,
                                     fontSize: "16px",
-                                    color: "#9d7bbb",
-                                    textShadow: "0 1px 2px rgba(0,0,0,0.3)",
+                                    lineHeight: "111%",
+                                    letterSpacing: "-0.015em",
+                                    color: "#FFFFFF",
                                 }}
                             >
                                 {title}
@@ -113,11 +98,14 @@ const SkillCard: React.FC<SkillCardProps> = ({
 
                     {/* Description */}
                     <p
-                        className="font-arabic text-right leading-relaxed"
+                        className="text-right"
                         style={{
-                            fontSize: "11px",
-                            color: "rgba(255, 255, 255, 0.75)",
-                            lineHeight: "1.6",
+                            fontFamily: "'Urbanist', sans-serif",
+                            fontWeight: 400,
+                            fontSize: "16px",
+                            lineHeight: "125%",
+                            letterSpacing: "-0.015em",
+                            color: "#FFFFFF",
                         }}
                     >
                         {description}

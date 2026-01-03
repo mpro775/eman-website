@@ -40,11 +40,11 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
         about: {
             x: "0%",
             y: 0,
-            left: "25%",
+            left: "15%",
             bottom: "0px",
-            width: "55%",
+            width: "66%",
             height: "auto",
-            scale: 1.1,
+            scale: 1.4,
         },
     };
 
@@ -63,11 +63,19 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
             id="home"
             className="scroll-section relative w-full min-h-screen bg-bg-primary overflow-hidden flex items-end justify-center"
         >
-            {/* Canvas Container - 1444px × 918px */}
+            {/* Black background overlay - covers entire section in About view */}
+            <motion.div
+                className="absolute inset-0 z-0"
+                animate={{
+                    backgroundColor: isAboutView ? "#000000" : "transparent",
+                }}
+                transition={{ duration: transitionDuration, ease: transitionEase }}
+            />
+
+            {/* Canvas Container - 1444px × 800px (Figma dimensions) */}
             <div
-                className="relative w-full max-w-[1444px] mx-auto overflow-visible h-auto min-h-screen lg:h-[918px] lg:min-h-0"
+                className="relative w-full max-w-[1444px] mx-auto overflow-visible h-auto min-h-screen lg:h-[800px] lg:min-h-0"
             >
-                {/* Background Glow Effects */}
                 <BackgroundGlows
                     isAboutView={isAboutView}
                     transitionDuration={transitionDuration}

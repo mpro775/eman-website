@@ -18,10 +18,11 @@ const BackgroundGlows: React.FC<BackgroundGlowsProps> = ({
 }) => {
     return (
         <>
-            {/* Purple glow background */}
+            {/* Purple glow background - hidden in About view */}
             <motion.div
                 className="absolute pointer-events-none z-0"
                 animate={{
+                    opacity: isAboutView ? 0 : 1,
                     top: isAboutView ? "0px" : "-100px",
                     left: isAboutView ? "auto" : "-200px",
                     right: isAboutView ? "0px" : "auto",
@@ -36,10 +37,11 @@ const BackgroundGlows: React.FC<BackgroundGlowsProps> = ({
                 }}
             />
 
-            {/* Pink glow background - moves behind image in About view */}
+            {/* Pink glow background - hidden in About view */}
             <motion.div
                 className="absolute pointer-events-none z-0"
                 animate={{
+                    opacity: isAboutView ? 0 : 1,
                     bottom: isAboutView ? "0px" : "-100px",
                     left: isAboutView ? "-10%" : "50%",
                     transform: isAboutView ? "translateX(0%)" : "translateX(-50%)",
@@ -54,11 +56,11 @@ const BackgroundGlows: React.FC<BackgroundGlowsProps> = ({
                 }}
             />
 
-            {/* Additional purple glow - appears in About view to cover dark area */}
+            {/* Additional purple glow - hidden in About view */}
             <motion.div
                 className="absolute pointer-events-none z-0"
                 animate={{
-                    opacity: isAboutView ? 1 : 0,
+                    opacity: 0, // Always hidden now
                 }}
                 transition={{ duration: transitionDuration, ease: transitionEase }}
                 style={{
