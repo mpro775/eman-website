@@ -1,22 +1,10 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { HiArrowUpRight, HiOutlineChatBubbleLeft, HiOutlineHeart } from "react-icons/hi2";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
 import Container from "../../components/common/Container";
 import { useSEO } from "../../hooks/useSEO";
-
-// Blog post interface
-interface BlogPost {
-  id: number;
-  title: string;
-  category: string;
-  image: string;
-  comments: number;
-  likes: string;
-  categoryColor?: string;
-}
+import BlogCard, { type BlogPost } from "../Home/BlogSection/BlogCard";
 
 // Extended blog posts data for the full page
 const allBlogPosts: BlogPost[] = [
@@ -27,7 +15,6 @@ const allBlogPosts: BlogPost[] = [
     image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=250&fit=crop",
     comments: 124,
     likes: "10k",
-    categoryColor: "text-accent-pink",
   },
   {
     id: 2,
@@ -36,7 +23,6 @@ const allBlogPosts: BlogPost[] = [
     image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=250&fit=crop",
     comments: 124,
     likes: "10k",
-    categoryColor: "text-accent-cyan",
   },
   {
     id: 3,
@@ -45,7 +31,6 @@ const allBlogPosts: BlogPost[] = [
     image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=250&fit=crop",
     comments: 124,
     likes: "10k",
-    categoryColor: "text-green-400",
   },
   {
     id: 4,
@@ -54,7 +39,6 @@ const allBlogPosts: BlogPost[] = [
     image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=250&fit=crop",
     comments: 128,
     likes: "15k",
-    categoryColor: "text-accent-pink",
   },
   {
     id: 5,
@@ -63,7 +47,6 @@ const allBlogPosts: BlogPost[] = [
     image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=250&fit=crop",
     comments: 89,
     likes: "8k",
-    categoryColor: "text-accent-cyan",
   },
   {
     id: 6,
@@ -72,7 +55,6 @@ const allBlogPosts: BlogPost[] = [
     image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&h=250&fit=crop",
     comments: 256,
     likes: "20k",
-    categoryColor: "text-green-400",
   },
   {
     id: 7,
@@ -81,7 +63,6 @@ const allBlogPosts: BlogPost[] = [
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=250&fit=crop",
     comments: 67,
     likes: "5k",
-    categoryColor: "text-accent-pink",
   },
   {
     id: 8,
@@ -90,7 +71,6 @@ const allBlogPosts: BlogPost[] = [
     image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=250&fit=crop",
     comments: 312,
     likes: "25k",
-    categoryColor: "text-accent-cyan",
   },
   {
     id: 9,
@@ -99,87 +79,32 @@ const allBlogPosts: BlogPost[] = [
     image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400&h=250&fit=crop",
     comments: 145,
     likes: "12k",
-    categoryColor: "text-green-400",
+  },
+  {
+    id: 10,
+    title: "Exploring the Future of Web Development",
+    category: "Technology",
+    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=250&fit=crop",
+    comments: 87,
+    likes: "7k",
+  },
+  {
+    id: 11,
+    title: "Digital Transformation in Healthcare",
+    category: "Health",
+    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=250&fit=crop",
+    comments: 198,
+    likes: "14k",
+  },
+  {
+    id: 12,
+    title: "The Rise of Remote Work Culture",
+    category: "Politics",
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=250&fit=crop",
+    comments: 234,
+    likes: "18k",
   },
 ];
-
-// Blog Card Component
-const BlogCard: React.FC<{ post: BlogPost; index: number }> = ({ post, index }) => {
-  const [isLiked, setIsLiked] = useState(false);
-
-  return (
-    <motion.article
-      className="group relative"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-    >
-      {/* Card */}
-      <Link to={`/blog/${post.id}`}>
-        <div className="relative bg-[#1a1a2e]/60 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 group-hover:border-white/20 group-hover:shadow-lg group-hover:shadow-accent-purple/10">
-          {/* Image */}
-          <div className="relative h-48 md:h-52 overflow-hidden">
-            <img
-              src={post.image}
-              alt={post.title}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-            />
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a2e] via-transparent to-transparent opacity-60"></div>
-
-            {/* Category Badge */}
-            <div className="absolute top-3 right-3">
-              <span className={`px-3 py-1 rounded-full text-xs font-medium bg-white/10 backdrop-blur-md ${post.categoryColor || 'text-white'}`}>
-                {post.category}
-              </span>
-            </div>
-          </div>
-
-          {/* Content */}
-          <div className="p-5 md:p-6">
-            {/* Title */}
-            <h3 className="text-white text-base md:text-lg font-semibold mb-2 line-clamp-2 text-right group-hover:text-accent-pink transition-colors duration-300">
-              {post.title}
-            </h3>
-
-            {/* Category */}
-            <p className="text-text-muted text-sm text-right mb-4">
-              {post.category}
-            </p>
-
-            {/* Footer: Read More & Stats */}
-            <div className="flex flex-row-reverse items-center justify-between pt-4 border-t border-white/10">
-              {/* Read More Button */}
-              <button className="flex items-center gap-2 text-accent-pink text-sm font-medium hover:text-accent-pink-light transition-colors duration-300 group/btn">
-                <HiArrowUpRight className="text-base transition-transform duration-300 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
-                <span>قراءة المزيد</span>
-              </button>
-
-              {/* Stats */}
-              <div className="flex items-center gap-4 text-text-muted text-sm">
-                {/* Likes */}
-                <button
-                  onClick={() => setIsLiked(!isLiked)}
-                  className={`flex items-center gap-1 transition-colors duration-300 ${isLiked ? 'text-red-500' : 'hover:text-red-400'}`}
-                >
-                  <span>{post.likes}</span>
-                  <HiOutlineHeart className={`text-base ${isLiked ? 'fill-current' : ''}`} />
-                </button>
-
-                {/* Comments */}
-                <div className="flex items-center gap-1 hover:text-accent-cyan transition-colors duration-300 cursor-pointer">
-                  <span>{post.comments}</span>
-                  <HiOutlineChatBubbleLeft className="text-base" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Link>
-    </motion.article>
-  );
-};
 
 // Filter Button Component
 const FilterButton: React.FC<{

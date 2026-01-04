@@ -83,7 +83,21 @@ const BlogSection: React.FC = () => {
                 >
                     <Link
                         to="/blog"
-                        className="bg-transparent border border-accent-pink text-accent-pink px-8 py-3 rounded-full font-medium transition-all duration-300 hover:bg-accent-pink hover:text-white hover:shadow-glow-pink"
+                        className="bg-transparent border-2 border-accent-pink text-accent-pink transition-all duration-300 hover:bg-accent-pink hover:text-white hover:shadow-glow-pink flex items-center justify-center capitalize"
+                        style={{
+                            width: '223px',
+                            height: '64px',
+                            gap: '12px',
+                            paddingLeft: '32px',
+                            paddingRight: '32px',
+                            borderRadius: '20px',
+                            fontFamily: 'Inter, sans-serif',
+                            fontWeight: 600,
+                            fontSize: '18px',
+                            lineHeight: '64px',
+                            letterSpacing: '0%',
+                            textAlign: 'center'
+                        }}
                     >
                         عرض جميع المدونات
                     </Link>

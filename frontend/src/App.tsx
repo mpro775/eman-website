@@ -24,56 +24,59 @@ import { ProgramForm } from './admin/pages/Programs/ProgramForm';
 import { NewsletterSubscribers } from './admin/pages/Newsletter/NewsletterSubscribers';
 import { ProfileEdit } from './admin/pages/Profile/ProfileEdit';
 import { ExperiencesList } from './admin/pages/Experiences/ExperiencesList';
+import { ViewProvider } from './context/ViewContext';
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:id" element={<BlogDetail />} />
-          <Route path="/portfolio/:category" element={<PortfolioCategory />} />
+      <ViewProvider>
+        <div className="App">
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:id" element={<BlogDetail />} />
+            <Route path="/portfolio/:category" element={<PortfolioCategory />} />
 
-          {/* Admin Routes */}
-          <Route path="/admin/login" element={<Login />} />
-          <Route
-            path="/admin/*"
-            element={
-              <ProtectedRoute>
-                <AdminLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<Navigate to="/admin/dashboard" replace />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="projects" element={<ProjectsList />} />
-            <Route path="projects/new" element={<ProjectForm />} />
-            <Route path="projects/:id" element={<ProjectForm />} />
-            <Route path="projects/categories" element={<ProjectCategoriesList />} />
-            <Route path="blog" element={<Navigate to="/admin/blog/posts" replace />} />
-            <Route path="blog/posts" element={<PostsList />} />
-            <Route path="blog/posts/new" element={<PostForm />} />
-            <Route path="blog/posts/:id" element={<PostForm />} />
-            <Route path="blog/categories" element={<CategoriesList />} />
-            <Route path="blog/tags" element={<TagsList />} />
-            <Route path="services" element={<ServicesList />} />
-            <Route path="services/new" element={<ServiceForm />} />
-            <Route path="services/:id" element={<ServiceForm />} />
-            <Route path="contact" element={<ContactMessages />} />
-            <Route path="testimonials" element={<TestimonialsList />} />
-            <Route path="testimonials/new" element={<TestimonialForm />} />
-            <Route path="testimonials/:id" element={<TestimonialForm />} />
-            <Route path="programs" element={<ProgramsList />} />
-            <Route path="programs/new" element={<ProgramForm />} />
-            <Route path="programs/:id" element={<ProgramForm />} />
-            <Route path="newsletter" element={<NewsletterSubscribers />} />
-            <Route path="experiences" element={<ExperiencesList />} />
-            <Route path="profile" element={<ProfileEdit />} />
-          </Route>
-        </Routes>
-      </div>
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<Login />} />
+            <Route
+              path="/admin/*"
+              element={
+                <ProtectedRoute>
+                  <AdminLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<Navigate to="/admin/dashboard" replace />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="projects" element={<ProjectsList />} />
+              <Route path="projects/new" element={<ProjectForm />} />
+              <Route path="projects/:id" element={<ProjectForm />} />
+              <Route path="projects/categories" element={<ProjectCategoriesList />} />
+              <Route path="blog" element={<Navigate to="/admin/blog/posts" replace />} />
+              <Route path="blog/posts" element={<PostsList />} />
+              <Route path="blog/posts/new" element={<PostForm />} />
+              <Route path="blog/posts/:id" element={<PostForm />} />
+              <Route path="blog/categories" element={<CategoriesList />} />
+              <Route path="blog/tags" element={<TagsList />} />
+              <Route path="services" element={<ServicesList />} />
+              <Route path="services/new" element={<ServiceForm />} />
+              <Route path="services/:id" element={<ServiceForm />} />
+              <Route path="contact" element={<ContactMessages />} />
+              <Route path="testimonials" element={<TestimonialsList />} />
+              <Route path="testimonials/new" element={<TestimonialForm />} />
+              <Route path="testimonials/:id" element={<TestimonialForm />} />
+              <Route path="programs" element={<ProgramsList />} />
+              <Route path="programs/new" element={<ProgramForm />} />
+              <Route path="programs/:id" element={<ProgramForm />} />
+              <Route path="newsletter" element={<NewsletterSubscribers />} />
+              <Route path="experiences" element={<ExperiencesList />} />
+              <Route path="profile" element={<ProfileEdit />} />
+            </Route>
+          </Routes>
+        </div>
+      </ViewProvider>
     </Router>
   );
 }

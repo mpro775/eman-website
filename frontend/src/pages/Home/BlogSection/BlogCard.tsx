@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { HiArrowUpRight, HiOutlineChatBubbleLeft, HiOutlineHeart } from "react-icons/hi2";
+import { HiArrowUpRight, HiOutlineHeart } from "react-icons/hi2";
+import { LuSend } from "react-icons/lu";
 
 export interface BlogPost {
     id: number;
@@ -17,7 +18,7 @@ interface BlogCardProps {
 }
 
 /**
- * Individual blog post card with hover effects and stats
+ * Blog card matching the reference design with pill-shaped footer buttons
  */
 const BlogCard: React.FC<BlogCardProps> = ({ post, index }) => {
     return (
@@ -28,49 +29,64 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, index }) => {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: index * 0.15 }}
         >
-            {/* Card Container */}
-            <div className="relative bg-[#1a1a2e]/60 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 group-hover:border-white/20 group-hover:shadow-lg group-hover:shadow-accent-purple/10">
-                {/* Header Image */}
-                <div className="relative h-48 md:h-52 overflow-hidden">
-                    <img
-                        src={post.image}
-                        alt={post.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    {/* Bottom Gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a2e] via-transparent to-transparent opacity-60"></div>
+            {/* Card Container - No background */}
+            <div className="relative rounded-3xl overflow-hidden transition-all duration-300">
+                {/* Header Image - Large with rounded corners and padding */}
+                <div className="p-3">
+                    <div className="relative aspect-[16/9] overflow-hidden rounded-2xl">
+                        <img
+                            src={post.image}
+                            alt={post.title}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                    </div>
                 </div>
 
                 {/* Content Body */}
-                <div className="p-5 md:p-6">
-                    <h3 className="text-white text-base md:text-lg font-semibold mb-2 line-clamp-2 text-right group-hover:text-accent-pink transition-colors duration-300">
+                <div className="px-5 pt-2 pb-4">
+                    {/* Title - Large and bold */}
+                    <h3 className="text-white text-xl font-semibold mb-2 line-clamp-2 text-right group-hover:text-accent-pink transition-colors duration-300">
                         {post.title}
                     </h3>
 
-                    <p className="text-text-muted text-sm text-right mb-4">
+                    {/* Category */}
+                    <p className="text-text-muted text-base text-right">
                         {post.category}
                     </p>
+                </div>
 
-                    {/* Footer with Read More and Stats */}
-                    <div className="flex flex-row-reverse items-center justify-between pt-4 border-t border-white/10">
-                        {/* Action Button */}
-                        <button className="flex items-center gap-2 text-accent-pink text-sm font-medium hover:text-accent-pink-light transition-colors duration-300">
-                            <HiArrowUpRight className="text-base" />
-                            <span>قراءة المزيد</span>
-                        </button>
+                {/* Footer - Buttons */}
+                <div className="flex flex-row-reverse items-center justify-between gap-4 px-3 pb-4">
+                    {/* Read More Button - Large with dark background */}
+                    <button
+                        className="flex-1 flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl bg-[#141414] border border-[#262626] text-[#98989A] hover:text-white hover:bg-[#252540] transition-all duration-300"
+                        style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '14px', lineHeight: '150%', letterSpacing: '-0.03em' }}
+                    >
+                        <span>قراءة المزيد</span>
+                        <HiArrowUpRight className="text-lg text-accent-pink" />
+                    </button>
 
-                        {/* Engagement Stats */}
-                        <div className="flex items-center gap-4 text-text-muted text-sm">
-                            <div className="flex items-center gap-1">
-                                <span>{post.likes}</span>
-                                <HiOutlineHeart className="text-base" />
-                            </div>
-
-                            <div className="flex items-center gap-1">
-                                <span>{post.comments}</span>
-                                <HiOutlineChatBubbleLeft className="text-base" />
-                            </div>
+                    {/* Stats Group */}
+                    <div className="flex items-center gap-2">
+                        {/* Likes Count - Pill */}
+                        <div
+                            className="flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-[#141414] border border-[#262626] text-[#98989A] hover:text-white transition-all duration-300 cursor-pointer"
+                            style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '14px', lineHeight: '150%', letterSpacing: '-0.03em' }}
+                        >
+                            <span>{post.likes}</span>
+                            <HiOutlineHeart className="text-base" />
                         </div>
+
+                        {/* Share Count - Pill */}
+                        <div
+                            className="flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-[#141414] border border-[#262626] text-[#98989A] hover:text-white transition-all duration-300 cursor-pointer"
+                            style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '14px', lineHeight: '150%', letterSpacing: '-0.03em' }}
+                        >
+                            <span>{post.comments}</span>
+                            <LuSend className="text-base" />
+                        </div>
+
+
                     </div>
                 </div>
             </div>
