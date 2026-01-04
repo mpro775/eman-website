@@ -44,7 +44,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
             bottom: "0px",
             width: "66%",
             height: "auto",
-            scale: 1.4,
+            scale: 1.5,
         },
     };
 

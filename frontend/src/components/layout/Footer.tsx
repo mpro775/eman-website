@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
 
   const quickLinks = [
     { name: "الرئيسية", href: "#home" },
-    { name: "من أنا", href: "#about" },
+    { name: "مهاراتي", href: "#about" },
     { name: "الخبرات", href: "#experience" },
     { name: "الخدمات", href: "#services" },
   ];

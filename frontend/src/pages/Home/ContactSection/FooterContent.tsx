@@ -42,7 +42,7 @@ const FooterContent: React.FC = () => {
 
     const importantLinks: ImportantLink[] = [
         { name: "الرئيسية", href: "#home" },
-        { name: "من أنا", href: "#about" },
+        { name: "مهاراتي", href: "#about" },
         { name: "الخبرات العملية", href: "#experience" },
         { name: "أعمالي", href: "#portfolio" },
         { name: "تواصل معي", href: "#contact" },

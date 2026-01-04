@@ -48,8 +48,8 @@ const SkillCard: React.FC<SkillCardProps> = ({
                 <div
                     className="relative overflow-hidden"
                     style={{
-                        width: "340px",
-                        height: "180px",
+                        width: "320px",
+                        height: "170px",
                         borderRadius: "17.86px",
                         padding: "12px 16px",
                         background: "linear-gradient(242.45deg, #3B3156 38.21%, #000000 98.39%)",
@@ -74,8 +74,8 @@ const SkillCard: React.FC<SkillCardProps> = ({
                                 src={frameButtonSvg}
                                 alt=""
                                 style={{
-                                    width: "180px",   // عدّل العرض كما تريد
-                                    height: "45px",   // عدّل الارتفاع كما تريد
+                                    width: "170px",   // عدّل العرض كما تريد
+                                    height: "40px",   // عدّل الارتفاع كما تريد
                                 }}
                             />
 

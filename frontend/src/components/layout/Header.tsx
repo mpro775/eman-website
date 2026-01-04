@@ -15,7 +15,7 @@ const Header: React.FC = () => {
   const navLinks = useMemo(
     () => [
       { name: "الرئيسية", href: "#home", id: "home" },
-      { name: "من أنا", href: "#about", id: "about" },
+      { name: "مهاراتي", href: "#about", id: "about" },
       { name: "الخبرات العملية", href: "#experience", id: "experience" },
       { name: "أعمالي", href: "#portfolio", id: "portfolio" },
       { name: "تواصل معي", href: "#contact", id: "contact" },

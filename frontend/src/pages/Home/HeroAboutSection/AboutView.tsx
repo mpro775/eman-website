@@ -7,6 +7,7 @@ import { useMediaQuery } from "../../../hooks";
 import uxUiDesignerImage from "../../../assets/images/UxUiDesginer.png";
 import appDeveloperImage from "../../../assets/images/appDeveloper.png";
 import graphicDesignerImage from "../../../assets/images/GraphicDesginer.png";
+import frameButtonPng from "../../../assets/Frame_button.png";
 
 interface AboutViewProps {
     aboutElementsVariants: {
@@ -22,7 +23,7 @@ const skillsData = [
         icon: uxUiDesignerImage,
         title: "UX/UI Designer",
         description: "تصميم تجربة المستخدم وواجهات الاستخدام للتطبيقات والمواقع بدءاً من دراسة المستخدم وتحليل الاحتياجات، وصولاً إلى تصميم واجهات واضحة، سهلة، وقابلة للتنفيذ.",
-        position: { top: "120px", left: "80px" },
+        position: { top: "300px", left: "0%" },
         delay: 0.2,
     },
     {
@@ -30,7 +31,7 @@ const skillsData = [
         icon: graphicDesignerImage,
         title: "Graphic Designer",
         description: "تصميم الجرافيكس والمواد البصرية المختلفة، بما في ذلك الهوية البصرية، تصاميم السوشيال ميديا والمحتوى المرئي الذي يوضح الفكرة ويعزز العلامة.",
-        position: { top: "120px", right: "80px" },
+        position: { top: "300px", right: "0%" },
         delay: 0.4,
     },
     {
@@ -38,7 +39,7 @@ const skillsData = [
         icon: uxUiDesignerImage,
         title: "Automation",
         description: "أتمتة العمليات الرقمية لتسهيل العمل، تحسين سير المهام، وربط الأدوات والأنظمة لزيادة الكفاءة وتقليل الوقت والجهد.",
-        position: { top: "320px", left: "60px" },
+        position: { top: "440px", left: "20%" },
         delay: 0.6,
     },
     {
@@ -46,7 +47,7 @@ const skillsData = [
         icon: appDeveloperImage,
         title: "App Developer",
         description: "تصميم وتحليل وتطوير تطبيقات الموبايل بدءاً من الفكرة والتخطيط وصولاً إلى تطبيق جاهز للاستخدام.",
-        position: { top: "380px", right: "100px" },
+        position: { top: "440px", right: "20%" },
         delay: 0.8,
     },
     {
@@ -54,7 +55,7 @@ const skillsData = [
         icon: uxUiDesignerImage,
         title: "UX/UI Designer",
         description: "تصميم تجربة المستخدم وواجهات الاستخدام للتطبيقات والمواقع بدءاً من دراسة المستخدم وتحليل الاحتياجات، وصولاً إلى تصميم واجهات واضحة، سهلة، وقابلة للتنفيذ.",
-        position: { bottom: "120px", left: "50%", transform: "translateX(-50%)" } as React.CSSProperties,
+        position: { bottom: "50px", left: "39%", transform: "translateX(-50%)" } as React.CSSProperties,
         delay: 1.0,
     },
 ];
@@ -95,7 +96,7 @@ const AboutView: React.FC<AboutViewProps> = ({ aboutElementsVariants }) => {
 
             {/* Name badge - Liquid Glass button style */}
             <motion.div
-                className={isMobile ? "relative mb-4 z-[26] order-first" : "absolute z-[26]"}
+                className={isMobile ? "relative mb-4 z-[30] order-first" : "absolute z-[30]"}
                 style={isMobile ? {} : {
                     top: "468.51px",
                     left: "636.43px"
@@ -105,40 +106,31 @@ const AboutView: React.FC<AboutViewProps> = ({ aboutElementsVariants }) => {
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
             >
-                {/* Liquid Glass Button Container */}
-                <div
-                    className="relative flex items-center justify-center cursor-pointer"
-                    style={{
-                        width: "171.14px",
-                        height: "38.72px",
-                        borderRadius: "23.46px",
-                        padding: "4.69px",
-                        gap: "4.69px",
-                        background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)",
-                        backdropFilter: "blur(20px)",
-                        WebkitBackdropFilter: "blur(20px)",
-                        border: "1px solid rgba(255,255,255,0.2)",
-                        boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.2)",
-                    }}
-                >
-                    {/* Top reflection effect */}
-                    <div
-                        className="absolute top-0 left-0 right-0 h-1/2 rounded-t-[23.46px] pointer-events-none"
+                {/* Button using PNG image */}
+                <div className="relative flex items-center justify-center cursor-pointer transition-all hover:scale-105">
+                    {/* Button Image Background */}
+                    <img
+                        src={frameButtonPng}
+                        alt=""
                         style={{
-                            background: "linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 100%)",
+                            width: "180px",
+                            height: "45px",
                         }}
                     />
 
-                    {/* Name text */}
+                    {/* Name text - positioned on top of image */}
                     <h1
-                        className="font-arabic font-bold text-white text-center"
+                        className="absolute text-white text-right"
                         style={{
-                            fontSize: isMobile ? "14px" : "16px",
-                            textShadow: "0 2px 10px rgba(0,0,0,0.3)",
+                            fontFamily: "'Urbanist', sans-serif",
+                            fontWeight: 600,
+                            fontSize: "23.23px",
+                            lineHeight: "100%",
+                            letterSpacing: "-0.015em",
                             direction: "rtl",
                         }}
                     >
-                        إيــمان جميــل
+                        إيمــان جمـيــــل
                     </h1>
                 </div>
             </motion.div>
