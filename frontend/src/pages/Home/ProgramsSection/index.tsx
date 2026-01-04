@@ -4,11 +4,11 @@ import { Container, SectionTitle } from "../../../components";
 import ProgramIcon, { type Program } from "./ProgramIcon";
 
 // Assets
-import aiIcon from "../../../assets/images/ai.png";
-import figmaIcon from "../../../assets/images/figma.png";
-import indesignIcon from "../../../assets/images/id.png";
-import photoshopIcon from "../../../assets/images/photoshop.png";
-import vscodeIcon from "../../../assets/images/vscode.png";
+import aiIcon from "../../../assets/skills/ai.png";
+import figmaIcon from "../../../assets/skills/figma.png";
+import indesignIcon from "../../../assets/skills/id.png";
+import photoshopIcon from "../../../assets/skills/photoshop.png";
+import vscodeIcon from "../../../assets/skills/vscode.png";
 
 // Grid data
 const programs: Program[] = [

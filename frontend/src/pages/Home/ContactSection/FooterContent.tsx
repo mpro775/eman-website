@@ -7,8 +7,8 @@ import {
     FaInstagram,
 } from "react-icons/fa";
 import { useNewsletter } from "../../../hooks";
-import logo from "../../../assets/images/logo.png";
-import subtractIcon from "../../../assets/images/Subtract.svg";
+import logo from "../../../assets/logos/logo.png";
+import subtractIcon from "../../../assets/icons/Subtract.svg";
 
 // Types
 interface SocialLink {

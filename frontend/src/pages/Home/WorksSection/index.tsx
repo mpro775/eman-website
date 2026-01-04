@@ -5,9 +5,9 @@ import { Container, SectionTitle } from "../../../components";
 import WorkCard, { type WorkItem } from "./WorkCard";
 
 // Images
-import mobileAppImage from "../../../assets/images/mobileApp.png";
-import uiUxImage from "../../../assets/images/UI UX.png";
-import graphicImage from "../../../assets/images/Graphic.png";
+import mobileAppImage from "../../../assets/services/mobileApp.png";
+import uiUxImage from "../../../assets/illustrations/UI UX.png";
+import graphicImage from "../../../assets/illustrations/Graphic.png";
 
 // Works data
 const works: WorkItem[] = [

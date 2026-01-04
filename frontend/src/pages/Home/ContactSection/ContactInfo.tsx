@@ -1,9 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from "react-icons/fa";
-import phoneIcon from "../../../assets/images/PhoneCall.svg";
-import emailIcon from "../../../assets/images/email.svg";
-import behanceIcon from "../../../assets/images/behance.svg";
+import phoneIcon from "../../../assets/icons/PhoneCall.svg";
+import emailIcon from "../../../assets/icons/email.svg";
+import behanceIcon from "../../../assets/icons/behance.svg";
 
 /**
  * Contact info component with phone, email, and social media links

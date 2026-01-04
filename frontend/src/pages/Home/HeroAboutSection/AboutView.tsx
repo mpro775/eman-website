@@ -4,10 +4,10 @@ import SkillCard from "./SkillCard";
 import { useMediaQuery } from "../../../hooks";
 
 // Image imports
-import uxUiDesignerImage from "../../../assets/images/UxUiDesginer.png";
-import appDeveloperImage from "../../../assets/images/appDeveloper.png";
-import graphicDesignerImage from "../../../assets/images/GraphicDesginer.png";
-import frameButtonPng from "../../../assets/Frame_button.png";
+import uxUiDesignerImage from "../../../assets/personas/UxUiDesginer.png";
+import appDeveloperImage from "../../../assets/illustrations/appDeveloper.png";
+import graphicDesignerImage from "../../../assets/personas/GraphicDesginer.png";
+import frameButtonPng from "../../../assets/logos/Frame_button.png";
 
 interface AboutViewProps {
     aboutElementsVariants: {

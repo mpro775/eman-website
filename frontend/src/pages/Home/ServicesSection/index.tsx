@@ -4,9 +4,9 @@ import { Container, SectionTitle } from "../../../components";
 import ServiceCard, { type ServiceItem } from "./ServiceCard";
 
 // Assets
-import iconDigitalMarketing from "../../../assets/images/digital_Service.png";
-import iconGraphicDesign from "../../../assets/images/graghic_Service.png";
-import iconUXUI from "../../../assets/images/ui_ux_Service.png";
+import iconDigitalMarketing from "../../../assets/services/digital_Service.png";
+import iconGraphicDesign from "../../../assets/services/graghic_Service.png";
+import iconUXUI from "../../../assets/services/ui_ux_Service.png";
 
 // Service data
 const services: ServiceItem[] = [

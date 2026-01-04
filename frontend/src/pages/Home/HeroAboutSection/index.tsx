@@ -9,7 +9,7 @@ import BackgroundGlows from "./BackgroundGlows";
 import BottomBlurEffect from "./BottomBlurEffect";
 
 // Image import
-import heroImage from "../../../assets/images/image.png";
+import heroImage from "../../../assets/illustrations/image.png";
 
 // Types
 export interface HeroAboutSectionProps {

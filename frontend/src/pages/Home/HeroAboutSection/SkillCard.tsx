@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import frameButtonSvg from "../../../assets/Frame_button.png";
+import frameButtonSvg from "../../../assets/logos/Frame_button.png";
 
 interface SkillCardProps {
     icon: string;

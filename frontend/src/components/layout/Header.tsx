@@ -2,8 +2,8 @@ import React, { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiDownload, HiMenuAlt3, HiX } from "react-icons/hi";
 import Container from "../common/Container";
-import logoImage from "../../assets/images/logo.png";
-import downloadIcon from "../../assets/images/download.svg";
+import logoImage from "../../assets/logos/logo.png";
+import downloadIcon from "../../assets/icons/download.svg";
 import { useView } from "../../context/ViewContext";
 
 const Header: React.FC = () => {

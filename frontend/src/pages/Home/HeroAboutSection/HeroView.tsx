@@ -2,9 +2,9 @@ import React from "react";
 import { motion } from "framer-motion";
 
 // Image imports
-import sparkImage from "../../../assets/images/1.svg";
-import arrowImage from "../../../assets/images/2.svg";
-import quoteIcon from "../../../assets/images/3.png";
+import sparkImage from "../../../assets/illustrations/1.svg";
+import arrowImage from "../../../assets/illustrations/2.svg";
+import quoteIcon from "../../../assets/illustrations/3.png";
 
 interface HeroViewProps {
     heroElementsVariants: {

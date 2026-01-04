@@ -105,7 +105,7 @@
 @layer base {
   * {
     @apply m-0 p-0 box-border;
-    cursor: url('/src/assets/images/cursor.svg') 4 3, auto;
+    cursor: url('/src/assets/cursors/cursor.svg') 4 3, auto;
   }
 
   /* مؤشر pointer للعناصر التفاعلية */
@@ -117,7 +117,7 @@
   .cursor-pointer,
   [onclick],
   label[for] {
-    cursor: url('/src/assets/images/pointer_cursor.svg') 14 6, pointer;
+    cursor: url('/src/assets/cursors/pointer_cursor.svg') 14 6, pointer;
   }
 
   /* مؤشر النصوص وحقول الإدخال */
@@ -130,7 +130,7 @@
   input[type="number"],
   textarea,
   [contenteditable="true"] {
-    cursor: url('/src/assets/images/text_cursor.svg') 16 16, text;
+    cursor: url('/src/assets/cursors/text_cursor.svg') 16 16, text;
   }
 
   /* مؤشر النصوص العادية */
@@ -148,7 +148,7 @@
   label,
   .text-select,
   [data-selectable] {
-    cursor: url('/src/assets/images/text_cursor.svg') 16 16, text;
+    cursor: url('/src/assets/cursors/text_cursor.svg') 16 16, text;
   }
 
   html {

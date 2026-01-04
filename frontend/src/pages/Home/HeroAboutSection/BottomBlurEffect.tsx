@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import bottomBlurEffect from "../../../assets/BottomBlurEffect.svg";
+import bottomBlurEffect from "../../../assets/effects/BottomBlurEffect.svg";
 
 interface GlowDomeEffectProps {
     isVisible: boolean;
