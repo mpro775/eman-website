@@ -286,10 +286,9 @@ const BlogDetail: React.FC = () => {
           category: post.categoryAr,
         }}
       />
-      <Header />
 
       {/* Hero Image Section */}
-      <section className="relative w-full h-[45vh] md:h-[50vh] overflow-hidden mt-20">
+      <section className="relative w-full h-[45vh] md:h-[50vh] overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <img
