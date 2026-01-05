@@ -12,8 +12,6 @@ import {
   HiOutlineCalendar,
   HiOutlineUser
 } from "react-icons/hi2";
-import { FaFacebookF, FaTwitter, FaLinkedinIn, FaPinterestP } from "react-icons/fa";
-import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
 import Container from "../../components/common/Container";
 import { useSEO } from "../../hooks/useSEO";
@@ -155,22 +153,6 @@ const relatedPosts = [
   },
 ];
 
-// Social Share Button Component
-const SocialShareButton: React.FC<{
-  icon: React.ElementType;
-  color: string;
-  onClick?: () => void;
-}> = ({ icon: Icon, color, onClick }) => (
-  <motion.button
-    onClick={onClick}
-    className={`w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white transition-all duration-300 ${color} hover:scale-110`}
-    whileHover={{ scale: 1.1 }}
-    whileTap={{ scale: 0.95 }}
-  >
-    <Icon className="text-base" />
-  </motion.button>
-);
-
 // Meta Info Item Component
 const MetaInfoItem: React.FC<{
   icon: React.ElementType;
@@ -264,13 +246,6 @@ const BlogDetail: React.FC = () => {
     publishedTime: post.publishDate,
     section: post.categoryAr,
   });
-
-  const socialLinks = [
-    { icon: FaFacebookF, color: "hover:bg-blue-600" },
-    { icon: FaTwitter, color: "hover:bg-sky-500" },
-    { icon: FaLinkedinIn, color: "hover:bg-blue-700" },
-    { icon: FaPinterestP, color: "hover:bg-red-600" },
-  ];
 
   return (
     <div className="min-h-screen bg-bg-primary">
