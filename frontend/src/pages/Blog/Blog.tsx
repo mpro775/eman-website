@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
 import Container from "../../components/common/Container";
+import { SectionTitle } from "../../components/ui";
 import { useSEO } from "../../hooks/useSEO";
 import BlogCard, { type BlogPost } from "../Home/BlogSection/BlogCard";
 
@@ -167,19 +168,7 @@ const Blog: React.FC = () => {
 
         <Container>
           {/* Page Title */}
-          <motion.div
-            className="text-center mb-12 md:mb-16"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h1 className="text-accent-pink text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-              المدونة
-            </h1>
-            <p className="text-text-secondary text-base md:text-lg max-w-2xl mx-auto">
-              استكشف أحدث المقالات والأفكار في عالم التصميم والتكنولوجيا
-            </p>
-          </motion.div>
+          <SectionTitle title="المدونة" maxWidth="200px" centered />
 
           {/* Filter Buttons */}
           <motion.div

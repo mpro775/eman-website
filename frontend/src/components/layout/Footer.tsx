@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram, FaYoutube, FaBehance } from "react-icons/fa";
 
 const Footer: React.FC = () => {
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -10,18 +13,38 @@ const Footer: React.FC = () => {
     setEmail("");
   };
 
+  const handleNavClick = (sectionId: string) => {
+    // If we're not on the home page, navigate there first
+    if (location.pathname !== "/") {
+      navigate(`/#${sectionId}`);
+      // Small delay to allow navigation, then scroll
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+    } else {
+      // Already on home page, just scroll
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  };
+
   const quickLinks = [
-    { name: "الرئيسية", href: "#home" },
-    { name: "مهاراتي", href: "#about" },
-    { name: "الخبرات", href: "#experience" },
-    { name: "الخدمات", href: "#services" },
+    { name: "الرئيسية", id: "home" },
+    { name: "مهاراتي", id: "about" },
+    { name: "الخبرات", id: "experience" },
+    { name: "الخدمات", id: "services" },
   ];
 
   const servicesLinks = [
-    { name: "تصميم واجهات", href: "#" },
-    { name: "تصميم تطبيقات", href: "#" },
-    { name: "الهوية البصرية", href: "#" },
-    { name: "استشارات تصميم", href: "#" },
+    { name: "تصميم واجهات", id: "services" },
+    { name: "تصميم تطبيقات", id: "services" },
+    { name: "الهوية البصرية", id: "services" },
+    { name: "استشارات تصميم", id: "services" },
   ];
 
 
@@ -36,7 +59,7 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer id="footer" className="scroll-section relative w-full bg-gradient-to-b from-bg-primary to-[#0d0d14] border-t border-white/5 min-h-screen flex flex-col justify-center">
+    <footer id="footer" className="scroll-section relative w-full bg-gradient-to-b from-bg-primary to-[#0d0d14] border-t border-white/5">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
@@ -44,9 +67,12 @@ const Footer: React.FC = () => {
           <div className="lg:col-span-1">
             {/* Logo */}
             <div className="mb-6">
-              <h3 className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-accent-pink to-accent-pink-light">
+              <button
+                onClick={() => handleNavClick("home")}
+                className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-accent-pink to-accent-pink-light cursor-pointer hover:opacity-80 transition-opacity"
+              >
                 إيمان.
-              </h3>
+              </button>
             </div>
 
             {/* Description */}
@@ -62,6 +88,8 @@ const Footer: React.FC = () => {
                 <a
                   key={index}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-9 h-9 bg-white/5 hover:bg-accent-pink rounded-full flex items-center justify-center text-text-secondary hover:text-white transition-all duration-300 hover:scale-110"
                 >
                   <social.icon className="text-sm" />
@@ -76,12 +104,12 @@ const Footer: React.FC = () => {
             <ul className="space-y-3">
               {quickLinks.map((link, index) => (
                 <li key={index}>
-                  <a
-                    href={link.href}
-                    className="text-text-secondary hover:text-accent-pink transition-colors duration-300 text-sm"
+                  <button
+                    onClick={() => handleNavClick(link.id)}
+                    className="text-text-secondary hover:text-accent-pink transition-colors duration-300 text-sm cursor-pointer"
                   >
                     {link.name}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -93,12 +121,12 @@ const Footer: React.FC = () => {
             <ul className="space-y-3">
               {servicesLinks.map((link, index) => (
                 <li key={index}>
-                  <a
-                    href={link.href}
-                    className="text-text-secondary hover:text-accent-pink transition-colors duration-300 text-sm"
+                  <button
+                    onClick={() => handleNavClick(link.id)}
+                    className="text-text-secondary hover:text-accent-pink transition-colors duration-300 text-sm cursor-pointer"
                   >
                     {link.name}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>

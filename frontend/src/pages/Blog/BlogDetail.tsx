@@ -247,6 +247,7 @@ const BlogDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   // Find the blog post by ID
   const post = blogPostsData.find(p => p.id === Number(id)) || blogPostsData[0];
@@ -287,8 +288,8 @@ const BlogDetail: React.FC = () => {
       />
       <Header />
 
-      {/* Hero Section */}
-      <section className="relative w-full h-[70vh] md:h-[80vh] overflow-hidden">
+      {/* Hero Image Section */}
+      <section className="relative w-full h-[45vh] md:h-[50vh] overflow-hidden mt-20">
         {/* Background Image */}
         <div className="absolute inset-0">
           <img
@@ -296,66 +297,54 @@ const BlogDetail: React.FC = () => {
             alt={post.title}
             className="w-full h-full object-cover"
           />
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/70 to-transparent"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-bg-primary/50 to-transparent"></div>
+          {/* Gradient Overlay - Subtle shadow at bottom */}
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-bg-primary to-transparent"></div>
         </div>
+      </section>
 
-        {/* Hero Content */}
+      {/* Title & Stats Section */}
+      <section className="bg-bg-primary py-8 md:py-12">
         <Container>
-          <div className="relative z-10 h-full flex flex-col justify-end pb-16 md:pb-24">
-            {/* Title */}
-            <motion.h1
-              className="text-white text-2xl md:text-4xl lg:text-5xl font-bold max-w-4xl mb-8 leading-tight"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              {post.title}
-            </motion.h1>
+          {/* Title - Centered */}
+          <motion.h1
+            className="text-white text-2xl md:text-4xl lg:text-5xl font-bold text-center mb-8 leading-tight"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            {post.title}
+          </motion.h1>
 
-            {/* Social & Stats Row */}
-            <motion.div
-              className="flex flex-wrap items-center gap-6 md:gap-10"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              {/* Social Share */}
-              <div className="flex items-center gap-3">
-                {socialLinks.map((social, index) => (
-                  <SocialShareButton
-                    key={index}
-                    icon={social.icon}
-                    color={social.color}
-                  />
-                ))}
+          {/* Stats Row - Pills left, Meta right */}
+          <motion.div
+            className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            {/* Left Side - Stats Pills */}
+            <div className="flex items-center gap-3">
+              {/* Send/Share */}
+              <div className="flex items-center gap-2 bg-[#1a1a2e] border border-white/10 px-4 py-2 rounded-full">
+                <HiArrowUpRight className="text-base text-white/70" />
+                <span className="text-sm text-white/80">{post.comments}</span>
               </div>
-
-              {/* Stats */}
-              <div className="flex items-center gap-4 text-white/80">
-                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full">
-                  <span className="text-sm">{post.likes}</span>
-                  <HiOutlineHeart className="text-base" />
-                </div>
-                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full">
-                  <span className="text-sm">{post.comments}</span>
-                  <HiOutlineChatBubbleLeft className="text-base" />
-                </div>
-                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full">
-                  <span className="text-sm">{post.views}</span>
-                  <span className="text-xs">مشاهدات</span>
-                </div>
+              {/* Views */}
+              <div className="flex items-center gap-2 bg-[#1a1a2e] border border-white/10 px-4 py-2 rounded-full">
+                <svg className="w-4 h-4 text-white/70" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                </svg>
+                <span className="text-sm text-white/80">{post.views}</span>
               </div>
-            </motion.div>
+              {/* Likes - Orange/Pink Heart */}
+              <div className="flex items-center gap-2 bg-[#1a1a2e] border border-white/10 px-4 py-2 rounded-full">
+                <HiOutlineHeart className="text-base text-orange-500 fill-current" />
+                <span className="text-sm text-white/80">{post.likes}</span>
+              </div>
+            </div>
 
-            {/* Meta Info */}
-            <motion.div
-              className="flex flex-wrap items-center gap-8 md:gap-12 mt-8 pt-8 border-t border-white/10"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
+            {/* Right Side - Meta Info */}
+            <div className="flex flex-wrap items-center gap-6 md:gap-10">
               <MetaInfoItem
                 icon={HiOutlineCalendar}
                 label="Publication Date"
@@ -376,8 +365,8 @@ const BlogDetail: React.FC = () => {
                 label="Author Name"
                 value={post.author}
               />
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </Container>
       </section>
 
@@ -385,9 +374,9 @@ const BlogDetail: React.FC = () => {
       <section className="py-16 md:py-24">
         <Container>
           <div className="max-w-4xl mx-auto">
-            {/* Main Title */}
+            {/* Main Title - Right aligned */}
             <motion.h2
-              className="text-accent-pink text-2xl md:text-3xl font-bold text-center mb-8"
+              className="text-accent-pink text-xl md:text-2xl font-bold text-right mb-8"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -397,7 +386,7 @@ const BlogDetail: React.FC = () => {
 
             {/* Intro Paragraph */}
             <motion.p
-              className="text-text-secondary text-base md:text-lg leading-relaxed mb-12 text-justify"
+              className="text-text-secondary text-base md:text-lg leading-relaxed mb-8 text-center"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -406,20 +395,76 @@ const BlogDetail: React.FC = () => {
               {post.content.intro}
             </motion.p>
 
-            {/* Content Sections */}
-            {post.content.sections.map((section, index) => (
+            {/* Second paragraph - repeat for design match */}
+            <motion.p
+              className="text-text-secondary text-base md:text-lg leading-relaxed mb-12 text-center"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.15 }}
+            >
+              {post.content.intro}
+            </motion.p>
+
+            {/* Content Sections with fade effect */}
+            <div className="relative">
+              {post.content.sections.slice(0, 1).map((section, index) => (
+                <motion.div
+                  key={index}
+                  className="mb-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 * (index + 1) }}
+                >
+                  <h3 className="text-white text-xl md:text-2xl font-semibold mb-4 text-right">
+                    {section.title}
+                  </h3>
+                  <p className="text-text-secondary text-base md:text-lg leading-relaxed text-center">
+                    {section.content}
+                  </p>
+                </motion.div>
+              ))}
+
+              {/* Fade overlay - only show when not expanded */}
+              {!isExpanded && (
+                <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-bg-primary to-transparent pointer-events-none"></div>
+              )}
+            </div>
+
+            {/* Read More Button - only show when not expanded */}
+            {!isExpanded && (
               <motion.div
-                key={index}
-                className="mb-12"
+                className="flex justify-center mt-8 mb-12"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
+              >
+                <button
+                  onClick={() => setIsExpanded(true)}
+                  className="flex items-center gap-2 px-8 py-3 rounded-full bg-[#1a1a2e] border border-white/10 text-text-secondary hover:text-white hover:border-white/30 transition-all duration-300"
+                >
+                  <span>قراءة باقي المدونة</span>
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+              </motion.div>
+            )}
+
+            {/* Rest of Content Sections - only show when expanded */}
+            {isExpanded && post.content.sections.slice(1).map((section, index) => (
+              <motion.div
+                key={index + 1}
+                className="mb-12"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * (index + 1) }}
               >
-                <h3 className="text-white text-xl md:text-2xl font-semibold mb-4 text-center">
+                <h3 className="text-white text-xl md:text-2xl font-semibold mb-4 text-right">
                   {section.title}
                 </h3>
-                <p className="text-text-secondary text-base md:text-lg leading-relaxed text-justify">
+                <p className="text-text-secondary text-base md:text-lg leading-relaxed text-center">
                   {section.content}
                 </p>
               </motion.div>
