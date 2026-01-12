@@ -1,45 +1,65 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Home from './pages/Home/Home';
-import Blog from './pages/Blog/Blog';
-import BlogDetail from './pages/Blog/BlogDetail';
-import PortfolioCategory from './pages/Portfolio/PortfolioCategory';
+import { ViewProvider } from './context/ViewContext';
+import { LoadingProvider } from './context/LoadingContext';
+import { ErrorBoundary } from './components/common';
 import { ProtectedRoute } from './admin/components/ProtectedRoute';
 import { AdminLayout } from './admin/components/layout/AdminLayout';
-import { Login } from './admin/pages/Login';
-import { Dashboard } from './admin/pages/Dashboard';
-import { ProjectsList } from './admin/pages/Projects/ProjectsList';
-import { ProjectForm } from './admin/pages/Projects/ProjectForm';
-import { ProjectCategoriesList } from './admin/pages/Projects/ProjectCategoriesList';
-import { PostsList } from './admin/pages/Blog/PostsList';
-import { PostForm } from './admin/pages/Blog/PostForm';
-import { CategoriesList } from './admin/pages/Blog/CategoriesList';
-import { TagsList } from './admin/pages/Blog/TagsList';
-import { ServicesList } from './admin/pages/Services/ServicesList';
-import { ServiceForm } from './admin/pages/Services/ServiceForm';
-import { ContactMessages } from './admin/pages/Contact/ContactMessages';
-import { TestimonialsList } from './admin/pages/Testimonials/TestimonialsList';
-import { TestimonialForm } from './admin/pages/Testimonials/TestimonialForm';
-import { ProgramsList } from './admin/pages/Programs/ProgramsList';
-import { ProgramForm } from './admin/pages/Programs/ProgramForm';
-import { NewsletterSubscribers } from './admin/pages/Newsletter/NewsletterSubscribers';
-import { ProfileEdit } from './admin/pages/Profile/ProfileEdit';
-import { ExperiencesList } from './admin/pages/Experiences/ExperiencesList';
-import { ViewProvider } from './context/ViewContext';
+
+// Lazy load public pages
+const Home = lazy(() => import('./pages/Home/Home'));
+const Blog = lazy(() => import('./pages/Blog/Blog'));
+const BlogDetail = lazy(() => import('./pages/Blog/BlogDetail'));
+const PortfolioCategory = lazy(() => import('./pages/Portfolio/PortfolioCategory'));
+
+// Lazy load admin pages
+const Login = lazy(() => import('./admin/pages/Login').then(module => ({ default: module.Login })));
+const Dashboard = lazy(() => import('./admin/pages/Dashboard').then(module => ({ default: module.Dashboard })));
+const ProjectsList = lazy(() => import('./admin/pages/Projects/ProjectsList').then(module => ({ default: module.ProjectsList })));
+const ProjectForm = lazy(() => import('./admin/pages/Projects/ProjectForm').then(module => ({ default: module.ProjectForm })));
+const ProjectCategoriesList = lazy(() => import('./admin/pages/Projects/ProjectCategoriesList').then(module => ({ default: module.ProjectCategoriesList })));
+const PostsList = lazy(() => import('./admin/pages/Blog/PostsList').then(module => ({ default: module.PostsList })));
+const PostForm = lazy(() => import('./admin/pages/Blog/PostForm').then(module => ({ default: module.PostForm })));
+const CategoriesList = lazy(() => import('./admin/pages/Blog/CategoriesList').then(module => ({ default: module.CategoriesList })));
+const TagsList = lazy(() => import('./admin/pages/Blog/TagsList').then(module => ({ default: module.TagsList })));
+const ServicesList = lazy(() => import('./admin/pages/Services/ServicesList').then(module => ({ default: module.ServicesList })));
+const ServiceForm = lazy(() => import('./admin/pages/Services/ServiceForm').then(module => ({ default: module.ServiceForm })));
+const ContactMessages = lazy(() => import('./admin/pages/Contact/ContactMessages').then(module => ({ default: module.ContactMessages })));
+const TestimonialsList = lazy(() => import('./admin/pages/Testimonials/TestimonialsList').then(module => ({ default: module.TestimonialsList })));
+const TestimonialForm = lazy(() => import('./admin/pages/Testimonials/TestimonialForm').then(module => ({ default: module.TestimonialForm })));
+const ProgramsList = lazy(() => import('./admin/pages/Programs/ProgramsList').then(module => ({ default: module.ProgramsList })));
+const ProgramForm = lazy(() => import('./admin/pages/Programs/ProgramForm').then(module => ({ default: module.ProgramForm })));
+const NewsletterSubscribers = lazy(() => import('./admin/pages/Newsletter/NewsletterSubscribers').then(module => ({ default: module.NewsletterSubscribers })));
+const ProfileEdit = lazy(() => import('./admin/pages/Profile/ProfileEdit').then(module => ({ default: module.ProfileEdit })));
+const ExperiencesList = lazy(() => import('./admin/pages/Experiences/ExperiencesList').then(module => ({ default: module.ExperiencesList })));
+
+// Loading fallback component
+const PageLoader = () => (
+  <div className="min-h-screen bg-bg-primary flex items-center justify-center" dir="rtl">
+    <div className="text-center">
+      <div className="w-16 h-16 border-4 border-accent-pink/20 border-t-accent-pink rounded-full animate-spin mx-auto mb-4" />
+      <p className="text-text-secondary font-arabic">جاري التحميل...</p>
+    </div>
+  </div>
+);
 
 function App() {
   return (
-    <Router>
-      <ViewProvider>
-        <div className="App">
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:id" element={<BlogDetail />} />
-            <Route path="/portfolio/:category" element={<PortfolioCategory />} />
+    <ErrorBoundary>
+      <LoadingProvider>
+        <Router>
+          <ViewProvider>
+            <div className="App">
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  {/* Public Routes */}
+                  <Route path="/" element={<Home />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:id" element={<BlogDetail />} />
+                  <Route path="/portfolio/:category" element={<PortfolioCategory />} />
 
-            {/* Admin Routes */}
-            <Route path="/admin/login" element={<Login />} />
+                  {/* Admin Routes */}
+                  <Route path="/admin/login" element={<Login />} />
             <Route
               path="/admin/*"
               element={
@@ -72,12 +92,15 @@ function App() {
               <Route path="programs/:id" element={<ProgramForm />} />
               <Route path="newsletter" element={<NewsletterSubscribers />} />
               <Route path="experiences" element={<ExperiencesList />} />
-              <Route path="profile" element={<ProfileEdit />} />
-            </Route>
-          </Routes>
-        </div>
+                  <Route path="profile" element={<ProfileEdit />} />
+                </Route>
+              </Routes>
+              </Suspense>
+            </div>
       </ViewProvider>
     </Router>
+      </LoadingProvider>
+    </ErrorBoundary>
   );
 }
 

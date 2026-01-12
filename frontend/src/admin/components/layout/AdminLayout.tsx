@@ -4,13 +4,15 @@ import { Sidebar } from './Sidebar';
 import { AdminHeader } from './AdminHeader';
 import { Toast } from '../ui/Toast';
 import { useUIStore } from '../../../store/ui.store';
+import { ErrorBoundary } from '../../../components/common';
 
 export const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { toasts, removeToast } = useUIStore();
 
   return (
-    <div className="bg-[color:var(--color-admin-bg-primary)] text-[color:var(--color-admin-text-primary)] min-h-screen" dir="rtl">
+    <ErrorBoundary>
+      <div className="bg-[color:var(--color-admin-bg-primary)] text-[color:var(--color-admin-text-primary)] min-h-screen" dir="rtl">
       <Sidebar />
       <div className="mr-[260px] min-h-screen transition-all duration-300">
         <AdminHeader onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
@@ -27,6 +29,7 @@ export const AdminLayout = () => {
           onClose={() => removeToast(toast.id)}
         />
       ))}
-    </div>
+      </div>
+    </ErrorBoundary>
   );
 };

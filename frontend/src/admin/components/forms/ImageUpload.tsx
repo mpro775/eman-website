@@ -1,5 +1,7 @@
 import { useState, useRef } from 'react';
-import { FiUpload, FiX, FiImage } from 'react-icons/fi';
+import { FiUpload, FiX, FiImage, FiCheck } from 'react-icons/fi';
+import { uploadImage, validateImageFile, type UploadOptions } from '../../../services/upload.service';
+import { handleApiError } from '../../../utils/errorHandler';
 
 interface ImageUploadProps {
   label?: string;
@@ -8,6 +10,10 @@ interface ImageUploadProps {
   error?: string;
   helperText?: string;
   required?: boolean;
+  maxSize?: number; // in bytes
+  allowedTypes?: string[];
+  folder?: string;
+  showProgress?: boolean;
 }
 
 export const ImageUpload = ({
@@ -17,39 +23,100 @@ export const ImageUpload = ({
   error,
   helperText,
   required = false,
+  maxSize = 10 * 1024 * 1024, // 10MB default
+  allowedTypes,
+  folder,
+  showProgress = true,
 }: ImageUploadProps) => {
   const [preview, setPreview] = useState<string | null>(value || null);
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Create preview
+    // Reset states
+    setUploadError(null);
+    setUploadSuccess(false);
+    setUploadProgress(0);
+
+    // Validate file
+    const validation = validateImageFile(file, { maxSize, allowedTypes });
+    if (!validation.valid) {
+      setUploadError(validation.error || 'خطأ في التحقق من الملف');
+      return;
+    }
+
+    // Create preview immediately
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreview(reader.result as string);
     };
     reader.readAsDataURL(file);
 
-    // TODO: Upload to server and get URL
-    // For now, we'll use the data URL
+    // Upload to server
     setIsUploading(true);
-    // Simulate upload
-    setTimeout(() => {
-      onChange(reader.result as string);
+    try {
+      const uploadOptions: UploadOptions = {
+        maxSize,
+        allowedTypes,
+        folder,
+      };
+
+      // Simulate progress for better UX
+      const progressInterval = setInterval(() => {
+        setUploadProgress((prev) => {
+          if (prev >= 90) {
+            clearInterval(progressInterval);
+            return 90;
+          }
+          return prev + 10;
+        });
+      }, 200);
+
+      const result = await uploadImage(file, uploadOptions);
+      
+      clearInterval(progressInterval);
+      setUploadProgress(100);
+      setUploadSuccess(true);
+
+      // Update preview with uploaded URL if different
+      if (result.url !== preview) {
+        setPreview(result.url);
+      }
+
+      // Call onChange with the URL
+      onChange(result.url);
+
+      // Reset success state after 2 seconds
+      setTimeout(() => {
+        setUploadSuccess(false);
+        setIsUploading(false);
+      }, 2000);
+    } catch (err) {
+      setUploadError(handleApiError(err));
       setIsUploading(false);
-    }, 1000);
+      setUploadProgress(0);
+      // Keep preview for user to retry
+    }
   };
 
   const handleRemove = () => {
     setPreview(null);
     onChange('');
+    setUploadError(null);
+    setUploadSuccess(false);
+    setUploadProgress(0);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
   };
+
+  const displayError = error || uploadError;
 
   return (
     <div className="flex flex-col gap-2">
@@ -67,10 +134,26 @@ export const ImageUpload = ({
               alt="Preview"
               className="w-full h-full object-cover"
             />
+            {isUploading && showProgress && (
+              <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="w-12 h-12 border-4 border-[color:var(--color-admin-border)] border-t-[color:var(--color-admin-accent-blue)] rounded-full animate-spin mx-auto mb-2" />
+                  <p className="text-sm text-white">
+                    {uploadProgress}%
+                  </p>
+                </div>
+              </div>
+            )}
+            {uploadSuccess && (
+              <div className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center bg-[color:var(--color-admin-success)] text-white rounded-full">
+                <FiCheck />
+              </div>
+            )}
             <button
               type="button"
               onClick={handleRemove}
-              className="absolute top-2 left-2 w-8 h-8 flex items-center justify-center bg-[color:var(--color-admin-danger)] text-white rounded-full hover:bg-[#DC2626] transition-all duration-150"
+              disabled={isUploading}
+              className="absolute top-2 left-2 w-8 h-8 flex items-center justify-center bg-[color:var(--color-admin-danger)] text-white rounded-full hover:bg-[#DC2626] transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <FiX />
             </button>
@@ -118,10 +201,10 @@ export const ImageUpload = ({
           </button>
         )}
       </div>
-      {error && (
-        <span className="text-xs text-[color:var(--color-admin-danger)]">{error}</span>
+      {displayError && (
+        <span className="text-xs text-[color:var(--color-admin-danger)]">{displayError}</span>
       )}
-      {helperText && !error && (
+      {helperText && !displayError && (
         <span className="text-xs text-[color:var(--color-admin-text-muted)]">{helperText}</span>
       )}
     </div>

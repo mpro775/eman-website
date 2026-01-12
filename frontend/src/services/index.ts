@@ -11,3 +11,5 @@ export * from './projects.service';
 export * from './services.service';
 export * from './stats.service';
 export * from './testimonials.service';
+export { errorLogger } from './errorLogger';
+export * from './upload.service';
