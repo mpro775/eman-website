@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 // Components
 import HeroView from "./HeroView";
-import AboutView from "./AboutView";
+import AboutView from "./SkillsView";
 import ActionDock from "./ActionDock";
 import BackgroundGlows from "./BackgroundGlows";
 import BottomBlurEffect from "./BottomBlurEffect";

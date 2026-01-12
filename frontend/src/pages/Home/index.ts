@@ -14,7 +14,7 @@ export { default as BlogSection } from './BlogSection';
 // HeroAboutSection Sub-components
 export { default as FloatingSkillCard } from './HeroAboutSection/FloatingSkillCard';
 export { default as HeroView } from './HeroAboutSection/HeroView';
-export { default as AboutView } from './HeroAboutSection/AboutView';
+export { default as AboutView } from './HeroAboutSection/SkillsView';
 export { default as ActionDock } from './HeroAboutSection/ActionDock';
 export { default as BackgroundGlows } from './HeroAboutSection/BackgroundGlows';
 

@@ -5,7 +5,7 @@ import { useMediaQuery } from "../../../hooks";
 
 // Image imports
 import uxUiDesignerImage from "../../../assets/personas/UxUiDesginer.png";
-import appDeveloperImage from "../../../assets/illustrations/appDeveloper.png";
+import appDeveloperImage from "../../../assets/personas/appDeveloper.png";
 import graphicDesignerImage from "../../../assets/personas/GraphicDesginer.png";
 import frameButtonPng from "../../../assets/logos/Frame_button.png";
 

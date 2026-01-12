@@ -6,8 +6,8 @@ import WorkCard, { type WorkItem } from "./WorkCard";
 
 // Images
 import mobileAppImage from "../../../assets/services/mobileApp.png";
-import uiUxImage from "../../../assets/illustrations/UI UX.png";
-import graphicImage from "../../../assets/illustrations/Graphic.png";
+import uiUxImage from "../../../assets/services/UI UX.png";
+import graphicImage from "../../../assets/services/Graphic.png";
 
 // Works data
 const works: WorkItem[] = [
