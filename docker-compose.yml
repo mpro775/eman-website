@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  # ==================================
+  # 🟢 Backend API (api.emanjameel.pro)
+  # ==================================
+  eman-backend:
+    build: ./backend
+    container_name: eman-backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    # نستخدم expose فقط ليراه Nginx Proxy Manager داخلياً
+    expose:
+      - "3000"
+    networks:
+      - web-network
+
+  # ==================================
+  # 🔵 Frontend Website (emanjameel.pro)
+  # ==================================
+  eman-frontend:
+    build: ./frontend
+    container_name: eman-frontend
+    restart: unless-stopped
+    expose:
+      - "80"
+    networks:
+      - web-network
+    depends_on:
+      - eman-backend
+
+# ==================================
+# 🌐 Network Configuration
+# ==================================
+networks:
+  web-network:
+    external: true

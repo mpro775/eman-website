@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { errorLogger } from '../../services/errorLogger';
 import ErrorPage from './ErrorPage';
 
@@ -34,10 +34,11 @@ class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Log error to error logging service
-    errorLogger.logError(error, {
-      componentStack: errorInfo.componentStack,
+    const logContext = {
       errorBoundary: true,
-    });
+      ...(errorInfo.componentStack && { componentStack: errorInfo.componentStack }),
+    };
+    errorLogger.logError(error, logContext);
 
     // Update state with error info
     this.setState({

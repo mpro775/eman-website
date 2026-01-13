@@ -45,7 +45,8 @@ export const ImageUpload = ({
     setUploadProgress(0);
 
     // Validate file
-    const validation = validateImageFile(file, { maxSize, allowedTypes });
+    const validationOptions = { maxSize, ...(allowedTypes && { allowedTypes }) };
+    const validation = validateImageFile(file, validationOptions);
     if (!validation.valid) {
       setUploadError(validation.error || 'خطأ في التحقق من الملف');
       return;
@@ -63,8 +64,8 @@ export const ImageUpload = ({
     try {
       const uploadOptions: UploadOptions = {
         maxSize,
-        allowedTypes,
-        folder,
+        ...(allowedTypes && { allowedTypes }),
+        ...(folder && { folder }),
       };
 
       // Simulate progress for better UX

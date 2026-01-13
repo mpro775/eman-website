@@ -31,8 +31,8 @@ export const NewsletterSubscribers = () => {
       const response = await newsletterService.getSubscribers({
         page: currentPage,
         limit,
-        search: search || undefined,
-        status: statusFilter || undefined,
+        ...(search && { search }),
+        ...(statusFilter && { status: statusFilter }),
       });
       setSubscribers(response.data || []);
       setTotalPages(response.meta.totalPages);

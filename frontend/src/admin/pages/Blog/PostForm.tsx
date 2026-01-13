@@ -109,7 +109,7 @@ export const PostForm = () => {
       const data = {
         ...formData,
         tags: formData.tags.filter(Boolean),
-        category: formData.category || undefined,
+        ...(formData.category && { category: formData.category }),
       };
       if (isEdit) {
         await blogService.updatePost(id!, data);

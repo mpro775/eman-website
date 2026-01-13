@@ -39,7 +39,7 @@ const ErrorPage: React.FC<ErrorPageProps> = ({ error, errorInfo, onReset }) => {
           </p>
         </div>
 
-        {process.env.NODE_ENV === 'development' && error && (
+        {import.meta.env.DEV && error && (
           <div className="mb-8 p-4 bg-bg-secondary rounded-lg text-right border border-accent-pink/20">
             <h2 className="text-lg font-semibold text-accent-pink mb-2">تفاصيل الخطأ (Development Only):</h2>
             <pre className="text-xs text-text-secondary overflow-auto max-h-64 p-3 bg-bg-tertiary rounded">

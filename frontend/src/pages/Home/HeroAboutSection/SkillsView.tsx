@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, type MotionStyle } from "framer-motion";
 import SkillCard from "./SkillCard";
 import { useMediaQuery } from "../../../hooks";
 
@@ -142,7 +142,7 @@ const AboutView: React.FC<AboutViewProps> = ({ aboutElementsVariants }) => {
                     icon={skill.icon}
                     title={skill.title}
                     description={skill.description}
-                    position={isMobile ? { position: "relative", transform: "none", left: "auto", top: "auto", right: "auto", bottom: "auto", marginTop: "10px", margin: "0 auto", width: "90%", maxWidth: "340px" } : skill.position}
+                    position={isMobile ? { position: "relative", transform: "none", left: "auto", top: "auto", right: "auto", bottom: "auto", marginTop: "10px", margin: "0 auto", width: "90%", maxWidth: "340px" } as MotionStyle : skill.position as MotionStyle}
                     delay={skill.delay}
                 />
             ))}
