@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useParams, Link } from "react-router-dom";
-import { HiArrowRight } from "react-icons/hi2";
+import { HiArrowRight, HiOutlinePaintBrush } from "react-icons/hi2";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
 import Container from "../../components/common/Container";
@@ -234,7 +234,7 @@ const PortfolioCard: React.FC<{
           initial={false}
           animate={{
             // يظهر 20% فقط عند الإخفاء (مخفي 80%)
-            y: isExpanded ? 0 : "80%",
+            y: isExpanded ? 0 : "70%",
           }}
           transition={{
             duration: 0.55,
@@ -242,39 +242,39 @@ const PortfolioCard: React.FC<{
           }}
         >
           {/* Shape Container */}
-          <div className="relative h-full bg-gradient-to-b from-purple-100/95 via-purple-50/95 to-purple-50/95 backdrop-blur-md rounded-t-3xl border border-white/30 shadow-[0_-10px_30px_rgba(0,0,0,0.12)]">
-            {/* Content */}
-            <div className="relative h-full px-6 pt-4 pb-6 text-right flex flex-col">
-              {/* Handle + Chevron (ضمن الجزء العلوي الذي يبقى ظاهرًا عند الإخفاء 80%) */}
-              <div className="flex items-center justify-center flex-col gap-1 mb-2 pointer-events-none">
-                <div className="w-12 h-1.5 rounded-full bg-[#c77e8c]/40" />
-                <motion.div
-                  initial={false}
-                  animate={{ rotate: isExpanded ? 0 : 180 }}
-                  transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+          <div className="relative h-full bg-[#FFFCED5E]/99 backdrop-blur-md rounded-t-3xl border border-white/30 shadow-[0_-10px_30px_rgba(0,0,0,0.12)]">
+            {/* Chevron (كما في الصورة: أعلى المنتصف) */}
+            <div className="absolute top-2 left-0 right-0 flex justify-center pointer-events-none">
+              <motion.div
+                initial={false}
+                animate={{ rotate: isExpanded ? 0 : 180 }}
+                transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  className="text-[#c77e8c]"
+                  fill="none"
                 >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    className="text-[#c77e8c]"
-                    fill="none"
-                  >
-                    <path
-                      d="M5 9L12 15L19 9"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </motion.div>
-              </div>
+                  <path
+                    d="M5 9L12 15L19 9"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </motion.div>
+            </div>
 
+            {/* Content */}
+            <div className="relative h-full px-6 pt-6 pb-6 text-right flex flex-col">
               {/* Header */}
-              <div className="flex items-start justify-between flex-row-reverse gap-4">
-                <div className="min-w-0 flex-1">
-                  <h3 className="text-[#7a3b1c] text-lg md:text-xl font-bold leading-snug truncate">
+              <div className="flex items-center justify-between gap-4">
+
+                <div className="min-w-0 flex-1 text-right">
+                  <h3 className="text-[#7a3b1c] text-xl md:text-2xl font-bold leading-tight truncate">
                     {item.titleAr}
                   </h3>
                   {isExpanded && (
@@ -284,40 +284,11 @@ const PortfolioCard: React.FC<{
                   )}
                 </div>
 
-                {/* Action icon */}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (!hasProjectLink) return;
-                    window.open(item.projectLink, "_blank", "noopener,noreferrer");
-                  }}
-                  aria-label={hasProjectLink ? "فتح رابط المشروع" : "لا يوجد رابط"}
-                  aria-disabled={!hasProjectLink}
-                  tabIndex={hasProjectLink ? 0 : -1}
-                  className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg transition-transform duration-200 ${
-                    hasProjectLink
-                      ? "bg-[#c77e8c] hover:scale-[1.03] active:scale-[0.98]"
-                      : "bg-gray-300 cursor-not-allowed opacity-70"
-                  }`}
-                >
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 26 26"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11.2474 19.8098C11.0856 19.8098 10.9347 19.7667 10.7945 19.6696C10.568 19.5187 10.4386 19.2706 10.4386 19.0011C10.4386 18.8393 10.4278 18.6668 10.4063 18.4942C10.3092 17.7286 9.96412 17.06 9.3818 16.4776C8.79947 15.8953 8.07696 15.5287 7.30053 15.4316C7.17112 15.4208 6.9878 15.4101 6.81526 15.4208C6.53488 15.4424 6.27607 15.3238 6.11431 15.0973C5.95256 14.8816 5.90942 14.5905 5.99569 14.3317C6.15745 13.8895 6.39469 13.4905 6.67507 13.167L8.33577 11.075C11.1935 7.50554 16.9844 3.21359 21.2224 1.50976C22.1174 1.16468 23.0772 1.36957 23.735 2.01659C24.4144 2.69597 24.6193 3.66651 24.2634 4.55078C22.5596 8.79959 18.2784 14.5797 14.709 17.4374L12.5846 19.1412C12.1856 19.4324 11.8621 19.6157 11.5386 19.7451C11.4523 19.7883 11.3444 19.8098 11.2474 19.8098Z"
-                      fill="white"
-                    />
-                    <path
-                      d="M4.39984 24.5331C3.59105 24.5331 2.81462 24.2096 2.2323 23.6272C1.5637 22.9587 1.24019 22.0312 1.34803 21.0823L1.63919 18.4295C1.91957 15.7982 4.07632 13.8464 6.7507 13.7924C6.95559 13.7817 7.22519 13.7924 7.47322 13.814C8.64865 13.965 9.69468 14.4934 10.5358 15.3345C11.3662 16.1649 11.8622 17.157 12.0132 18.2677C12.0455 18.505 12.0671 18.7638 12.0671 18.9902C12.0671 20.4137 11.5171 21.7401 10.525 22.743C9.69467 23.5625 8.62708 24.0694 7.4193 24.2204L4.7557 24.5115C4.63708 24.5223 4.51846 24.5331 4.39984 24.5331Z"
-                      fill="white"
-                    />
-                  </svg>
-                </button>
+                
+                {/* Icon box (كما في الصورة: مربع أيقونة ثابت في أقصى اليسار) */}
+                <div className="w-12 h-12 rounded-2xl bg-[#c77e8c] flex items-center justify-center shadow-lg shrink-0">
+                  <HiOutlinePaintBrush className="text-white text-2xl" />
+                </div>
               </div>
 
               {/* Body (ثابت ضمن اللوحة، مع تمرير عند الحاجة) */}
@@ -346,6 +317,49 @@ const PortfolioCard: React.FC<{
                     </span>
                   ))}
                 </div>
+
+                {hasProjectLink && (
+                  <div className="mt-6 flex justify-start">
+                    <a
+                      href={item.projectLink}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-[#c77e8c] text-white shadow-md hover:opacity-95 transition-opacity"
+                    >
+                      <span>عرض المشروع</span>
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        className="opacity-95"
+                      >
+                        <path
+                          d="M10 14L21 3"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M15 3H21V9"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M21 14V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3H10"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                )}
               </motion.div>
             </div>
           </div>
