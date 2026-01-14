@@ -37,8 +37,8 @@ export const PostsList = () => {
       const response = await blogService.getPosts({
         page: currentPage,
         limit,
-        search: search || undefined,
-        status: statusFilter || undefined,
+        ...(search && { search }),
+        ...(statusFilter && { status: statusFilter }),
       });
       setPosts(response.data || []);
       setTotalPages(response.meta.totalPages);

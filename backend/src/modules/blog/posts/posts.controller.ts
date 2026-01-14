@@ -53,7 +53,7 @@ function extractCategoryId(
 
 @Controller('blog/posts')
 export class PostsController {
-  constructor(private readonly postsService: PostsService) { }
+  constructor(private readonly postsService: PostsService) {}
 
   @Public()
   @Get()

@@ -1,6 +1,6 @@
-import { errorLogger } from '../services/errorLogger';
-import type { AxiosError } from 'axios';
-import type { ApiError } from '../types/api.types';
+import { errorLogger } from "../services/errorLogger";
+import type { AxiosError } from "axios";
+import type { ApiError } from "../types/api.types";
 
 /**
  * Handle API errors and extract user-friendly messages
@@ -10,11 +10,12 @@ export const handleApiError = (error: unknown): string => {
 
   // Network error
   if (!axiosError.response) {
-    errorLogger.logError(
-      new Error('Network error'),
-      { type: 'network', url: axiosError.config?.url }
-    );
-    return 'حدث خطأ في الاتصال بالخادم. يرجى التحقق من اتصالك بالإنترنت.';
+    const errorContext = {
+      type: "network",
+      ...(axiosError.config?.url && { url: axiosError.config.url }),
+    };
+    errorLogger.logError(new Error("Network error"), errorContext);
+    return "حدث خطأ في الاتصال بالخادم. يرجى التحقق من اتصالك بالإنترنت.";
   }
 
   // API error with response
@@ -22,14 +23,15 @@ export const handleApiError = (error: unknown): string => {
   const errorData = axiosError.response.data;
 
   // Log the error
+  const apiErrorContext = {
+    type: "api",
+    status,
+    ...(axiosError.config?.url && { url: axiosError.config.url }),
+    response: errorData,
+  };
   errorLogger.logError(
-    new Error(errorData?.message || 'API Error'),
-    {
-      type: 'api',
-      status,
-      url: axiosError.config?.url,
-      response: errorData,
-    }
+    new Error(errorData?.message || "API Error"),
+    apiErrorContext
   );
 
   // Return user-friendly message
@@ -40,25 +42,25 @@ export const handleApiError = (error: unknown): string => {
   // Default messages based on status code
   switch (status) {
     case 400:
-      return 'طلب غير صحيح. يرجى التحقق من البيانات المدخلة.';
+      return "طلب غير صحيح. يرجى التحقق من البيانات المدخلة.";
     case 401:
-      return 'غير مصرح لك بالوصول. يرجى تسجيل الدخول.';
+      return "غير مصرح لك بالوصول. يرجى تسجيل الدخول.";
     case 403:
-      return 'ليس لديك صلاحية للوصول إلى هذا المورد.';
+      return "ليس لديك صلاحية للوصول إلى هذا المورد.";
     case 404:
-      return 'المورد المطلوب غير موجود.';
+      return "المورد المطلوب غير موجود.";
     case 409:
-      return 'هناك تعارض في البيانات. يرجى المحاولة مرة أخرى.';
+      return "هناك تعارض في البيانات. يرجى المحاولة مرة أخرى.";
     case 422:
-      return 'البيانات المدخلة غير صحيحة. يرجى التحقق من الحقول.';
+      return "البيانات المدخلة غير صحيحة. يرجى التحقق من الحقول.";
     case 429:
-      return 'تم تجاوز الحد المسموح. يرجى المحاولة لاحقاً.';
+      return "تم تجاوز الحد المسموح. يرجى المحاولة لاحقاً.";
     case 500:
-      return 'حدث خطأ في الخادم. يرجى المحاولة لاحقاً.';
+      return "حدث خطأ في الخادم. يرجى المحاولة لاحقاً.";
     case 503:
-      return 'الخدمة غير متاحة حالياً. يرجى المحاولة لاحقاً.';
+      return "الخدمة غير متاحة حالياً. يرجى المحاولة لاحقاً.";
     default:
-      return 'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.';
+      return "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.";
   }
 };
 
@@ -68,16 +70,16 @@ export const handleApiError = (error: unknown): string => {
 export const handleError = (error: unknown): string => {
   if (error instanceof Error) {
     errorLogger.logError(error);
-    return error.message || 'حدث خطأ غير متوقع.';
+    return error.message || "حدث خطأ غير متوقع.";
   }
 
-  if (typeof error === 'string') {
+  if (typeof error === "string") {
     errorLogger.logWarning(error);
     return error;
   }
 
-  errorLogger.logError(new Error('Unknown error'), { error });
-  return 'حدث خطأ غير متوقع.';
+  errorLogger.logError(new Error("Unknown error"), { error });
+  return "حدث خطأ غير متوقع.";
 };
 
 /**
@@ -93,6 +95,7 @@ export const isNetworkError = (error: unknown): boolean => {
  */
 export const isTimeoutError = (error: unknown): boolean => {
   const axiosError = error as AxiosError;
-  return axiosError.code === 'ECONNABORTED' || axiosError.message.includes('timeout');
+  return (
+    axiosError.code === "ECONNABORTED" || axiosError.message.includes("timeout")
+  );
 };
-

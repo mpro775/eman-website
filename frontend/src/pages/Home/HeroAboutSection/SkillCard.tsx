@@ -1,12 +1,12 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, type MotionStyle } from "framer-motion";
 import frameButtonSvg from "../../../assets/logos/Frame_button.png";
 
 interface SkillCardProps {
     icon: string;
     title: string;
     description: string;
-    position: React.CSSProperties;
+    position: MotionStyle;
     delay: number;
 }
 

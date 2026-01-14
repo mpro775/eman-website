@@ -30,7 +30,6 @@
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-    "noUnusedImports": true,
     "exactOptionalPropertyTypes": true
   },
   "include": ["src"]

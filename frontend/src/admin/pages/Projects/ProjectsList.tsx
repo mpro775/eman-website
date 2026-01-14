@@ -35,7 +35,7 @@ export const ProjectsList = () => {
       const response = await projectsService.getAll({
         page: currentPage,
         limit,
-        search: search || undefined,
+        ...(search && { search }),
       });
       setProjects(response.data || []);
       setTotalPages(response.meta.totalPages);

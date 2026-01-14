@@ -40,14 +40,17 @@ export const Dashboard = () => {
         // Transform backend stats to UI format
         const transformedStats: StatData[] = dashboardStats.stats.map((stat: StatItem) => {
           const config = STAT_CONFIG[stat.key] || { icon: <FiFolder />, color: 'blue' as const };
-          return {
+          const baseData = {
             title: stat.title,
             value: stat.total,
             icon: config.icon,
             color: config.color,
-            // Only show trend if there's actual change
-            trend: stat.trend.value > 0 ? stat.trend : undefined,
           };
+          // Only include trend if there's actual change
+          if (stat.trend.value > 0) {
+            return { ...baseData, trend: stat.trend };
+          }
+          return baseData;
         });
 
         setStats(transformedStats);
@@ -101,7 +104,7 @@ export const Dashboard = () => {
               value={stat.value}
               icon={stat.icon}
               color={stat.color}
-              trend={stat.trend}
+              {...(stat.trend && { trend: stat.trend })}
             />
           </div>
         ))}
