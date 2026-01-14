@@ -206,6 +206,28 @@ const PortfolioCard: React.FC<{
     typeof item.projectLink === "string" &&
     item.projectLink.trim().length > 0 &&
     item.projectLink.trim() !== "#";
+  const panelPath = `M12 10
+                   L37 10
+                   C42 10 43 0 50 0
+                   C57 0 58 10 63 10
+                   L88 10
+                   A12 12 0 0 1 100 22
+                   L100 88
+                   A12 12 0 0 1 88 100
+                   L12 100
+                   A12 12 0 0 1 0 88
+                   L0 22
+                   A12 12 0 0 1 12 10
+                   Z`;
+  // Panel colors and opacity controls
+  const panelFill = "rgba(255, 254, 248, 0.7)"; // Panel fill color and opacity
+  const panelStroke = "rgba(255, 255, 255, 0.5)"; // Panel stroke color and opacity
+  // Glass (blur) layer behind the panel (20% smaller)
+  const glassScale = 0.8; // 20% smaller
+  const glassBlur = 14; // px
+  const glassTint = "rgb(255, 255, 255)"; // Opaque (no transparency)
+  const glassStroke = "rgba(255, 255, 255, 0.35)";
+  const glassClipId = `glass-clip-${item.id}-${index}`;
 
   return (
     <motion.div
@@ -242,7 +264,73 @@ const PortfolioCard: React.FC<{
           }}
         >
           {/* Shape Container */}
-          <div className="relative h-full bg-[#FFFCED5E]/99 backdrop-blur-md rounded-t-3xl border border-white/30 shadow-[0_-10px_30px_rgba(0,0,0,0.12)]">
+          
+            {/* White Background Shape (خلفية بيضاء) */}
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+            >
+              <path
+                d={panelPath}
+                fill="rgba(255, 255, 255, 0.84)"
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+
+            {/* Glass Layer (قطعة زجاجية خلف اللوحة - أصغر 20%) */}
+            <svg className="absolute w-0 h-0" aria-hidden="true">
+              <defs>
+                <clipPath id={glassClipId} clipPathUnits="userSpaceOnUse">
+                  <g transform={`translate(50 50) scale(${glassScale}) translate(-50 -50)`}>
+                    <path d={panelPath} />
+                  </g>
+                </clipPath>
+              </defs>
+            </svg>
+
+            <div
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              style={{
+                backdropFilter: `blur(${glassBlur}px)`,
+                WebkitBackdropFilter: `blur(${glassBlur}px)`,
+                backgroundColor: glassTint,
+                clipPath: `url(#${glassClipId})`,
+              }}
+            />
+
+            {/* Glass Border (Stroke) for the smaller glass shape */}
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+            >
+              <g transform={`translate(50 50) scale(${glassScale}) translate(-50 -50)`}>
+                <path
+                  d={panelPath}
+                  fill="transparent"
+                  stroke={glassStroke}
+                  strokeWidth="1"
+                  vectorEffect="non-scaling-stroke"
+                />
+              </g>
+            </svg>
+
+            {/* Panel Shape (الخلفية + الندبة + البوردر كقطعة واحدة) */}
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+            >
+              <path
+                d={panelPath}
+                fill={panelFill}
+                stroke={panelStroke}
+                strokeWidth="1"
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+
             {/* Chevron (كما في الصورة: أعلى المنتصف) */}
             <div className="absolute top-2 left-0 right-0 flex justify-center pointer-events-none">
               <motion.div
@@ -269,7 +357,7 @@ const PortfolioCard: React.FC<{
             </div>
 
             {/* Content */}
-            <div className="relative h-full px-6 pt-6 pb-6 text-right flex flex-col">
+            <div className="relative h-full px-6 pt-8 pb-6 text-right flex flex-col">
               {/* Header */}
               <div className="flex items-center justify-between gap-4">
 
@@ -361,7 +449,7 @@ const PortfolioCard: React.FC<{
                   </div>
                 )}
               </motion.div>
-            </div>
+            
           </div>
         </motion.div>
       </div>
