@@ -365,7 +365,7 @@ const PortfolioCard: React.FC<{
                       fontFamily: 'Poppins, sans-serif',
                       fontWeight: 700,
                       fontSize: '21.57px',
-                      lineHeight: '100%',
+                      lineHeight: '130%',
                       letterSpacing: '0%',
                     }}
                   >
