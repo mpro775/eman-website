@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useParams, Link } from "react-router-dom";
-import { HiArrowRight, HiOutlinePaintBrush } from "react-icons/hi2";
+import { HiArrowRight } from "react-icons/hi2";
+import BrushIcon from "../../assets/icons/brush.svg";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
 import Container from "../../components/common/Container";
@@ -206,23 +207,11 @@ const PortfolioCard: React.FC<{
     typeof item.projectLink === "string" &&
     item.projectLink.trim().length > 0 &&
     item.projectLink.trim() !== "#";
-  const panelPath = `M12 10
-                   L37 10
-                   C42 10 43 0 50 0
-                   C57 0 58 10 63 10
-                   L88 10
-                   A12 12 0 0 1 100 22
-                   L100 88
-                   A12 12 0 0 1 88 100
-                   L12 100
-                   A12 12 0 0 1 0 88
-                   L0 22
-                   A12 12 0 0 1 12 10
-                   Z`;
+  const panelPath = `M 12 10 L 32 10 C 42 10 43 5 50 4 C 58 5 59 10 70 10 L 96 10 C 99 11 100 13 100 16 L 100 88 A 12 12 0 0 1 88 100 L 12 100 A 12 12 0 0 1 0 88 L 0 16 C 0 13 1 11 4 10 Z`;
   // Panel colors and opacity controls
   const panelFill = "rgba(255, 254, 248, 0.7)"; // Panel fill color and opacity
-  const panelStroke = "rgba(255, 255, 255, 0.5)"; // Panel stroke color and opacity
-  
+  const panelStroke = "rgba(255, 255, 255, 0.76)"; // Panel stroke color and opacity
+
   // Glass effect settings (مثل الكود الذي أعجبك)
   const glassBlur = 20; // px
   const shadowOpacity = 0.30;
@@ -334,29 +323,29 @@ const PortfolioCard: React.FC<{
               style={{
                 borderTop: '2px solid rgba(225, 225, 225, 0.2)',
                 borderLeft: '1px solid rgba(225, 225, 225, 0.1)',
-                borderRight: '1px solid rgba(225, 225, 225, 0.3)',
+                borderRight: '1px solid rgba(225, 225, 225, 0.89)',
                 clipPath: `url(#${clipPathId})`,
               }}
             />
 
             {/* Chevron (كما في الصورة: أعلى المنتصف) */}
-            <div className="absolute top-2 left-0 right-0 flex justify-center pointer-events-none z-20">
+            <div className="absolute top-5 left-0 right-0 flex justify-center pointer-events-none z-20">
               <motion.div
                 initial={false}
                 animate={{ rotate: isExpanded ? 0 : 180 }}
                 transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
               >
                 <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
+                  width="12"
+                  height="6"
+                  viewBox="0 0 12 6"
                   className="text-[#c77e8c]"
                   fill="none"
                 >
                   <path
-                    d="M5 9L12 15L19 9"
+                    d="M1 1L6 5L11 1"
                     stroke="currentColor"
-                    strokeWidth="2.5"
+                    strokeWidth="1.08"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
@@ -370,7 +359,16 @@ const PortfolioCard: React.FC<{
               <div className="flex items-center justify-between gap-4">
 
                 <div className="min-w-0 flex-1 text-right">
-                  <h3 className="text-[#7a3b1c] text-xl md:text-2xl font-bold leading-tight truncate">
+                  <h3
+                    className="text-[#7a3b1c] truncate"
+                    style={{
+                      fontFamily: 'Poppins, sans-serif',
+                      fontWeight: 700,
+                      fontSize: '21.57px',
+                      lineHeight: '100%',
+                      letterSpacing: '0%',
+                    }}
+                  >
                     {item.titleAr}
                   </h3>
                   {isExpanded && (
@@ -380,10 +378,10 @@ const PortfolioCard: React.FC<{
                   )}
                 </div>
 
-                
+
                 {/* Icon box (كما في الصورة: مربع أيقونة ثابت في أقصى اليسار) */}
                 <div className="w-12 h-12 rounded-2xl bg-[#c77e8c] flex items-center justify-center shadow-lg shrink-0">
-                  <HiOutlinePaintBrush className="text-white text-2xl" />
+                  <img src={BrushIcon} alt="brush" className="w-6 h-6" />
                 </div>
               </div>
 
@@ -395,9 +393,8 @@ const PortfolioCard: React.FC<{
                   y: isExpanded ? 0 : 8,
                 }}
                 transition={{ duration: 0.25 }}
-                className={`mt-5 flex-1 overflow-y-auto ${
-                  isExpanded ? "pointer-events-auto" : "pointer-events-none"
-                }`}
+                className={`mt-5 flex-1 overflow-y-auto ${isExpanded ? "pointer-events-auto" : "pointer-events-none"
+                  }`}
               >
                 <p className="text-gray-700 text-sm leading-relaxed">
                   {item.descriptionAr}
