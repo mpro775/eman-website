@@ -1,7 +1,7 @@
 import React from "react";
 import { Header, ScrollPagination } from "../../components";
 import { useSEO } from "../../hooks";
-import { ViewProvider, useView } from "../../context";
+import { useView } from "../../context";
 
 // Section imports from new folder structure
 import HeroAboutSection from "./HeroAboutSection";
@@ -60,9 +60,7 @@ const HomeContent: React.FC = () => {
 // Main Home component with ViewProvider
 const Home: React.FC = () => {
   return (
-    <ViewProvider>
-      <HomeContent />
-    </ViewProvider>
+    <HomeContent />
   );
 };
 

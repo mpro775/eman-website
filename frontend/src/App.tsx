@@ -11,6 +11,9 @@ const Home = lazy(() => import('./pages/Home/Home'));
 const Blog = lazy(() => import('./pages/Blog/Blog'));
 const BlogDetail = lazy(() => import('./pages/Blog/BlogDetail'));
 const PortfolioCategory = lazy(() => import('./pages/Portfolio/PortfolioCategory'));
+const About = lazy(() => import('./pages/About/About'));
+const Experience = lazy(() => import('./pages/Experience/Experience'));
+const Contact = lazy(() => import('./pages/Contact/Contact'));
 
 // Lazy load admin pages
 const Login = lazy(() => import('./admin/pages/Login').then(module => ({ default: module.Login })));
@@ -54,8 +57,12 @@ function App() {
                 <Routes>
                   {/* Public Routes */}
                   <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/experience" element={<Experience />} />
+                  <Route path="/contact" element={<Contact />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:id" element={<BlogDetail />} />
+                  <Route path="/portfolio" element={<Navigate to="/portfolio/ux-ui" replace />} />
                   <Route path="/portfolio/:category" element={<PortfolioCategory />} />
 
                   {/* Admin Routes */}

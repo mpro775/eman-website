@@ -1,24 +1,29 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiDownload, HiMenuAlt3, HiX } from "react-icons/hi";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Container from "../common/Container";
 import logoImage from "../../assets/logos/logo.png";
 import downloadIcon from "../../assets/icons/download.svg";
 import { useView } from "../../context/ViewContext";
 
 const Header: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { setIsAboutView } = useView();
+
   const [activeSection, setActiveSection] = useState<string>("home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
-  const { setIsAboutView } = useView();
 
   const navLinks = useMemo(
     () => [
-      { name: "الرئيسية", href: "#home", id: "home" },
-      { name: "مهاراتي", href: "#about", id: "about" },
-      { name: "الخبرات العملية", href: "#experience", id: "experience" },
-      { name: "أعمالي", href: "#portfolio", id: "portfolio" },
-      { name: "تواصل معي", href: "#contact", id: "contact" },
+      { name: "الرئيسية", kind: "scroll" as const, id: "home", href: "#home" },
+      { name: "مهاراتي", kind: "scroll" as const, id: "about", href: "#about" },
+      { name: "الخبرات العملية", kind: "scroll" as const, id: "experience", href: "#experience" },
+      { name: "أعمالي", kind: "route" as const, to: "/portfolio" },
+      { name: "المدونة", kind: "route" as const, to: "/blog" },
+      { name: "تواصل معي", kind: "scroll" as const, id: "contact", href: "#contact" },
     ],
     []
   );
@@ -53,24 +58,24 @@ const Header: React.FC = () => {
     };
   }, [isMobileMenuOpen]);
 
+  // Track active section ONLY on home page
   useEffect(() => {
-    const sectionIds = navLinks.map((link) => link.id);
+    if (location.pathname !== "/") return;
+
+    const sectionIds = navLinks
+      .filter((l): l is (typeof navLinks)[number] & { kind: "scroll"; id: string } => l.kind === "scroll")
+      .map((l) => l.id);
 
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 200;
-
       for (let i = sectionIds.length - 1; i >= 0; i--) {
         const section = document.getElementById(sectionIds[i]);
-        if (section) {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.offsetHeight;
-          if (
-            scrollPosition >= sectionTop &&
-            scrollPosition < sectionTop + sectionHeight
-          ) {
-            setActiveSection(sectionIds[i]);
-            break;
-          }
+        if (!section) continue;
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+          setActiveSection(sectionIds[i]);
+          break;
         }
       }
     };
@@ -83,17 +88,12 @@ const Header: React.FC = () => {
           }
         });
       },
-      {
-        threshold: 0.5,
-        rootMargin: "-100px 0px -50% 0px",
-      }
+      { threshold: 0.5, rootMargin: "-100px 0px -50% 0px" }
     );
 
     sectionIds.forEach((id) => {
-      const element = document.getElementById(id);
-      if (element) {
-        observer.observe(element);
-      }
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
     });
 
     window.addEventListener("scroll", handleScroll);
@@ -102,51 +102,46 @@ const Header: React.FC = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
       sectionIds.forEach((id) => {
-        const element = document.getElementById(id);
-        if (element) {
-          observer.unobserve(element);
-        }
+        const el = document.getElementById(id);
+        if (el) observer.unobserve(el);
       });
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [location.pathname, navLinks]);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+  const scrollToSectionWithRetry = (targetId: string) => {
+    let tries = 0;
+    const maxTries = 60;
+    const tick = () => {
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+      if (tries++ < maxTries) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+
+  const handleScrollNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
 
-    // Handle Hero/About toggle
-    if (id === 'about') {
+    // Toggle About view behavior (as before)
+    if (id === "about") {
       setIsAboutView(true);
-      setActiveSection('about');
-      // Scroll to home section (where about is displayed)
-      const element = document.getElementById('home');
-      if (element) {
-        element.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-    } else if (id === 'home') {
+    } else if (id === "home") {
       setIsAboutView(false);
-      setActiveSection('home');
-      // Scroll to home section
-      const element = document.getElementById('home');
-      if (element) {
-        element.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-    } else {
-      // For other sections, scroll to them normally
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
     }
+
+    // About is displayed inside the home section
+    const targetId = id === "about" ? "home" : id;
+
+    if (location.pathname !== "/") {
+      navigate("/");
+      scrollToSectionWithRetry(targetId);
+    } else {
+      scrollToSectionWithRetry(targetId);
+    }
+
     setIsMobileMenuOpen(false);
   };
 
@@ -220,7 +215,9 @@ const Header: React.FC = () => {
             {/* Navigation Links - Center (Desktop only) */}
             <ul className="hidden lg:flex items-center gap-10 xl:gap-14 list-none m-0 p-0 flex-1 justify-center">
               {navLinks.map((link, index) => {
-                const isActive = activeSection === link.id;
+                const isScroll = link.kind === "scroll";
+                const isActiveScroll =
+                  location.pathname === "/" && isScroll && activeSection === link.id;
                 return (
                   <motion.li
                     key={link.name}
@@ -228,22 +225,37 @@ const Header: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
                   >
-                    <a
-                      href={link.href}
-                      onClick={(e) => handleNavClick(e, link.id)}
-                      className={`
-                        text-xl transition-all duration-300 relative whitespace-nowrap font-arabic
-                        ${isActive
-                          ? "font-bold"
-                          : "text-white hover:text-[#C67588] font-normal"
+                    {link.kind === "route" ? (
+                      <NavLink
+                        to={link.to}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={({ isActive }) =>
+                          `
+                          text-xl transition-all duration-300 relative whitespace-nowrap font-arabic
+                          ${isActive
+                            ? "font-bold text-[#C67588]"
+                            : "text-white hover:text-[#C67588] font-normal"
+                          }
+                        `
                         }
-                      `}
-                      style={{
-                        color: isActive ? "#C67588" : undefined, // Explicit active color
-                      }}
-                    >
-                      {link.name}
-                    </a>
+                      >
+                        {link.name}
+                      </NavLink>
+                    ) : (
+                      <a
+                        href={link.href}
+                        onClick={(e) => handleScrollNavClick(e, link.id)}
+                        className={`
+                          text-xl transition-all duration-300 relative whitespace-nowrap font-arabic
+                          ${isActiveScroll
+                            ? "font-bold text-[#C67588]"
+                            : "text-white hover:text-[#C67588] font-normal"
+                          }
+                        `}
+                      >
+                        {link.name}
+                      </a>
+                    )}
                   </motion.li>
                 );
               })}
@@ -330,7 +342,7 @@ const Header: React.FC = () => {
               <nav className="p-6">
                 <ul className="space-y-2">
                   {navLinks.map((link, index) => {
-                    const isActive = activeSection === link.id;
+                    const isScroll = link.kind === "scroll";
                     return (
                       <motion.li
                         key={link.name}
@@ -339,19 +351,37 @@ const Header: React.FC = () => {
                         initial="closed"
                         animate="open"
                       >
-                        <a
-                          href={link.href}
-                          onClick={(e) => handleNavClick(e, link.id)}
-                          className={`
-                            block py-4 px-4 rounded-xl text-lg font-medium transition-all duration-300
-                            ${isActive
-                              ? "bg-accent-pink/20 text-accent-pink"
-                              : "text-text-primary hover:bg-white/5 hover:text-accent-pink"
+                        {link.kind === "route" ? (
+                          <NavLink
+                            to={link.to}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className={({ isActive }) =>
+                              `
+                              block py-4 px-4 rounded-xl text-lg font-medium transition-all duration-300
+                              ${isActive
+                                ? "bg-accent-pink/20 text-accent-pink"
+                                : "text-text-primary hover:bg-white/5 hover:text-accent-pink"
+                              }
+                            `
                             }
-                          `}
-                        >
-                          {link.name}
-                        </a>
+                          >
+                            {link.name}
+                          </NavLink>
+                        ) : (
+                          <a
+                            href={link.href}
+                            onClick={(e) => handleScrollNavClick(e, link.id)}
+                            className={`
+                              block py-4 px-4 rounded-xl text-lg font-medium transition-all duration-300
+                              ${location.pathname === "/" && isScroll && activeSection === link.id
+                                ? "bg-accent-pink/20 text-accent-pink"
+                                : "text-text-primary hover:bg-white/5 hover:text-accent-pink"
+                              }
+                            `}
+                          >
+                            {link.name}
+                          </a>
+                        )}
                       </motion.li>
                     );
                   })}

@@ -8,7 +8,6 @@ import Footer from "../../components/layout/Footer";
 import Container from "../../components/common/Container";
 import SectionTitle from "../../components/ui/SectionTitle";
 import { useSEO } from "../../hooks/useSEO";
-import { ViewProvider } from "../../context/ViewContext";
 
 // Portfolio item interface
 interface PortfolioItem {
@@ -491,18 +490,17 @@ const PortfolioCategory: React.FC = () => {
   };
 
   return (
-    <ViewProvider>
-      <div className="min-h-screen bg-bg-primary">
-        <Header />
+    <div className="min-h-screen bg-bg-primary">
+      <Header />
 
-        <main className="pt-32 pb-20">
-          {/* Background Effects */}
-          <div className="fixed top-0 right-0 w-[40%] h-[50%] bg-accent-purple/15 blur-[150px] rounded-full pointer-events-none z-0"></div>
-          <div className="fixed bottom-0 left-0 w-[30%] h-[40%] bg-accent-pink/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
+      <main className="pt-32 pb-20">
+        {/* Background Effects */}
+        <div className="fixed top-0 right-0 w-[40%] h-[50%] bg-accent-purple/15 blur-[150px] rounded-full pointer-events-none z-0"></div>
+        <div className="fixed bottom-0 left-0 w-[30%] h-[40%] bg-accent-pink/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
 
-          <Container>
-            {/* Page Title */}
-            <SectionTitle title={categoryInfo.title} maxWidth="200px" centered />
+        <Container>
+          {/* Page Title */}
+          <SectionTitle title={categoryInfo.title} maxWidth="200px" centered />
 
             {/* Category Navigation */}
             <motion.div
@@ -569,12 +567,11 @@ const PortfolioCategory: React.FC = () => {
                 <span>العودة للرئيسية</span>
               </Link>
             </motion.div>
-          </Container>
-        </main>
+        </Container>
+      </main>
 
-        <Footer />
-      </div>
-    </ViewProvider>
+      <Footer />
+    </div>
   );
 };
 
