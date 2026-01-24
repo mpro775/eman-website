@@ -1,5 +1,6 @@
 import React from "react";
 import { HiArrowLeft, HiChevronLeft } from "react-icons/hi2";
+import { playType } from "../../../utils/soundManager";
 
 interface ContactFormProps {
     formData: {
@@ -25,6 +26,22 @@ const ContactForm: React.FC<ContactFormProps> = ({
     onFormChange,
     onSubmit,
 }) => {
+    const lastTypeAtRef = React.useRef(0);
+
+    const onTypeKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        // Only for actual typing (avoid Shift/Ctrl/Alt, arrows, etc.)
+        if (e.ctrlKey || e.metaKey || e.altKey) return;
+        const isChar = e.key.length === 1;
+        const isBackspace = e.key === "Backspace";
+        if (!isChar && !isBackspace) return;
+
+        const now = performance.now();
+        if (now - lastTypeAtRef.current < 45) return; // throttle
+        lastTypeAtRef.current = now;
+
+        playType({ volume: 0.2 });
+    };
+
     return (
         <div>
             {/* Form Heading */}
@@ -43,6 +60,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                         placeholder="الاسم الكامل"
                         value={formData.name}
                         onChange={onFormChange}
+                        onKeyDown={onTypeKeyDown}
                         className="w-full bg-[#1a1a2e] border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-text-muted text-right focus:border-accent-pink focus:outline-none transition-colors duration-300"
                     />
                     <input
@@ -51,6 +69,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                         placeholder="الإيميل"
                         value={formData.email}
                         onChange={onFormChange}
+                        onKeyDown={onTypeKeyDown}
                         className="w-full bg-[#1a1a2e] border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-text-muted text-right focus:border-accent-pink focus:outline-none transition-colors duration-300"
                     />
                 </div>
@@ -62,6 +81,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                     placeholder="العنوان"
                     value={formData.address}
                     onChange={onFormChange}
+                    onKeyDown={onTypeKeyDown}
                     className="w-full bg-[#1a1a2e] border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-text-muted text-right focus:border-accent-pink focus:outline-none transition-colors duration-300"
                 />
 
@@ -108,6 +128,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
                     placeholder="الرسالة"
                     value={formData.message}
                     onChange={onFormChange}
+                    onKeyDown={onTypeKeyDown}
                     rows={5}
                     className="w-full bg-[#1a1a2e] border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-text-muted text-right focus:border-accent-pink focus:outline-none transition-colors duration-300 resize-none"
                 />

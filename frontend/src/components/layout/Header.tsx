@@ -1,16 +1,19 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { HiDownload, HiMenuAlt3, HiX } from "react-icons/hi";
+import { HiDownload, HiMenuAlt3, HiVolumeOff, HiVolumeUp, HiX } from "react-icons/hi";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Container from "../common/Container";
 import logoImage from "../../assets/logos/logo.png";
 import downloadIcon from "../../assets/icons/download.svg";
 import { useView } from "../../context/ViewContext";
+import { useSoundStore } from "../../store/sound.store";
+import { playToggleOff, playToggleOn } from "../../utils/soundManager";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { setIsAboutView } = useView();
+  const { enabled: soundEnabled, toggleEnabled: toggleSoundEnabled } = useSoundStore();
 
   const [activeSection, setActiveSection] = useState<string>("home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
@@ -262,33 +265,53 @@ const Header: React.FC = () => {
             </ul>
 
             {/* CV Download - Left Side (RTL: appears last = left) */}
-            <motion.a
-              href="#cv"
-              className="hidden lg:flex items-center gap-3 text-white transition-all duration-300 hover:text-accent-pink flex-shrink-0 group"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span
-                className="transition-colors duration-300"
-                style={{
-                  fontFamily: '"Urbanist", "Tajawal", sans-serif',
-                  fontWeight: 600,
-                  fontSize: '24px',
-                  lineHeight: '100%',
-                  letterSpacing: '0%',
+            <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
+              {/* Sound Toggle */}
+              <motion.button
+                type="button"
+                data-snd="off"
+                className="flex items-center justify-center w-10 h-10 text-white transition-colors duration-300 hover:text-accent-pink"
+                whileTap={{ scale: 0.95 }}
+                aria-label={soundEnabled ? "إيقاف الصوت" : "تشغيل الصوت"}
+                onClick={() => {
+                  const wasEnabled = soundEnabled;
+                  if (wasEnabled) playToggleOff();
+                  toggleSoundEnabled();
+                  if (!wasEnabled) playToggleOn();
                 }}
               >
-                السيفي
-              </span>
-              <img
-                src={downloadIcon}
-                alt="Download"
-                className="w-6 h-6 object-contain transition-all duration-300 group-hover:[filter:brightness(0)_saturate(100%)_invert(58%)_sepia(34%)_saturate(752%)_hue-rotate(305deg)_brightness(94%)_contrast(87%)]"
-              />
-            </motion.a>
+                {soundEnabled ? <HiVolumeUp className="text-2xl" /> : <HiVolumeOff className="text-2xl" />}
+              </motion.button>
+
+              <motion.a
+                href="#cv"
+                className="flex items-center gap-3 text-white transition-all duration-300 hover:text-accent-pink flex-shrink-0 group"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span
+                  className="transition-colors duration-300"
+                  style={{
+                    fontFamily: '"Urbanist", "Tajawal", sans-serif',
+                    fontWeight: 600,
+                    fontSize: '24px',
+                    lineHeight: '100%',
+                    letterSpacing: '0%',
+                  }}
+                >
+                  السيفي
+                </span>
+                <img
+                  src={downloadIcon}
+                  alt="Download"
+                  className="w-6 h-6 object-contain transition-all duration-300 group-hover:[filter:brightness(0)_saturate(100%)_invert(58%)_sepia(34%)_saturate(752%)_hue-rotate(305deg)_brightness(94%)_contrast(87%)]"
+                />
+              </motion.a>
+            </div>
 
             {/* Mobile Menu Button - Left Side (shows on mobile) */}
             <motion.button
+              data-snd="off"
               className="lg:hidden flex items-center justify-center w-10 h-10 text-text-primary hover:text-accent-pink transition-colors duration-300 z-[110]"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               whileTap={{ scale: 0.95 }}
@@ -327,14 +350,34 @@ const Header: React.FC = () => {
             >
               {/* Menu Header */}
               <div className="flex items-center justify-between p-6 border-b border-white/10">
-                <motion.button
-                  className="flex items-center justify-center w-10 h-10 text-text-primary hover:text-accent-pink transition-colors duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  whileTap={{ scale: 0.95 }}
-                  aria-label="إغلاق القائمة"
-                >
-                  <HiX className="text-2xl" />
-                </motion.button>
+                <div className="flex items-center gap-2">
+                  <motion.button
+                    type="button"
+                    data-snd="off"
+                    className="flex items-center justify-center w-10 h-10 text-text-primary hover:text-accent-pink transition-colors duration-300"
+                    whileTap={{ scale: 0.95 }}
+                    aria-label={soundEnabled ? "إيقاف الصوت" : "تشغيل الصوت"}
+                    onClick={() => {
+                      const wasEnabled = soundEnabled;
+                      if (wasEnabled) playToggleOff();
+                      toggleSoundEnabled();
+                      if (!wasEnabled) playToggleOn();
+                    }}
+                  >
+                    {soundEnabled ? <HiVolumeUp className="text-2xl" /> : <HiVolumeOff className="text-2xl" />}
+                  </motion.button>
+
+                  <motion.button
+                    data-snd="off"
+                    className="flex items-center justify-center w-10 h-10 text-text-primary hover:text-accent-pink transition-colors duration-300"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    whileTap={{ scale: 0.95 }}
+                    aria-label="إغلاق القائمة"
+                  >
+                    <HiX className="text-2xl" />
+                  </motion.button>
+                </div>
+
                 <span className="text-accent-pink font-semibold text-lg">القائمة</span>
               </div>
 

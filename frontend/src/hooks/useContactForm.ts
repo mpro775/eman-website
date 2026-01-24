@@ -1,4 +1,5 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import { playCaution, playNotification } from "../utils/soundManager";
 
 
 interface ContactFormData {
@@ -44,12 +45,14 @@ export const useContactForm = () => {
             await new Promise((resolve) => setTimeout(resolve, 1000));
 
             setIsSuccess(true);
+            playNotification();
             setFormData(initialData);
 
             // Reset success message after 5 seconds
             setTimeout(() => setIsSuccess(false), 5000);
         } catch (error) {
             console.error("Error submitting contact form:", error);
+            playCaution();
         } finally {
             setIsSubmitting(false);
         }

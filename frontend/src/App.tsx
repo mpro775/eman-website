@@ -1,10 +1,11 @@
-import { lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { lazy, Suspense, useEffect, useRef } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ViewProvider } from './context/ViewContext';
 import { LoadingProvider } from './context/LoadingContext';
 import { ErrorBoundary } from './components/common';
 import { ProtectedRoute } from './admin/components/ProtectedRoute';
 import { AdminLayout } from './admin/components/layout/AdminLayout';
+import { initSoundKit, playSwipe, playTap, stopProgressLoop } from './utils/soundManager';
 
 // Lazy load public pages
 const Home = lazy(() => import('./pages/Home/Home'));
@@ -46,12 +47,129 @@ const PageLoader = () => (
   </div>
 );
 
+const SoundBridge = () => {
+  const location = useLocation();
+  const pathnameRef = useRef(location.pathname);
+  const lastHoverRef = useRef<{ el: Element | null; at: number }>({ el: null, at: 0 });
+  const prevPathnameRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    pathnameRef.current = location.pathname;
+  }, [location.pathname]);
+
+  useEffect(() => {
+    // Route-to-route navigation sound (public only)
+    if (location.pathname.startsWith('/admin')) {
+      prevPathnameRef.current = location.pathname;
+      return;
+    }
+
+    // Skip on first mount
+    if (prevPathnameRef.current === null) {
+      prevPathnameRef.current = location.pathname;
+      return;
+    }
+
+    if (prevPathnameRef.current !== location.pathname) {
+      // Slight delay so it feels tied to the transition
+      playSwipe({ volume: 0.35, delay: 0.02 });
+      prevPathnameRef.current = location.pathname;
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    // Kick off async kit load on public pages for best UX (first click has sound)
+    if (!location.pathname.startsWith('/admin')) {
+      void initSoundKit();
+    } else {
+      // Safety: ensure no public loops keep running on admin routes.
+      stopProgressLoop();
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const onPointerDown = (e: PointerEvent) => {
+      const pathname = pathnameRef.current;
+      if (pathname.startsWith('/admin')) return;
+
+      // mouse: only left click
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+
+      const target = e.target as HTMLElement | null;
+      const clickable = target?.closest?.('button, a, [role="button"]') as HTMLElement | null;
+      if (!clickable) return;
+
+      // allow opting out anywhere up the tree
+      if (clickable.closest('[data-snd="off"]')) return;
+
+      // ignore disabled
+      if (clickable instanceof HTMLButtonElement && clickable.disabled) return;
+      if (clickable.getAttribute('aria-disabled') === 'true') return;
+
+      playTap();
+    };
+
+    document.addEventListener('pointerdown', onPointerDown, true);
+    return () => document.removeEventListener('pointerdown', onPointerDown, true);
+  }, []);
+
+  useEffect(() => {
+    const onPointerOver = (e: PointerEvent) => {
+      const pathname = pathnameRef.current;
+      if (pathname.startsWith('/admin')) return;
+
+      // Hover sound should be mouse-only (avoid touch/stylus spam)
+      if (e.pointerType !== 'mouse') return;
+
+      const target = e.target as HTMLElement | null;
+      const el = target?.closest?.('button, a, [role="button"]') as HTMLElement | null;
+      if (!el) return;
+
+      const isInHeader = Boolean(el.closest('header'));
+      const isAnchor = el.tagName.toLowerCase() === 'a';
+
+      // For hover sounds on anchors, limit to header only (reduce noise across the site)
+      if (isAnchor && !isInHeader) return;
+
+      // allow opting out anywhere up the tree
+      if (el.closest('[data-snd="off"]')) return;
+
+      // ignore disabled
+      if (el instanceof HTMLButtonElement && el.disabled) return;
+      if (el.getAttribute('aria-disabled') === 'true') return;
+
+      const now = performance.now();
+
+      // Avoid repeating when moving within the same button or hovering too fast between elements
+      if (lastHoverRef.current.el === el && now - lastHoverRef.current.at < 600) return;
+      if (now - lastHoverRef.current.at < 80) return;
+
+      lastHoverRef.current = { el, at: now };
+
+      // Header hover: force the first tap variation (index 0)
+      if (isInHeader) {
+        playTap({ index: 0, volume: 0.25 });
+        return;
+      }
+
+      // Elsewhere: slightly quieter than click, allow random variation
+      playTap({ volume: 0.25 });
+    };
+
+    document.addEventListener('pointerover', onPointerOver, true);
+    return () => document.removeEventListener('pointerover', onPointerOver, true);
+  }, []);
+
+  return null;
+};
+
 function App() {
   return (
     <ErrorBoundary>
       <LoadingProvider>
         <Router>
           <ViewProvider>
+            <SoundBridge />
             <div className="App">
               <Suspense fallback={<PageLoader />}>
                 <Routes>

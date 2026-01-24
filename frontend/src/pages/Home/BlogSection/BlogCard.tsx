@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { HiArrowUpRight, HiOutlineHeart } from "react-icons/hi2";
 import { LuSend } from "react-icons/lu";
+import { playTap } from "../../../utils/soundManager";
 
 export interface BlogPost {
     id: number;
@@ -30,7 +31,11 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, index }) => {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: index * 0.15 }}
         >
-            <Link to={`/blog/${post.id}`} className="block">
+            <Link
+                to={`/blog/${post.id}`}
+                className="block"
+                onMouseEnter={() => playTap({ volume: 0.25 })}
+            >
                 {/* Card Container - No background */}
                 <div className="relative rounded-3xl overflow-hidden transition-all duration-300">
                     {/* Header Image - Large with rounded corners and padding */}

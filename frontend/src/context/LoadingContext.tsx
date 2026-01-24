@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, useRef, type ReactNode } from 'react';
+import { startProgressLoop, stopProgressLoop } from '../utils/soundManager';
 
 interface LoadingContextType {
   isLoading: boolean;
@@ -25,20 +26,39 @@ interface LoadingProviderProps {
 export const LoadingProvider: React.FC<LoadingProviderProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
+  const loadingDepthRef = useRef(0);
 
   const setLoading = useCallback((loading: boolean, message?: string) => {
     setIsLoading(loading);
     setLoadingMessage(message || null);
+
+    // Keep loop in sync even for direct setLoading usage (used in Admin).
+    if (loading) {
+      if (loadingDepthRef.current === 0) startProgressLoop({ volume: 0.6 });
+      loadingDepthRef.current = Math.max(1, loadingDepthRef.current);
+    } else {
+      loadingDepthRef.current = 0;
+      stopProgressLoop();
+    }
   }, []);
 
   const startLoading = useCallback((message?: string) => {
+    loadingDepthRef.current += 1;
     setIsLoading(true);
     setLoadingMessage(message || null);
+    // Start loop only on the first start call.
+    if (loadingDepthRef.current === 1) {
+      startProgressLoop({ volume: 0.6 });
+    }
   }, []);
 
   const stopLoading = useCallback(() => {
-    setIsLoading(false);
-    setLoadingMessage(null);
+    loadingDepthRef.current = Math.max(0, loadingDepthRef.current - 1);
+    if (loadingDepthRef.current === 0) {
+      setIsLoading(false);
+      setLoadingMessage(null);
+      stopProgressLoop();
+    }
   }, []);
 
   const value: LoadingContextType = {

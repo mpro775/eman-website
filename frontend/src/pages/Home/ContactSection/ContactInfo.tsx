@@ -4,6 +4,7 @@ import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from "react-icons/f
 import phoneIcon from "../../../assets/icons/PhoneCall.svg";
 import emailIcon from "../../../assets/icons/email.svg";
 import behanceIcon from "../../../assets/icons/behance.svg";
+import { playTap } from "../../../utils/soundManager";
 
 /**
  * Contact info component with phone, email, and social media links
@@ -63,6 +64,7 @@ const ContactInfo: React.FC = () => {
                     <a
                         href="#"
                         className="w-14 h-14 bg-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                        onMouseEnter={() => playTap({ volume: 0.25 })}
                     >
                         <img src={behanceIcon} alt="Behance" className="w-7 h-7" />
                     </a>
@@ -70,6 +72,7 @@ const ContactInfo: React.FC = () => {
                     <a
                         href="#"
                         className="w-14 h-14 bg-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                        onMouseEnter={() => playTap({ volume: 0.25 })}
                     >
                         <FaInstagram className="text-xl text-accent-pink" />
                     </a>
@@ -77,6 +80,7 @@ const ContactInfo: React.FC = () => {
                     <a
                         href="#"
                         className="w-14 h-14 bg-accent-pink rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                        onMouseEnter={() => playTap({ volume: 0.25 })}
                     >
                         <FaLinkedinIn className="text-xl text-white" />
                     </a>
@@ -84,6 +88,7 @@ const ContactInfo: React.FC = () => {
                     <a
                         href="#"
                         className="w-14 h-14 bg-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                        onMouseEnter={() => playTap({ volume: 0.25 })}
                     >
                         <FaTwitter className="text-xl text-accent-pink" />
                     </a>
@@ -91,6 +96,7 @@ const ContactInfo: React.FC = () => {
                     <a
                         href="#"
                         className="w-14 h-14 bg-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
+                        onMouseEnter={() => playTap({ volume: 0.25 })}
                     >
                         <FaFacebookF className="text-xl text-accent-pink" />
                     </a>
