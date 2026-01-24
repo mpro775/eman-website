@@ -244,7 +244,7 @@ const PortfolioCard: React.FC<{
           initial={false}
           animate={{
             // يظهر 20% فقط عند الإخفاء (مخفي 80%)
-            y: isExpanded ? 0 : "70%",
+            y: isExpanded ? 0 : "65%",
           }}
           transition={{
             duration: 0.55,
@@ -380,7 +380,7 @@ const PortfolioCard: React.FC<{
 
 
                 {/* Icon box (كما في الصورة: مربع أيقونة ثابت في أقصى اليسار) */}
-                <div className="w-12 h-12 rounded-2xl bg-[#c77e8c] flex items-center justify-center shadow-lg shrink-0">
+                <div className="w-11 h-11 rounded-2xl bg-[#c77e8c] flex items-center justify-center shadow-lg shrink-0 mt-2">
                   <img src={BrushIcon} alt="brush" className="w-6 h-6" />
                 </div>
               </div>
