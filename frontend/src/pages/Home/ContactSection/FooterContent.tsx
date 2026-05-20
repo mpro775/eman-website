@@ -9,6 +9,7 @@ import {
 import { useNewsletter } from "../../../hooks";
 import logo from "../../../assets/logos/logo.png";
 import subtractIcon from "../../../assets/icons/Subtract.svg";
+import { playTap, playType } from "../../../utils/soundManager";
 
 // Types
 interface SocialLink {
@@ -31,6 +32,20 @@ interface ImportantLink {
  */
 const FooterContent: React.FC = () => {
     const { email: newsletterEmail, handleEmailChange, handleSubmit: handleNewsletterSubmit } = useNewsletter();
+    const lastTypeAtRef = React.useRef(0);
+
+    const onTypeKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.ctrlKey || e.metaKey || e.altKey) return;
+        const isChar = e.key.length === 1;
+        const isBackspace = e.key === "Backspace";
+        if (!isChar && !isBackspace) return;
+
+        const now = performance.now();
+        if (now - lastTypeAtRef.current < 45) return;
+        lastTypeAtRef.current = now;
+
+        playType({ volume: 0.2 });
+    };
 
     const footerSocialLinks: SocialLink[] = [
         { icon: FaFacebookF, href: "#" },
@@ -125,6 +140,7 @@ const FooterContent: React.FC = () => {
                                     key={index}
                                     href={social.href}
                                     className="w-9 h-9 bg-white rounded-full flex items-center justify-center text-[#1a1025] hover:bg-accent-pink hover:text-white transition-all duration-300"
+                                    onMouseEnter={() => playTap({ volume: 0.25 })}
                                 >
                                     <social.icon className="text-base" />
                                 </a>
@@ -150,6 +166,7 @@ const FooterContent: React.FC = () => {
                                         placeholder="البريد الإلكتروني"
                                         value={newsletterEmail}
                                         onChange={handleEmailChange}
+                                        onKeyDown={onTypeKeyDown}
                                         className="w-full bg-white rounded-xl px-4 py-3 pl-14 text-black placeholder:text-black text-right focus:outline-none transition-colors duration-300"
 
                                         style={{

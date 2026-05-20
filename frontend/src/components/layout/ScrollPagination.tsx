@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
+import { playCustomSwipe } from "../../utils/swipeSoundPlayer";
 
 interface Section {
   id: string;
@@ -20,6 +21,19 @@ const sections: Section[] = [
 const ScrollPagination: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>("home");
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const prevSectionRef = useRef<string | null>(null);
+
+  // Play custom swipe sound when active section changes (skip initial mount)
+  useEffect(() => {
+    if (prevSectionRef.current === null) {
+      prevSectionRef.current = activeSection;
+      return;
+    }
+    if (prevSectionRef.current !== activeSection) {
+      playCustomSwipe();
+      prevSectionRef.current = activeSection;
+    }
+  }, [activeSection]);
 
   useEffect(() => {
     // Create Intersection Observer

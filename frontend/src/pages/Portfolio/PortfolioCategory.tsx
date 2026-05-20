@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useParams, Link } from "react-router-dom";
-import { HiArrowRight, HiXMark } from "react-icons/hi2";
+import { HiArrowRight } from "react-icons/hi2";
+import BrushIcon from "../../assets/icons/brush.svg";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
 import Container from "../../components/common/Container";
 import SectionTitle from "../../components/ui/SectionTitle";
 import { useSEO } from "../../hooks/useSEO";
-import { ViewProvider } from "../../context/ViewContext";
 
 // Portfolio item interface
 interface PortfolioItem {
@@ -196,142 +196,267 @@ const categoryMapping: Record<string, { title: string; titleAr: string }> = {
   "graphic": { title: "Graphic Design", titleAr: "التصميم الجرافيكي" },
 };
 
-// Portfolio Card Component matching the design
 const PortfolioCard: React.FC<{
   item: PortfolioItem;
   index: number;
   isExpanded: boolean;
   onToggle: () => void;
 }> = ({ item, index, isExpanded, onToggle }) => {
+  const hasProjectLink =
+    typeof item.projectLink === "string" &&
+    item.projectLink.trim().length > 0 &&
+    item.projectLink.trim() !== "#";
+  const panelPath = `M 12 10 L 32 10 C 42 10 43 5 50 4 C 58 5 59 10 70 10 L 96 10 C 99 11 100 13 100 16 L 100 88 A 12 12 0 0 1 88 100 L 12 100 A 12 12 0 0 1 0 88 L 0 16 C 0 13 1 11 4 10 Z`;
+  // Panel colors and opacity controls
+  const panelFill = "rgba(255, 254, 248, 0.7)"; // Panel fill color and opacity
+  const panelStroke = "rgba(255, 255, 255, 0.76)"; // Panel stroke color and opacity
+
+  // Glass effect settings (مثل الكود الذي أعجبك)
+  const glassBlur = 20; // px
+  const shadowOpacity = 0.30;
+  const clipPathId = `panel-clip-${item.id}-${index}`;
+
   return (
     <motion.div
-      className={`group relative ${isExpanded ? 'md:col-span-2' : ''}`}
+      className="relative"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.05 }}
-      layout
     >
-      <motion.div
-        onClick={onToggle}
-        className="relative bg-[#f0ede8] rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 hover:shadow-[0_10px_40px_rgba(0,0,0,0.3)]"
-        layout
-      >
-        <div className={`flex ${isExpanded ? 'flex-col md:flex-row' : 'flex-col'}`}>
-          {/* Image Section */}
-          <motion.div
-            className={`relative overflow-hidden ${isExpanded ? 'md:w-1/2' : 'w-full'}`}
-            layout
-          >
-            {/* Header with logo */}
-            <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
-              <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                <div className="w-5 h-5 rounded-full bg-accent-purple/20 flex items-center justify-center">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10" stroke="#9d4edd" strokeWidth="2" />
-                    <circle cx="12" cy="12" r="4" fill="#9d4edd" />
-                  </svg>
-                </div>
-                <span className="text-[#9d4edd] text-xs font-medium">Eman Ismaeil</span>
-              </div>
-            </div>
-
-            {/* Project Image */}
-            <div className="aspect-[4/3] bg-gradient-to-br from-[#e8dff5] to-[#d4c4e8] p-4 pt-14">
-              <div className="w-full h-full rounded-lg overflow-hidden shadow-lg">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Card Content */}
-          <motion.div
-            className={`p-5 ${isExpanded ? 'md:w-1/2 md:p-6 bg-[#f0ede8]' : ''}`}
-            layout
-          >
-            {/* Title and Subtitle */}
-            <div className="text-right">
-              <h3 className="text-[#9d4edd] text-xl font-bold mb-1">
-                {item.titleAr}
-              </h3>
-              <p className="text-gray-600 text-sm">
-                {item.subtitleAr}
-              </p>
-            </div>
-
-            {/* Expanded Description */}
-            <AnimatePresence>
-              {isExpanded && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="mt-4"
-                >
-                  <div className="flex items-start gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-full bg-accent-pink/80 flex items-center justify-center flex-shrink-0">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="text-[#9d4edd] text-lg font-bold mb-2 text-right">
-                        كليـم
-                      </h4>
-                      <p className="text-gray-600 text-sm leading-relaxed text-right">
-                        {item.descriptionAr}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Tools */}
-                  <div className="flex flex-wrap justify-end gap-2 mt-4">
-                    {item.tools.map((tool, idx) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1 rounded-full text-xs bg-[#9d4edd]/10 text-[#9d4edd] border border-[#9d4edd]/20"
-                      >
-                        {tool}
-                      </span>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Link Icon - Only show when not expanded */}
-            {!isExpanded && (
-              <div className="flex justify-start mt-4">
-                <div className="w-10 h-10 rounded-full bg-accent-pink flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-                  </svg>
-                </div>
-              </div>
-            )}
-          </motion.div>
+      {/* Card Container */}
+      <div className="relative h-[400px] overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src={item.image}
+            alt={item.title}
+            className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/60" />
         </div>
 
-        {/* Close Button when expanded */}
-        {isExpanded && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggle();
-            }}
-            className="absolute top-4 left-4 w-8 h-8 rounded-full bg-white/80 flex items-center justify-center text-gray-600 hover:bg-white hover:text-accent-purple transition-colors duration-300 z-10"
-          >
-            <HiXMark className="text-lg" />
-          </button>
-        )}
-      </motion.div>
+        {/* Sliding Panel - تصعد من الأسفل بدون تمدد */}
+        <motion.div
+          onClick={onToggle}
+          className="absolute bottom-0 left-0 right-0 cursor-pointer h-[70%] select-none"
+          initial={false}
+          animate={{
+            // يظهر 20% فقط عند الإخفاء (مخفي 80%)
+            y: isExpanded ? 0 : "65%",
+          }}
+          transition={{
+            duration: 0.55,
+            ease: [0.25, 0.1, 0.25, 1],
+          }}
+        >
+          {/* Shape Container */}
+          <div className="relative h-full" style={{ filter: `drop-shadow(0px 20px 10px rgba(0, 0, 0, ${shadowOpacity}))` }}>
+            {/* SVG Definitions for clipPath and mask */}
+            <svg className="absolute w-0 h-0" aria-hidden="true">
+              <defs>
+                <clipPath id={clipPathId} clipPathUnits="userSpaceOnUse">
+                  <path d={panelPath} />
+                </clipPath>
+                <mask id={`panel-mask-${item.id}-${index}`}>
+                  <rect width="100" height="100" fill="white" />
+                  <path d={panelPath} fill="black" />
+                </mask>
+              </defs>
+            </svg>
+
+            {/* Glass Layer (طبقة blur على صورة الخلفية) - استخدام SVG مباشرة */}
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none z-0"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <filter id={`blur-${item.id}-${index}`} x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation={glassBlur / 2} />
+                </filter>
+              </defs>
+              <image
+                href={item.image}
+                x="0"
+                y="0"
+                width="100"
+                height="100"
+                preserveAspectRatio="xMidYMid slice"
+                filter={`url(#blur-${item.id}-${index})`}
+                clipPath={`url(#${clipPathId})`}
+              />
+            </svg>
+
+            {/* White Background Shape (خلفية بيضاء) */}
+            {/* <svg
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+            >
+              <path
+                d={panelPath}
+                fill="rgba(255, 255, 255, 0.84)"
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg> */}
+
+            {/* Panel Shape (الخلفية + الندبة + البوردر كقطعة واحدة) */}
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none z-10"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+            >
+              <path
+                d={panelPath}
+                fill={panelFill}
+                stroke={panelStroke}
+                strokeWidth="1"
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+
+            {/* Glass Borders (بوردرات شفافة على الحواف - كما في المثال) */}
+            <div
+              className="absolute inset-0 pointer-events-none z-20"
+              style={{
+                borderTop: '2px solid rgba(225, 225, 225, 0.2)',
+                borderLeft: '1px solid rgba(225, 225, 225, 0.1)',
+                borderRight: '1px solid rgba(225, 225, 225, 0.89)',
+                clipPath: `url(#${clipPathId})`,
+              }}
+            />
+
+            {/* Chevron (كما في الصورة: أعلى المنتصف) */}
+            <div className="absolute top-5 left-0 right-0 flex justify-center pointer-events-none z-20">
+              <motion.div
+                initial={false}
+                animate={{ rotate: isExpanded ? 0 : 180 }}
+                transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+              >
+                <svg
+                  width="12"
+                  height="6"
+                  viewBox="0 0 12 6"
+                  className="text-[#c77e8c]"
+                  fill="none"
+                >
+                  <path
+                    d="M1 1L6 5L11 1"
+                    stroke="currentColor"
+                    strokeWidth="1.08"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </motion.div>
+            </div>
+
+            {/* Content */}
+            <div className="relative h-full px-6 pt-8 pb-6 text-right flex flex-col z-30">
+              {/* Header */}
+              <div className="flex items-center justify-between gap-4">
+
+                <div className="min-w-0 flex-1 text-right">
+                  <h3
+                    className="text-[#7a3b1c] truncate"
+                    style={{
+                      fontFamily: 'Poppins, sans-serif',
+                      fontWeight: 700,
+                      fontSize: '21.57px',
+                      lineHeight: '130%',
+                      letterSpacing: '0%',
+                    }}
+                  >
+                    {item.titleAr}
+                  </h3>
+                  {isExpanded && (
+                    <p className="text-gray-700 text-sm mt-1 truncate">
+                      {item.subtitleAr}
+                    </p>
+                  )}
+                </div>
+
+
+                {/* Icon box (كما في الصورة: مربع أيقونة ثابت في أقصى اليسار) */}
+                <div className="w-11 h-11 rounded-2xl bg-[#c77e8c] flex items-center justify-center shadow-lg shrink-0 mt-2">
+                  <img src={BrushIcon} alt="brush" className="w-6 h-6" />
+                </div>
+              </div>
+
+              {/* Body (ثابت ضمن اللوحة، مع تمرير عند الحاجة) */}
+              <motion.div
+                initial={false}
+                animate={{
+                  opacity: isExpanded ? 1 : 0,
+                  y: isExpanded ? 0 : 8,
+                }}
+                transition={{ duration: 0.25 }}
+                className={`mt-5 flex-1 overflow-y-auto ${isExpanded ? "pointer-events-auto" : "pointer-events-none"
+                  }`}
+              >
+                <p className="text-gray-700 text-sm leading-relaxed">
+                  {item.descriptionAr}
+                </p>
+
+                <div className="mt-5 flex flex-wrap justify-end gap-2">
+                  {item.tools.map((tool, idx) => (
+                    <span
+                      key={idx}
+                      className="px-4 py-1.5 rounded-full text-xs font-medium bg-purple-200/70 text-purple-900 border border-purple-300/50"
+                    >
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+
+                {hasProjectLink && (
+                  <div className="mt-6 flex justify-start">
+                    <a
+                      href={item.projectLink}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-[#c77e8c] text-white shadow-md hover:opacity-95 transition-opacity"
+                    >
+                      <span>عرض المشروع</span>
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        className="opacity-95"
+                      >
+                        <path
+                          d="M10 14L21 3"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M15 3H21V9"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M21 14V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3H10"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                )}
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
     </motion.div>
   );
 };
@@ -365,18 +490,17 @@ const PortfolioCategory: React.FC = () => {
   };
 
   return (
-    <ViewProvider>
-      <div className="min-h-screen bg-bg-primary">
-        <Header />
+    <div className="min-h-screen bg-bg-primary">
+      <Header />
 
-        <main className="pt-32 pb-20">
-          {/* Background Effects */}
-          <div className="fixed top-0 right-0 w-[40%] h-[50%] bg-accent-purple/15 blur-[150px] rounded-full pointer-events-none z-0"></div>
-          <div className="fixed bottom-0 left-0 w-[30%] h-[40%] bg-accent-pink/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
+      <main className="pt-32 pb-20">
+        {/* Background Effects */}
+        <div className="fixed top-0 right-0 w-[40%] h-[50%] bg-accent-purple/15 blur-[150px] rounded-full pointer-events-none z-0"></div>
+        <div className="fixed bottom-0 left-0 w-[30%] h-[40%] bg-accent-pink/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
 
-          <Container>
-            {/* Page Title */}
-            <SectionTitle title={categoryInfo.title} maxWidth="200px" centered />
+        <Container>
+          {/* Page Title */}
+          <SectionTitle title={categoryInfo.title} maxWidth="200px" centered />
 
             {/* Category Navigation */}
             <motion.div
@@ -403,7 +527,6 @@ const PortfolioCategory: React.FC = () => {
             {/* Portfolio Grid */}
             <motion.div
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 relative z-10"
-              layout
             >
               {items.map((item, index) => (
                 <PortfolioCard
@@ -444,12 +567,11 @@ const PortfolioCategory: React.FC = () => {
                 <span>العودة للرئيسية</span>
               </Link>
             </motion.div>
-          </Container>
-        </main>
+        </Container>
+      </main>
 
-        <Footer />
-      </div>
-    </ViewProvider>
+      <Footer />
+    </div>
   );
 };
 

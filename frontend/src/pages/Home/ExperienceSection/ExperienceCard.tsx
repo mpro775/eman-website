@@ -1,5 +1,6 @@
 import React from "react";
 import { motion, type Variants } from "framer-motion";
+import { playTap } from "../../../utils/soundManager";
 
 export interface ExperienceItem {
     id: number;
@@ -28,7 +29,10 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
             className="relative flex items-center gap-4 flex-row-reverse group"
         >
             {/* Card */}
-            <div className="flex-1 bg-[#1e1e2e]/90 backdrop-blur-sm border border-accent-purple/30 rounded-xl p-6 relative hover:border-accent-purple/50 transition-all duration-300 hover:shadow-[0_0_25px_rgba(157,78,221,0.3)] group">
+            <div
+                className="flex-1 bg-[#1e1e2e]/90 backdrop-blur-sm border border-accent-purple/30 rounded-xl p-6 relative hover:border-accent-purple/50 transition-all duration-300 hover:shadow-[0_0_25px_rgba(157,78,221,0.3)] group"
+                onMouseEnter={() => playTap({ volume: 0.25 })}
+            >
                 <div className="text-right">
                     <h3 className="text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-accent-purple-light transition-colors">
                         {experience.title}

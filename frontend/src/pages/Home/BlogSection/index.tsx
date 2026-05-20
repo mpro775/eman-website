@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Container, SectionTitle } from "../../../components";
 import BlogCard, { type BlogPost } from "./BlogCard";
+import { playTap } from "../../../utils/soundManager";
 
 // Mock data
 const blogPosts: BlogPost[] = [
@@ -84,6 +85,7 @@ const BlogSection: React.FC = () => {
                     <Link
                         to="/blog"
                         className="bg-transparent border-2 border-accent-pink text-accent-pink transition-all duration-300 hover:bg-accent-pink hover:text-white hover:shadow-glow-pink flex items-center justify-center capitalize"
+                        onMouseEnter={() => playTap({ volume: 0.25 })}
                         style={{
                             width: '223px',
                             height: '64px',
