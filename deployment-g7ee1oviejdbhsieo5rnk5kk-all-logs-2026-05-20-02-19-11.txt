@@ -1,0 +1,217 @@
+2026-May-20 02:17:23.805346 Docker 29.3.1 with BuildKit and Buildx detected on deployment server (apps-01).
+2026-May-20 02:17:23.879695 Starting deployment of mpro775/eman-website:main to apps-01.
+2026-May-20 02:17:24.594358 Preparing container with helper image: ghcr.io/coollabsio/coolify-helper:1.0.13
+2026-May-20 02:17:25.051260 [DEBUG] [CMD]: docker stop -t 30 g7ee1oviejdbhsieo5rnk5kk
+2026-May-20 02:17:25.051260 [DEBUG] Error response from daemon: No such container: g7ee1oviejdbhsieo5rnk5kk
+2026-May-20 02:17:25.709355 [DEBUG] [CMD]: docker run -d --network 'coolify' --name g7ee1oviejdbhsieo5rnk5kk  --rm -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/coollabsio/coolify-helper:1.0.13
+2026-May-20 02:17:25.709355 [DEBUG] 3ada6b1d7410f5885ce973778e235ed258937b261b3453df7444d73428a13a48
+2026-May-20 02:17:28.926984 [DEBUG] [CMD]: docker exec g7ee1oviejdbhsieo5rnk5kk bash -c 'GIT_SSH_COMMAND="ssh -o ConnectTimeout=30 -p 22 -o Port=22 -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" git ls-remote https://github.com/mpro775/eman-website refs/heads/main'
+2026-May-20 02:<REDACTED>@\(.*\):#https://\1/#g" '\''/artifacts/g7ee1oviejdbhsieo5rnk5kk'\''/.gitmodules || true && git submodule sync && GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" git submodule update --init --recursive --depth=1; fi && cd '\''/artifacts/g7ee1oviejdbhsieo5rnk5kk'\'' && GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" git lfs pull'
+2026-May-20 02:17:29.714714 [DEBUG] Cloning into '/artifacts/g7ee1oviejdbhsieo5rnk5kk'...
+2026-May-20 02:17:32.279066 [DEBUG] From https://github.com/mpro775/eman-website
+2026-May-20 02:17:32.279066 [DEBUG] * branch            9060a500fb195bd901de48d5e4ce6678da3d12ed -> FETCH_HEAD
+2026-May-20 02:17:34.398641 [DEBUG] [CMD]: docker exec g7ee1oviejdbhsieo5rnk5kk bash -c 'cd /artifacts/g7ee1oviejdbhsieo5rnk5kk/backend && git log -1 '\''9060a500fb195bd901de48d5e4ce6678da3d12ed'\'' --pretty=%B'
+2026-May-20 02:17:34.398641 [DEBUG] feat: implement health check endpoint in AppController
+2026-May-20 02:17:35.206813 [DEBUG] [CMD]: docker images -q iu2r7qltb4pp20nagmitr4kf:9060a500fb195bd901de48d5e4ce6678da3d12ed 2>/dev/null
+2026-May-20 02:17:35.206813 [DEBUG] 23655c868ca1
+2026-May-20 02:17:35.248417 No configuration changed & image found (iu2r7qltb4pp20nagmitr4kf:9060a500fb195bd901de48d5e4ce6678da3d12ed) with the same Git Commit SHA. Build step skipped.
+2026-May-20 02:17:36.868394 [DEBUG] [CMD]: docker exec g7ee1oviejdbhsieo5rnk5kk bash -c 'cat /artifacts/g7ee1oviejdbhsieo5rnk5kk/backend/Dockerfile'
+2026-May-20 02:17:36.868394 [DEBUG] # ================================
+2026-May-20 02:17:36.868394 [DEBUG] # 🟢 Eman Backend - Production Build
+2026-May-20 02:17:36.868394 [DEBUG] # ================================
+2026-May-20 02:17:36.868394 [DEBUG] 
+2026-May-20 02:17:36.868394 [DEBUG] # Build stage
+2026-May-20 02:17:36.868394 [DEBUG] FROM node:18-alpine AS builder
+2026-May-20 02:17:36.868394 [DEBUG] 
+2026-May-20 02:17:36.868394 [DEBUG] WORKDIR /app
+2026-May-20 02:17:36.868394 [DEBUG] 
+2026-May-20 02:17:36.868394 [DEBUG] # Copy package files
+2026-May-20 02:17:36.868394 [DEBUG] COPY package*.json ./
+2026-May-20 02:17:36.868394 [DEBUG] 
+2026-May-20 02:17:36.868394 [DEBUG] # Install dependencies
+2026-May-20 02:17:36.868394 [DEBUG] RUN npm ci
+2026-May-20 02:17:36.868394 [DEBUG] 
+2026-May-20 02:17:36.868394 [DEBUG] # Copy source code
+2026-May-20 02:17:36.868394 [DEBUG] COPY . .
+2026-May-20 02:17:36.868394 [DEBUG] 
+2026-May-20 02:17:36.868394 [DEBUG] # Build the application
+2026-May-20 02:17:36.868394 [DEBUG] RUN npm run build
+2026-May-20 02:17:36.868394 [DEBUG] 
+2026-May-20 02:17:36.868394 [DEBUG] # ================================
+2026-May-20 02:17:36.868394 [DEBUG] # Production stage
+2026-May-20 02:17:36.868394 [DEBUG] # ================================
+2026-May-20 02:17:36.868394 [DEBUG] FROM node:18-alpine AS production
+2026-May-20 02:17:36.868394 [DEBUG] 
+2026-May-20 02:17:36.868394 [DEBUG] WORKDIR /app
+2026-May-20 02:17:36.868394 [DEBUG] 
+2026-May-20 02:17:36.868394 [DEBUG] # Copy package files
+2026-May-20 02:17:36.868394 [DEBUG] COPY package*.json ./
+2026-May-20 02:17:36.868394 [DEBUG] 
+2026-May-20 02:17:36.868394 [DEBUG] # Install only production dependencies
+2026-May-20 02:17:36.868394 [DEBUG] RUN npm ci --only=production
+2026-May-20 02:17:36.868394 [DEBUG] 
+2026-May-20 02:17:36.868394 [DEBUG] # Copy built application from builder stage
+2026-May-20 02:17:36.868394 [DEBUG] COPY --from=builder /app/dist ./dist
+2026-May-20 02:17:36.868394 [DEBUG] 
+2026-May-20 02:17:36.868394 [DEBUG] # Create non-root user for security
+2026-May-20 02:17:36.868394 [DEBUG] RUN addgroup -g 1001 -S nodejs && \
+2026-May-20 02:17:36.868394 [DEBUG] adduser -S nestjs -u 1001
+2026-May-20 02:17:36.868394 [DEBUG] 
+2026-May-20 02:17:36.868394 [DEBUG] USER nestjs
+2026-May-20 02:17:36.868394 [DEBUG] 
+2026-May-20 02:17:36.868394 [DEBUG] # Expose port
+2026-May-20 02:17:36.868394 [DEBUG] EXPOSE 3000
+2026-May-20 02:17:36.868394 [DEBUG] 
+2026-May-20 02:17:36.868394 [DEBUG] # Health check
+2026-May-20 02:17:36.868394 [DEBUG] HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+2026-May-20 02:17:36.868394 [DEBUG] CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api || exit 1
+2026-May-20 02:17:36.868394 [DEBUG] 
+2026-May-20 02:17:36.868394 [DEBUG] # Start the application
+2026-May-20 02:17:36.868394 [DEBUG] CMD ["node", "dist/main.js"]
+2026-May-20 02:17:37.742816 [DEBUG] Creating .env file with runtime variables for container.
+2026-May-20 02:17:38.955227 ----------------------------------------
+2026-May-20 02:17:39.011906 Rolling update started.
+2026-May-20 02:17:42.241810 [DEBUG] [CMD]: docker exec g7ee1oviejdbhsieo5rnk5kk bash -c 'COOLIFY_URL=https://api.emanjameel.pro COOLIFY_FQDN=api.emanjameel.pro COOLIFY_BRANCH=main COOLIFY_RESOURCE_UUID=iu2r7qltb4pp20nagmitr4kf  docker compose --project-name iu2r7qltb4pp20nagmitr4kf --project-directory /artifacts/g7ee1oviejdbhsieo5rnk5kk/backend -f /artifacts/g7ee1oviejdbhsieo5rnk5kk/backend/docker-compose.yaml up --build -d'
+2026-May-20 02:17:42.241810 [DEBUG] Container iu2r7qltb4pp20nagmitr4kf-021719131786  Creating
+2026-May-20 02:17:42.905566 [DEBUG] iu2r7qltb4pp20nagmitr4kf-021719131786 Your kernel does not support memory swappiness capabilities or the cgroup is not mounted. Memory swappiness discarded.
+2026-May-20 02:17:42.916262 [DEBUG] Container iu2r7qltb4pp20nagmitr4kf-021719131786  Created
+2026-May-20 02:17:43.024487 [DEBUG] Container iu2r7qltb4pp20nagmitr4kf-021719131786  Starting
+2026-May-20 02:17:43.869271 [DEBUG] Container iu2r7qltb4pp20nagmitr4kf-021719131786  Started
+2026-May-20 02:17:43.993842 New container started.
+2026-May-20 02:17:44.020605 Custom healthcheck found in Dockerfile.
+2026-May-20 02:17:44.037258 Waiting for healthcheck to pass on the new container.
+2026-May-20 02:17:44.060638 Waiting for the start period (5 seconds) before starting healthcheck.
+2026-May-20 02:17:49.520150 [DEBUG] [CMD]: docker inspect --format='{{json .State.Health.Status}}' iu2r7qltb4pp20nagmitr4kf-021719131786
+2026-May-20 02:17:49.520150 [DEBUG] "starting"
+2026-May-20 02:17:49.774515 [DEBUG] [CMD]: docker inspect --format='{{json .State.Health.Log}}' iu2r7qltb4pp20nagmitr4kf-021719131786
+2026-May-20 02:17:49.774515 [DEBUG] [{"Start":"2026-05-20T04:17:48.867682592+02:00","End":"2026-05-20T04:17:49.134927332+02:00","ExitCode":1,"Output":"Connecting to localhost:3000 ([::1]:3000)\nwget: can't connect to remote host: Connection refused\n"}]
+2026-May-20 02:17:49.798461 Attempt 1 of 3 | Healthcheck status: "starting"
+2026-May-20 02:17:49.821275 Healthcheck logs: Connecting to localhost:3000 ([::1]:3000)
+2026-May-20 02:17:49.821275 wget: can't connect to remote host: Connection refused
+2026-May-20 02:17:49.821275 | Return code: 1
+2026-May-20 02:18:20.317096 [DEBUG] [CMD]: docker inspect --format='{{json .State.Health.Status}}' iu2r7qltb4pp20nagmitr4kf-021719131786
+2026-May-20 02:18:20.317096 [DEBUG] "starting"
+2026-May-20 02:18:20.699318 [DEBUG] [CMD]: docker inspect --format='{{json .State.Health.Log}}' iu2r7qltb4pp20nagmitr4kf-021719131786
+2026-May-20 02:18:20.699318 [DEBUG] [{"Start":"2026-05-20T04:17:48.867682592+02:00","End":"2026-05-20T04:17:49.134927332+02:00","ExitCode":1,"Output":"Connecting to localhost:3000 ([::1]:3000)\nwget: can't connect to remote host: Connection refused\n"},{"Start":"2026-05-20T04:18:19.136337016+02:00","End":"2026-05-20T04:18:19.53489878+02:00","ExitCode":1,"Output":"Connecting to localhost:3000 ([::1]:3000)\nwget: server returned error: HTTP/1.1 401 Unauthorized\n"}]
+2026-May-20 02:18:20.714814 Attempt 2 of 3 | Healthcheck status: "starting"
+2026-May-20 02:18:20.735983 Healthcheck logs: Connecting to localhost:3000 ([::1]:3000)
+2026-May-20 02:18:20.735983 wget: server returned error: HTTP/1.1 401 Unauthorized
+2026-May-20 02:18:20.735983 | Return code: 1
+2026-May-20 02:18:51.121528 [DEBUG] [CMD]: docker inspect --format='{{json .State.Health.Status}}' iu2r7qltb4pp20nagmitr4kf-021719131786
+2026-May-20 02:18:51.121528 [DEBUG] "unhealthy"
+2026-May-20 02:18:51.417486 [DEBUG] [CMD]: docker inspect --format='{{json .State.Health.Log}}' iu2r7qltb4pp20nagmitr4kf-021719131786
+2026-May-20 02:18:51.417486 [DEBUG] [{"Start":"2026-05-20T04:17:48.867682592+02:00","End":"2026-05-20T04:17:49.134927332+02:00","ExitCode":1,"Output":"Connecting to localhost:3000 ([::1]:3000)\nwget: can't connect to remote host: Connection refused\n"},{"Start":"2026-05-20T04:18:19.136337016+02:00","End":"2026-05-20T04:18:19.53489878+02:00","ExitCode":1,"Output":"Connecting to localhost:3000 ([::1]:3000)\nwget: server returned error: HTTP/1.1 401 Unauthorized\n"},{"Start":"2026-05-20T04:18:49.566282404+02:00","End":"2026-05-20T04:18:49.795901686+02:00","ExitCode":1,"Output":"Connecting to localhost:3000 ([::1]:3000)\nwget: server returned error: HTTP/1.1 401 Unauthorized\n"}]
+2026-May-20 02:18:51.430360 Attempt 3 of 3 | Healthcheck status: "unhealthy"
+2026-May-20 02:18:51.460961 Healthcheck logs: Connecting to localhost:3000 ([::1]:3000)
+2026-May-20 02:18:51.460961 wget: server returned error: HTTP/1.1 401 Unauthorized
+2026-May-20 02:18:51.460961 | Return code: 1
+2026-May-20 02:18:51.489556 New container is unhealthy.
+2026-May-20 02:18:51.510891 ----------------------------------------
+2026-May-20 02:18:51.539561 Container logs:
+2026-May-20 02:18:51.787856 [CMD]: docker logs -n 100 iu2r7qltb4pp20nagmitr4kf-021719131786
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:55 AM     LOG [InstanceLoader] CategoriesModule dependencies initialized +2ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:55 AM     LOG [InstanceLoader] ProfileModule dependencies initialized +15ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:55 AM     LOG [InstanceLoader] CategoriesModule dependencies initialized +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:55 AM     LOG [InstanceLoader] TagsModule dependencies initialized +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:55 AM     LOG [InstanceLoader] PostsModule dependencies initialized +3ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:55 AM     LOG [InstanceLoader] ServicesModule dependencies initialized +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:55 AM     LOG [InstanceLoader] ContactModule dependencies initialized +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:55 AM     LOG [InstanceLoader] TestimonialsModule dependencies initialized +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:55 AM     LOG [InstanceLoader] UsedProgramsModule dependencies initialized +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:55 AM     LOG [InstanceLoader] NewsletterModule dependencies initialized +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:55 AM     LOG [InstanceLoader] StatsModule dependencies initialized +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:55 AM     LOG [InstanceLoader] ExperiencesModule dependencies initialized +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:55 AM     LOG [InstanceLoader] ProjectsModule dependencies initialized +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:55 AM     LOG [InstanceLoader] AuthModule dependencies initialized +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RoutesResolver] AppController {/api}: +402ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api, GET} route +44ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/health, GET} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RoutesResolver] AuthController {/api/auth}: +8ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/auth/login, POST} route +16ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/auth/logout, POST} route +2ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/auth/refresh, POST} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/auth/change-password, POST} route +13ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/auth/me, GET} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RoutesResolver] ProfileController {/api/profile}: +5ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/profile, GET} route +3ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/profile, PUT} route +8ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RoutesResolver] ProjectsController {/api/projects}: +3ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/projects/categories, GET} route +5ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/projects/categories/:id, GET} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/projects/categories, POST} route +37ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/projects/categories/:id, PUT} route +5ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/projects/categories/:id, DELETE} route +13ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/projects, GET} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/projects/:id, GET} route +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/projects, POST} route +6ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/projects/:id, PUT} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/projects/:id, DELETE} route +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RoutesResolver] CategoriesController {/api/blog/categories}: +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/categories, GET} route +29ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/categories/:id, GET} route +11ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/categories, POST} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/categories/:id, PUT} route +293ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/categories/:id, DELETE} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RoutesResolver] TagsController {/api/blog/tags}: +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/tags, GET} route +34ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/tags/:id, GET} route +22ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/tags, POST} route +9ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/tags/:id, PUT} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/tags/:id, DELETE} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RoutesResolver] PostsController {/api/blog/posts}: +23ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/posts, GET} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/posts/slug/:slug, GET} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/posts/:id, GET} route +31ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/posts/:id/love, POST} route +15ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/posts/:id/share, POST} route +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/posts, POST} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/posts/:id, PUT} route +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/blog/posts/:id, DELETE} route +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RoutesResolver] ServicesController {/api/services}: +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/services, GET} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/services/:id, GET} route +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/services, POST} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/services/:id, PUT} route +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/services/:id, DELETE} route +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RoutesResolver] ContactController {/api/contact}: +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/contact, POST} route +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/contact/messages, GET} route +88ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/contact/messages/:id, GET} route +2ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/contact/messages/:id/status, PATCH} route +2ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/contact/messages/:id, DELETE} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RoutesResolver] TestimonialsController {/api/testimonials}: +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/testimonials, GET} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/testimonials/:id, GET} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/testimonials, POST} route +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/testimonials/:id, PUT} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/testimonials/:id, DELETE} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RoutesResolver] UsedProgramsController {/api/used-programs}: +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/used-programs, GET} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/used-programs/:id, GET} route +2ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/used-programs, POST} route +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/used-programs/:id, PUT} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/used-programs/:id, DELETE} route +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RoutesResolver] NewsletterController {/api/newsletter}: +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/newsletter/subscribe, POST} route +2ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/newsletter/unsubscribe, POST} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/newsletter/subscribers, GET} route +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/newsletter/subscribers/:id, GET} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/newsletter/stats, GET} route +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/newsletter/subscribers/:id, DELETE} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RoutesResolver] StatsController {/api/stats}: +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/stats/dashboard, GET} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RoutesResolver] ExperiencesController {/api/experiences}: +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/experiences, GET} route +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/experiences/:id, GET} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/experiences, POST} route +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/experiences/:id, PUT} route +1ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:56 AM     LOG [RouterExplorer] Mapped {/api/experiences/:id, DELETE} route +0ms
+2026-May-20 02:18:51.787856 [Nest] 1  - 05/20/2026, 2:17:57 AM     LOG [NestApplication] Nest application successfully started +11ms
+2026-May-20 02:18:51.787856 🚀 Application is running on: http://localhost:3000/api
+2026-May-20 02:18:51.787856 📚 API Documentation: http://localhost:3000/api/docs
+2026-May-20 02:18:51.800833 ----------------------------------------
+2026-May-20 02:18:51.829302 Removing old containers.
+2026-May-20 02:18:51.852422 ----------------------------------------
+2026-May-20 02:18:51.871106 WARNING: Dockerfile or Docker Image based deployment detected. The healthcheck needs a curl or wget command to check the health of the application. Please make sure that it is available in the image or turn off healthcheck on Coolify's UI.
+2026-May-20 02:18:51.889957 ----------------------------------------
+2026-May-20 02:18:51.909201 New container is not healthy, rolling back to the old container.
