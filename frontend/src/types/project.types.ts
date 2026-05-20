@@ -41,9 +41,9 @@ export interface CreateProjectDto {
 export interface UpdateProjectDto extends Partial<CreateProjectDto> { }
 
 export interface FilterProjectDto {
-  page?: number;
-  limit?: number;
-  category?: string;
-  search?: string;
+  page?: number | undefined;
+  limit?: number | undefined;
+  category?: string | undefined;
+  search?: string | undefined;
 }
 

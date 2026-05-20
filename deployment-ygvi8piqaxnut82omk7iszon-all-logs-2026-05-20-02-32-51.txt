@@ -1,0 +1,324 @@
+2026-May-20 02:30:45.894847 Docker 29.3.1 with BuildKit and Buildx detected on deployment server (apps-01).
+2026-May-20 02:30:45.934309 Starting deployment of mpro775/eman-website:main to apps-01.
+2026-May-20 02:30:46.816515 Preparing container with helper image: ghcr.io/coollabsio/coolify-helper:1.0.13
+2026-May-20 02:30:47.193784 [DEBUG] [CMD]: docker stop -t 30 ygvi8piqaxnut82omk7iszon
+2026-May-20 02:30:47.193784 [DEBUG] Error response from daemon: No such container: ygvi8piqaxnut82omk7iszon
+2026-May-20 02:30:48.306904 [DEBUG] [CMD]: docker run -d --network 'coolify' --name ygvi8piqaxnut82omk7iszon  --rm -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/coollabsio/coolify-helper:1.0.13
+2026-May-20 02:30:48.306904 [DEBUG] e3aae6e294ca3a9bf701693a1a1a8e756d9b554d1d72cec8da885893a9ded5bf
+2026-May-20 02:30:51.045668 [DEBUG] [CMD]: docker exec ygvi8piqaxnut82omk7iszon bash -c 'GIT_SSH_COMMAND="ssh -o ConnectTimeout=30 -p 22 -o Port=22 -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" git ls-remote https://github.com/mpro775/eman-website refs/heads/main'
+2026-May-20 02:<REDACTED>@\(.*\):#https://\1/#g" '\''/artifacts/ygvi8piqaxnut82omk7iszon'\''/.gitmodules || true && git submodule sync && GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" git submodule update --init --recursive --depth=1; fi && cd '\''/artifacts/ygvi8piqaxnut82omk7iszon'\'' && GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" git lfs pull'
+2026-May-20 02:<REDACTED>@sha256:2f07d83bf561b506400dc183b1b2003803e39efbd22451f848adaba14d28c7c7
+2026-May-20 02:31:09.898346 [DEBUG] #5 resolve docker.io/library/nginx:alpine@sha256:2f07d83bf561b506400dc183b1b2003803e39efbd22451f848adaba14d28c7c7
+2026-May-20 02:31:10.106156 [DEBUG] #5 resolve docker.io/library/nginx:alpine@sha256:2f07d83bf561b506400dc183b1b2003803e39efbd22451f848adaba14d28c7c7 0.2s done
+2026-May-20 02:31:10.106156 [DEBUG] #5 DONE 0.2s
+2026-May-20 02:31:10.106156 [DEBUG] 
+2026-May-20 02:31:10.106156 [DEBUG] #6 [builder 1/6] FROM docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+2026-May-20 02:31:10.106156 [DEBUG] #6 resolve docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e 0.2s done
+2026-May-20 02:31:10.106156 [DEBUG] #6 DONE 0.3s
+2026-May-20 02:31:10.106156 [DEBUG] 
+2026-May-20 02:31:10.106156 [DEBUG] #7 [internal] load build context
+2026-May-20 02:31:10.452245 [DEBUG] #7 transferring context: 6.58MB 0.4s done
+2026-May-20 02:31:10.505240 [DEBUG] #7 DONE 0.7s
+2026-May-20 02:31:11.060630 [DEBUG] #8 [builder 2/6] WORKDIR /app
+2026-May-20 02:31:11.221116 [DEBUG] #8 CACHED
+2026-May-20 02:31:11.221116 [DEBUG] 
+2026-May-20 02:31:11.221116 [DEBUG] #9 [builder 3/6] COPY package*.json ./
+2026-May-20 02:31:11.676304 [DEBUG] #9 DONE 0.6s
+2026-May-20 02:31:11.843330 [DEBUG] #10 [builder 4/6] RUN npm ci
+2026-May-20 02:31:18.500645 [DEBUG] #10 6.817 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:31:18.500645 [DEBUG] #10 6.817 npm warn EBADENGINE   package: '@isaacs/balanced-match@4.0.1',
+2026-May-20 02:31:18.514784 [DEBUG] #10 6.817 npm warn EBADENGINE   required: { node: '20 || >=22' },
+2026-May-20 02:31:18.514784 [DEBUG] #10 6.817 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:31:18.514784 [DEBUG] #10 6.817 npm warn EBADENGINE }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.818 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.818 npm warn EBADENGINE   package: '@isaacs/brace-expansion@5.0.0',
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.818 npm warn EBADENGINE   required: { node: '20 || >=22' },
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.818 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.818 npm warn EBADENGINE }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.821 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.821 npm warn EBADENGINE   package: '@vitejs/plugin-react@5.1.2',
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.821 npm warn EBADENGINE   required: { node: '^20.19.0 || >=22.12.0' },
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.821 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.821 npm warn EBADENGINE }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.826 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.826 npm warn EBADENGINE   package: 'glob@11.1.0',
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.826 npm warn EBADENGINE   required: { node: '20 || >=22' },
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.826 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.826 npm warn EBADENGINE }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.826 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.826 npm warn EBADENGINE   package: 'minimatch@10.1.1',
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.826 npm warn EBADENGINE   required: { node: '20 || >=22' },
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.826 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.826 npm warn EBADENGINE }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.839 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.839 npm warn EBADENGINE   package: 'jackspeak@4.1.1',
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.839 npm warn EBADENGINE   required: { node: '20 || >=22' },
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.839 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.839 npm warn EBADENGINE }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.842 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.842 npm warn EBADENGINE   package: 'path-scurry@2.0.1',
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.842 npm warn EBADENGINE   required: { node: '20 || >=22' },
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.842 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.842 npm warn EBADENGINE }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.845 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.845 npm warn EBADENGINE   package: 'lru-cache@11.2.4',
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.845 npm warn EBADENGINE   required: { node: '20 || >=22' },
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.845 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.845 npm warn EBADENGINE }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.850 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.850 npm warn EBADENGINE   package: 'react-router@7.13.0',
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.850 npm warn EBADENGINE   required: { node: '>=20.0.0' },
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.850 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.850 npm warn EBADENGINE }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.850 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.850 npm warn EBADENGINE   package: 'react-router-dom@7.13.0',
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.850 npm warn EBADENGINE   required: { node: '>=20.0.0' },
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.850 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.850 npm warn EBADENGINE }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.859 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.859 npm warn EBADENGINE   package: 'vite@7.3.0',
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.859 npm warn EBADENGINE   required: { node: '^20.19.0 || >=22.12.0' },
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.859 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.859 npm warn EBADENGINE }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.868 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.868 npm warn EBADENGINE   package: 'workbox-build@7.4.0',
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.868 npm warn EBADENGINE   required: { node: '>=20.0.0' },
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.868 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:31:18.761989 [DEBUG] #10 6.868 npm warn EBADENGINE }
+2026-May-20 02:31:27.565381 [DEBUG] #10 15.85 npm warn deprecated sourcemap-codec@1.4.8: Please use @jridgewell/sourcemap-codec instead
+2026-May-20 02:31:33.390557 [DEBUG] #10 21.70 npm warn deprecated source-map@0.8.0-beta.0: The work that was done in this beta branch won't be included in future versions
+2026-May-20 02:31:53.558320 [DEBUG] #10 41.86
+2026-May-20 02:31:53.558320 [DEBUG] #10 41.86 added 515 packages, and audited 516 packages in 41s
+2026-May-20 02:31:53.662078 [DEBUG] #10 41.87
+2026-May-20 02:31:53.662078 [DEBUG] #10 41.87 150 packages are looking for funding
+2026-May-20 02:31:53.662078 [DEBUG] #10 41.87   run `npm fund` for details
+2026-May-20 02:31:53.662078 [DEBUG] #10 41.96
+2026-May-20 02:31:53.662078 [DEBUG] #10 41.96 17 vulnerabilities (4 moderate, 13 high)
+2026-May-20 02:31:53.662078 [DEBUG] #10 41.96
+2026-May-20 02:31:53.662078 [DEBUG] #10 41.96 To address all issues, run:
+2026-May-20 02:31:53.662078 [DEBUG] #10 41.96   npm audit fix
+2026-May-20 02:31:53.662078 [DEBUG] #10 41.96
+2026-May-20 02:31:53.662078 [DEBUG] #10 41.96 Run `npm audit` for details.
+2026-May-20 02:31:53.819987 [DEBUG] #10 41.97 npm notice
+2026-May-20 02:31:53.819987 [DEBUG] #10 41.97 npm notice New major version of npm available! 10.8.2 -> 11.14.1
+2026-May-20 02:31:53.819987 [DEBUG] #10 41.97 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.14.1
+2026-May-20 02:<REDACTED>@11.14.1
+2026-May-20 02:31:53.819987 [DEBUG] #10 41.97 npm notice
+2026-May-20 02:31:56.150926 [DEBUG] #10 DONE 44.3s
+2026-May-20 02:31:56.219915 [DEBUG] #11 [builder 5/6] COPY . .
+2026-May-20 02:31:57.018060 [DEBUG] #11 DONE 1.0s
+2026-May-20 02:31:57.195795 [DEBUG] #12 [builder 6/6] RUN npm run build
+2026-May-20 02:31:58.032741 [DEBUG] #12 1.003
+2026-May-20 02:31:58.032741 [DEBUG] #12 1.003 > frontend@0.0.0 build
+2026-May-20 02:31:58.032741 [DEBUG] #12 1.003 > tsc -b && vite build
+2026-May-20 02:31:58.032741 [DEBUG] #12 1.003
+2026-May-20 02:32:28.751364 [DEBUG] #12 31.73 src/hooks/useContactForm.ts(73,46): error TS2379: Argument of type '{ fullName: string; email: string; subject: string; message: string; selectedService: string | undefined; budget: number | undefined; }' is not assignable to parameter of type '{ fullName: string; email: string; subject: string; message: string; selectedService?: string; budget?: number; phone?: string; }' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+2026-May-20 02:32:28.751364 [DEBUG] #12 31.73   Types of property 'selectedService' are incompatible.
+2026-May-20 02:32:28.751364 [DEBUG] #12 31.73     Type 'string | undefined' is not assignable to type 'string'.
+2026-May-20 02:32:28.751364 [DEBUG] #12 31.73       Type 'undefined' is not assignable to type 'string'.
+2026-May-20 02:32:28.751364 [DEBUG] #12 31.73 src/pages/Portfolio/PortfolioCategory.tsx(30,7): error TS6133: 'portfolioData' is declared but its value is never read.
+2026-May-20 02:32:28.751364 [DEBUG] #12 31.73 src/pages/Portfolio/PortfolioCategory.tsx(491,52): error TS2339: Property 'map' does not exist on type 'PaginatedResponse<Project>'.
+2026-May-20 02:32:28.751364 [DEBUG] #12 31.73 src/pages/Portfolio/PortfolioCategory.tsx(491,57): error TS7006: Parameter 'p' implicitly has an 'any' type.
+2026-May-20 02:32:28.751364 [DEBUG] #12 31.73 src/pages/Portfolio/PortfolioCategory.tsx(491,60): error TS7006: Parameter 'index' implicitly has an 'any' type.
+2026-May-20 02:32:30.595892 [DEBUG] #12 ERROR: process "/bin/sh -c npm run build" did not complete successfully: exit code: 2
+2026-May-20 02:32:30.970466 [DEBUG] ------
+2026-May-20 02:32:30.970466 [DEBUG] > [builder 6/6] RUN npm run build:
+2026-May-20 02:32:30.970466 [DEBUG] 1.003 > tsc -b && vite build
+2026-May-20 02:32:30.970466 [DEBUG] 1.003
+2026-May-20 02:32:30.970466 [DEBUG] 31.73 src/hooks/useContactForm.ts(73,46): error TS2379: Argument of type '{ fullName: string; email: string; subject: string; message: string; selectedService: string | undefined; budget: number | undefined; }' is not assignable to parameter of type '{ fullName: string; email: string; subject: string; message: string; selectedService?: string; budget?: number; phone?: string; }' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+2026-May-20 02:32:30.970466 [DEBUG] 31.73   Types of property 'selectedService' are incompatible.
+2026-May-20 02:32:30.970466 [DEBUG] 31.73     Type 'string | undefined' is not assignable to type 'string'.
+2026-May-20 02:32:30.970466 [DEBUG] 31.73       Type 'undefined' is not assignable to type 'string'.
+2026-May-20 02:32:30.970466 [DEBUG] 31.73 src/pages/Portfolio/PortfolioCategory.tsx(30,7): error TS6133: 'portfolioData' is declared but its value is never read.
+2026-May-20 02:32:30.970466 [DEBUG] 31.73 src/pages/Portfolio/PortfolioCategory.tsx(491,52): error TS2339: Property 'map' does not exist on type 'PaginatedResponse<Project>'.
+2026-May-20 02:32:30.970466 [DEBUG] 31.73 src/pages/Portfolio/PortfolioCategory.tsx(491,57): error TS7006: Parameter 'p' implicitly has an 'any' type.
+2026-May-20 02:32:30.970466 [DEBUG] 31.73 src/pages/Portfolio/PortfolioCategory.tsx(491,60): error TS7006: Parameter 'index' implicitly has an 'any' type.
+2026-May-20 02:32:30.970466 [DEBUG] ------
+2026-May-20 02:32:30.981756 [DEBUG] Dockerfile:13
+2026-May-20 02:32:30.981756 [DEBUG] --------------------
+2026-May-20 02:32:30.981756 [DEBUG] 11 |     RUN npm ci
+2026-May-20 02:32:30.981756 [DEBUG] 12 |     COPY . .
+2026-May-20 02:32:30.981756 [DEBUG] 13 | >>> RUN npm run build
+2026-May-20 02:32:30.981756 [DEBUG] 14 |
+2026-May-20 02:32:30.981756 [DEBUG] 15 |     FROM nginx:alpine
+2026-May-20 02:32:30.981756 [DEBUG] --------------------
+2026-May-20 02:32:30.981756 [DEBUG] ERROR: failed to build: failed to solve: process "/bin/sh -c npm run build" did not complete successfully: exit code: 2
+2026-May-20 02:32:31.005509 [DEBUG] exit status 1
+2026-May-20 02:32:31.363361 ========================================
+2026-May-20 02:32:31.393583 Deployment failed: Command execution failed (exit code 1): docker exec ygvi8piqaxnut82omk7iszon bash -c 'bash /artifacts/build.sh'
+2026-May-20 02:32:31.393583 Error: #0 building with "default" instance using docker driver
+2026-May-20 02:32:31.393583 
+2026-May-20 02:32:31.393583 #1 [internal] load build definition from Dockerfile
+2026-May-20 02:32:31.393583 #1 transferring dockerfile:
+2026-May-20 02:32:31.393583 #1 transferring dockerfile: 831B 0.0s done
+2026-May-20 02:32:31.393583 #1 DONE 0.2s
+2026-May-20 02:32:31.393583 
+2026-May-20 02:32:31.393583 #2 [internal] load metadata for docker.io/library/node:18-alpine
+2026-May-20 02:32:31.393583 #2 ...
+2026-May-20 02:32:31.393583 
+2026-May-20 02:32:31.393583 #3 [internal] load metadata for docker.io/library/nginx:alpine
+2026-May-20 02:32:31.393583 #3 DONE 0.8s
+2026-May-20 02:32:31.393583 
+2026-May-20 02:32:31.393583 #2 [internal] load metadata for docker.io/library/node:18-alpine
+2026-May-20 02:32:31.393583 #2 DONE 0.9s
+2026-May-20 02:32:31.393583 
+2026-May-20 02:32:31.393583 #4 [internal] load .dockerignore
+2026-May-20 02:32:31.393583 #4 transferring context:
+2026-May-20 02:32:31.393583 #4 transferring context: 275B done
+2026-May-20 02:32:31.393583 #4 DONE 0.6s
+2026-May-20 02:32:31.393583 
+2026-May-20 02:32:31.393583 #5 [stage-1 1/3] FROM docker.io/library/nginx:alpine@sha256:2f07d83bf561b506400dc183b1b2003803e39efbd22451f848adaba14d28c7c7
+2026-May-20 02:32:31.393583 #5 resolve docker.io/library/nginx:alpine@sha256:2f07d83bf561b506400dc183b1b2003803e39efbd22451f848adaba14d28c7c7
+2026-May-20 02:32:31.393583 #5 resolve docker.io/library/nginx:alpine@sha256:2f07d83bf561b506400dc183b1b2003803e39efbd22451f848adaba14d28c7c7 0.2s done
+2026-May-20 02:32:31.393583 #5 DONE 0.2s
+2026-May-20 02:32:31.393583 
+2026-May-20 02:32:31.393583 #6 [builder 1/6] FROM docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+2026-May-20 02:32:31.393583 #6 resolve docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e 0.2s done
+2026-May-20 02:32:31.393583 #6 DONE 0.3s
+2026-May-20 02:32:31.393583 
+2026-May-20 02:32:31.393583 #7 [internal] load build context
+2026-May-20 02:32:31.393583 #7 transferring context: 6.58MB 0.4s done
+2026-May-20 02:32:31.393583 #7 DONE 0.7s
+2026-May-20 02:32:31.393583 
+2026-May-20 02:32:31.393583 #8 [builder 2/6] WORKDIR /app
+2026-May-20 02:32:31.393583 #8 CACHED
+2026-May-20 02:32:31.393583 
+2026-May-20 02:32:31.393583 #9 [builder 3/6] COPY package*.json ./
+2026-May-20 02:32:31.393583 #9 DONE 0.6s
+2026-May-20 02:32:31.393583 
+2026-May-20 02:32:31.393583 #10 [builder 4/6] RUN npm ci
+2026-May-20 02:32:31.393583 #10 6.817 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:32:31.393583 #10 6.817 npm warn EBADENGINE   package: '@isaacs/balanced-match@4.0.1',
+2026-May-20 02:32:31.393583 #10 6.817 npm warn EBADENGINE   required: { node: '20 || >=22' },
+2026-May-20 02:32:31.393583 #10 6.817 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:32:31.393583 #10 6.817 npm warn EBADENGINE }
+2026-May-20 02:32:31.393583 #10 6.818 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:32:31.393583 #10 6.818 npm warn EBADENGINE   package: '@isaacs/brace-expansion@5.0.0',
+2026-May-20 02:32:31.393583 #10 6.818 npm warn EBADENGINE   required: { node: '20 || >=22' },
+2026-May-20 02:32:31.393583 #10 6.818 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:32:31.393583 #10 6.818 npm warn EBADENGINE }
+2026-May-20 02:32:31.393583 #10 6.821 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:32:31.393583 #10 6.821 npm warn EBADENGINE   package: '@vitejs/plugin-react@5.1.2',
+2026-May-20 02:32:31.393583 #10 6.821 npm warn EBADENGINE   required: { node: '^20.19.0 || >=22.12.0' },
+2026-May-20 02:32:31.393583 #10 6.821 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:32:31.393583 #10 6.821 npm warn EBADENGINE }
+2026-May-20 02:32:31.393583 #10 6.826 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:32:31.393583 #10 6.826 npm warn EBADENGINE   package: 'glob@11.1.0',
+2026-May-20 02:32:31.393583 #10 6.826 npm warn EBADENGINE   required: { node: '20 || >=22' },
+2026-May-20 02:32:31.393583 #10 6.826 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:32:31.393583 #10 6.826 npm warn EBADENGINE }
+2026-May-20 02:32:31.393583 #10 6.826 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:32:31.393583 #10 6.826 npm warn EBADENGINE   package: 'minimatch@10.1.1',
+2026-May-20 02:32:31.393583 #10 6.826 npm warn EBADENGINE   required: { node: '20 || >=22' },
+2026-May-20 02:32:31.393583 #10 6.826 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:32:31.393583 #10 6.826 npm warn EBADENGINE }
+2026-May-20 02:32:31.393583 #10 6.839 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:32:31.393583 #10 6.839 npm warn EBADENGINE   package: 'jackspeak@4.1.1',
+2026-May-20 02:32:31.393583 #10 6.839 npm warn EBADENGINE   required: { node: '20 || >=22' },
+2026-May-20 02:32:31.393583 #10 6.839 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:32:31.393583 #10 6.839 npm warn EBADENGINE }
+2026-May-20 02:32:31.393583 #10 6.842 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:32:31.393583 #10 6.842 npm warn EBADENGINE   package: 'path-scurry@2.0.1',
+2026-May-20 02:32:31.393583 #10 6.842 npm warn EBADENGINE   required: { node: '20 || >=22' },
+2026-May-20 02:32:31.393583 #10 6.842 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:32:31.393583 #10 6.842 npm warn EBADENGINE }
+2026-May-20 02:32:31.393583 #10 6.845 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:32:31.393583 #10 6.845 npm warn EBADENGINE   package: 'lru-cache@11.2.4',
+2026-May-20 02:32:31.393583 #10 6.845 npm warn EBADENGINE   required: { node: '20 || >=22' },
+2026-May-20 02:32:31.393583 #10 6.845 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:32:31.393583 #10 6.845 npm warn EBADENGINE }
+2026-May-20 02:32:31.393583 #10 6.850 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:32:31.393583 #10 6.850 npm warn EBADENGINE   package: 'react-router@7.13.0',
+2026-May-20 02:32:31.393583 #10 6.850 npm warn EBADENGINE   required: { node: '>=20.0.0' },
+2026-May-20 02:32:31.393583 #10 6.850 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:32:31.393583 #10 6.850 npm warn EBADENGINE }
+2026-May-20 02:32:31.393583 #10 6.850 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:32:31.393583 #10 6.850 npm warn EBADENGINE   package: 'react-router-dom@7.13.0',
+2026-May-20 02:32:31.393583 #10 6.850 npm warn EBADENGINE   required: { node: '>=20.0.0' },
+2026-May-20 02:32:31.393583 #10 6.850 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:32:31.393583 #10 6.850 npm warn EBADENGINE }
+2026-May-20 02:32:31.393583 #10 6.859 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:32:31.393583 #10 6.859 npm warn EBADENGINE   package: 'vite@7.3.0',
+2026-May-20 02:32:31.393583 #10 6.859 npm warn EBADENGINE   required: { node: '^20.19.0 || >=22.12.0' },
+2026-May-20 02:32:31.393583 #10 6.859 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:32:31.393583 #10 6.859 npm warn EBADENGINE }
+2026-May-20 02:32:31.393583 #10 6.868 npm warn EBADENGINE Unsupported engine {
+2026-May-20 02:32:31.393583 #10 6.868 npm warn EBADENGINE   package: 'workbox-build@7.4.0',
+2026-May-20 02:32:31.393583 #10 6.868 npm warn EBADENGINE   required: { node: '>=20.0.0' },
+2026-May-20 02:32:31.393583 #10 6.868 npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+2026-May-20 02:32:31.393583 #10 6.868 npm warn EBADENGINE }
+2026-May-20 02:32:31.393583 #10 15.85 npm warn deprecated sourcemap-codec@1.4.8: Please use @jridgewell/sourcemap-codec instead
+2026-May-20 02:32:31.393583 #10 21.70 npm warn deprecated source-map@0.8.0-beta.0: The work that was done in this beta branch won't be included in future versions
+2026-May-20 02:32:31.393583 #10 41.86
+2026-May-20 02:32:31.393583 #10 41.86 added 515 packages, and audited 516 packages in 41s
+2026-May-20 02:32:31.393583 #10 41.87
+2026-May-20 02:32:31.393583 #10 41.87 150 packages are looking for funding
+2026-May-20 02:32:31.393583 #10 41.87   run `npm fund` for details
+2026-May-20 02:32:31.393583 #10 41.96
+2026-May-20 02:32:31.393583 #10 41.96 17 vulnerabilities (4 moderate, 13 high)
+2026-May-20 02:32:31.393583 #10 41.96
+2026-May-20 02:32:31.393583 #10 41.96 To address all issues, run:
+2026-May-20 02:32:31.393583 #10 41.96   npm audit fix
+2026-May-20 02:32:31.393583 #10 41.96
+2026-May-20 02:32:31.393583 #10 41.96 Run `npm audit` for details.
+2026-May-20 02:32:31.393583 #10 41.97 npm notice
+2026-May-20 02:32:31.393583 #10 41.97 npm notice New major version of npm available! 10.8.2 -> 11.14.1
+2026-May-20 02:32:31.393583 #10 41.97 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.14.1
+2026-May-20 02:<REDACTED>@11.14.1
+2026-May-20 02:32:31.393583 #10 41.97 npm notice
+2026-May-20 02:32:31.393583 #10 DONE 44.3s
+2026-May-20 02:32:31.393583 
+2026-May-20 02:32:31.393583 #11 [builder 5/6] COPY . .
+2026-May-20 02:32:31.393583 #11 DONE 1.0s
+2026-May-20 02:32:31.393583 
+2026-May-20 02:32:31.393583 #12 [builder 6/6] RUN npm run build
+2026-May-20 02:32:31.393583 #12 1.003
+2026-May-20 02:32:31.393583 #12 1.003 > frontend@0.0.0 build
+2026-May-20 02:32:31.393583 #12 1.003 > tsc -b && vite build
+2026-May-20 02:32:31.393583 #12 1.003
+2026-May-20 02:32:31.393583 #12 31.73 src/hooks/useContactForm.ts(73,46): error TS2379: Argument of type '{ fullName: string; email: string; subject: string; message: string; selectedService: string | undefined; budget: number | undefined; }' is not assignable to parameter of type '{ fullName: string; email: string; subject: string; message: string; selectedService?: string; budget?: number; phone?: string; }' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+2026-May-20 02:32:31.393583 #12 31.73   Types of property 'selectedService' are incompatible.
+2026-May-20 02:32:31.393583 #12 31.73     Type 'string | undefined' is not assignable to type 'string'.
+2026-May-20 02:32:31.393583 #12 31.73       Type 'undefined' is not assignable to type 'string'.
+2026-May-20 02:32:31.393583 #12 31.73 src/pages/Portfolio/PortfolioCategory.tsx(30,7): error TS6133: 'portfolioData' is declared but its value is never read.
+2026-May-20 02:32:31.393583 #12 31.73 src/pages/Portfolio/PortfolioCategory.tsx(491,52): error TS2339: Property 'map' does not exist on type 'PaginatedResponse<Project>'.
+2026-May-20 02:32:31.393583 #12 31.73 src/pages/Portfolio/PortfolioCategory.tsx(491,57): error TS7006: Parameter 'p' implicitly has an 'any' type.
+2026-May-20 02:32:31.393583 #12 31.73 src/pages/Portfolio/PortfolioCategory.tsx(491,60): error TS7006: Parameter 'index' implicitly has an 'any' type.
+2026-May-20 02:32:31.393583 #12 ERROR: process "/bin/sh -c npm run build" did not complete successfully: exit code: 2
+2026-May-20 02:32:31.393583 ------
+2026-May-20 02:32:31.393583 > [builder 6/6] RUN npm run build:
+2026-May-20 02:32:31.393583 1.003 > tsc -b && vite build
+2026-May-20 02:32:31.393583 1.003
+2026-May-20 02:32:31.393583 31.73 src/hooks/useContactForm.ts(73,46): error TS2379: Argument of type '{ fullName: string; email: string; subject: string; message: string; selectedService: string | undefined; budget: number | undefined; }' is not assignable to parameter of type '{ fullName: string; email: string; subject: string; message: string; selectedService?: string; budget?: number; phone?: string; }' with 'exactOptionalPropertyTypes: true'. Consider adding 'undefined' to the types of the target's properties.
+2026-May-20 02:32:31.393583 31.73   Types of property 'selectedService' are incompatible.
+2026-May-20 02:32:31.393583 31.73     Type 'string | undefined' is not assignable to type 'string'.
+2026-May-20 02:32:31.393583 31.73       Type 'undefined' is not assignable to type 'string'.
+2026-May-20 02:32:31.393583 31.73 src/pages/Portfolio/PortfolioCategory.tsx(30,7): error TS6133: 'portfolioData' is declared but its value is never read.
+2026-May-20 02:32:31.393583 31.73 src/pages/Portfolio/PortfolioCategory.tsx(491,52): error TS2339: Property 'map' does not exist on type 'PaginatedResponse<Project>'.
+2026-May-20 02:32:31.393583 31.73 src/pages/Portfolio/PortfolioCategory.tsx(491,57): error TS7006: Parameter 'p' implicitly has an 'any' type.
+2026-May-20 02:32:31.393583 31.73 src/pages/Portfolio/PortfolioCategory.tsx(491,60): error TS7006: Parameter 'index' implicitly has an 'any' type.
+2026-May-20 02:32:31.393583 ------
+2026-May-20 02:32:31.393583 Dockerfile:13
+2026-May-20 02:32:31.393583 --------------------
+2026-May-20 02:32:31.393583 11 |     RUN npm ci
+2026-May-20 02:32:31.393583 12 |     COPY . .
+2026-May-20 02:32:31.393583 13 | >>> RUN npm run build
+2026-May-20 02:32:31.393583 14 |
+2026-May-20 02:32:31.393583 15 |     FROM nginx:alpine
+2026-May-20 02:32:31.393583 --------------------
+2026-May-20 02:32:31.393583 ERROR: failed to build: failed to solve: process "/bin/sh -c npm run build" did not complete successfully: exit code: 2
+2026-May-20 02:32:31.393583 exit status 1
+2026-May-20 02:32:31.412693 [DEBUG] Error type: App\Exceptions\DeploymentException
+2026-May-20 02:32:31.442804 [DEBUG] Error code: 0
+2026-May-20 02:32:31.466642 [DEBUG] Location: /var/www/html/app/Traits/ExecuteRemoteCommand.php:242
+2026-May-20 02:32:31.492812 [DEBUG] Stack trace (first 5 lines):
+2026-May-20 02:32:31.517547 [DEBUG] #0 /var/www/html/app/Traits/ExecuteRemoteCommand.php(106): App\Jobs\ApplicationDeploymentJob->executeCommandWithProcess()
+2026-May-20 02:32:31.555601 [DEBUG] #1 /var/www/html/vendor/laravel/framework/src/Illuminate/Collections/Traits/EnumeratesValues.php(275): App\Jobs\ApplicationDeploymentJob->{closure:App\Traits\ExecuteRemoteCommand::execute_remote_command():72}()
+2026-May-20 02:32:31.584999 [DEBUG] #2 /var/www/html/app/Traits/ExecuteRemoteCommand.php(72): Illuminate\Support\Collection->each()
+2026-May-20 02:32:31.602974 [DEBUG] #3 /var/www/html/app/Jobs/ApplicationDeploymentJob.php(3290): App\Jobs\ApplicationDeploymentJob->execute_remote_command()
+2026-May-20 02:32:31.627476 [DEBUG] #4 /var/www/html/app/Jobs/ApplicationDeploymentJob.php(898): App\Jobs\ApplicationDeploymentJob->build_image()
+2026-May-20 02:32:31.651941 ========================================
+2026-May-20 02:32:31.683722 Deployment failed. Removing the new version of your application.
+2026-May-20 02:32:32.735191 Gracefully shutting down build container: ygvi8piqaxnut82omk7iszon
+2026-May-20 02:32:33.519861 [DEBUG] [CMD]: docker stop -t 30 ygvi8piqaxnut82omk7iszon
+2026-May-20 02:32:33.519861 [DEBUG] ygvi8piqaxnut82omk7iszon

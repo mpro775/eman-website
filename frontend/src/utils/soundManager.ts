@@ -53,7 +53,7 @@ export async function initSoundKit() {
   applySettings(snd);
 
   if (!loadPromise) {
-    loadPromise = snd.load(Snd.KITS.SND01).catch((err) => {
+    loadPromise = snd.load(Snd.KITS.SND01).catch((err: any) => {
       // allow retry if load fails
       loadPromise = null;
       throw err;

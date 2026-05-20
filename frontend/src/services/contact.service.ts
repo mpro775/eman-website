@@ -4,9 +4,9 @@ import type { ContactMessage, MessageStatus } from '../types/contact.types';
 
 export const contactService = {
   async getMessages(
-    page?: number,
-    limit?: number,
-    status?: MessageStatus
+    page?: number | undefined,
+    limit?: number | undefined,
+    status?: MessageStatus | undefined
   ): Promise<PaginatedResponse<ContactMessage>> {
     const response = await api.get<ApiResponse<PaginatedResponse<ContactMessage>>>(
       '/contact/messages',
@@ -39,9 +39,9 @@ export const contactService = {
     email: string;
     subject: string;
     message: string;
-    selectedService?: string;
-    budget?: number;
-    phone?: string;
+    selectedService?: string | undefined;
+    budget?: number | undefined;
+    phone?: string | undefined;
   }): Promise<ContactMessage> {
     const response = await api.post<ApiResponse<ContactMessage>>('/contact', data);
     return response.data.data;
