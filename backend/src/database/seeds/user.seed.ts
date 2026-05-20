@@ -25,4 +25,3 @@ export async function seedUsers(userModel: Model<User>) {
   console.log('   Email: admin@eman.com');
   console.log('   Password: Admin@123');
 }
-
