@@ -1,27 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion, useInView, type Variants } from "framer-motion";
 import { Container, SectionTitle } from "../../../components";
 import ExperienceCard, { type ExperienceItem } from "./ExperienceCard";
-
-// Experience data
-const experiences: ExperienceItem[] = [
-    { id: 1, title: "UX/UI", description: "في محفظة جيب" },
-    { id: 2, title: "أستاذ مساعد", description: "في جامعة العلوم الحديثة" },
-    { id: 3, title: "أستاذة UX/UI", description: "في أكاديمية سمارت ديف" },
-    { id: 4, title: "Graphic Designer", description: "في وكالة حريف" },
-    { id: 5, title: "UX/UI & Graphic Designer", description: "أعمال حرة" },
-    { id: 6, title: "دعم فني", description: "في مجموعة هائل سعيد أنعم" },
-    { id: 7, title: "Flutter App", description: "مشروع تخرج في جامعة العلوم الحديثة" },
-    { id: 8, title: "سكرتارية + أمين صندوق", description: "في مركز يونك للأنظمة المحاسبية" },
-];
+import { experiencesService } from "../../../services/experiences.service";
 
 /**
  * Experience section with timeline layout
  * Shows work experience in a two-column layout with connecting lines
  */
 const ExperienceSection: React.FC = () => {
+    const [experiences, setExperiences] = useState<ExperienceItem[]>([]);
     const ref = React.useRef(null);
     const isInView = useInView(ref, { amount: 0.2, once: true });
+
+    useEffect(() => {
+        const fetchExperiences = async () => {
+            try {
+                const data = await experiencesService.getAll();
+                const sorted = data.sort((a, b) => (a.order || 0) - (b.order || 0));
+                const mapped = sorted.map((exp, index) => ({
+                    id: index + 1,
+                    title: exp.name,
+                    description: exp.description
+                }));
+                setExperiences(mapped);
+            } catch (error) {
+                console.error("Failed to fetch experiences:", error);
+            }
+        };
+        fetchExperiences();
+    }, []);
 
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
@@ -47,8 +55,9 @@ const ExperienceSection: React.FC = () => {
     };
 
     // Split experiences into two columns
-    const rightColumnExperiences = experiences.slice(0, 4);
-    const leftColumnExperiences = experiences.slice(4, 8);
+    const half = Math.ceil(experiences.length / 2);
+    const rightColumnExperiences = experiences.slice(0, half);
+    const leftColumnExperiences = experiences.slice(half);
 
     return (
         <section

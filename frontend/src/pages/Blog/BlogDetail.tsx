@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useParams, Link } from "react-router-dom";
 import {
@@ -16,10 +16,11 @@ import Footer from "../../components/layout/Footer";
 import Container from "../../components/common/Container";
 import { useSEO } from "../../hooks/useSEO";
 import { SEOSchema } from "../../components/common/SEOSchema";
+import { blogService } from "../../services/blog.service";
 
 // Blog post interface
 interface BlogPost {
-  id: number;
+  id: string | number;
   title: string;
   titleAr: string;
   category: string;
@@ -41,117 +42,33 @@ interface BlogPost {
   };
 }
 
-// Sample blog posts data
-const blogPostsData: BlogPost[] = [
-  {
-    id: 1,
-    title: "The Rise of Artificial Intelligence in Healthcare",
-    titleAr: "صعود الذكاء الاصطناعي في الرعاية الصحية",
-    category: "Healthcare",
-    categoryAr: "الرعاية الصحية",
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&h=600&fit=crop",
-    comments: 124,
-    likes: "10k",
-    views: "245k",
-    publishDate: "October 15, 2023",
-    readingTime: "10 Min",
-    author: "Dr. Emily Walker",
-    authorImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
-    content: {
-      intro: "Artificial Intelligence (AI) has permeated virtually every aspect of our lives, and healthcare is no exception. The integration of AI in healthcare is ushering in a new era of medical practice, where machines complement the capabilities of healthcare professionals, ultimately improving patient outcomes and the efficiency of the healthcare system. In this blog post, we will delve into the diverse applications of AI in healthcare, from diagnostic imaging to personalized treatment plans, and address the ethical considerations surrounding this revolutionary technology.",
-      sections: [
-        {
-          title: "Predictive Analytics and Disease Prevention",
-          content: "One of the most promising applications of AI in healthcare is its ability to predict and prevent diseases by analyzing vast amounts of patient data. Machine learning algorithms can identify patterns and risk factors that may not be immediately apparent to human clinicians. This enables earlier intervention and more effective prevention strategies, potentially saving countless lives and reducing healthcare costs."
-        },
-        {
-          title: "AI in Diagnostic Imaging",
-          content: "AI has made remarkable strides in the field of diagnostic imaging. Deep learning algorithms can analyze medical images such as X-rays, MRIs, and CT scans with incredible precision. These AI systems can detect subtle abnormalities that might be missed by human radiologists, leading to earlier and more accurate diagnoses of conditions ranging from cancer to cardiovascular disease."
-        },
-        {
-          title: "Personalized Treatment Plans",
-          content: "Every patient is unique, and AI is helping healthcare providers develop more personalized treatment plans. By analyzing a patient's genetic information, medical history, and lifestyle factors, AI can recommend treatments that are most likely to be effective for that individual. This personalized approach to medicine is revolutionizing how we treat chronic diseases and complex conditions."
-        }
-      ]
-    }
-  },
-  {
-    id: 2,
-    title: "A Decisive Victory for Progressive Policies",
-    titleAr: "انتصار حاسم للسياسات التقدمية",
-    category: "Politics",
-    categoryAr: "السياسة",
-    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200&h=600&fit=crop",
-    comments: 124,
-    likes: "10k",
-    views: "180k",
-    publishDate: "October 10, 2023",
-    readingTime: "8 Min",
-    author: "John Smith",
-    authorImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
-    content: {
-      intro: "In a remarkable turn of events, progressive policies have gained significant ground in recent political developments. This shift represents a fundamental change in public sentiment and political discourse.",
-      sections: [
-        {
-          title: "The Changing Political Landscape",
-          content: "The political landscape is evolving rapidly, with voters increasingly favoring policies that address social inequality and environmental concerns."
-        }
-      ]
-    }
-  },
-  {
-    id: 3,
-    title: "Tech Giants Unveil Cutting-Edge AI Innovations",
-    titleAr: "عمالقة التكنولوجيا يكشفون عن ابتكارات الذكاء الاصطناعي المتقدمة",
-    category: "Technology",
-    categoryAr: "التكنولوجيا",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=600&fit=crop",
-    comments: 89,
-    likes: "15k",
-    views: "320k",
-    publishDate: "October 12, 2023",
-    readingTime: "12 Min",
-    author: "Sarah Chen",
-    authorImage: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
-    content: {
-      intro: "The world's leading technology companies have unveiled their latest AI innovations, promising to revolutionize industries from healthcare to transportation.",
-      sections: [
-        {
-          title: "Breakthrough in Natural Language Processing",
-          content: "New developments in NLP are enabling machines to understand and generate human language with unprecedented accuracy."
-        }
-      ]
-    }
+const parsePostContent = (rawContent: string) => {
+  if (!rawContent) {
+    return { intro: "", sections: [] };
   }
-];
+  const content = rawContent.replace(/\r\n/g, "\n");
+  const headerRegex = /(?:^|\n)##\s+(.+?)(?=\n|$)/g;
+  const sections: { title: string; content: string }[] = [];
+  const parts = content.split(/(?:^|\n)##\s+.+?(?=\n|$)/);
+  const intro = parts[0]?.trim() || "";
 
-// Related posts data
-const relatedPosts = [
-  {
-    id: 4,
-    title: "A Decisive Victory for Progressive Policies",
-    category: "Politics",
-    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=250&fit=crop",
-    comments: 124,
-    likes: "10k",
-  },
-  {
-    id: 5,
-    title: "Tech Giants Unveil Cutting-Edge AI Innovations",
-    category: "Technology",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=250&fit=crop",
-    comments: 124,
-    likes: "10k",
-  },
-  {
-    id: 6,
-    title: "COVID-19 Variants",
-    category: "Health",
-    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=250&fit=crop",
-    comments: 124,
-    likes: "10k",
-  },
-];
+  const headers: string[] = [];
+  let match;
+  headerRegex.lastIndex = 0;
+  while ((match = headerRegex.exec(content)) !== null) {
+    headers.push(match[1].trim());
+  }
+
+  for (let i = 0; i < headers.length; i++) {
+    const sectionContent = parts[i + 1]?.trim() || "";
+    sections.push({
+      title: headers[i],
+      content: sectionContent,
+    });
+  }
+
+  return { intro, sections };
+};
 
 // Meta Info Item Component
 const MetaInfoItem: React.FC<{
@@ -170,7 +87,7 @@ const MetaInfoItem: React.FC<{
 
 // Related Post Card Component
 const RelatedPostCard: React.FC<{
-  post: typeof relatedPosts[0];
+  post: { id: string | number; title: string; category: string; image: string; comments: number; likes: string };
   index: number;
 }> = ({ post, index }) => (
   <motion.article
@@ -178,36 +95,29 @@ const RelatedPostCard: React.FC<{
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    transition={{ duration: 0.5, delay: index * 0.1 }}
+    transition={{ duration: 0.5, delay: index * 0.15 }}
   >
-    <Link to={`/blog/${post.id}`}>
-      <div className="relative bg-[#1a1a2e]/60 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 group-hover:border-white/20 group-hover:shadow-lg group-hover:shadow-accent-purple/10">
-        {/* Image */}
-        <div className="relative h-40 md:h-48 overflow-hidden">
+    <Link to={`/blog/${post.id}`} className="block">
+      <div className="bg-white/5 rounded-2xl overflow-hidden border border-white/10 hover:border-accent-pink/30 hover:shadow-glow-pink/10 transition-all duration-300">
+        <div className="aspect-[16/10] overflow-hidden">
           <img
             src={post.image}
             alt={post.title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a2e] via-transparent to-transparent opacity-60"></div>
         </div>
-
-        {/* Content */}
-        <div className="p-4 md:p-5">
-          <h3 className="text-white text-sm md:text-base font-semibold mb-2 line-clamp-2 text-right group-hover:text-accent-pink transition-colors duration-300">
+        <div className="p-5 text-right">
+          <h3 className="text-white text-base font-semibold mb-2 group-hover:text-accent-pink transition-colors duration-300 line-clamp-2">
             {post.title}
           </h3>
           <p className="text-text-muted text-xs text-right mb-3">
             {post.category}
           </p>
-
-          {/* Footer */}
           <div className="flex flex-row-reverse items-center justify-between pt-3 border-t border-white/10">
             <button className="flex items-center gap-1 text-accent-pink text-xs font-medium hover:text-accent-pink-light transition-colors duration-300">
               <HiArrowUpRight className="text-sm" />
               <span>قراءة المزيد</span>
             </button>
-
             <div className="flex items-center gap-3 text-text-muted text-xs">
               <div className="flex items-center gap-1">
                 <span>{post.likes}</span>
@@ -227,25 +137,109 @@ const RelatedPostCard: React.FC<{
 
 const BlogDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [relatedPosts, setRelatedPosts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Find the blog post by ID
-  const post = blogPostsData.find(p => p.id === Number(id)) || blogPostsData[0];
+  useEffect(() => {
+    const fetchPostData = async () => {
+      if (!id) return;
+      setLoading(true);
+      try {
+        const rawPost = await blogService.getPostById(id);
+        const categoryName = typeof rawPost.category === "object" ? rawPost.category.name : "Uncategorized";
+        const parsed = parsePostContent(rawPost.content);
+        
+        const mapped: BlogPost = {
+          id: rawPost._id,
+          title: rawPost.title,
+          titleAr: rawPost.title,
+          category: categoryName,
+          categoryAr: categoryName,
+          image: rawPost.featuredImage || "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=1200&h=600&fit=crop",
+          comments: rawPost.shares || 0,
+          likes: rawPost.loves >= 1000 ? `${(rawPost.loves / 1000).toFixed(1)}k` : `${rawPost.loves}`,
+          views: rawPost.views >= 1000 ? `${(rawPost.views / 1000).toFixed(1)}k` : `${rawPost.views}`,
+          publishDate: rawPost.publishDate ? new Date(rawPost.publishDate).toLocaleDateString("ar-EG", { year: "numeric", month: "long", day: "numeric" }) : new Date(rawPost.createdAt).toLocaleDateString("ar-EG", { year: "numeric", month: "long", day: "numeric" }),
+          readingTime: rawPost.readTime ? `${rawPost.readTime} دقيقة` : "5 دقائق",
+          author: "إيمان جميل",
+          authorImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+          content: parsed
+        };
+        setPost(mapped);
 
-  // SEO optimization for blog detail page
+        const catId = typeof rawPost.category === "object" ? rawPost.category._id : undefined;
+        const relatedRes = await blogService.getPosts({ category: catId, limit: 4 });
+        const relatedItems = relatedRes.data || [];
+        const filteredRelated = relatedItems
+          .filter(item => item._id !== id)
+          .slice(0, 3)
+          .map((item) => ({
+            id: item._id,
+            title: item.title,
+            category: typeof item.category === "object" ? item.category.name : "Uncategorized",
+            image: item.featuredImage || "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=250&fit=crop",
+            comments: item.shares || 0,
+            likes: item.loves >= 1000 ? `${(item.loves / 1000).toFixed(1)}k` : `${item.loves}`,
+          }));
+        
+        if (filteredRelated.length < 3) {
+          const generalRes = await blogService.getPosts({ limit: 6 });
+          const generalItems = generalRes.data || [];
+          const additional = generalItems
+            .filter(item => item._id !== id && !filteredRelated.some(r => r.id === item._id))
+            .map(item => ({
+              id: item._id,
+              title: item.title,
+              category: typeof item.category === "object" ? item.category.name : "Uncategorized",
+              image: item.featuredImage || "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=250&fit=crop",
+              comments: item.shares || 0,
+              likes: item.loves >= 1000 ? `${(item.loves / 1000).toFixed(1)}k` : `${item.loves}`,
+            }));
+          setRelatedPosts([...filteredRelated, ...additional].slice(0, 3));
+        } else {
+          setRelatedPosts(filteredRelated);
+        }
+      } catch (error) {
+        console.error("Failed to load blog post details:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPostData();
+  }, [id]);
+
   useSEO({
-    title: post.titleAr || post.title,
-    description: post.content.intro.substring(0, 160),
-    keywords: `${post.categoryAr}, ${post.category}, مقالات, ${post.author}`,
-    image: post.image,
+    title: post ? (post.titleAr || post.title) : 'تفاصيل المقال',
+    description: post ? post.content.intro.substring(0, 160) : 'تفاصيل المقال',
+    keywords: post ? `${post.categoryAr}, ${post.category}, مقالات, ${post.author}` : 'مقالات',
+    image: post ? post.image : undefined,
     url: `/blog/${id}`,
     type: 'article',
-    author: post.author,
-    publishedTime: post.publishDate,
-    section: post.categoryAr,
+    author: post ? post.author : undefined,
+    publishedTime: post ? post.publishDate : undefined,
+    section: post ? post.categoryAr : undefined,
   });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-bg-primary flex items-center justify-center">
+        <p className="text-text-secondary text-lg">جاري تحميل تفاصيل المقال...</p>
+      </div>
+    );
+  }
+
+  if (!post) {
+    return (
+      <div className="min-h-screen bg-bg-primary flex flex-col items-center justify-center gap-4">
+        <p className="text-text-secondary text-lg">المقال غير موجود</p>
+        <Link to="/blog" className="text-accent-pink hover:underline">العودة للمدونة</Link>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-bg-primary">
@@ -355,30 +349,22 @@ const BlogDetail: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              Artificial Intelligence (AI)
+              {post.categoryAr || post.category}
             </motion.h2>
 
-            {/* Intro Paragraph */}
-            <motion.p
-              className="text-text-secondary text-base md:text-lg leading-relaxed mb-8 text-center"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-            >
-              {post.content.intro}
-            </motion.p>
-
-            {/* Second paragraph - repeat for design match */}
-            <motion.p
-              className="text-text-secondary text-base md:text-lg leading-relaxed mb-12 text-center"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.15 }}
-            >
-              {post.content.intro}
-            </motion.p>
+            {/* Intro Paragraphs */}
+            {post.content.intro.split('\n').map((paragraph, index) => paragraph.trim() && (
+              <motion.p
+                key={index}
+                className="text-text-secondary text-base md:text-lg leading-relaxed mb-8 text-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 * (index + 1) }}
+              >
+                {paragraph}
+              </motion.p>
+            ))}
 
             {/* Content Sections with fade effect */}
             <div className="relative">
@@ -394,20 +380,22 @@ const BlogDetail: React.FC = () => {
                   <h3 className="text-white text-xl md:text-2xl font-semibold mb-4 text-right">
                     {section.title}
                   </h3>
-                  <p className="text-text-secondary text-base md:text-lg leading-relaxed text-center">
-                    {section.content}
-                  </p>
+                  {section.content.split('\n').map((p, pIdx) => p.trim() && (
+                    <p key={pIdx} className="text-text-secondary text-base md:text-lg leading-relaxed text-center mb-4">
+                      {p}
+                    </p>
+                  ))}
                 </motion.div>
               ))}
 
-              {/* Fade overlay - only show when not expanded */}
-              {!isExpanded && (
+              {/* Fade overlay - only show when not expanded and has sections to expand */}
+              {!isExpanded && post.content.sections.length > 1 && (
                 <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-bg-primary to-transparent pointer-events-none"></div>
               )}
             </div>
 
-            {/* Read More Button - only show when not expanded */}
-            {!isExpanded && (
+            {/* Read More Button - only show when not expanded and has sections to expand */}
+            {!isExpanded && post.content.sections.length > 1 && (
               <motion.div
                 className="flex justify-center mt-8 mb-12"
                 initial={{ opacity: 0, y: 20 }}
@@ -438,9 +426,11 @@ const BlogDetail: React.FC = () => {
                 <h3 className="text-white text-xl md:text-2xl font-semibold mb-4 text-right">
                   {section.title}
                 </h3>
-                <p className="text-text-secondary text-base md:text-lg leading-relaxed text-center">
-                  {section.content}
-                </p>
+                {section.content.split('\n').map((p, pIdx) => p.trim() && (
+                  <p key={pIdx} className="text-text-secondary text-base md:text-lg leading-relaxed text-center mb-4">
+                    {p}
+                  </p>
+                ))}
               </motion.div>
             ))}
 

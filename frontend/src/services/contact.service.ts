@@ -33,5 +33,18 @@ export const contactService = {
   async delete(id: string): Promise<void> {
     await api.delete<ApiResponse<null>>(`/contact/messages/${id}`);
   },
+
+  async sendMessage(data: {
+    fullName: string;
+    email: string;
+    subject: string;
+    message: string;
+    selectedService?: string;
+    budget?: number;
+    phone?: string;
+  }): Promise<ContactMessage> {
+    const response = await api.post<ApiResponse<ContactMessage>>('/contact', data);
+    return response.data.data;
+  },
 };
 

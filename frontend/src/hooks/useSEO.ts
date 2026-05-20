@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 
 interface SEOProps {
-    title?: string;
-    description?: string;
-    keywords?: string;
-    image?: string;
-    url?: string;
-    type?: 'website' | 'article' | 'profile';
-    author?: string;
-    publishedTime?: string;
-    modifiedTime?: string;
-    section?: string;
-    tags?: string[];
+    title?: string | undefined;
+    description?: string | undefined;
+    keywords?: string | undefined;
+    image?: string | undefined;
+    url?: string | undefined;
+    type?: 'website' | 'article' | 'profile' | undefined;
+    author?: string | undefined;
+    publishedTime?: string | undefined;
+    modifiedTime?: string | undefined;
+    section?: string | undefined;
+    tags?: string[] | undefined;
 }
 
 const DEFAULT_TITLE = 'إيمان - مصممة UI/UX ومطورة تطبيقات محترفة';

@@ -2,48 +2,51 @@ import React, { useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Container, SectionTitle } from "../../../components";
 import TestimonialCard, { type Testimonial } from "./TestimonialCard";
-
-// Testimonial data
-const testimonials: Testimonial[] = [
-    {
-        id: 1,
-        name: "Fletcher Howard",
-        position: "Chief Executive Officer",
-        company: "GIGL",
-        quote: "A great worker. He thinks about design and has a awesome working morale",
-        avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-    },
-    {
-        id: 2,
-        name: "Cameron Williamson",
-        position: "Chief Executive Officer",
-        company: "GIGL",
-        quote: '"Kevin Did a wonderful job animating set of static stickers. Work was done very quickly and the quality is outstanding. she managed to create great looking, flawless animation even with very limited number of frames allowed per stickers"',
-        avatar: "https://randomuser.me/api/portraits/men/44.jpg",
-    },
-    {
-        id: 3,
-        name: "Savannah Nguyen",
-        position: "Chief Executive Officer",
-        company: "GIGL",
-        quote: "Great Designer, does great work and is open to change. if you're a programmer and looking for a designer is definitely well qualified.",
-        avatar: "https://randomuser.me/api/portraits/women/65.jpg",
-    },
-];
+import { testimonialsService } from "../../../services/testimonials.service";
 
 /**
  * Testimonials section with auto-rotating carousel
  */
 const TestimonialsSection: React.FC = () => {
-    const [activeIndex, setActiveIndex] = useState(1);
+    const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    useEffect(() => {
+        const fetchTestimonials = async () => {
+            try {
+                const response = await testimonialsService.getAll();
+                const items = response.data || [];
+                const sorted = items.sort((a, b) => (a.orderNumber || 0) - (b.orderNumber || 0));
+                const mapped = sorted.map((t, index) => {
+                    const parts = t.companyName.split(" - ");
+                    return {
+                        id: index + 1,
+                        name: t.personName,
+                        position: parts[0] || "Client",
+                        company: parts[1] || "",
+                        quote: t.ratingText,
+                        avatar: t.image,
+                    };
+                });
+                setTestimonials(mapped);
+                if (mapped.length > 0) {
+                    setActiveIndex(0);
+                }
+            } catch (error) {
+                console.error("Failed to fetch testimonials:", error);
+            }
+        };
+        fetchTestimonials();
+    }, []);
 
     // Auto-rotate testimonials
     useEffect(() => {
+        if (testimonials.length === 0) return;
         const interval = setInterval(() => {
             setActiveIndex((prev) => (prev + 1) % testimonials.length);
         }, 5000);
         return () => clearInterval(interval);
-    }, []);
+    }, [testimonials.length]);
 
     const getCardStyle = (index: number) => {
         const diff = index - activeIndex;

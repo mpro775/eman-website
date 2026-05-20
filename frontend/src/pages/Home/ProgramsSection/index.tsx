@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Container, SectionTitle } from "../../../components";
 import ProgramIcon, { type Program } from "./ProgramIcon";
+import { programsService } from "../../../services/programs.service";
 
 // Assets
 import aiIcon from "../../../assets/skills/ai.png";
@@ -10,19 +11,45 @@ import indesignIcon from "../../../assets/skills/id.png";
 import photoshopIcon from "../../../assets/skills/photoshop.png";
 import vscodeIcon from "../../../assets/skills/vscode.png";
 
-// Grid data
-const programs: Program[] = [
-    { id: 1, name: "VS Code", image: vscodeIcon },
-    { id: 2, name: "InDesign", image: indesignIcon },
-    { id: 3, name: "Illustrator", image: aiIcon },
-    { id: 4, name: "Photoshop", image: photoshopIcon },
-    { id: 5, name: "Figma", image: figmaIcon },
-];
+const imageMap: Record<string, string> = {
+    "vscode.png": vscodeIcon,
+    "id.png": indesignIcon,
+    "ai.png": aiIcon,
+    "photoshop.png": photoshopIcon,
+    "figma.png": figmaIcon,
+};
+
+const getProgramImage = (imgName?: string) => {
+    if (!imgName) return figmaIcon;
+    if (imgName.startsWith("http")) return imgName;
+    return imageMap[imgName] || figmaIcon;
+};
 
 /**
  * Technical stack / programs used section
  */
 const ProgramsSection: React.FC = () => {
+    const [programs, setPrograms] = useState<Program[]>([]);
+
+    useEffect(() => {
+        const fetchPrograms = async () => {
+            try {
+                const response = await programsService.getAll();
+                // response is PaginatedResponse<UsedProgram>, response.data is the array
+                const items = response.data || [];
+                const sorted = items.sort((a, b) => (a.orderNumber || 0) - (b.orderNumber || 0));
+                const mapped = sorted.map((p, index) => ({
+                    id: index + 1,
+                    name: p.name,
+                    image: getProgramImage(p.image),
+                }));
+                setPrograms(mapped);
+            } catch (error) {
+                console.error("Failed to fetch programs:", error);
+            }
+        };
+        fetchPrograms();
+    }, []);
     return (
         <section
             id="programs"

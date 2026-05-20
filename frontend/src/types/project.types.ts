@@ -4,6 +4,12 @@ export interface Project {
   image: string;
   description: string;
   category: string | { _id: string; name: string };
+  titleAr?: string;
+  subtitle?: string;
+  subtitleAr?: string;
+  descriptionAr?: string;
+  tools?: string[];
+  projectLink?: string;
   createdAt: string;
   updatedAt: string;
 }

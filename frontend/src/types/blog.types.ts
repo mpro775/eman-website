@@ -13,7 +13,7 @@ export interface Post {
   summary: string;
   content: string;
   featuredImage?: string;
-  category?: string | { _id: string; name: string };
+  category?: string | { _id: string; name: string; slug: string };
   tags?: string[] | Array<{ _id: string; name: string }>;
   publishDate?: string;
   status: PostStatus;
@@ -65,10 +65,10 @@ export interface CreatePostDto {
 export interface UpdatePostDto extends Partial<CreatePostDto> { }
 
 export interface FilterPostDto {
-  page?: number;
-  limit?: number;
-  category?: string;
-  status?: PostStatus;
-  search?: string;
+  page?: number | undefined;
+  limit?: number | undefined;
+  category?: string | undefined;
+  status?: PostStatus | undefined;
+  search?: string | undefined;
 }
 

@@ -1,41 +1,52 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion, useInView, type Variants } from "framer-motion";
 import { Container, SectionTitle } from "../../../components";
 import ServiceCard, { type ServiceItem } from "./ServiceCard";
+import { servicesService } from "../../../services/services.service";
 
 // Assets
 import iconDigitalMarketing from "../../../assets/services/digital_Service.png";
 import iconGraphicDesign from "../../../assets/services/graghic_Service.png";
 import iconUXUI from "../../../assets/services/ui_ux_Service.png";
 
-// Service data
-const services: ServiceItem[] = [
-    {
-        id: 1,
-        englishTitle: "Digital Marketing",
-        arabicDescription: "إنشاء صفحات السوشل ميديا, وإدارة الحملات الإعلانية، والرد على العملاء",
-        icon: iconDigitalMarketing,
-    },
-    {
-        id: 2,
-        englishTitle: "Graphic Designs",
-        arabicDescription: "تصميم الهوية التجارية المتكاملة ، شعارات . بوسترات إعلانية و بنرات",
-        icon: iconGraphicDesign,
-    },
-    {
-        id: 3,
-        englishTitle: "UX / UI Design",
-        arabicDescription: "تطبيقات الموبايل ، المواقع الإلكترونية ، لوحات التحكم و الإنظمة المتكاملة",
-        icon: iconUXUI,
-    },
-];
+const iconMap: Record<string, string> = {
+    "digital_Service.png": iconDigitalMarketing,
+    "graghic_Service.png": iconGraphicDesign,
+    "ui_ux_Service.png": iconUXUI,
+};
+
+const getIcon = (iconName?: string) => {
+    if (!iconName) return iconUXUI;
+    if (iconName.startsWith("http")) return iconName;
+    return iconMap[iconName] || iconUXUI;
+};
 
 /**
  * Services showcase section
  */
 const ServicesSection: React.FC = () => {
+    const [services, setServices] = useState<ServiceItem[]>([]);
     const ref = React.useRef(null);
     const isInView = useInView(ref, { once: true });
+
+    useEffect(() => {
+        const fetchServices = async () => {
+            try {
+                const data = await servicesService.getAll();
+                const sorted = data.sort((a, b) => (a.order || 0) - (b.order || 0));
+                const mapped = sorted.map((svc, index) => ({
+                    id: index + 1,
+                    englishTitle: svc.name,
+                    arabicDescription: svc.description,
+                    icon: getIcon(svc.icon),
+                }));
+                setServices(mapped);
+            } catch (error) {
+                console.error("Failed to fetch services:", error);
+            }
+        };
+        fetchServices();
+    }, []);
 
     const containerVariants: Variants = {
         hidden: { opacity: 0 },

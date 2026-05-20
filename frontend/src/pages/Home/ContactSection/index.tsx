@@ -11,7 +11,7 @@ import FooterContent from "./FooterContent";
  * Main entry point for the contact and footer area
  */
 const ContactSection: React.FC = () => {
-    const { formData, handleChange, handleSubmit } = useContactForm();
+    const { formData, services, handleChange, handleSubmit } = useContactForm();
 
     return (
         <section id="contact" className="scroll-section relative w-full overflow-hidden">
@@ -40,6 +40,7 @@ const ContactSection: React.FC = () => {
                         >
                             <ContactForm
                                 formData={formData}
+                                services={services}
                                 onFormChange={handleChange}
                                 onSubmit={handleSubmit}
                             />

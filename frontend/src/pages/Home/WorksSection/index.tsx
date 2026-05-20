@@ -1,20 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Container, SectionTitle } from "../../../components";
 import WorkCard, { type WorkItem } from "./WorkCard";
+import { projectsService } from "../../../services/projects.service";
 
 // Images
 import mobileAppImage from "../../../assets/services/mobileApp.png";
 import uiUxImage from "../../../assets/services/UI UX.png";
 import graphicImage from "../../../assets/services/Graphic.png";
 
-// Works data
-const works: WorkItem[] = [
-    { id: 1, title: "Mobile App Design", image: mobileAppImage, slug: "mobile" },
-    { id: 2, title: "UX/UI Design", image: uiUxImage, slug: "ux-ui" },
-    { id: 3, title: "Graphic design", image: graphicImage, slug: "graphic" },
-];
+const categoryAssetsMap: Record<string, { image: string; slug: string }> = {
+    "UX / UI": { image: uiUxImage, slug: "ux-ui" },
+    "Mobile App": { image: mobileAppImage, slug: "mobile" },
+    "Graphic Design": { image: graphicImage, slug: "graphic" },
+};
 
 /**
  * Works/Portfolio section with carousel slider
@@ -22,8 +22,34 @@ const works: WorkItem[] = [
 const WorksSection: React.FC = () => {
     const ref = React.useRef(null);
     const isInView = useInView(ref, { amount: 0.2, once: true });
-    const [activeIndex, setActiveIndex] = useState(1);
+    const [works, setWorks] = useState<WorkItem[]>([]);
+    const [activeIndex, setActiveIndex] = useState(0);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const data = await projectsService.getCategories();
+                const sorted = data.sort((a, b) => (a.order || 0) - (b.order || 0));
+                const mapped = sorted.map((cat, index) => {
+                    const asset = categoryAssetsMap[cat.name] || { image: cat.image || uiUxImage, slug: "ux-ui" };
+                    return {
+                        id: index + 1,
+                        title: cat.name,
+                        image: asset.image,
+                        slug: asset.slug,
+                    };
+                });
+                setWorks(mapped);
+                if (mapped.length > 0) {
+                    setActiveIndex(Math.floor(mapped.length / 2));
+                }
+            } catch (error) {
+                console.error("Failed to fetch categories:", error);
+            }
+        };
+        fetchCategories();
+    }, []);
 
     const containerVariants = {
         hidden: { opacity: 0 },

@@ -11,6 +11,7 @@ interface ContactFormProps {
         address: string;
         message: string;
     };
+    services?: any[];
     onFormChange: (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
     ) => void;
@@ -23,6 +24,7 @@ interface ContactFormProps {
  */
 const ContactForm: React.FC<ContactFormProps> = ({
     formData,
+    services,
     onFormChange,
     onSubmit,
 }) => {
@@ -97,10 +99,11 @@ const ContactForm: React.FC<ContactFormProps> = ({
                             <option value="" disabled>
                                 الخدمة
                             </option>
-                            <option value="ui-design">تصميم واجهات</option>
-                            <option value="ux-design">تصميم تجربة المستخدم</option>
-                            <option value="branding">الهوية البصرية</option>
-                            <option value="app-design">تصميم تطبيقات</option>
+                            {services && services.map((service) => (
+                                <option key={service._id} value={service._id}>
+                                    {service.name}
+                                </option>
+                            ))}
                         </select>
                         <HiChevronLeft className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-xl rotate-[-90deg]" />
                     </div>

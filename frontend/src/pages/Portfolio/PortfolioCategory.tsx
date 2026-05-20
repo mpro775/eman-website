@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useParams, Link } from "react-router-dom";
 import { HiArrowRight } from "react-icons/hi2";
@@ -8,6 +8,7 @@ import Footer from "../../components/layout/Footer";
 import Container from "../../components/common/Container";
 import SectionTitle from "../../components/ui/SectionTitle";
 import { useSEO } from "../../hooks/useSEO";
+import { projectsService } from "../../services/projects.service";
 
 // Portfolio item interface
 interface PortfolioItem {
@@ -461,14 +462,59 @@ const PortfolioCard: React.FC<{
   );
 };
 
+const categoryNameMap: Record<string, string> = {
+  "ux-ui": "UX / UI",
+  "mobile": "Mobile App",
+  "graphic": "Graphic Design",
+};
+
 const PortfolioCategory: React.FC = () => {
   const { category } = useParams<{ category: string }>();
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [items, setItems] = useState<PortfolioItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // Get category data
   const categoryKey = category || "ux-ui";
   const categoryInfo = categoryMapping[categoryKey] || categoryMapping["ux-ui"];
-  const items = portfolioData[categoryKey] || portfolioData["ux-ui"];
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      setLoading(true);
+      try {
+        const categories = await projectsService.getCategories();
+        const targetCategoryName = categoryNameMap[categoryKey];
+        const targetCategory = categories.find(cat => cat.name === targetCategoryName);
+
+        if (targetCategory) {
+          const projects = await projectsService.getAll({ category: targetCategory._id });
+          const mapped: PortfolioItem[] = projects.map((p, index) => ({
+            id: index + 1,
+            title: p.name,
+            titleAr: p.titleAr || p.name,
+            subtitle: p.subtitle || "",
+            subtitleAr: p.subtitleAr || "",
+            description: p.description,
+            descriptionAr: p.descriptionAr || p.description,
+            category: typeof p.category === "object" ? p.category.name : "",
+            categoryAr: typeof p.category === "object" ? p.category.name : "",
+            image: p.image,
+            tools: p.tools || [],
+            projectLink: p.projectLink || "#",
+          }));
+          setItems(mapped);
+        } else {
+          setItems([]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch portfolio projects:", error);
+        setItems([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProjects();
+  }, [categoryKey]);
 
   // SEO optimization for portfolio category page
   useSEO({
@@ -540,7 +586,7 @@ const PortfolioCategory: React.FC = () => {
             </motion.div>
 
             {/* Empty State */}
-            {items.length === 0 && (
+            {!loading && items.length === 0 && (
               <motion.div
                 className="text-center py-20"
                 initial={{ opacity: 0 }}
@@ -548,6 +594,19 @@ const PortfolioCategory: React.FC = () => {
               >
                 <p className="text-text-secondary text-lg">
                   لا توجد أعمال في هذا التصنيف حالياً
+                </p>
+              </motion.div>
+            )}
+
+            {/* Loading State */}
+            {loading && (
+              <motion.div
+                className="text-center py-20"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                <p className="text-text-secondary text-lg">
+                  جاري تحميل المشاريع...
                 </p>
               </motion.div>
             )}

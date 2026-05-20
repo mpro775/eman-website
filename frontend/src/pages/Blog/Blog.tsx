@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
@@ -6,106 +6,7 @@ import Container from "../../components/common/Container";
 import { SectionTitle } from "../../components/ui";
 import { useSEO } from "../../hooks/useSEO";
 import BlogCard, { type BlogPost } from "../Home/BlogSection/BlogCard";
-
-// Extended blog posts data for the full page
-const allBlogPosts: BlogPost[] = [
-  {
-    id: 1,
-    title: "A Decisive Victory for Progressive Policies",
-    category: "Politics",
-    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=250&fit=crop",
-    comments: 124,
-    likes: "10k",
-  },
-  {
-    id: 2,
-    title: "Tech Giants Unveil Cutting-Edge AI Innovations",
-    category: "Technology",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=250&fit=crop",
-    comments: 124,
-    likes: "10k",
-  },
-  {
-    id: 3,
-    title: "COVID-19 Variants",
-    category: "Health",
-    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=250&fit=crop",
-    comments: 124,
-    likes: "10k",
-  },
-  {
-    id: 4,
-    title: "A Decisive Victory for Progressive Policies",
-    category: "Politics",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=250&fit=crop",
-    comments: 128,
-    likes: "15k",
-  },
-  {
-    id: 5,
-    title: "Tech Giants Unveil Cutting-Edge AI Innovations",
-    category: "Technology",
-    image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=250&fit=crop",
-    comments: 89,
-    likes: "8k",
-  },
-  {
-    id: 6,
-    title: "COVID-19 Variants",
-    category: "Health",
-    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&h=250&fit=crop",
-    comments: 256,
-    likes: "20k",
-  },
-  {
-    id: 7,
-    title: "A Decisive Victory for Progressive Policies",
-    category: "Politics",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=250&fit=crop",
-    comments: 67,
-    likes: "5k",
-  },
-  {
-    id: 8,
-    title: "Tech Giants Unveil Cutting-Edge AI Innovations",
-    category: "Technology",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=250&fit=crop",
-    comments: 312,
-    likes: "25k",
-  },
-  {
-    id: 9,
-    title: "COVID-19 Variants",
-    category: "Health",
-    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400&h=250&fit=crop",
-    comments: 145,
-    likes: "12k",
-  },
-  {
-    id: 10,
-    title: "Exploring the Future of Web Development",
-    category: "Technology",
-    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=250&fit=crop",
-    comments: 87,
-    likes: "7k",
-  },
-  {
-    id: 11,
-    title: "Digital Transformation in Healthcare",
-    category: "Health",
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=250&fit=crop",
-    comments: 198,
-    likes: "14k",
-  },
-  {
-    id: 12,
-    title: "The Rise of Remote Work Culture",
-    category: "Politics",
-    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=250&fit=crop",
-    comments: 234,
-    likes: "18k",
-  },
-];
+import { blogService } from "../../services/blog.service";
 
 // Filter Button Component
 const FilterButton: React.FC<{
@@ -129,6 +30,11 @@ const FilterButton: React.FC<{
 const Blog: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [visiblePosts, setVisiblePosts] = useState<number>(9);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [filters, setFilters] = useState<{ id: string; label: string }[]>([
+    { id: "all", label: "الكل" }
+  ]);
+  const [loading, setLoading] = useState(true);
 
   // SEO optimization for blog page
   useSEO({
@@ -138,17 +44,55 @@ const Blog: React.FC = () => {
     url: '/blog',
   });
 
-  const filters = [
-    { id: "all", label: "الكل" },
-    { id: "technology", label: "التكنولوجيا" },
-    { id: "politics", label: "السياسة" },
-    { id: "health", label: "الصحة" },
-  ];
+  useEffect(() => {
+    const fetchBlogData = async () => {
+      try {
+        setLoading(true);
+        const [postsResponse, catsResponse] = await Promise.all([
+          blogService.getPosts({ limit: 100 }),
+          blogService.getCategories()
+        ]);
+
+        const items = postsResponse.data || [];
+        const mappedPosts: BlogPost[] = items.map((p) => {
+          const categoryName = typeof p.category === "object" ? p.category.name : "Uncategorized";
+          const categorySlug = typeof p.category === "object" ? p.category.slug : "";
+          return {
+            id: p._id,
+            title: p.title,
+            category: categoryName,
+            categorySlug: categorySlug,
+            image: p.featuredImage || "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=250&fit=crop",
+            comments: p.shares || 0,
+            likes: p.loves >= 1000 ? `${(p.loves / 1000).toFixed(1)}k` : `${p.loves}`,
+          };
+        });
+        setPosts(mappedPosts);
+
+        const mappedFilters = [
+          { id: "all", label: "الكل" },
+          ...catsResponse.map(cat => ({
+            id: cat.slug || cat._id,
+            label: cat.name
+          }))
+        ];
+        setFilters(mappedFilters);
+      } catch (error) {
+        console.error("Failed to load blog data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBlogData();
+  }, []);
 
   // Filter posts based on active filter
   const filteredPosts = activeFilter === "all"
-    ? allBlogPosts
-    : allBlogPosts.filter(post => post.category.toLowerCase() === activeFilter);
+    ? posts
+    : posts.filter(post => {
+        const slug = (post as any).categorySlug || "";
+        return slug.toLowerCase() === activeFilter.toLowerCase() || post.category.toLowerCase() === activeFilter.toLowerCase();
+      });
 
   const displayedPosts = filteredPosts.slice(0, visiblePosts);
   const hasMorePosts = visiblePosts < filteredPosts.length;
@@ -202,8 +146,21 @@ const Blog: React.FC = () => {
             ))}
           </motion.div>
 
+          {/* Loading State */}
+          {loading && (
+            <motion.div
+              className="text-center py-20"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <p className="text-text-secondary text-lg">
+                جاري تحميل المقالات...
+              </p>
+            </motion.div>
+          )}
+
           {/* Empty State */}
-          {filteredPosts.length === 0 && (
+          {!loading && filteredPosts.length === 0 && (
             <motion.div
               className="text-center py-20"
               initial={{ opacity: 0 }}

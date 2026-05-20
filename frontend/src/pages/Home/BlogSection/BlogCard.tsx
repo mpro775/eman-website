@@ -6,7 +6,7 @@ import { LuSend } from "react-icons/lu";
 import { playTap } from "../../../utils/soundManager";
 
 export interface BlogPost {
-    id: number;
+    id: string | number;
     title: string;
     category: string;
     image: string;
