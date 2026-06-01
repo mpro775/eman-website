@@ -12,7 +12,7 @@ import { playToggleOff, playToggleOn } from "../../utils/soundManager";
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { setIsAboutView } = useView();
+  const { isAboutView, setIsAboutView } = useView();
   const { enabled: soundEnabled, toggleEnabled: toggleSoundEnabled } = useSoundStore();
 
   const [activeSection, setActiveSection] = useState<string>("home");
@@ -33,11 +33,18 @@ const Header: React.FC = () => {
 
   // Handle scroll for background change
   useEffect(() => {
+    const scrollContainer = document.querySelector(".scroll-container");
+    const target = scrollContainer || window;
+
     const handleScrollEffect = () => {
-      setIsScrolled(window.scrollY > 50);
+      const scrollTop = scrollContainer ? scrollContainer.scrollTop : window.scrollY;
+      setIsScrolled(scrollTop > 50);
     };
-    window.addEventListener("scroll", handleScrollEffect);
-    return () => window.removeEventListener("scroll", handleScrollEffect);
+
+    target.addEventListener("scroll", handleScrollEffect, { passive: true });
+    handleScrollEffect(); // Run once initially
+
+    return () => target.removeEventListener("scroll", handleScrollEffect);
   }, []);
 
   // Close mobile menu when clicking outside or on escape
@@ -65,51 +72,34 @@ const Header: React.FC = () => {
   useEffect(() => {
     if (location.pathname !== "/") return;
 
-    const sectionIds = navLinks
-      .filter((l): l is (typeof navLinks)[number] & { kind: "scroll"; id: string } => l.kind === "scroll")
-      .map((l) => l.id);
-
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 200;
-      for (let i = sectionIds.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sectionIds[i]);
-        if (!section) continue;
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-          setActiveSection(sectionIds[i]);
-          break;
-        }
-      }
-    };
+    const allSections = ["home", "experience", "services", "portfolio", "testimonials", "programs", "blog", "contact"];
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
             setActiveSection(entry.target.id);
           }
         });
       },
-      { threshold: 0.5, rootMargin: "-100px 0px -50% 0px" }
+      {
+        threshold: [0.3, 0.5, 0.7],
+        rootMargin: "-10% 0px -10% 0px",
+      }
     );
 
-    sectionIds.forEach((id) => {
+    allSections.forEach((id) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      sectionIds.forEach((id) => {
+      allSections.forEach((id) => {
         const el = document.getElementById(id);
         if (el) observer.unobserve(el);
       });
     };
-  }, [location.pathname, navLinks]);
+  }, [location.pathname]);
 
   const scrollToSectionWithRetry = (targetId: string) => {
     let tries = 0;
@@ -220,7 +210,13 @@ const Header: React.FC = () => {
               {navLinks.map((link, index) => {
                 const isScroll = link.kind === "scroll";
                 const isActiveScroll =
-                  location.pathname === "/" && isScroll && activeSection === link.id;
+                  location.pathname === "/" &&
+                  isScroll &&
+                  (link.id === "home"
+                    ? activeSection === "home" && !isAboutView
+                    : link.id === "about"
+                    ? activeSection === "home" && isAboutView
+                    : activeSection === link.id);
                 return (
                   <motion.li
                     key={link.name}
@@ -416,7 +412,13 @@ const Header: React.FC = () => {
                             onClick={(e) => handleScrollNavClick(e, link.id)}
                             className={`
                               block py-4 px-4 rounded-xl text-lg font-medium transition-all duration-300
-                              ${location.pathname === "/" && isScroll && activeSection === link.id
+                              ${location.pathname === "/" &&
+                                isScroll &&
+                                (link.id === "home"
+                                  ? activeSection === "home" && !isAboutView
+                                  : link.id === "about"
+                                  ? activeSection === "home" && isAboutView
+                                  : activeSection === link.id)
                                 ? "bg-accent-pink/20 text-accent-pink"
                                 : "text-text-primary hover:bg-white/5 hover:text-accent-pink"
                               }
