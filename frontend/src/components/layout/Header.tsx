@@ -8,6 +8,7 @@ import downloadIcon from "../../assets/icons/download.svg";
 import { useView } from "../../context/ViewContext";
 import { useSoundStore } from "../../store/sound.store";
 import { playToggleOff, playToggleOn } from "../../utils/soundManager";
+import { profileService } from "../../services/profile.service";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -18,6 +19,21 @@ const Header: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>("home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [cvUrl, setCvUrl] = useState<string>("#");
+
+  useEffect(() => {
+    const fetchCV = async () => {
+      try {
+        const profile = await profileService.get();
+        if (profile && profile.cvFile) {
+          setCvUrl(profile.cvFile);
+        }
+      } catch (error) {
+        console.error("Failed to fetch profile CV:", error);
+      }
+    };
+    fetchCV();
+  }, []);
 
   const navLinks = useMemo(
     () => [
@@ -280,7 +296,9 @@ const Header: React.FC = () => {
               </motion.button>
 
               <motion.a
-                href="#cv"
+                href={cvUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-3 text-white transition-all duration-300 hover:text-accent-pink flex-shrink-0 group"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -441,7 +459,9 @@ const Header: React.FC = () => {
                   animate="open"
                 >
                   <a
-                    href="#cv"
+                    href={cvUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center justify-center gap-3 py-4 px-6 rounded-xl bg-gradient-to-r from-accent-pink to-accent-cyan text-white font-semibold text-lg transition-all duration-300 hover:shadow-lg hover:shadow-accent-pink/30"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
