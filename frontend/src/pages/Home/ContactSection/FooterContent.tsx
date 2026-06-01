@@ -251,7 +251,7 @@ const FooterContent: React.FC = () => {
                     <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-muted">
                         {/* Copyright */}
                         <p className="text-center md:text-right order-1 md:order-2">
-                            Copyright© 2025 وكالة سمارت ديف
+                            Copyright© 2026 وكالة سمارت ديف
                         </p>
 
                         {/* Privacy Links */}

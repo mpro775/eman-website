@@ -164,7 +164,7 @@ const Footer: React.FC = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-muted">
             {/* Copyright */}
             <p className="text-center md:text-left">
-              Copyright© 2025 إيمان جميل - جميع الحقوق محفوظة
+              Copyright© 2026 إيمان جميل - جميع الحقوق محفوظة
             </p>
 
             {/* Privacy Links */}
