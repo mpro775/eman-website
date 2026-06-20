@@ -1,0 +1,15 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 97.2569 100.137" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 9089">
+<g id="Vector 1" filter="url(#filter0_f_0_114)">
+<path d="M9.02273 60.8706C9.02273 52.2293 17.664 34.9467 9.02273 9.02273M30.626 70.9522C43.1079 58.9503 68.6478 29.7619 70.9522 9.02273M39.2673 91.1152C46.9485 91.1152 67.4956 87.0826 88.2348 70.9522" stroke="var(--stroke-0, #C67588)" stroke-width="5.55198" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<foreignObject x="-37.0108" y="-36.938" width="171.278" height="174.013"><div xmlns="http://www.w3.org/1999/xhtml" style="backdrop-filter:blur(22.62px);height:100%;width:100%"></div></foreignObject><path id="Vector 2" data-figma-bg-blur-radius="45.2487" d="M11.0146 60.3274C11.0146 52.1207 19.2213 35.7074 11.0146 11.0875M31.5313 69.9018C43.3853 58.5037 67.6405 30.7834 69.829 11.0875M39.7379 89.0506C47.0327 89.0506 66.5463 85.2209 86.2423 69.9018" stroke="var(--stroke-0, #C67588)" stroke-width="5.55198" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<filter id="filter0_f_0_114" x="0" y="0" width="97.2569" height="100.137" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="3.12299" result="effect1_foregroundBlur_0_114"/>
+</filter>
+</defs>
+</svg>

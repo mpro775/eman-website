@@ -8,8 +8,8 @@ import ActionDock from "./ActionDock";
 import BackgroundGlows from "./BackgroundGlows";
 import BottomBlurEffect from "./BottomBlurEffect";
 
-// Image import
-import heroImage from "../../../assets/illustrations/image.png";
+// Image import (Figma hero portrait — node 820:2098)
+import heroImage from "../../../assets/illustrations/hero/portrait.png";
 
 // Types
 export interface HeroAboutSectionProps {
@@ -26,25 +26,20 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
     const transitionDuration = 0.8;
     const transitionEase: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
 
-    // Animation variants
+    // Animation variants — hero state matches Figma 820:2098 (top-anchored, 531×606).
+    // The about/skills state keeps the portrait functional (re-design later).
     const imageVariants = {
         hero: {
             x: "-50%",
-            y: 0,
-            left: "50%",
-            bottom: "0px",
-            width: "906.4px",
-            height: "605.3px",
+            left: "calc(50% - 14.5px)",
+            top: "321px",
             scale: 1,
         },
         about: {
             x: "0%",
-            y: 0,
-            left: "15%",
-            bottom: "0px",
-            width: "66%",
-            height: "auto",
-            scale: 1.5,
+            left: "12%",
+            top: "150px",
+            scale: 1.35,
         },
     };
 
@@ -72,9 +67,9 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                 transition={{ duration: transitionDuration, ease: transitionEase }}
             />
 
-            {/* Canvas Container - 1444px × 800px (Figma dimensions) */}
+            {/* Canvas Container - 1440px × 918px (Figma frame 820:2060) */}
             <div
-                className="relative w-full max-w-[1444px] mx-auto overflow-visible h-auto min-h-screen lg:h-[800px] lg:min-h-0"
+                className="relative w-full max-w-[1440px] mx-auto overflow-visible h-auto min-h-screen lg:h-[918px] lg:min-h-0"
             >
                 <BackgroundGlows
                     isAboutView={isAboutView}
@@ -96,9 +91,11 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                     )}
                 </AnimatePresence>
 
-                {/* Personal Image (shared - animates between views) */}
+                {/* Personal Image (shared - animates between views).
+                    Hero state: 531×606 crop box matching Figma 820:2098. */}
                 <motion.div
-                    className="absolute z-[25]"
+                    className="absolute z-[25] overflow-hidden"
+                    style={{ width: "531px", height: "606px" }}
                     initial={false}
                     animate={isAboutView ? "about" : "hero"}
                     variants={imageVariants}
@@ -107,7 +104,8 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                     <img
                         src={heroImage}
                         alt="Eman UI Designer"
-                        className="w-full h-full object-contain grayscale contrast-100 brightness-90"
+                        className="absolute max-w-none object-cover pointer-events-none"
+                        style={{ width: "164.01%", height: "216.16%", left: "-30.86%", top: "-36%" }}
                     />
                 </motion.div>
 

@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap");
 @import "tailwindcss";
 
 /* Poppins Font */
@@ -18,6 +19,10 @@
   --font-arabic: "Tajawal", sans-serif;
   --font-english: "Urbanist", sans-serif;
   --font-heading: "Urbanist", "Tajawal", sans-serif;
+  /* خط البادج (مرحباً) في الـ Hero */
+  --font-zain: "Zain", "Tajawal", sans-serif;
+  /* بديل قريب لخط Thmanyah sans (تجاري) المستخدم في عناوين/اقتباس إيمان */
+  --font-thmanyah: "Tajawal", sans-serif;
 
   /* أحجام النصوص */
   --text-hero: clamp(3rem, 7vw, 5rem);

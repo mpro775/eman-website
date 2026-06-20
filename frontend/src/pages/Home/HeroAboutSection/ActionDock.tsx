@@ -8,9 +8,17 @@ interface ActionDockProps {
     transitionEase: [number, number, number, number];
 }
 
+const dockLabelStyle: React.CSSProperties = {
+    fontFamily: '"Urbanist", "Tajawal", sans-serif',
+    fontWeight: 700,
+    fontSize: "22.335px",
+    letterSpacing: "-0.335px",
+};
+
 /**
- * Floating action dock with contact and portfolio buttons
- * Animates position based on current view (Hero vs About)
+ * Floating action dock — pixel-matched to Figma 820:2099.
+ * Glass pill containing the "أعمالي" black bordered button (with up-right arrow)
+ * and the "تواصل معي" text action. Animates out of view in the About/Skills view.
  */
 const ActionDock: React.FC<ActionDockProps> = ({
     isAboutView,
@@ -22,61 +30,52 @@ const ActionDock: React.FC<ActionDockProps> = ({
             className="absolute z-30"
             initial={false}
             animate={{
-                left: "50%",
-                bottom: isAboutView ? "-100px" : "48px",
+                left: "calc(50% - 31.5px)",
+                bottom: isAboutView ? "-120px" : "36.77px",
                 x: "-50%",
-                scale: 1,
                 opacity: isAboutView ? 0 : 1,
             }}
             transition={{ duration: transitionDuration, ease: transitionEase }}
         >
-            {/* Liquid Glass Container */}
+            {/* Glass pill container */}
             <div
-                className="relative rounded-full flex items-center overflow-hidden"
+                className="flex items-center justify-center bg-white/10 backdrop-blur-md overflow-hidden"
                 style={{
-                    padding: "6px",
-                    gap: "6px",
-                    background:
-                        "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.02) 100%)",
-                    backdropFilter: "blur(20px) saturate(180%)",
-                    WebkitBackdropFilter: "blur(20px) saturate(180%)",
-                    border: "1px solid rgba(255,255,255,0.18)",
-                    boxShadow: `
-            0 8px 32px rgba(0,0,0,0.3),
-            inset 0 1px 1px rgba(255,255,255,0.2),
-            inset 0 -1px 1px rgba(0,0,0,0.1),
-            0 0 40px rgba(217,119,139,0.15)
-          `,
+                    width: "373px",
+                    height: "84.234px",
+                    gap: "10.272px",
+                    padding: "10.272px",
+                    borderRadius: "51.362px",
                 }}
             >
-                {/* Highlight overlay for liquid effect */}
-                <div
-                    className="absolute top-0 left-0 right-0 h-1/2 rounded-t-full pointer-events-none"
+                {/* أعمالي — black bordered button with up-right arrow */}
+                <a
+                    href="#portfolio"
+                    className="shrink-0 flex items-center justify-center bg-black overflow-hidden transition-transform hover:scale-[1.03]"
                     style={{
-                        background:
-                            "linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 100%)",
+                        width: "213.668px",
+                        border: "0.514px solid #d0d5dd",
+                        borderRadius: "61.635px",
+                        padding: "10.272px 20.545px",
+                        gap: "4px",
                     }}
-                />
+                >
+                    <span className="text-white whitespace-nowrap" style={dockLabelStyle}>
+                        أعمالي
+                    </span>
+                    <HiArrowUpRight className="text-white shrink-0" style={{ fontSize: "26px" }} />
+                </a>
 
+                {/* تواصل معي — text action */}
                 <a
                     href="#contact"
-                    className="relative text-white font-medium transition-all hover:bg-white/15 rounded-full"
-                    style={{ padding: "14px 44px", fontSize: "18px" }}
+                    className="flex-1 flex items-center justify-center transition-colors hover:bg-white/10"
+                    style={{ borderRadius: "61.635px", padding: "10.272px 20.545px" }}
                 >
-                    تواصل معي
+                    <span className="text-white whitespace-nowrap" style={dockLabelStyle}>
+                        تواصل معي
+                    </span>
                 </a>
-                <button
-                    className="relative bg-gradient-to-r from-accent-pink to-accent-pink-dark text-white font-bold rounded-full flex items-center transition-all hover:scale-105"
-                    style={{
-                        padding: "14px 44px",
-                        fontSize: "18px",
-                        gap: "10px",
-                        boxShadow: "inset 0 1px 1px rgba(255,255,255,0.3)",
-                    }}
-                >
-                    <HiArrowUpRight style={{ fontSize: "22px" }} />
-                    <span>أعمالي</span>
-                </button>
             </div>
         </motion.div>
     );

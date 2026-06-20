@@ -1,10 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-// Image imports
-import sparkImage from "../../../assets/illustrations/1.svg";
-import arrowImage from "../../../assets/illustrations/2.svg";
-import quoteIcon from "../../../assets/illustrations/3.png";
+// Image imports (Figma hero assets — node 820:2060)
+import sparkImage from "../../../assets/illustrations/hero/spark.svg";
+import arrowImage from "../../../assets/illustrations/hero/arrow.svg";
+import quoteIcon from "../../../assets/illustrations/hero/quote.svg";
 
 interface HeroViewProps {
     heroElementsVariants: {
@@ -14,8 +14,11 @@ interface HeroViewProps {
 }
 
 /**
- * Hero view content - displays the main landing page content
- * Includes: Welcome badge, "أنا إيمان" heading, UX/UI Designer title, quote
+ * Hero view content — pixel-matched to Figma node 820:2060 ("إيمان" hero).
+ * Positions use a 1440-wide canvas reference, anchored to the horizontal
+ * center so the layout stays aligned as the canvas scales down.
+ * Includes: welcome badge (مرحباً) + spark, "أنا إيمان," heading,
+ * "UX/UI Designer" title + arrow decoration, and the right-side quote.
  */
 const HeroView: React.FC<HeroViewProps> = ({ heroElementsVariants }) => {
     return (
@@ -27,117 +30,124 @@ const HeroView: React.FC<HeroViewProps> = ({ heroElementsVariants }) => {
             variants={heroElementsVariants}
             transition={{ duration: 0.5 }}
         >
-            {/* Hero Section: Welcome + أنا إيمان + UX/UI Designer */}
+            {/* Badge + Heading group (Figma 820:2062) — centered, top 153.61px */}
             <div
-                className="absolute left-1/2 flex flex-col items-center z-10 pointer-events-none select-none"
-                style={{ top: "50px", transform: "translateX(-50%)" }}
+                className="absolute left-1/2 -translate-x-1/2 z-10 pointer-events-none select-none flex flex-col items-center"
+                style={{ top: "153.61px", width: "797.531px" }}
             >
-                {/* Welcome badge */}
-                <div className="relative">
-                    <img
-                        src={sparkImage}
-                        alt="Spark"
-                        className="absolute"
-                        style={{ top: "-18px", right: "-20px", width: "32px", height: "32px" }}
-                    />
-                    <div
-                        className="bg-white/5 border border-white/40 backdrop-blur-md rounded-full"
-                        style={{ padding: "8px 32px" }}
-                    >
-                        <span
-                            className="text-white font-medium shadow-none"
-                            style={{ fontSize: "20px" }}
+                {/* Inner stack: badge + heading (gap 8.735px) */}
+                <div className="flex flex-col items-center" style={{ gap: "8.735px" }}>
+                    {/* Welcome badge (Figma 820:2064/2065) */}
+                    <div className="relative">
+                        {/* Spark — light blue (Figma 820:2067), top-right of badge */}
+                        <img
+                            src={sparkImage}
+                            alt=""
+                            aria-hidden="true"
+                            className="absolute"
+                            style={{ top: "0px", left: "86.2px", width: "29.356px", height: "30.424px" }}
+                        />
+                        <div
+                            className="bg-white/10 border-white overflow-hidden flex items-center justify-center"
+                            style={{
+                                marginTop: "16.6px",
+                                borderWidth: "1.113px",
+                                borderStyle: "solid",
+                                borderRadius: "33.4px",
+                                padding: "11.133px 22.266px",
+                                height: "39.309px",
+                            }}
                         >
-                            مرحباً
-                        </span>
+                            <span
+                                className="font-zain text-white whitespace-nowrap"
+                                style={{ fontSize: "22.712px", letterSpacing: "-0.3407px", lineHeight: "normal" }}
+                            >
+                                مرحباً
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Heading: أنا إيمان, / UX/UI Designer (Figma 820:2070) */}
+                    <div
+                        className="text-center text-white"
+                        style={{ width: "797.531px", letterSpacing: "-1.2522px" }}
+                    >
+                        <h2
+                            style={{
+                                fontFamily: '"Tajawal", sans-serif',
+                                fontWeight: 600,
+                                fontSize: "83.48px",
+                                lineHeight: 1.05,
+                                margin: 0,
+                            }}
+                        >
+                            {" "}أنا{" "}
+                            <span
+                                className="bg-clip-text text-transparent inline-block"
+                                style={{
+                                    backgroundImage:
+                                        "linear-gradient(to right, rgba(198,117,136,0.4) 0%, #de97a7 100%)",
+                                }}
+                            >
+                                إيمان
+                            </span>
+                            ,
+                        </h2>
+                        <h1
+                            style={{
+                                fontFamily: '"Urbanist", "Tajawal", sans-serif',
+                                fontWeight: 600,
+                                fontSize: "83.48px",
+                                lineHeight: 1.05,
+                                margin: 0,
+                            }}
+                        >
+                            UX/UI Designer
+                        </h1>
                     </div>
                 </div>
 
-                {/* أنا إيمان */}
-                <h2
-                    className="text-white text-center"
-                    style={{
-                        fontFamily: '"Urbanist", "Tajawal", sans-serif',
-                        fontWeight: 600,
-                        fontSize: "83.48px",
-                        lineHeight: "140%",
-                        letterSpacing: "-0.015em",
-                        marginTop: "-20px",
-                    }}
-                >
-                    أنا{" "}
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-pink to-accent-pink-dark inline-block relative py-1">
-                        إيمان.
-                    </span>
-                </h2>
-
-                {/* UX/UI Designer */}
-                <div className="flex items-center justify-center gap-4" style={{ marginTop: "2px" }}>
-                    <h1
-                        className="text-white"
-                        style={{
-                            fontFamily: '"Urbanist", "Tajawal", sans-serif',
-                            fontWeight: 600,
-                            fontSize: "83.48px",
-                            lineHeight: "100%",
-                            letterSpacing: "-0.015em",
-                            marginTop: "-20px",
-                        }}
-                    >
-                        UX/UI Designer
-                    </h1>
-                    {/* Arrow decoration */}
-                    <img
-                        src={arrowImage}
-                        alt="Arrow decoration"
-                        className="z-10"
-                        style={{ width: "80px", height: "82px", transform: "translateY(40px) translateX(30px)" }}
-                    />
-                </div>
-            </div>
-
-            {/* Quote */}
-            <div
-                className="absolute z-30 text-right"
-                style={{ right: "50px", top: "400px", maxWidth: "450px" }}
-            >
+                {/* Arrow decoration — pink squiggle (Figma 820:2071) */}
                 <img
-                    src={quoteIcon}
-                    alt="Quote"
-                    className="block"
+                    src={arrowImage}
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute"
                     style={{
-                        width: "36px",
-                        height: "36px",
-                        marginBottom: "24px",
-                        marginRight: "auto",
-                        marginLeft: "0",
+                        left: "32.49px",
+                        top: "181.13px",
+                        width: "79.212px",
+                        height: "82.093px",
+                        transform: "rotate(-166.3deg)",
                     }}
                 />
+            </div>
+
+            {/* Quote (Figma 820:2094) — right side, top 530px */}
+            <div
+                className="absolute z-30 flex flex-col items-start"
+                style={{ left: "calc(50% + 275px)", top: "530px", width: "362px", gap: "20px" }}
+            >
+                {/* Quote icon, right-aligned */}
+                <div className="flex flex-col items-end w-full">
+                    <img src={quoteIcon} alt="" aria-hidden="true" style={{ width: "36px", height: "36px" }} />
+                </div>
                 <p
                     className="text-white"
                     style={{
-                        fontFamily: '"Urbanist", "Tajawal", sans-serif',
-                        fontWeight: 400,
+                        fontFamily: '"Tajawal", sans-serif',
+                        fontWeight: 500,
                         fontSize: "24px",
-                        lineHeight: "111%",
-                        letterSpacing: "-0.015em",
+                        lineHeight: 1.34,
+                        letterSpacing: "-0.36px",
                         textAlign: "right",
                         direction: "rtl",
+                        width: "354.75px",
                     }}
                 >
-                    أؤمــــن بــأن جوهــــــــــر التـــصميم يكمــــــــن
-                    <br />
-                    في{" "}
-                    <span className="font-medium text-accent-pink-light">الإحساس</span>،
-                    لذا أعمل على تصميـــــم
-                    <br />
-                    تجــارب رقميــــة واعيـــــة، وبناء واجهــــــات
-                    <br />
-                    مســـــتخدم تعكــــــس هويـــــة الـــعلامــــــة
-                    <br />
-                    التجاريــــة بدقــــــة وتـــــــوازن بين الجمـــــال
-                    <br />
-                    والوضوح.
+                    أؤمـــن بأن جوهـــر التصميـــم يكمـــــن فــي الإحساس، لذا أعمل على تصميم تجارب
+                    رقمية واعيـــة، وبنـــــاء واجهــــات مستخــــدم تعكــــــس هويـــة العلامــــة
+                    التجاريــــة بدقـــــة وتــــوازن بيـن الجمـال والوضــــوح.
                 </p>
             </div>
         </motion.div>
