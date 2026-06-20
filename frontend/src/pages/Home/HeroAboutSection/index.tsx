@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 // Components
 import HeroView from "./HeroView";
+import HeroMobile from "./HeroMobile";
 import AboutView from "./SkillsView";
 import ActionDock from "./ActionDock";
 import BackgroundGlows from "./BackgroundGlows";
@@ -67,9 +68,12 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                 transition={{ duration: transitionDuration, ease: transitionEase }}
             />
 
-            {/* Canvas Container - 1440px × 918px (Figma frame 820:2060) */}
+            {/* Mobile / small-screen hero (vertical flow) — shown below lg */}
+            <HeroMobile />
+
+            {/* Desktop canvas - 1440px × 918px (Figma frame 820:2060) — lg and up */}
             <div
-                className="relative w-full max-w-[1440px] mx-auto overflow-visible h-auto min-h-screen lg:h-[918px] lg:min-h-0"
+                className="relative hidden lg:block w-full max-w-[1440px] mx-auto overflow-visible lg:h-[918px]"
             >
                 <BackgroundGlows
                     isAboutView={isAboutView}
