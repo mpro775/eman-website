@@ -11,6 +11,36 @@
   font-style: normal;
 }
 
+/* Thmanyah Sans (خط ثمانية) — used for the Eman hero headings & quote */
+@font-face {
+  font-family: 'Thmanyah Sans';
+  src: url('./assets/fonts/ThmanyahSans-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Sans';
+  src: url('./assets/fonts/ThmanyahSans-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Sans';
+  src: url('./assets/fonts/ThmanyahSans-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Sans';
+  src: url('./assets/fonts/ThmanyahSans-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* 1. الخطوط */
 
 /* 2. الثيم */
@@ -21,8 +51,8 @@
   --font-heading: "Urbanist", "Tajawal", sans-serif;
   /* خط البادج (مرحباً) في الـ Hero */
   --font-zain: "Zain", "Tajawal", sans-serif;
-  /* بديل قريب لخط Thmanyah sans (تجاري) المستخدم في عناوين/اقتباس إيمان */
-  --font-thmanyah: "Tajawal", sans-serif;
+  /* خط Thmanyah sans المستخدم في عناوين/اقتباس إيمان (مع Tajawal كبديل احتياطي) */
+  --font-thmanyah: "Thmanyah Sans", "Tajawal", sans-serif;
 
   /* أحجام النصوص */
   --text-hero: clamp(3rem, 7vw, 5rem);

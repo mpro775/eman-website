@@ -74,8 +74,8 @@ const HeroView: React.FC<HeroViewProps> = ({ heroElementsVariants }) => {
                     >
                         <h2
                             style={{
-                                fontFamily: '"Tajawal", sans-serif',
-                                fontWeight: 600,
+                                fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                                fontWeight: 500,
                                 fontSize: "83.48px",
                                 lineHeight: 1.05,
                                 margin: 0,
@@ -95,8 +95,8 @@ const HeroView: React.FC<HeroViewProps> = ({ heroElementsVariants }) => {
                         </h2>
                         <h1
                             style={{
-                                fontFamily: '"Urbanist", "Tajawal", sans-serif',
-                                fontWeight: 600,
+                                fontFamily: '"Thmanyah Sans", "Urbanist", "Tajawal", sans-serif',
+                                fontWeight: 500,
                                 fontSize: "83.48px",
                                 lineHeight: 1.05,
                                 margin: 0,
@@ -135,7 +135,7 @@ const HeroView: React.FC<HeroViewProps> = ({ heroElementsVariants }) => {
                 <p
                     className="text-white"
                     style={{
-                        fontFamily: '"Tajawal", sans-serif',
+                        fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
                         fontWeight: 500,
                         fontSize: "24px",
                         lineHeight: 1.34,

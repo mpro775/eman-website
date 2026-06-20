@@ -51,7 +51,7 @@ const HeroMobile: React.FC = () => {
             {/* Heading: أنا إيمان, / UX/UI Designer */}
             <h2
                 className="z-10 mt-4 text-white"
-                style={{ fontFamily: '"Tajawal", sans-serif', fontWeight: 600, fontSize: headingFontSize, lineHeight: 1.1, letterSpacing: "-0.5px", margin: "1rem 0 0" }}
+                style={{ fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif', fontWeight: 500, fontSize: headingFontSize, lineHeight: 1.1, letterSpacing: "-0.5px", margin: "1rem 0 0" }}
             >
                 أنا{" "}
                 <span
@@ -64,7 +64,7 @@ const HeroMobile: React.FC = () => {
             </h2>
             <h1
                 className="z-10 text-white"
-                style={{ fontFamily: '"Urbanist", "Tajawal", sans-serif', fontWeight: 600, fontSize: headingFontSize, lineHeight: 1.1, margin: 0 }}
+                style={{ fontFamily: '"Thmanyah Sans", "Urbanist", "Tajawal", sans-serif', fontWeight: 500, fontSize: headingFontSize, lineHeight: 1.1, margin: 0 }}
             >
                 UX/UI Designer
             </h1>
@@ -90,7 +90,7 @@ const HeroMobile: React.FC = () => {
                 <img src={quoteIcon} alt="" aria-hidden="true" className="mb-3" style={{ width: "32px", height: "32px" }} />
                 <p
                     className="text-white text-center"
-                    style={{ fontFamily: '"Tajawal", sans-serif', fontWeight: 500, fontSize: "clamp(0.95rem, 4vw, 1.05rem)", lineHeight: 1.6, direction: "rtl" }}
+                    style={{ fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif', fontWeight: 500, fontSize: "clamp(0.95rem, 4vw, 1.05rem)", lineHeight: 1.6, direction: "rtl" }}
                 >
                     أؤمـــن بأن جوهـــر التصميـــم يكمـــــن فــي الإحساس، لذا أعمل على تصميم تجارب
                     رقمية واعيـــة، وبنـــــاء واجهــــات مستخــــدم تعكــــــس هويـــة العلامــــة
