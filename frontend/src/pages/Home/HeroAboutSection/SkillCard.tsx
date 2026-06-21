@@ -1,127 +1,98 @@
 import React from "react";
-import { motion, type MotionStyle } from "framer-motion";
-import frameButtonSvg from "../../../assets/logos/Frame_button.png";
 
 interface SkillCardProps {
     icon: string;
     title: string;
     description: string;
-    position: MotionStyle;
+    position?: React.CSSProperties;
     delay: number;
+    /** Icon tilt in degrees (Figma varies per card) */
+    iconRotate?: number;
+    /** When true, lays out in normal flow (mobile stack) instead of absolute */
+    inFlow?: boolean;
 }
 
 /**
- * Skill card component for the "مهاراتي" (My Skills) section
- * Features gradient background, blur effects, and floating action button
- * Designed with RTL support for Arabic content
+ * Skill chip card — pixel-matched to Figma 820:1595 cards (e.g. 820:1618).
+ * A translucent gradient card containing a glass pill (3D icon overlapping
+ * its top-left + English label) and a right-aligned Arabic description.
+ *
+ * Uses CSS animations (not framer-motion) so the entrance + idle float stay
+ * smooth even while the page re-renders.
  */
 const SkillCard: React.FC<SkillCardProps> = ({
+    icon,
     title,
     description,
-    position,
+    position = {},
     delay,
+    iconRotate = -14,
+    inFlow = false,
 }) => {
     return (
-        <motion.div
-            className="absolute z-30"
-            style={position}
-            initial={{ y: 100, opacity: 0, scale: 0.9 }}
-            animate={{ y: 0, opacity: 1, scale: 1 }}
-            exit={{ y: 100, opacity: 0, scale: 0.9 }}
-            transition={{
-                duration: 0.6,
-                delay: delay,
-                ease: [0.25, 0.46, 0.45, 0.94],
+        <div
+            className={`${inFlow ? "relative" : "absolute"} z-30 w-[259px]`}
+            style={{
+                ...position,
+                opacity: 0,
+                animation: `skillIn 0.55s cubic-bezier(0.25,0.46,0.45,0.94) ${delay}s forwards`,
             }}
         >
-            {/* Floating animation wrapper */}
-            <motion.div
-                animate={{ y: [0, -8, 0] }}
-                transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: delay * 0.5,
-                }}
-            >
-                {/* Card Container */}
+            {/* Idle float wrapper */}
+            <div style={{ animation: `skillFloat 4s ease-in-out ${delay}s infinite` }}>
                 <div
-                    className="relative overflow-hidden"
+                    dir="rtl"
+                    className="relative flex flex-col items-center rounded-[30px]"
                     style={{
-                        width: "320px",
-                        height: "170px",
-                        borderRadius: "17.86px",
-                        padding: "12px 16px",
-                        background: "linear-gradient(242.45deg, #3B3156 38.21%, #000000 98.39%)",
-                        boxShadow: "0px 2.98px 2.98px 0px #60606040",
-                        direction: "rtl",
+                        padding: "6.82px 11.082px",
+                        gap: "8.525px",
+                        background: "linear-gradient(229.7deg, rgba(59,49,86,0.2) 38.21%, rgba(0,0,0,0.2) 98.39%)",
                     }}
                 >
-                    {/* Top reflection */}
-                    <div
-                        className="absolute top-0 left-0 right-0 h-1/3 pointer-events-none"
-                        style={{
-                            background: "linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 100%)",
-                            borderRadius: "17.86px 17.86px 0 0",
-                        }}
-                    />
-
-                    {/* Liquid Glass Button - using SVG from Figma */}
-                    <div className="relative mb-3 flex justify-center">
-                        <div className="relative flex items-center justify-center cursor-pointer transition-all hover:scale-105">
-                            {/* Button SVG Background */}
-                            <img
-                                src={frameButtonSvg}
-                                alt=""
-                                style={{
-                                    width: "170px",   // عدّل العرض كما تريد
-                                    height: "40px",   // عدّل الارتفاع كما تريد
-                                }}
-                            />
-
-                            {/* Label text - positioned on top of SVG */}
+                    {/* Chip: glass pill + overlapping 3D icon */}
+                    <div className="relative shrink-0" style={{ width: "161.85px", height: "49.7px" }}>
+                        <div
+                            className="absolute flex items-center justify-center bg-white/10 overflow-hidden"
+                            style={{ left: "16.15px", top: "16.7px", width: "145.705px", height: "33.034px", borderRadius: "51.362px" }}
+                        >
                             <span
-                                className="absolute font-english font-bold text-center"
+                                className="text-white text-center whitespace-nowrap"
                                 style={{
-                                    fontFamily: "'Urbanist', sans-serif",
-                                    fontWeight: 700,
-                                    fontSize: "16px",
-                                    lineHeight: "111%",
-                                    letterSpacing: "-0.015em",
-                                    color: "#FFFFFF",
+                                    fontFamily: '"Thmanyah Sans", "Urbanist", "Tajawal", sans-serif',
+                                    fontWeight: 500,
+                                    fontSize: "14px",
+                                    letterSpacing: "-0.21px",
                                 }}
                             >
                                 {title}
                             </span>
                         </div>
+                        <img
+                            src={icon}
+                            alt=""
+                            aria-hidden="true"
+                            className="absolute object-contain pointer-events-none drop-shadow-lg"
+                            style={{ left: "0px", top: "0px", width: "40px", height: "40px", transform: `rotate(${iconRotate}deg)` }}
+                        />
                     </div>
 
                     {/* Description */}
                     <p
-                        className="text-right"
+                        className="text-white text-right"
                         style={{
-                            fontFamily: "'Urbanist', sans-serif",
-                            fontWeight: 400,
-                            fontSize: "16px",
-                            lineHeight: "125%",
-                            letterSpacing: "-0.015em",
-                            color: "#FFFFFF",
+                            fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                            fontWeight: 500,
+                            fontSize: "12px",
+                            lineHeight: 1.56,
+                            letterSpacing: "-0.18px",
+                            width: "237px",
                         }}
                     >
                         {description}
                     </p>
-
-                    {/* Subtle glow effect */}
-                    <div
-                        className="absolute -bottom-4 -right-4 w-20 h-20 rounded-full pointer-events-none"
-                        style={{
-                            background: "radial-gradient(circle, rgba(157, 78, 221, 0.2) 0%, transparent 70%)",
-                            filter: "blur(20px)",
-                        }}
-                    />
                 </div>
-            </motion.div>
-        </motion.div>
+            </div>
+        </div>
     );
 };
 

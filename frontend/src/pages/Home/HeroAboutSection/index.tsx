@@ -9,8 +9,11 @@ import ActionDock from "./ActionDock";
 import BackgroundGlows from "./BackgroundGlows";
 import BottomBlurEffect from "./BottomBlurEffect";
 
-// Image import (Figma hero portrait — node 820:2098)
+// Portraits — Figma uses two different photos per view:
+//  - Hero (820:2098): beige outfit, full shot
+//  - Skills (851:381 "ChatGPT Image"): black outfit, centered close-up
 import heroImage from "../../../assets/illustrations/hero/portrait.png";
+import skillsImage from "../../../assets/skills/portrait.png";
 
 // Types
 export interface HeroAboutSectionProps {
@@ -26,23 +29,6 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
     // Animation configuration
     const transitionDuration = 0.8;
     const transitionEase: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
-
-    // Animation variants — hero state matches Figma 820:2098 (top-anchored, 531×606).
-    // The about/skills state keeps the portrait functional (re-design later).
-    const imageVariants = {
-        hero: {
-            x: "-50%",
-            left: "calc(50% - 14.5px)",
-            top: "321px",
-            scale: 1,
-        },
-        about: {
-            x: "0%",
-            left: "12%",
-            top: "150px",
-            scale: 1.35,
-        },
-    };
 
     const heroElementsVariants = {
         visible: { opacity: 1, y: 0 },
@@ -97,13 +83,18 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
 
                 {/* Personal Image (shared - animates between views).
                     Hero state: 531×606 crop box matching Figma 820:2098. */}
-                <motion.div
-                    className="absolute z-[25] overflow-hidden"
-                    style={{ width: "531px", height: "606px" }}
-                    initial={false}
-                    animate={isAboutView ? "about" : "hero"}
-                    variants={imageVariants}
-                    transition={{ duration: transitionDuration, ease: transitionEase }}
+                {/* Hero portrait (Figma 820:2098) — fades out in Skills view */}
+                <div
+                    className="absolute z-[25] overflow-hidden pointer-events-none"
+                    style={{
+                        width: "531px",
+                        height: "606px",
+                        left: "calc(50% - 14.5px)",
+                        transform: "translateX(-50%)",
+                        top: "321px",
+                        opacity: isAboutView ? 0 : 1,
+                        transition: `opacity ${transitionDuration}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`,
+                    }}
                 >
                     <img
                         src={heroImage}
@@ -111,7 +102,28 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                         className="absolute max-w-none object-cover pointer-events-none"
                         style={{ width: "164.01%", height: "216.16%", left: "-30.86%", top: "-36%" }}
                     />
-                </motion.div>
+                </div>
+
+                {/* Skills portrait (Figma 851:381 "ChatGPT Image") — fades in in Skills view */}
+                <div
+                    className="absolute z-[25] overflow-hidden pointer-events-none"
+                    style={{
+                        width: "532px",
+                        height: "574px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        top: "101px",
+                        opacity: isAboutView ? 1 : 0,
+                        transition: `opacity ${transitionDuration}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`,
+                    }}
+                >
+                    <img
+                        src={skillsImage}
+                        alt="Eman — UI/UX Designer"
+                        className="absolute max-w-none pointer-events-none"
+                        style={{ width: "100%", height: "139.2%", left: "0", top: "-19.6%" }}
+                    />
+                </div>
 
                 {/* Bottom Blur Effect - appears in Skills view */}
                 <BottomBlurEffect

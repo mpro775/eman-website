@@ -1,13 +1,17 @@
 import React from "react";
-import { motion, type MotionStyle } from "framer-motion";
 import SkillCard from "./SkillCard";
 import { useMediaQuery } from "../../../hooks";
 
-// Image imports
-import uxUiDesignerImage from "../../../assets/personas/UxUiDesginer.png";
-import appDeveloperImage from "../../../assets/personas/appDeveloper.png";
-import graphicDesignerImage from "../../../assets/personas/GraphicDesginer.png";
-import frameButtonPng from "../../../assets/logos/Frame_button.png";
+// Skill chip 3D icons (Figma 820:1595)
+import iconUxUi from "../../../assets/skills/icon-uxui.png";
+import iconApp from "../../../assets/skills/icon-app.png";
+import iconGraphic from "../../../assets/skills/icon-graphic.png";
+import iconTeaching from "../../../assets/skills/icon-teaching.png";
+// Decorative + mobile portrait
+import gridDeco from "../../../assets/skills/grid.svg";
+import frameDeco from "../../../assets/skills/frame-deco.svg";
+// Skills portrait (Figma 851:381 "ChatGPT Image") — distinct from the hero photo
+import skillsPortrait from "../../../assets/skills/portrait.png";
 
 interface AboutViewProps {
     aboutElementsVariants: {
@@ -16,134 +20,148 @@ interface AboutViewProps {
     };
 }
 
-// بيانات المهارات
-const skillsData = [
+interface SkillEntry {
+    id: number;
+    icon: string;
+    title: string;
+    description: string;
+    iconRotate: number;
+    /** Absolute desktop position (anchored to the 1440 canvas center) */
+    position: React.CSSProperties;
+}
+
+// Content + positions pixel-matched to Figma 820:1595 (frame center = 722px).
+const skillsData: SkillEntry[] = [
     {
         id: 1,
-        icon: uxUiDesignerImage,
+        icon: iconUxUi,
         title: "UX/UI Designer",
-        description: "تصميم تجربة المستخدم وواجهات الاستخدام للتطبيقات والمواقع بدءاً من دراسة المستخدم وتحليل الاحتياجات، وصولاً إلى تصميم واجهات واضحة، سهلة، وقابلة للتنفيذ.",
-        position: { top: "300px", left: "0%" },
-        delay: 0.2,
+        description:
+            "تصميم تجــربة المستخدم وواجهــات الاستخــدام للتطبيقات و المواقـع ،بـــدءًا من دراسة المستخدم وتحليل الاحتياجات ، وصـولًا إلى تصميم واجهـات واضحـة، سهلــة، وقابلـــة للتنفيــــذ.",
+        iconRotate: -14,
+        position: { left: "calc(50% - 129.5px)", top: "560px" },
     },
     {
         id: 2,
-        icon: graphicDesignerImage,
+        icon: iconGraphic,
         title: "Graphic Designer",
-        description: "تصميم الجرافيكس والمواد البصرية المختلفة، بما في ذلك الهوية البصرية، تصاميم السوشيال ميديا والمحتوى المرئي الذي يوضح الفكرة ويعزز العلامة.",
-        position: { top: "300px", right: "0%" },
-        delay: 0.4,
+        description:
+            "تصميم الجرافيكس والمواد البصرية المختلفة ، بمـــا في ذلك الهـوية البصريـــة، تصاميـم السـوشيـل ميديـــا، والمحتـوى المرئي الــــذي يوضّح الفكرة ويعـزّز العلامة.",
+        iconRotate: -14,
+        position: { left: "calc(50% + 318.72px)", top: "332.39px" },
     },
     {
         id: 3,
-        icon: uxUiDesignerImage,
-        title: "Automation",
-        description: "أتمتة العمليات الرقمية لتسهيل العمل، تحسين سير المهام، وربط الأدوات والأنظمة لزيادة الكفاءة وتقليل الوقت والجهد.",
-        position: { top: "440px", left: "20%" },
-        delay: 0.6,
+        icon: iconApp,
+        title: "App Developer",
+        description:
+            "تصميــــم و تحليــــل و تطــــوير تطبيقــات المــوبايــل ، بـدءًا من الفكــــرة والتخطيــــط ، وصــــولًا إلى تطبيـــــق جاهــــز للاستخــــدام",
+        iconRotate: -8.21,
+        position: { left: "calc(50% + 91px)", top: "460px" },
     },
     {
         id: 4,
-        icon: appDeveloperImage,
-        title: "App Developer",
-        description: "تصميم وتحليل وتطوير تطبيقات الموبايل بدءاً من الفكرة والتخطيط وصولاً إلى تطبيق جاهز للاستخدام.",
-        position: { top: "440px", right: "20%" },
-        delay: 0.8,
+        icon: iconUxUi,
+        title: "Automation",
+        description:
+            "أتمتـــــة العمـــليـــــات الــرقميـــــة لتسهيـــــل العمـــــل، تحسيـــن سيــــر المهــــام، وربــــط الأدوات والأنظمـــة لزيـــادة الكفـــاءة وتقليـل الوقـــت والجهــد.",
+        iconRotate: -14,
+        position: { left: "calc(50% - 367.36px)", top: "460px" },
     },
     {
         id: 5,
-        icon: uxUiDesignerImage,
-        title: "UX/UI Designer",
-        description: "تصميم تجربة المستخدم وواجهات الاستخدام للتطبيقات والمواقع بدءاً من دراسة المستخدم وتحليل الاحتياجات، وصولاً إلى تصميم واجهات واضحة، سهلة، وقابلة للتنفيذ.",
-        position: { bottom: "50px", left: "39%", transform: "translateX(-50%)" } as React.CSSProperties,
-        delay: 1.0,
+        icon: iconTeaching,
+        title: "Teaching Assistant",
+        description:
+            "دعم العملية التعليمية في مجال الحاسوب والبرمجة، والإسهـــام في بناء مهارات الطلاب التقنيــة والبرمجيـــة بأساليب تعليمية حديثة.",
+        iconRotate: -14,
+        position: { left: "calc(50% - 577.87px)", top: "332.39px" },
     },
 ];
 
 /**
- * Skills view content - displays the "مهاراتي" (My Skills) section
- * Includes: Section title, skill cards with animations
- * Supports RTL for Arabic content
+ * Skills view ("مهاراتي") — pixel-matched to Figma node 820:1595.
+ * A centered portrait with five floating skill chips arranged around it,
+ * a large faded "UX  UI" watermark, and soft decorative grid/frame glows.
+ * Desktop uses absolute positioning; mobile stacks the chips vertically.
  */
-const AboutView: React.FC<AboutViewProps> = ({ aboutElementsVariants }) => {
-    const isMobile = useMediaQuery("(max-width: 1024px)");
+const AboutView: React.FC<AboutViewProps> = () => {
+    // Align with the `lg` breakpoint (>=1024 shows the desktop canvas) to avoid
+    // the mobile branch rendering inside the visible desktop canvas at 1024px.
+    const isMobile = useMediaQuery("(max-width: 1023px)");
+
+    if (isMobile) {
+        return (
+            <div className="relative w-full flex flex-col items-center pt-24 pb-10 gap-5 overflow-y-auto">
+                <div className="relative w-[min(60vw,240px)] aspect-[532/574] overflow-hidden mb-2">
+                    <img src={skillsPortrait} alt="Eman" className="w-full h-full object-cover object-top" />
+                </div>
+                {skillsData.map((s, i) => (
+                    <SkillCard
+                        key={s.id}
+                        inFlow
+                        icon={s.icon}
+                        title={s.title}
+                        description={s.description}
+                        iconRotate={s.iconRotate}
+                        delay={0.1 + i * 0.08}
+                    />
+                ))}
+            </div>
+        );
+    }
 
     return (
-        <div className={isMobile ? "relative w-full h-full flex flex-col items-center pt-20 pb-10 gap-6 overflow-y-auto" : ""}>
-            {/* Section title "مهاراتي" */}
-            <motion.div
-                className={isMobile ? "relative mb-8 text-center z-20" : "absolute right-[50px] top-[50px] z-20"}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                variants={aboutElementsVariants}
-                transition={{ duration: 0.5 }}
+        <div className="absolute inset-0">
+            {/* Decorative top-right frame glow (Figma 822:3051) */}
+            <img
+                src={frameDeco}
+                alt=""
+                aria-hidden="true"
+                className="absolute z-[1] pointer-events-none select-none opacity-70"
+                style={{ left: "calc(50% + 513px)", top: "18px", width: "568px", height: "822px", transform: "translateX(-50%)" }}
+            />
+            {/* Decorative grid glow (Figma 820:1597) */}
+            <img
+                src={gridDeco}
+                alt=""
+                aria-hidden="true"
+                className="absolute z-[1] pointer-events-none select-none"
+                style={{ left: "calc(50% - 380px)", top: "584px", width: "749px", height: "543px", overflow: "visible" }}
+            />
+
+            {/* "UX  UI" watermark behind the portrait (Figma 822:2883) */}
+            <div
+                className="absolute z-[5] pointer-events-none select-none flex items-center justify-center"
+                style={{ left: "calc(50% - 12.41px)", top: "132px", width: "419px", height: "217px", transform: "translateX(-50%) rotate(-20.43deg)" }}
             >
-                <div className="relative inline-block" style={{ direction: "rtl" }}>
-                    <h2
-                        className="text-white font-arabic font-bold pb-2"
-                        style={{
-                            fontSize: isMobile ? "36px" : "48px",
-                            fontWeight: 700,
-                            letterSpacing: "0.02em",
-                        }}
-                    >
-                        مهاراتي
-                    </h2>
-                    <span className="absolute bottom-1 right-0 w-16 h-1 bg-gradient-to-l from-[var(--color-accent-purple)] to-transparent rounded-full"></span>
-                </div>
-            </motion.div>
+                <p
+                    className="text-center"
+                    style={{
+                        fontFamily: '"Thmanyah Sans", "Urbanist", "Tajawal", sans-serif',
+                        fontWeight: 500,
+                        fontSize: "71.949px",
+                        lineHeight: 1.05,
+                        letterSpacing: "-1.0792px",
+                        color: "rgba(255,255,255,0.1)",
+                        opacity: 0.5,
+                        whiteSpace: "pre",
+                    }}
+                >
+                    {"UX               UI"}
+                </p>
+            </div>
 
-            {/* Name badge - Liquid Glass button style */}
-            <motion.div
-                className={isMobile ? "relative mb-4 z-[30] order-first" : "absolute z-[30]"}
-                style={isMobile ? {} : {
-                    top: "468.51px",
-                    left: "636.43px"
-                }}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-            >
-                {/* Button using PNG image */}
-                <div className="relative flex items-center justify-center cursor-pointer transition-all hover:scale-105">
-                    {/* Button Image Background */}
-                    <img
-                        src={frameButtonPng}
-                        alt=""
-                        style={{
-                            width: "180px",
-                            height: "45px",
-                        }}
-                    />
-
-                    {/* Name text - positioned on top of image */}
-                    <h1
-                        className="absolute text-white text-right"
-                        style={{
-                            fontFamily: "'Urbanist', sans-serif",
-                            fontWeight: 600,
-                            fontSize: "23.23px",
-                            lineHeight: "100%",
-                            letterSpacing: "-0.015em",
-                            direction: "rtl",
-                        }}
-                    >
-                        إيمــان جمـيــــل
-                    </h1>
-                </div>
-            </motion.div>
-
-            {/* Skill Cards */}
-            {skillsData.map((skill) => (
+            {/* Skill chips */}
+            {skillsData.map((s, i) => (
                 <SkillCard
-                    key={skill.id}
-                    icon={skill.icon}
-                    title={skill.title}
-                    description={skill.description}
-                    position={isMobile ? { position: "relative", transform: "none", left: "auto", top: "auto", right: "auto", bottom: "auto", marginTop: "10px", margin: "0 auto", width: "90%", maxWidth: "340px" } as MotionStyle : skill.position as MotionStyle}
-                    delay={skill.delay}
+                    key={s.id}
+                    icon={s.icon}
+                    title={s.title}
+                    description={s.description}
+                    iconRotate={s.iconRotate}
+                    position={s.position}
+                    delay={0.15 + i * 0.1}
                 />
             ))}
         </div>
