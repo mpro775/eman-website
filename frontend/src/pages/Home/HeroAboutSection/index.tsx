@@ -94,6 +94,8 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                         top: "321px",
                         opacity: isAboutView ? 0 : 1,
                         transition: `opacity ${transitionDuration}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`,
+                        WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%)",
+                        maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%)",
                     }}
                 >
                     <img
@@ -115,6 +117,8 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                         top: "101px",
                         opacity: isAboutView ? 1 : 0,
                         transition: `opacity ${transitionDuration}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`,
+                        WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%)",
+                        maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%)",
                     }}
                 >
                     <img

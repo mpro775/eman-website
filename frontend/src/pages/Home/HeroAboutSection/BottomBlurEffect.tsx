@@ -24,7 +24,7 @@ const GlowDomeEffect: React.FC<GlowDomeEffectProps> = ({
             transition={{ duration: transitionDuration, ease: transitionEase }}
             style={{
                 left: "50%",
-                bottom: "-55%",
+                bottom: "-35%",
                 transform: "translateX(-50%)",
             }}
         >
