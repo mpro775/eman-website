@@ -1,81 +1,88 @@
 import React from "react";
-import { motion } from "framer-motion";
 
 export interface WorkItem {
     id: number;
+    /** Project title (Figma 820:2830 — bold white) */
     title: string;
+    /** Category chip label (Figma 820:2832 — pink) */
+    tag: string;
+    /** Filter category this work belongs to */
+    category: string;
+    /** Card image */
     image: string;
-    slug: string;
 }
 
 interface WorkCardProps {
     work: WorkItem;
-    index: number;
-    activeIndex: number;
-    onClick: () => void;
+    delay: number;
 }
 
 /**
- * Individual work/portfolio card with carousel animation
+ * Portfolio card — pixel-matched to Figma 820:1751 cards (e.g. 820:2742).
+ * A translucent rounded card: cover image on top, then an info bar with the
+ * project title (right, RTL) and a pink category chip (left).
+ *
+ * Uses a CSS entrance animation so it stays smooth across re-renders.
  */
-const WorkCard: React.FC<WorkCardProps> = ({
-    work,
-    index,
-    activeIndex,
-    onClick,
-}) => {
-    const isActive = index === activeIndex;
-    const offset = index - activeIndex;
-    const position = offset * 120;
-
+const WorkCard: React.FC<WorkCardProps> = ({ work, delay }) => {
     return (
-        <motion.div
-            initial={{ opacity: 0, scale: 0.8, x: `${position}%` }}
-            animate={{
-                opacity: isActive ? 1 : 0.6,
-                scale: isActive ? 1 : 0.8,
-                x: `${position}%`,
-                filter: isActive ? "blur(0px)" : "blur(3px)",
-            }}
-            transition={{
-                duration: 0.6,
-                ease: [0.25, 0.1, 0.25, 1],
-            }}
-            className="absolute w-full max-w-sm md:max-w-md lg:max-w-lg"
+        <div
+            className="group flex flex-col overflow-hidden bg-[rgba(17,15,46,0.2)] border-[0.667px] border-[rgba(38,38,38,0.15)] w-full"
             style={{
-                zIndex: isActive ? 20 : 10 - Math.abs(offset),
+                borderRadius: "16px",
+                opacity: 0,
+                animation: `skillIn 0.5s cubic-bezier(0.25,0.46,0.45,0.94) ${delay}s forwards`,
             }}
-            onClick={onClick}
         >
-            <div
-                className={`relative rounded-2xl overflow-hidden backdrop-blur-md border transition-all duration-300 cursor-pointer ${isActive
-                    ? "bg-[#2a1a3e]/95 border-accent-purple/60 shadow-[0_0_50px_rgba(157,78,221,0.6)]"
-                    : "bg-[#1e1e2e]/90 border-accent-purple/20 hover:border-accent-purple/40"
-                    }`}
-            >
-                {/* Card Image Container */}
-                <div className="relative w-full aspect-[4/3] flex items-center justify-center p-6 md:p-8 bg-gradient-to-b from-transparent to-black/20">
-                    <img
-                        src={work.image}
-                        alt={work.title}
-                        className={`w-full h-full object-contain transition-all duration-300 ${isActive ? "scale-105" : "scale-100"
-                            }`}
-                    />
-                </div>
-
-                {/* Card Title */}
-                <div className="p-5 md:p-6 text-center border-t border-accent-purple/20 bg-black/20">
-                    <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-white">
-                        {work.title}
-                    </h3>
-                </div>
-
-                {/* Active indicator glow effect */}
-                {isActive && (
-                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-accent-purple/20 via-transparent to-transparent pointer-events-none"></div>
-                )}
+            {/* Cover image (Figma 820:2743 — h220 within w394.667) */}
+            <div className="relative w-full overflow-hidden" style={{ aspectRatio: "395 / 220" }}>
+                <img
+                    src={work.image}
+                    alt={work.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                />
             </div>
-        </motion.div>
+
+            {/* Info bar (Figma 820:2745 — h88, p16) */}
+            <div className="flex items-center justify-center p-4" style={{ height: "88px" }}>
+                <div dir="rtl" className="flex items-start justify-between w-full" style={{ maxWidth: "362px" }}>
+                    {/* Title (right) */}
+                    <p
+                        dir="auto"
+                        className="text-white whitespace-nowrap"
+                        style={{
+                            fontFamily: '"Thmanyah Sans", "Urbanist", "Tajawal", sans-serif',
+                            fontWeight: 700,
+                            fontSize: "clamp(18px, 2.2vw, 24px)",
+                            lineHeight: "27px",
+                        }}
+                    >
+                        {work.title}
+                    </p>
+
+                    {/* Category chip (left) */}
+                    <div
+                        className="flex items-center shrink-0 bg-[rgba(255,92,131,0.15)]"
+                        style={{ height: "30px", borderRadius: "10px", padding: "0 8px" }}
+                    >
+                        <span
+                            dir="auto"
+                            className="whitespace-nowrap"
+                            style={{
+                                fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                                fontWeight: 500,
+                                fontSize: "12px",
+                                lineHeight: "16px",
+                                color: "#c67588",
+                            }}
+                        >
+                            {work.tag}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 };
 

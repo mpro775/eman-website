@@ -1,153 +1,131 @@
-import React, { useState, useEffect } from "react";
-import { motion, useInView } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { Container, SectionTitle } from "../../../components";
+import React, { useState } from "react";
 import WorkCard, { type WorkItem } from "./WorkCard";
-import { projectsService } from "../../../services/projects.service";
 
-// Images
-import mobileAppImage from "../../../assets/services/mobileApp.png";
-import uiUxImage from "../../../assets/services/UI UX.png";
-import graphicImage from "../../../assets/services/Graphic.png";
+import projectImage from "../../../assets/works/project-placeholder.png";
 
-const categoryAssetsMap: Record<string, { image: string; slug: string }> = {
-    "UX / UI": { image: uiUxImage, slug: "ux-ui" },
-    "Mobile App": { image: mobileAppImage, slug: "mobile" },
-    "Graphic Design": { image: graphicImage, slug: "graphic" },
-};
+// Filter tabs (Figma 820:2810) — RTL reading order (الكل on the right).
+const FILTERS = ["الكل", "UI/UX", "جرافيك", "هوية بصرية", "تطبيقات"] as const;
+
+// Works pixel/text-matched to Figma node 820:1751 ("اعمالي").
+// Grid reads RTL (first card top-right).
+const WORKS: WorkItem[] = [
+    { id: 1, title: "تطبيق توصيل الطعام", tag: "تطبيق موبايل", category: "تطبيقات", image: projectImage },
+    { id: 2, title: "تطبيق توصيل الطعام", tag: "تصميم جرافيك", category: "جرافيك", image: projectImage },
+    { id: 3, title: "تطبيق توصيل الطعام", tag: "ويب", category: "UI/UX", image: projectImage },
+    { id: 4, title: "تطبيق توصيل الطعام", tag: "براندينج", category: "هوية بصرية", image: projectImage },
+    { id: 5, title: "تطبيق توصيل الطعام", tag: "ويب", category: "UI/UX", image: projectImage },
+    { id: 6, title: "تطبيق توصيل الطعام", tag: "ويب", category: "UI/UX", image: projectImage },
+];
 
 /**
- * Works/Portfolio section with carousel slider
+ * Works / portfolio section ("اعمالي") — pixel-matched to Figma node 820:1751.
+ * Solid #040404 backdrop with a rotated glow, a centered title + underline,
+ * a row of filter tabs, and a responsive 3-column grid of project cards.
  */
 const WorksSection: React.FC = () => {
-    const ref = React.useRef(null);
-    const isInView = useInView(ref, { amount: 0.2, once: true });
-    const [works, setWorks] = useState<WorkItem[]>([]);
-    const [activeIndex, setActiveIndex] = useState(0);
-    const navigate = useNavigate();
+    const [active, setActive] = useState<string>("الكل");
 
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const data = await projectsService.getCategories();
-                const sorted = data.sort((a, b) => (a.order || 0) - (b.order || 0));
-                const mapped = sorted.map((cat, index) => {
-                    const asset = categoryAssetsMap[cat.name] || { image: cat.image || uiUxImage, slug: "ux-ui" };
-                    return {
-                        id: index + 1,
-                        title: cat.name,
-                        image: asset.image,
-                        slug: asset.slug,
-                    };
-                });
-                setWorks(mapped);
-                if (mapped.length > 0) {
-                    setActiveIndex(Math.floor(mapped.length / 2));
-                }
-            } catch (error) {
-                console.error("Failed to fetch categories:", error);
-            }
-        };
-        fetchCategories();
-    }, []);
-
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: { staggerChildren: 0.15, delayChildren: 0.2 },
-        },
-    };
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 30 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const },
-        },
-    };
-
-    const handleCardClick = (index: number, slug: string) => {
-        if (index === activeIndex) {
-            navigate(`/portfolio/${slug}`);
-        } else {
-            setActiveIndex(index);
-        }
-    };
+    const visible = active === "الكل" ? WORKS : WORKS.filter((w) => w.category === active);
 
     return (
         <section
             id="portfolio"
-            ref={ref}
-            className="scroll-section relative min-h-screen w-full bg-gradient-to-b from-[#1a0e2e] via-[#0f0a1a] to-[#0a0a0f] flex items-center justify-center pt-[100px] pb-20"
+            className="scroll-section relative min-h-screen w-full bg-[#040404] flex items-center justify-center overflow-hidden py-20"
         >
-            {/* Background effect */}
-            <div className="absolute top-0 right-0 w-[60%] h-[50%] bg-accent-purple/20 blur-[120px] rounded-full pointer-events-none z-0"></div>
+            {/* Rotated glow — right side (Figma 826:3266) */}
+            <div
+                className="absolute pointer-events-none"
+                style={{
+                    width: "804px",
+                    height: "402px",
+                    top: "120px",
+                    right: "-180px",
+                    transform: "rotate(-58deg)",
+                    background: "linear-gradient(177.25deg, rgba(187,161,254,0.45) 2.26%, rgba(33,13,83,0.6) 97.74%)",
+                    filter: "blur(200px)",
+                    borderRadius: "50%",
+                }}
+            />
 
-            <Container>
-                <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate={isInView ? "visible" : "hidden"}
-                    className="w-full relative z-10"
+            <div className="relative z-10 w-full max-w-[1232px] mx-auto px-6 flex flex-col items-center">
+                {/* Title + underline (centered — Figma 829:3374) */}
+                <div className="flex flex-col items-center" style={{ gap: "14px" }}>
+                    <h2
+                        className="text-white text-center whitespace-nowrap"
+                        style={{
+                            fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                            fontWeight: 500,
+                            fontSize: "clamp(2rem, 5vw, 48px)",
+                            lineHeight: 1,
+                            letterSpacing: "-0.72px",
+                        }}
+                    >
+                        اعمـــــالـــي
+                    </h2>
+                    <div
+                        style={{
+                            width: "350px",
+                            maxWidth: "80vw",
+                            height: "3px",
+                            borderRadius: "2px",
+                            background: "linear-gradient(90deg, rgba(139,92,246,0) 0%, #C084FC 50%, rgba(139,92,246,0) 100%)",
+                        }}
+                    />
+                </div>
+
+                {/* Filter tabs (Figma 820:2810) — RTL */}
+                <div
+                    dir="rtl"
+                    className="mt-10 lg:mt-[55px] flex flex-wrap items-center justify-center"
+                    style={{ gap: "18.045px" }}
                 >
-                    {/* Section Title */}
-                    <SectionTitle title="أعمالي" maxWidth="200px" variants={itemVariants} />
-
-                    {/* Carousel */}
-                    <motion.div variants={itemVariants} className="flex flex-col items-center justify-center gap-12">
-                        <div className="relative w-full max-w-7xl mx-auto px-4 overflow-visible">
-                            <div className="relative flex items-center justify-center h-[500px] md:h-[600px]">
-                                {works.map((work, index) => (
-                                    <WorkCard
-                                        key={work.id}
-                                        work={work}
-                                        index={index}
-                                        activeIndex={activeIndex}
-                                        onClick={() => handleCardClick(index, work.slug)}
-                                    />
-                                ))}
-                            </div>
-
-                            {/* Navigation Arrows */}
+                    {FILTERS.map((label) => {
+                        const isActive = label === active;
+                        return (
                             <button
-                                onClick={() => setActiveIndex((prev) => (prev + 1) % works.length)}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-accent-purple/20 hover:bg-accent-purple/40 backdrop-blur-md border border-accent-purple/30 flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
-                                aria-label="Next slide"
+                                key={label}
+                                type="button"
+                                onClick={() => setActive(label)}
+                                className="flex items-center justify-center transition-all duration-300 cursor-pointer"
+                                style={{
+                                    borderRadius: "11.278px",
+                                    padding: "10.752px 33.752px",
+                                    fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                                    fontWeight: 500,
+                                    fontSize: "18px",
+                                    lineHeight: "22.557px",
+                                    whiteSpace: "nowrap",
+                                    ...(isActive
+                                        ? {
+                                              color: "#ffffff",
+                                              background: "linear-gradient(252.89deg, #c67588 1.84%, #603942 98.17%)",
+                                              border: "0.752px solid transparent",
+                                              filter: "drop-shadow(0px 4.511px 9.023px rgba(204,204,204,0.4))",
+                                          }
+                                        : {
+                                              color: "#a5a0c8",
+                                              background: "rgba(42,51,80,0.1)",
+                                              border: "0.752px solid rgba(139,92,246,0.2)",
+                                          }),
+                                }}
                             >
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M9 18l6-6-6-6" />
-                                </svg>
+                                {label}
                             </button>
-                            <button
-                                onClick={() => setActiveIndex((prev) => (prev - 1 + works.length) % works.length)}
-                                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-accent-purple/20 hover:bg-accent-purple/40 backdrop-blur-md border border-accent-purple/30 flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
-                                aria-label="Previous slide"
-                            >
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M15 18l-6-6 6-6" />
-                                </svg>
-                            </button>
-                        </div>
+                        );
+                    })}
+                </div>
 
-                        {/* Pagination Dots */}
-                        <div className="flex items-center justify-center gap-2.5 md:gap-3">
-                            {works.map((_, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => setActiveIndex(index)}
-                                    className={`transition-all duration-300 rounded-full ${index === activeIndex
-                                        ? "w-10 md:w-12 h-1.5 md:h-2 bg-accent-pink"
-                                        : "w-6 md:w-8 h-1.5 md:h-2 bg-white/40 hover:bg-white/60"
-                                        }`}
-                                    aria-label={`Go to slide ${index + 1}`}
-                                />
-                            ))}
-                        </div>
-                    </motion.div>
-                </motion.div>
-            </Container>
+                {/* Cards grid (Figma 820:2740) — RTL, 3 columns, gap 24px */}
+                <div
+                    dir="rtl"
+                    className="mt-10 lg:mt-[40px] w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                    style={{ gap: "24px" }}
+                >
+                    {visible.map((work, i) => (
+                        <WorkCard key={work.id} work={work} delay={0.1 + i * 0.07} />
+                    ))}
+                </div>
+            </div>
         </section>
     );
 };
