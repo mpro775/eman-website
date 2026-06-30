@@ -1,130 +1,159 @@
 import React, { useState, useEffect } from "react";
-import { AnimatePresence } from "framer-motion";
-import { Container, SectionTitle } from "../../../components";
 import TestimonialCard, { type Testimonial } from "./TestimonialCard";
-import { testimonialsService } from "../../../services/testimonials.service";
+
+import estherAvatar from "../../../assets/testimonials/esther.png";
+import cameronAvatar from "../../../assets/testimonials/cameron.png";
+import savannahAvatar from "../../../assets/testimonials/savannah.png";
+
+// Testimonials text-matched to Figma node 820:1778 ("أراء العملاء").
+// Order places Cameron in the centre on first paint (activeIndex = 1).
+const TESTIMONIALS: Testimonial[] = [
+    {
+        id: 1,
+        name: "Esther Howard",
+        position: "Chief Executive Officer of",
+        company: "GIGL",
+        quote:
+            "“Kevin is very hard and great worker. He thinks about prolem, find solution and has a awesome working morale”",
+        avatar: estherAvatar,
+    },
+    {
+        id: 2,
+        name: "Cameron Williamson",
+        position: "Chief Executive Officer of",
+        company: "GIGL",
+        quote:
+            "“Kevin Did a wonderful job animating set of static stickers. Work was done very quickly and the quality is outstanding. she managed to create great looking, flawless animation even with very limited number of frames allowed per stickers”",
+        avatar: cameronAvatar,
+    },
+    {
+        id: 3,
+        name: "Savannah Nguyen",
+        position: "Chief Executive Officer of",
+        company: "GIGL",
+        quote:
+            "Great Designer, does great work and is very flexible with change. if you’re a programmer and are looking for UI/UX designer is definitely well qualified for the job.",
+        avatar: savannahAvatar,
+    },
+];
 
 /**
- * Testimonials section with auto-rotating carousel
+ * Testimonials section ("أراء العملاء") — pixel-matched to Figma node 820:1778.
+ * A three-card carousel: the centre card is taller/brighter with a glowing
+ * avatar; the two neighbours peek in from the screen edges (lg+), dimmed.
+ * Positioning uses CSS transforms + transitions (no rAF) so it keeps animating
+ * even while the tab is backgrounded.
  */
 const TestimonialsSection: React.FC = () => {
-    const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [active, setActive] = useState(1);
+    const n = TESTIMONIALS.length;
 
+    // Auto-rotate
     useEffect(() => {
-        const fetchTestimonials = async () => {
-            try {
-                const response = await testimonialsService.getAll();
-                const items = response.data || [];
-                const sorted = items.sort((a, b) => (a.orderNumber || 0) - (b.orderNumber || 0));
-                const mapped = sorted.map((t, index) => {
-                    const parts = t.companyName.split(" - ");
-                    return {
-                        id: index + 1,
-                        name: t.personName,
-                        position: parts[0] || "Client",
-                        company: parts[1] || "",
-                        quote: t.ratingText,
-                        avatar: t.image,
-                    };
-                });
-                setTestimonials(mapped);
-                if (mapped.length > 0) {
-                    setActiveIndex(0);
-                }
-            } catch (error) {
-                console.error("Failed to fetch testimonials:", error);
-            }
-        };
-        fetchTestimonials();
-    }, []);
+        const t = setInterval(() => setActive((p) => (p + 1) % n), 5500);
+        return () => clearInterval(t);
+    }, [n]);
 
-    // Auto-rotate testimonials
-    useEffect(() => {
-        if (testimonials.length === 0) return;
-        const interval = setInterval(() => {
-            setActiveIndex((prev) => (prev + 1) % testimonials.length);
-        }, 5000);
-        return () => clearInterval(interval);
-    }, [testimonials.length]);
-
-    const getCardStyle = (index: number) => {
-        const diff = index - activeIndex;
-        const normalizedDiff =
-            diff > testimonials.length / 2
-                ? diff - testimonials.length
-                : diff < -testimonials.length / 2
-                    ? diff + testimonials.length
-                    : diff;
-
-        if (normalizedDiff === 0) {
-            return { x: 0, scale: 1, opacity: 1, zIndex: 10 };
-        } else if (normalizedDiff === -1 || normalizedDiff === testimonials.length - 1) {
-            return { x: -320, scale: 0.85, opacity: 0.6, zIndex: 5 };
-        } else if (normalizedDiff === 1 || normalizedDiff === -(testimonials.length - 1)) {
-            return { x: 320, scale: 0.85, opacity: 0.6, zIndex: 5 };
-        } else {
-            return { x: normalizedDiff > 0 ? 600 : -600, scale: 0.7, opacity: 0, zIndex: 1 };
-        }
+    // Relative position of card i to the active card, normalised to [-1, 0, 1].
+    const relPos = (i: number) => {
+        let d = i - active;
+        if (d > n / 2) d -= n;
+        if (d < -n / 2) d += n;
+        return d;
     };
 
     return (
         <section
             id="testimonials"
-            className="scroll-section relative min-h-screen w-full bg-bg-primary overflow-hidden flex items-center justify-center py-20"
+            className="scroll-section relative min-h-screen w-full bg-[#040404] flex items-center justify-center overflow-hidden py-20"
         >
-            {/* Bottom-Left Blur Glow Effect */}
+            {/* Purple glow — top-left, rotated (Figma 820:1779) */}
             <div
                 className="absolute pointer-events-none"
                 style={{
                     width: "1136px",
                     height: "568px",
-                    top: "-366px",
-                    left: "-466px",
+                    top: "-200px",
+                    left: "-360px",
                     transform: "rotate(121.23deg)",
-                    background: "linear-gradient(177.25deg, rgba(187, 161, 254, 0.8) 2.26%, rgba(33, 13, 83, 0.8) 97.74%)",
-                    filter: "blur(488px)",
+                    background: "linear-gradient(177.25deg, rgba(187,161,254,0.5) 2.26%, rgba(33,13,83,0.65) 97.74%)",
+                    filter: "blur(220px)",
                     borderRadius: "50%",
                 }}
-            ></div>
+            />
 
-            <Container>
-                {/* Section Title */}
-                <SectionTitle title="آراء العملاء" maxWidth="280px" />
-
-                {/* Testimonials Carousel */}
-                <div className="relative w-full flex justify-center items-center min-h-[400px]">
-                    <div className="relative w-full max-w-[400px] h-[350px]">
-                        <AnimatePresence mode="popLayout">
-                            {testimonials.map((testimonial, index) => (
-                                <TestimonialCard
-                                    key={testimonial.id}
-                                    testimonial={testimonial}
-                                    index={index}
-                                    activeIndex={activeIndex}
-                                    cardStyle={getCardStyle(index)}
-                                    onClick={() => setActiveIndex(index)}
-                                />
-                            ))}
-                        </AnimatePresence>
-                    </div>
+            <div className="relative z-10 w-full mx-auto flex flex-col items-center" style={{ gap: "64px" }}>
+                {/* Title + underline (centered — Figma 829:3625) */}
+                <div className="flex flex-col items-center px-6" style={{ gap: "14px" }}>
+                    <h2
+                        className="text-white text-center whitespace-nowrap"
+                        style={{
+                            fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                            fontWeight: 500,
+                            fontSize: "clamp(2rem, 5vw, 48px)",
+                            lineHeight: 1,
+                            letterSpacing: "-0.72px",
+                        }}
+                    >
+                        أراء العمــــلاء
+                    </h2>
+                    <div
+                        style={{
+                            width: "406px",
+                            maxWidth: "82vw",
+                            height: "3px",
+                            borderRadius: "2px",
+                            background: "linear-gradient(90deg, rgba(139,92,246,0) 0%, #C084FC 50%, rgba(139,92,246,0) 100%)",
+                        }}
+                    />
                 </div>
 
-                {/* Dots Indicator */}
-                <div className="flex justify-center gap-2 mt-8">
-                    {testimonials.map((_, index) => (
+                {/* Carousel — center card emphasized, neighbours peek (lg+) */}
+                <div className="relative w-full" style={{ height: "410px" }}>
+                    {TESTIMONIALS.map((t, i) => {
+                        const rel = relPos(i);
+                        const isCenter = rel === 0;
+                        const offset = rel * 672; // px, Figma spacing
+                        const hideClass = isCenter ? "block" : "hidden lg:block";
+                        return (
+                            <div
+                                key={t.id}
+                                onClick={() => !isCenter && setActive(i)}
+                                className={`${hideClass} absolute bottom-0 left-1/2`}
+                                style={{
+                                    width: "clamp(300px, 92vw, 648px)",
+                                    transform: `translateX(calc(-50% + ${offset}px)) scale(${isCenter ? 1 : 0.93})`,
+                                    opacity: isCenter ? 1 : 0.6,
+                                    zIndex: isCenter ? 30 : 20,
+                                    cursor: isCenter ? "default" : "pointer",
+                                    transition:
+                                        "transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.5s ease",
+                                }}
+                            >
+                                <TestimonialCard testimonial={t} active={isCenter} />
+                            </div>
+                        );
+                    })}
+                </div>
+
+                {/* Dots indicator */}
+                <div className="flex justify-center gap-2 -mt-4">
+                    {TESTIMONIALS.map((t, i) => (
                         <button
-                            key={index}
-                            onClick={() => setActiveIndex(index)}
-                            className={`w-2 h-2 rounded-full transition-all duration-300 ${index === activeIndex
-                                ? "bg-accent-pink w-6"
-                                : "bg-white/30 hover:bg-white/50"
-                                }`}
-                            aria-label={`Go to testimonial ${index + 1}`}
+                            key={t.id}
+                            type="button"
+                            onClick={() => setActive(i)}
+                            aria-label={`Go to testimonial ${i + 1}`}
+                            className="rounded-full transition-all duration-300"
+                            style={{
+                                height: "8px",
+                                width: i === active ? "24px" : "8px",
+                                background: i === active ? "#c67588" : "rgba(255,255,255,0.3)",
+                            }}
                         />
                     ))}
                 </div>
-            </Container>
+            </div>
         </section>
     );
 };

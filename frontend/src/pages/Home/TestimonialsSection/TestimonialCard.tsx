@@ -1,10 +1,11 @@
 import React from "react";
-import { motion } from "framer-motion";
 
 export interface Testimonial {
     id: number;
     name: string;
+    /** Role line, e.g. "Chief Executive Officer of" */
     position: string;
+    /** Company (bold, white) appended after the role */
     company: string;
     quote: string;
     avatar: string;
@@ -12,86 +13,96 @@ export interface Testimonial {
 
 interface TestimonialCardProps {
     testimonial: Testimonial;
-    index: number;
-    activeIndex: number;
-    cardStyle: {
-        x: number;
-        scale: number;
-        opacity: number;
-        zIndex: number;
-    };
-    onClick: () => void;
+    /** Center (active) card is taller, brighter and shows the avatar ring. */
+    active: boolean;
 }
 
 /**
- * Individual testimonial card component
+ * Testimonial card — pixel-matched to Figma 820:1783 (cards 820:1784 / 820:1796).
+ * A translucent rounded card with a circular avatar overlapping the top edge,
+ * a centered quote (Sora), then the person's name and role.
+ * Active (center) card: h358, bg rgba(42,51,80,0.3) + shadow.
+ * Side cards: h302, bg rgba(19,34,56,0.2).
  */
-const TestimonialCard: React.FC<TestimonialCardProps> = ({
-    testimonial,
-    index,
-    activeIndex,
-    cardStyle,
-    onClick,
-}) => {
+const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial, active }) => {
     return (
-        <motion.div
-            className="absolute top-0 left-1/2 w-[300px] md:w-[350px] cursor-pointer"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{
-                x: cardStyle.x - 175,
-                scale: cardStyle.scale,
-                opacity: cardStyle.opacity,
-                zIndex: cardStyle.zIndex,
+        <div
+            className="relative w-full rounded-[16px]"
+            style={{
+                height: active ? "358px" : "302px",
+                background: active ? "rgba(42,51,80,0.3)" : "rgba(19,34,56,0.2)",
+                boxShadow: active ? "0px 40px 64px 0px rgba(19,34,56,0.08)" : "none",
+                transition: "height 0.5s cubic-bezier(0.25,0.46,0.45,0.94), background 0.5s ease",
             }}
-            transition={{
-                duration: 0.5,
-                ease: "easeInOut" as const,
-            }}
-            onClick={onClick}
         >
+            {/* Avatar — 100px, overlapping the top edge (-50px) */}
             <div
-                className={`relative bg-[#1a1a2e]/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 border transition-all duration-300 ${index === activeIndex
-                        ? "border-white/20 shadow-2xl"
-                        : "border-white/10"
-                    }`}
+                className="absolute left-1/2 -translate-x-1/2 rounded-full overflow-hidden"
+                style={{
+                    width: "100px",
+                    height: "100px",
+                    top: "-50px",
+                    boxShadow: active
+                        ? "0px 0px 24px 0px rgba(187,161,254,0.45), 0px 0px 0px 1px rgba(255,255,255,0.15)"
+                        : "none",
+                }}
             >
-                {/* Avatar */}
-                <div className="flex justify-center mb-6">
-                    <div className="relative">
-                        <div
-                            className={`absolute inset-0 rounded-full transition-opacity duration-300 ${index === activeIndex
-                                    ? "bg-gradient-to-r from-cyan-400 to-cyan-600 blur-md opacity-60"
-                                    : "opacity-0"
-                                }`}
-                        ></div>
-                        <img
-                            src={testimonial.avatar}
-                            alt={testimonial.name}
-                            className={`relative w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-2 transition-all duration-300 ${index === activeIndex ? "border-cyan-400" : "border-white/30"
-                                }`}
-                        />
-                    </div>
-                </div>
-
-                {/* Quote */}
-                <p className="text-text-secondary text-sm md:text-base leading-relaxed text-center mb-6 line-clamp-5">
-                    {testimonial.quote}
-                </p>
-
-                {/* Name and Position */}
-                <div className="text-center">
-                    <h4 className="text-white font-semibold text-base md:text-lg">
-                        {testimonial.name}
-                    </h4>
-                    <p className="text-text-muted text-xs md:text-sm">
-                        {testimonial.position} at{" "}
-                        <span className="text-accent-pink font-medium">
-                            {testimonial.company}
-                        </span>
-                    </p>
-                </div>
+                <img
+                    src={testimonial.avatar}
+                    alt={testimonial.name}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                />
             </div>
-        </motion.div>
+
+            {/* Quote */}
+            <p
+                className="absolute left-1/2 -translate-x-1/2 text-center text-white px-6"
+                style={{
+                    top: "90px",
+                    maxWidth: "568px",
+                    width: "100%",
+                    fontFamily: '"Sora", sans-serif',
+                    fontWeight: 300,
+                    fontSize: "clamp(16px, 1.4vw, 20px)",
+                    lineHeight: "28px",
+                }}
+            >
+                {testimonial.quote}
+            </p>
+
+            {/* Name + role */}
+            <div
+                className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-center w-full px-6"
+                style={{ bottom: "34px" }}
+            >
+                <p
+                    className="text-white"
+                    style={{
+                        fontFamily: '"Sora", sans-serif',
+                        fontWeight: 400,
+                        fontSize: "20px",
+                        lineHeight: "28px",
+                    }}
+                >
+                    {testimonial.name}
+                </p>
+                <p
+                    style={{
+                        fontFamily: '"Sora", sans-serif',
+                        fontWeight: 300,
+                        fontSize: "14px",
+                        lineHeight: "20px",
+                        color: "#697484",
+                    }}
+                >
+                    {testimonial.position}{" "}
+                    <span className="text-white" style={{ fontWeight: 400 }}>
+                        {testimonial.company}
+                    </span>
+                </p>
+            </div>
+        </div>
     );
 };
 
