@@ -1,0 +1,13 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 33.6344 33.6344" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="ClickUpIcon">
+<path id="Vector" d="M5.17444 21.9916L11.6426 13.583L16.8171 19.4044L21.9917 13.583L28.4598 21.9916" stroke="url(#paint0_linear_0_24)" stroke-width="3.8809" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_24" x1="3.88081" y1="23.2852" x2="29.7534" y2="10.3489" gradientUnits="userSpaceOnUse">
+<stop stop-color="#7B2FFF"/>
+<stop offset="0.4" stop-color="#E040FB"/>
+<stop offset="0.7" stop-color="#FF4081"/>
+<stop offset="1" stop-color="#00BCD4"/>
+</linearGradient>
+</defs>
+</svg>

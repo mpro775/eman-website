@@ -1,0 +1,12 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 33.6344 33.6344" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="InDesignIcon" clip-path="url(#clip0_0_30)">
+<path id="Vector" d="M25.8726 0.000165831H7.76178C3.47506 0.000165831 -1.33874e-05 3.47524 -1.33874e-05 7.76196V25.8728C-1.33874e-05 30.1595 3.47506 33.6346 7.76178 33.6346H25.8726C30.1593 33.6346 33.6344 30.1595 33.6344 25.8728V7.76196C33.6344 3.47524 30.1593 0.000165831 25.8726 0.000165831Z" fill="var(--fill-0, #49001F)"/>
+<path id="Vector_2" d="M13.7941 11.6426H18.3218C22.2027 11.6426 24.79 13.9711 24.79 17.2052C24.79 20.4393 22.2027 22.6385 18.3218 22.6385H13.7941V11.6426ZM16.3814 20.698H18.0631C20.6504 20.698 22.2027 19.4044 22.2027 17.2052C22.2027 15.006 20.6504 13.583 18.0631 13.583H16.3814V20.698Z" fill="var(--fill-0, #FF3366)"/>
+<path id="Vector_3" d="M10.7941 12.208L10.7941 22.208" stroke="var(--stroke-0, #FF3366)" stroke-width="2.32854" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_0_30">
+<rect width="33.6344" height="33.6344" fill="white"/>
+</clipPath>
+</defs>
+</svg>
