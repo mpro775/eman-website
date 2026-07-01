@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { HiArrowUpRight } from "react-icons/hi2";
+import arrowUpRight from "../../../assets/hero/arrow-up-right.svg";
 
 interface ActionDockProps {
     isAboutView: boolean;
@@ -37,8 +37,9 @@ const ActionDock: React.FC<ActionDockProps> = ({
             }}
             transition={{ duration: transitionDuration, ease: transitionEase }}
         >
-            {/* Glass pill container */}
+            {/* Glass pill container (dir=ltr → أعمالي pill on the left, تواصل معي on the right — Figma) */}
             <div
+                dir="ltr"
                 className="flex items-center justify-center bg-white/10 backdrop-blur-md overflow-hidden"
                 style={{
                     width: "373px",
@@ -48,22 +49,21 @@ const ActionDock: React.FC<ActionDockProps> = ({
                     borderRadius: "51.362px",
                 }}
             >
-                {/* أعمالي — black bordered button with up-right arrow */}
+                {/* أعمالي — black bordered button, arrow on the left */}
                 <a
                     href="#portfolio"
-                    className="shrink-0 flex items-center justify-center bg-black overflow-hidden transition-transform hover:scale-[1.03]"
+                    className="shrink-0 flex items-center justify-center gap-2 bg-black overflow-hidden transition-transform hover:scale-[1.03]"
                     style={{
                         width: "213.668px",
                         border: "0.514px solid #d0d5dd",
                         borderRadius: "61.635px",
                         padding: "10.272px 20.545px",
-                        gap: "4px",
                     }}
                 >
+                    <img src={arrowUpRight} alt="" className="shrink-0" style={{ width: "40px", height: "40px" }} />
                     <span className="text-white whitespace-nowrap" style={dockLabelStyle}>
                         أعمالي
                     </span>
-                    <HiArrowUpRight className="text-white shrink-0" style={{ fontSize: "26px" }} />
                 </a>
 
                 {/* تواصل معي — text action */}

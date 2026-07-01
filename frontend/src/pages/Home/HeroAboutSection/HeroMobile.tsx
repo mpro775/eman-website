@@ -1,5 +1,5 @@
 import React from "react";
-import { HiArrowUpRight } from "react-icons/hi2";
+import arrowUpRight from "../../../assets/hero/arrow-up-right.svg";
 
 // Figma hero assets (node 820:2060)
 import sparkImage from "../../../assets/illustrations/hero/spark.svg";
@@ -98,14 +98,14 @@ const HeroMobile: React.FC = () => {
                 </p>
             </div>
 
-            {/* Action dock */}
-            <div className="z-10 mt-8 w-full max-w-[373px] flex items-center justify-center gap-2 bg-white/10 backdrop-blur-md rounded-full p-[6px]">
+            {/* Action dock (dir=ltr → أعمالي on the left, تواصل معي on the right — Figma) */}
+            <div dir="ltr" className="z-10 mt-8 w-full max-w-[373px] flex items-center justify-center gap-2 bg-white/10 backdrop-blur-md rounded-full p-[6px]">
                 <a
                     href="#portfolio"
-                    className="shrink-0 flex items-center justify-center gap-1 bg-black border border-[#d0d5dd] rounded-full px-5 py-3 transition-transform active:scale-95"
+                    className="shrink-0 flex items-center justify-center gap-1.5 bg-black border border-[#d0d5dd] rounded-full px-5 py-3 transition-transform active:scale-95"
                 >
+                    <img src={arrowUpRight} alt="" className="shrink-0" style={{ width: "32px", height: "32px" }} />
                     <span className="text-white whitespace-nowrap" style={dockLabelStyle}>أعمالي</span>
-                    <HiArrowUpRight className="text-white shrink-0" style={{ fontSize: "22px" }} />
                 </a>
                 <a
                     href="#contact"
