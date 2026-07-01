@@ -1,37 +1,44 @@
 import React from "react";
-import {
-    FaFacebookF,
-    FaTwitter,
-    FaBehance,
-    FaWhatsapp,
-    FaInstagram,
-} from "react-icons/fa";
+import { FaFacebookF, FaYoutube, FaWhatsapp, FaInstagram, FaTwitter, FaBehance } from "react-icons/fa";
 import { useNewsletter } from "../../../hooks";
-import logo from "../../../assets/logos/logo.png";
-import subtractIcon from "../../../assets/icons/Subtract.svg";
+import logoMark from "../../../assets/footer/logo-mark.png";
+import sendIcon from "../../../assets/footer/send.svg";
 import { playTap, playType } from "../../../utils/soundManager";
 
-// Types
-interface SocialLink {
-    icon: React.ComponentType<{ className?: string }>;
-    href: string;
-}
+const FONT = '"Thmanyah Sans", "Tajawal", sans-serif';
 
-interface ContactInfoItem {
-    label: string;
-    href: string;
-}
+const importantLinks = [
+    { name: "الرئيسية", href: "#home" },
+    { name: "من أنا", href: "#about" },
+    { name: "الخبرات العملية", href: "#experience" },
+    { name: "أعمالي", href: "#portfolio" },
+    { name: "تواصل معي", href: "#contact" },
+];
 
-interface ImportantLink {
-    name: string;
-    href: string;
-}
+const contactLinks = [
+    { label: "emyjameel1@gmail.com", href: "mailto:emyjameel1@gmail.com" },
+    { label: "emanJameel.com", href: "https://emanjameel.com" },
+];
+
+const socials = [
+    { Icon: FaFacebookF, href: "#", label: "Facebook" },
+    { Icon: FaYoutube, href: "#", label: "YouTube" },
+    { Icon: FaWhatsapp, href: "#", label: "WhatsApp" },
+    { Icon: FaInstagram, href: "#", label: "Instagram" },
+    { Icon: FaTwitter, href: "#", label: "Twitter" },
+    { Icon: FaBehance, href: "#", label: "Behance" },
+];
+
+const heading: React.CSSProperties = { fontFamily: FONT, fontWeight: 500, fontSize: "20px", letterSpacing: "-0.3px", color: "#c67588" };
+const linkStyle: React.CSSProperties = { fontFamily: FONT, fontWeight: 500, fontSize: "18px", letterSpacing: "-0.27px", color: "#fcfcfd" };
 
 /**
- * Footer content component with logo, description, social links, and navigation
+ * Footer — pixel-matched to Figma node 820:1945.
+ * Four columns (logo+bio+socials, important links, contact, newsletter),
+ * a divider, then the bottom copyright / legal bar.
  */
 const FooterContent: React.FC = () => {
-    const { email: newsletterEmail, handleEmailChange, handleSubmit: handleNewsletterSubmit } = useNewsletter();
+    const { email, handleEmailChange, handleSubmit } = useNewsletter();
     const lastTypeAtRef = React.useRef(0);
 
     const onTypeKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -39,238 +46,121 @@ const FooterContent: React.FC = () => {
         const isChar = e.key.length === 1;
         const isBackspace = e.key === "Backspace";
         if (!isChar && !isBackspace) return;
-
         const now = performance.now();
         if (now - lastTypeAtRef.current < 45) return;
         lastTypeAtRef.current = now;
-
         playType({ volume: 0.2 });
     };
 
-    const footerSocialLinks: SocialLink[] = [
-        { icon: FaFacebookF, href: "#" },
-        { icon: FaWhatsapp, href: "#" },
-        { icon: FaInstagram, href: "#" },
-        { icon: FaTwitter, href: "#" },
-        { icon: FaBehance, href: "#" },
-    ];
-
-    const importantLinks: ImportantLink[] = [
-        { name: "الرئيسية", href: "#home" },
-        { name: "مهاراتي", href: "#about" },
-        { name: "الخبرات العملية", href: "#experience" },
-        { name: "أعمالي", href: "#portfolio" },
-        { name: "تواصل معي", href: "#contact" },
-    ];
-
-    const contactInfo: ContactInfoItem[] = [
-        { label: "emyjameel1@gmail.com", href: "mailto:emyjameel1@gmail.com" },
-        { label: "emanjameel.com", href: "https://emanjameel.com" },
-    ];
-
     return (
-
-        <footer
-            id="footer"
-            className="relative w-full bg-gradient-to-b from-[#1a1025] via-[#15101f] to-[#0d0d14] overflow-hidden rounded-t-[50px]"
-        >
-            {/* Blur Effect - Right Side */}
+        <footer id="footer" className="relative w-full bg-[#040404] overflow-hidden rounded-t-[50px]">
+            {/* Purple glows (Figma 841:418 / 841:420) */}
             <div
                 className="absolute pointer-events-none"
                 style={{
-                    width: "1136px",
-                    height: "568px",
-                    top: "-599px",
-                    left: "838px",
-                    transform: "rotate(-58.77deg)",
-                    background:
-                        "linear-gradient(177.25deg, rgba(187, 161, 254, 0.8) 2.26%, rgba(33, 13, 83, 0.8) 97.74%)",
-                    filter: "blur(488px)",
-                    borderRadius: "50%",
+                    width: "1000px", height: "500px", top: "-320px", right: "-200px",
+                    transform: "rotate(58deg)",
+                    background: "linear-gradient(177deg, rgba(187,161,254,0.35) 2%, rgba(33,13,83,0.55) 98%)",
+                    filter: "blur(200px)", borderRadius: "50%",
                 }}
-            ></div>
-            {/* Blur Effect - Left Side (Mirrored) */}
+            />
             <div
                 className="absolute pointer-events-none"
                 style={{
-                    width: "1136px",
-                    height: "568px",
-                    top: "-599px",
-                    left: "-838px",
-                    transform: "rotate(58.77deg)",
-                    background:
-                        "linear-gradient(177.25deg, rgba(187, 161, 254, 0.8) 2.26%, rgba(33, 13, 83, 0.8) 97.74%)",
-                    filter: "blur(488px)",
-                    borderRadius: "50%",
+                    width: "1000px", height: "500px", top: "-320px", left: "-300px",
+                    transform: "rotate(121deg)",
+                    background: "linear-gradient(177deg, rgba(187,161,254,0.3) 2%, rgba(33,13,83,0.5) 98%)",
+                    filter: "blur(200px)", borderRadius: "50%",
                 }}
-            ></div>
+            />
 
-            {/* Main Footer Content - Two sections side by side */}
-            <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-                    {/* Section 1: Logo, Description, Social Icons (Left Side) */}
-                    <div className="text-right lg:order-1">
-                        {/* Logo */}
-                        <div className="mb-6">
-                            <img src={logo} alt="Eman Logo" className="h-16 w-auto ml-auto" />
-                        </div>
-
-                        {/* Description */}
-                        <p
-                            className="mb-8 text-right"
-                            style={{
-                                fontFamily: "Urbanist, sans-serif",
-                                fontWeight: 500,
-                                fontSize: "20px",
-                                lineHeight: "140%",
-                                letterSpacing: "-0.015em",
-                                color: "#FCFCFD",
-                            }}
-                        >
-                            مصممة تجارب مستخدم وواجهات رقمية أعمل على تحويل الأفكار إلى تجارب
-                            مرئية مدروسة، تجمع بين البساطة، الوضوح، والهوية البصرية المتناسقة.
-                            أؤمن بأن التصميم الجيد يبدأ بفهم المستخدم وينتهي بتجربة تُحسن قِيَل
-                            أن تُرى.
+            <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12 lg:px-[71px] py-14 md:py-16">
+                {/* Columns */}
+                <div dir="rtl" className="flex flex-col lg:flex-row lg:justify-between gap-10 lg:gap-8">
+                    {/* Logo + bio + socials */}
+                    <div className="flex flex-col items-end gap-7 text-right lg:max-w-[531px] lg:order-1">
+                        <img src={logoMark} alt="Eman" className="h-[72px] w-auto" />
+                        <p style={{ fontFamily: FONT, fontWeight: 500, fontSize: "18px", lineHeight: "1.75", letterSpacing: "-0.27px", color: "#fcfcfd" }}>
+                            مصممة تجارب مستخدم وواجهات رقمية أعمل على تحويل الأفكار إلى تجارب مرئية مدروسة، تجمع بين
+                            البساطة، الوضوح، والهوية البصرية المتناسقة. أؤمن بأن التصميم الجيد يبدأ بفهم المستخدم وينتهي
+                            بتجربة تُحسّ قبل أن تُرى.
                         </p>
-
-                        {/* Social Links */}
-                        <div className="flex items-center justify-end gap-3 flex-row-reverse">
-                            {footerSocialLinks.map((social, index) => (
+                        <div dir="ltr" className="flex items-center gap-3">
+                            {socials.map(({ Icon, href, label }) => (
                                 <a
-                                    key={index}
-                                    href={social.href}
-                                    className="w-9 h-9 bg-white rounded-full flex items-center justify-center text-[#1a1025] hover:bg-accent-pink hover:text-white transition-all duration-300"
+                                    key={label}
+                                    href={href}
+                                    aria-label={label}
                                     onMouseEnter={() => playTap({ volume: 0.25 })}
+                                    className="text-white/90 hover:text-[#c67588] transition-colors duration-300"
                                 >
-                                    <social.icon className="text-base" />
+                                    <Icon className="text-2xl" />
                                 </a>
                             ))}
                         </div>
                     </div>
 
-                    {/* Section 2: Three Columns - Newsletter, Contact, Links (Right Side) */}
-                    <div className="lg:order-2">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
-                            {/* Column 1: Newsletter */}
-                            <div className="text-right md:order-3">
-                                <h4 className="text-[#C67588] text-lg font-semibold mb-6">
-                                    ابق على اطلاع
-                                </h4>
-                                <form
-                                    onSubmit={handleNewsletterSubmit}
-                                    className="relative w-[280px]"
-                                    dir="rtl"
-                                >
-                                    <input
-                                        type="email"
-                                        placeholder="البريد الإلكتروني"
-                                        value={newsletterEmail}
-                                        onChange={handleEmailChange}
-                                        onKeyDown={onTypeKeyDown}
-                                        className="w-full bg-white rounded-xl px-4 py-3 pl-14 text-black placeholder:text-black text-right focus:outline-none transition-colors duration-300"
+                    {/* Important links */}
+                    <div className="flex flex-col items-end gap-4 text-right lg:order-2">
+                        <h4 style={heading}>روابط مهمة</h4>
+                        {importantLinks.map((l) => (
+                            <a key={l.name} href={l.href} style={linkStyle} className="hover:text-[#c67588] transition-colors duration-300">
+                                {l.name}
+                            </a>
+                        ))}
+                    </div>
 
-                                        style={{
-                                            fontFamily: "Urbanist, sans-serif",
-                                            fontWeight: 400,
-                                            fontSize: "16px",
-                                            lineHeight: "100%",
-                                            letterSpacing: "-0.015em",
-                                        }}
-                                        required
-                                    />
-                                    <button
-                                        type="submit"
-                                        className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-center hover:opacity-80 transition-opacity"
-                                        style={{
-                                            width: "46px",
-                                            height: "45px",
-                                            background: "#C67588",
-                                            borderTopRightRadius: "13px",
-                                            borderBottomRightRadius: "13px",
-                                            borderTopLeftRadius: "0",
-                                            borderBottomLeftRadius: "0",
-                                            padding: "10px 8px",
-                                            transform: "rotate(-180deg)",
-                                        }}
-                                    >
-                                        <img
-                                            src={subtractIcon}
-                                            alt="Send"
-                                            className="w-5 h-5"
-                                            style={{ transform: "rotate(180deg)" }}
-                                        />
-                                    </button>
-                                </form>
-                            </div>
+                    {/* Contact */}
+                    <div className="flex flex-col items-end gap-5 text-right lg:order-3">
+                        <h4 style={heading}>للتواصل</h4>
+                        {contactLinks.map((c) => (
+                            <a key={c.label} href={c.href} style={linkStyle} className="hover:text-[#c67588] transition-colors duration-300" dir="ltr">
+                                {c.label}
+                            </a>
+                        ))}
+                    </div>
 
-                            {/* Column 2: Contact Info */}
-                            <div className="text-right md:order-2">
-                                <h4 className="text-[#C67588] text-lg font-semibold mb-6">
-                                    للتواصل
-                                </h4>
-                                <ul className="space-y-3">
-                                    {contactInfo.map((item, index) => (
-                                        <li key={index}>
-                                            <a
-                                                href={item.href}
-                                                className="text-text-secondary hover:text-accent-pink transition-colors duration-300 text-sm"
-                                            >
-                                                {item.label}
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                            {/* Column 3: Important Links */}
-                            <div className="text-right md:order-1">
-                                <h4 className="text-[#C67588] text-lg font-semibold mb-6">
-                                    روابط مهمة
-                                </h4>
-                                <ul className="space-y-3">
-                                    {importantLinks.map((link, index) => (
-                                        <li key={index}>
-                                            <a
-                                                href={link.href}
-                                                className="text-text-secondary hover:text-accent-pink transition-colors duration-300 text-sm"
-                                            >
-                                                {link.name}
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
+                    {/* Newsletter */}
+                    <div className="flex flex-col items-end gap-7 text-right lg:order-4">
+                        <h4 style={heading}>ابقَ على اطلاع</h4>
+                        <form
+                            onSubmit={handleSubmit}
+                            dir="rtl"
+                            className="flex w-[304px] max-w-full h-[51px] overflow-hidden rounded-[14px]"
+                        >
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={handleEmailChange}
+                                onKeyDown={onTypeKeyDown}
+                                placeholder="البريد الإلكتروني"
+                                required
+                                className="flex-1 min-w-0 bg-white text-black text-right px-4 placeholder:text-black/50 focus:outline-none"
+                                style={{ fontFamily: FONT, fontWeight: 500, fontSize: "16px" }}
+                            />
+                            <button
+                                type="submit"
+                                aria-label="اشترك"
+                                onMouseEnter={() => playTap({ volume: 0.25 })}
+                                className="w-[46px] shrink-0 bg-[#c67588] flex items-center justify-center hover:opacity-90 transition-opacity"
+                            >
+                                <img src={sendIcon} alt="" className="w-5 h-5" style={{ transform: "scaleX(-1)" }} />
+                            </button>
+                        </form>
                     </div>
                 </div>
-            </div>
 
-            {/* Bottom Bar */}
-            <div className="border-t border-white/5">
-                <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-muted">
-                        {/* Copyright */}
-                        <p className="text-center md:text-right order-1 md:order-2">
-                            Copyright© 2026 وكالة سمارت ديف
-                        </p>
+                {/* Divider */}
+                <div className="h-px bg-white/10 my-8" />
 
-                        {/* Privacy Links */}
-                        <div className="flex items-center gap-4 order-2 md:order-1">
-                            <a
-                                href="#"
-                                className="text-accent-pink hover:text-accent-pink-light transition-colors duration-300"
-                            >
-                                User Terms & Conditions
-                            </a>
-                            <span className="text-white/30">|</span>
-                            <a
-                                href="#"
-                                className="text-accent-pink hover:text-accent-pink-light transition-colors duration-300"
-                            >
-                                Privacy Policy
-                            </a>
-                        </div>
-                    </div>
+                {/* Bottom bar */}
+                <div
+                    dir="ltr"
+                    className="flex flex-col md:flex-row items-center md:justify-between gap-3 text-white text-center"
+                    style={{ fontFamily: FONT, fontWeight: 500, letterSpacing: "-0.3px" }}
+                >
+                    <p className="text-[15px] md:text-[20px]">Copyright© 2025 وكالة سمارت ديف</p>
+                    <p className="text-[13px] md:text-[20px]">{`User Terms & Conditions | Privacy Policy`}</p>
                 </div>
             </div>
         </footer>

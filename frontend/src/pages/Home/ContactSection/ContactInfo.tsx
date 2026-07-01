@@ -1,109 +1,94 @@
 import React from "react";
-import { motion } from "framer-motion";
-import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from "react-icons/fa";
+import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram, FaBehance } from "react-icons/fa";
 import phoneIcon from "../../../assets/icons/PhoneCall.svg";
 import emailIcon from "../../../assets/icons/email.svg";
-import behanceIcon from "../../../assets/icons/behance.svg";
 import { playTap } from "../../../utils/soundManager";
 
+const FONT = '"Thmanyah Sans", "Tajawal", sans-serif';
+
+const InfoRow: React.FC<{ icon: string; label: string; value: string }> = ({ icon, label, value }) => (
+    <div className="flex items-center gap-4">
+        <div
+            className="shrink-0 flex items-center justify-center rounded-[15px] bg-[rgba(42,51,80,0.12)] border border-[rgba(42,51,80,0.2)]"
+            style={{ padding: "16px" }}
+        >
+            <img src={icon} alt="" className="w-6 h-6" />
+        </div>
+        <div className="flex flex-col gap-1.5 text-right">
+            <p style={{ fontFamily: FONT, fontWeight: 300, fontSize: "14px", lineHeight: "20px", color: "#fff" }}>
+                {label}
+            </p>
+            <p style={{ fontFamily: FONT, fontWeight: 500, fontSize: "16px", lineHeight: "24px", color: "#fff" }}>
+                {value}
+            </p>
+        </div>
+    </div>
+);
+
+const socialBtn =
+    "flex items-center justify-center rounded-full transition-transform duration-300 hover:scale-110";
+const socialSize = "w-11 h-11 sm:w-12 sm:h-12";
+
 /**
- * Contact info component with phone, email, and social media links
+ * Contact info column — pixel-matched to Figma 820:1914.
+ * Heading + intro paragraph, phone / email rows, and a "follow me" card
+ * with social buttons.
  */
 const ContactInfo: React.FC = () => {
     return (
-        <motion.div
-            className="order-1 lg:order-1"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-        >
+        <div className="w-full max-w-[424px] flex flex-col gap-8">
             {/* Heading */}
-            <h3 className="text-white text-xl md:text-2xl font-semibold mb-4 text-right">
-                يسعدني سماعك، فقط أرسل رسالة.
-            </h3>
-
-            {/* Description */}
-            <p className="text-text-secondary text-sm md:text-base leading-relaxed mb-8 text-right">
-                سواء كنت ترغب في بدء مشروع جديد، مناقشة فكرة، أو لديك استفسار بسيط — لا تتردد
-                في التواصل. أحرص على الرد خلال 48 ساعة كحد أقصى.
-            </p>
-
-            {/* Contact Details */}
-            <div className="space-y-6 mb-8" dir="rtl">
-                {/* Phone */}
-                <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-[#1a1a2e] rounded-2xl flex items-center justify-center border border-white/10">
-                        <img src={phoneIcon} alt="Phone" className="w-7 h-7" />
-                    </div>
-                    <div className="text-right">
-                        <p className="text-text-muted text-xs mb-1">تواصل معي</p>
-                        <p className="text-white font-medium">+1-202-555-0190</p>
-                    </div>
-                </div>
-
-                {/* Email */}
-                <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-[#1a1a2e] rounded-2xl flex items-center justify-center border border-white/10">
-                        <img src={emailIcon} alt="Email" className="w-7 h-7" />
-                    </div>
-                    <div className="text-right">
-                        <p className="text-text-muted text-xs mb-1">أرسل لي رسالة</p>
-                        <p className="text-white font-medium">emyjameel1@gmail.com</p>
-                    </div>
-                </div>
+            <div className="flex flex-col gap-4 text-right">
+                <p style={{ fontFamily: FONT, fontWeight: 500, fontSize: "26px", lineHeight: "32px", color: "#fff" }}>
+                    يسعدني سماعك، فقط أرسل رسالة.
+                </p>
+                <p style={{ fontFamily: FONT, fontWeight: 300, fontSize: "16px", lineHeight: "35px", color: "#fff" }}>
+                    سواء كنت ترغب في بدء مشروع جديد، مناقشة فكرة، أو لديك استفسار بسيط — لا تتردد في التواصل.
+                    <br />
+                    أحرص على الرد خلال 48 ساعة كحد أقصى.
+                </p>
             </div>
 
-            {/* Social Media Card */}
-            <div className="bg-[#1a1a2e] rounded-3xl p-8 border border-white/5">
-                <p className="text-text-secondary text-base mb-6 text-right">
+            {/* Phone + email */}
+            <div className="flex flex-col gap-6">
+                <InfoRow icon={phoneIcon} label="تواصل معي" value="+1-202-555-0190" />
+                <InfoRow icon={emailIcon} label="ارسل لي رسالة" value="emyjaeel1@gmail.com" />
+            </div>
+
+            {/* Follow me card */}
+            <div className="rounded-[16px] bg-[rgba(42,51,80,0.6)] flex flex-col items-end gap-4 px-5 pt-[23px] pb-8 sm:px-8">
+                <p
+                    className="text-right w-full"
+                    style={{ fontFamily: "Urbanist, sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#fff" }}
+                >
                     تابعني على منصات التواصل الاجتماعي
                 </p>
-                <div className="flex items-center gap-4">
-                    {/* Behance */}
-                    <a
-                        href="#"
-                        className="w-14 h-14 bg-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
-                        onMouseEnter={() => playTap({ volume: 0.25 })}
-                    >
-                        <img src={behanceIcon} alt="Behance" className="w-7 h-7" />
+                <div dir="ltr" className="flex items-center justify-center sm:justify-end gap-2 sm:gap-3 w-full">
+                    <span className="hidden sm:block w-6 h-0.5 rounded-full bg-white/40" />
+                    <a href="#" aria-label="Facebook" onMouseEnter={() => playTap({ volume: 0.25 })}
+                        className={`${socialBtn} ${socialSize} bg-white/20`}>
+                        <FaFacebookF className="text-white text-base" />
                     </a>
-                    {/* Instagram */}
-                    <a
-                        href="#"
-                        className="w-14 h-14 bg-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
-                        onMouseEnter={() => playTap({ volume: 0.25 })}
-                    >
-                        <FaInstagram className="text-xl text-accent-pink" />
+                    <a href="#" aria-label="Twitter" onMouseEnter={() => playTap({ volume: 0.25 })}
+                        className={`${socialBtn} ${socialSize} bg-white/20`}>
+                        <FaTwitter className="text-white text-base" />
                     </a>
-                    {/* LinkedIn */}
-                    <a
-                        href="#"
-                        className="w-14 h-14 bg-accent-pink rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
-                        onMouseEnter={() => playTap({ volume: 0.25 })}
-                    >
-                        <FaLinkedinIn className="text-xl text-white" />
+                    <a href="#" aria-label="LinkedIn" onMouseEnter={() => playTap({ volume: 0.25 })}
+                        className={`${socialBtn} ${socialSize}`}
+                        style={{ backgroundImage: "linear-gradient(180deg, rgba(198,117,136,0.5), rgba(96,57,66,0.5))" }}>
+                        <FaLinkedinIn className="text-white text-base" />
                     </a>
-                    {/* Twitter */}
-                    <a
-                        href="#"
-                        className="w-14 h-14 bg-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
-                        onMouseEnter={() => playTap({ volume: 0.25 })}
-                    >
-                        <FaTwitter className="text-xl text-accent-pink" />
+                    <a href="#" aria-label="Instagram" onMouseEnter={() => playTap({ volume: 0.25 })}
+                        className={`${socialBtn} ${socialSize} bg-white/20`}>
+                        <FaInstagram className="text-white text-base" />
                     </a>
-                    {/* Facebook */}
-                    <a
-                        href="#"
-                        className="w-14 h-14 bg-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
-                        onMouseEnter={() => playTap({ volume: 0.25 })}
-                    >
-                        <FaFacebookF className="text-xl text-accent-pink" />
+                    <a href="#" aria-label="Behance" onMouseEnter={() => playTap({ volume: 0.25 })}
+                        className={`${socialBtn} w-11 h-11 sm:w-[51px] sm:h-[51px] bg-white/20`}>
+                        <FaBehance className="text-white text-lg" />
                     </a>
-                    <div className="w-10 h-[2px] bg-accent-pink rounded-full"></div>
                 </div>
             </div>
-        </motion.div>
+        </div>
     );
 };
 

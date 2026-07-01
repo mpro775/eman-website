@@ -1,55 +1,78 @@
 import React from "react";
-import { motion } from "framer-motion";
 import { useContactForm } from "../../../hooks";
-import { Container, SectionTitle } from "../../../components";
 import ContactForm from "./ContactForm";
 import ContactInfo from "./ContactInfo";
 import FooterContent from "./FooterContent";
 
+const FONT = '"Thmanyah Sans", "Tajawal", sans-serif';
+
 /**
- * Contact section with form, contact info, and footer
- * Main entry point for the contact and footer area
+ * Contact section ("تواصل معي") — pixel-matched to Figma node 820:1886.
+ * Arabic title + gradient underline, then a two-column layout: contact form
+ * on the left, contact info + socials on the right. Footer rendered below.
  */
 const ContactSection: React.FC = () => {
     const { formData, services, handleChange, handleSubmit } = useContactForm();
 
     return (
         <section id="contact" className="scroll-section relative w-full overflow-hidden">
-            {/* Contact Section */}
-            <div className="bg-bg-primary py-20">
-                {/* Background gradient effects */}
-                <div className="absolute top-0 left-0 w-[30%] h-[40%] bg-accent-purple/10 blur-[150px] rounded-full pointer-events-none z-0"></div>
+            <div className="relative bg-[#040404] overflow-hidden py-20">
+                {/* Purple glow — bottom (Figma 820:1887) */}
+                <div
+                    className="absolute pointer-events-none"
+                    style={{
+                        width: "1136px",
+                        height: "568px",
+                        left: "50%",
+                        bottom: "-260px",
+                        transform: "translateX(-50%)",
+                        background: "linear-gradient(177deg, rgba(187,161,254,0.35) 2%, rgba(33,13,83,0.55) 98%)",
+                        filter: "blur(240px)",
+                        borderRadius: "50%",
+                    }}
+                />
 
-                <Container>
-                    {/* Section Title */}
-                    <SectionTitle title="تواصل معي" maxWidth="250px" />
-
-
-                    {/* Main Content - Two Columns */}
-                    <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-                        {/* Right Side - Contact Info */}
-                        <ContactInfo />
-
-                        {/* Left Side - Contact Form */}
-                        <motion.div
-                            className="order-2 lg:order-2"
-                            initial={{ opacity: 0, x: -50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
+                <div className="relative z-10 w-full max-w-[1240px] mx-auto flex flex-col items-center px-6" style={{ gap: "56px" }}>
+                    {/* Title + underline (Figma 829:3928) */}
+                    <div className="flex flex-col items-center" style={{ gap: "14px" }}>
+                        <h2
+                            className="text-white text-center whitespace-nowrap"
+                            style={{
+                                fontFamily: FONT,
+                                fontWeight: 500,
+                                fontSize: "clamp(2rem, 5vw, 48px)",
+                                lineHeight: 1,
+                                letterSpacing: "-0.72px",
+                            }}
                         >
-                            <ContactForm
-                                formData={formData}
-                                services={services}
-                                onFormChange={handleChange}
-                                onSubmit={handleSubmit}
-                            />
-                        </motion.div>
+                            تواصــــل معـــي
+                        </h2>
+                        <div
+                            style={{
+                                width: "430px",
+                                maxWidth: "82vw",
+                                height: "3px",
+                                borderRadius: "2px",
+                                background:
+                                    "linear-gradient(90deg, rgba(139,92,246,0) 0%, #C084FC 50%, rgba(139,92,246,0) 100%)",
+                            }}
+                        />
                     </div>
-                </Container>
+
+                    {/* Two columns: form (left) + info (right) */}
+                    <div className="w-full flex flex-col lg:flex-row justify-center items-start gap-12 lg:gap-[118px]">
+                        <ContactInfo />
+                        <ContactForm
+                            formData={formData}
+                            services={services}
+                            onFormChange={handleChange}
+                            onSubmit={handleSubmit}
+                        />
+                    </div>
+                </div>
             </div>
 
-            {/* Footer Section */}
+            {/* Footer */}
             <FooterContent />
         </section>
     );
