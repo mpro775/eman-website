@@ -63,7 +63,7 @@ const Blog: React.FC = () => {
             category: categoryName,
             categorySlug: categorySlug,
             image: p.featuredImage || "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=250&fit=crop",
-            comments: p.shares || 0,
+            shares: `${p.shares || 0}`,
             likes: p.loves >= 1000 ? `${(p.loves / 1000).toFixed(1)}k` : `${p.loves}`,
           };
         });
@@ -141,8 +141,8 @@ const Blog: React.FC = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            {displayedPosts.map((post, index) => (
-              <BlogCard key={post.id} post={post} index={index} />
+            {displayedPosts.map((post) => (
+              <BlogCard key={post.id} post={post} />
             ))}
           </motion.div>
 
