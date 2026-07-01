@@ -17,7 +17,7 @@ const importantLinks = [
 
 const contactLinks = [
     { label: "emyjameel1@gmail.com", href: "mailto:emyjameel1@gmail.com" },
-    { label: "emanJameel.com", href: "https://emanjameel.com" },
+    { label: "emanJameel.pro", href: "https://emanjameel.pro" },
 ];
 
 const socials = [
