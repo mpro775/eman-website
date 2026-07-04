@@ -1,5 +1,5 @@
 import React from "react";
-import { FaFacebookF, FaYoutube, FaWhatsapp, FaInstagram, FaTwitter, FaBehance } from "react-icons/fa";
+import { FaFacebook, FaYoutube, FaWhatsapp, FaInstagram, FaTwitter, FaBehance } from "react-icons/fa";
 import { useNewsletter } from "../../../hooks";
 import logoMark from "../../../assets/footer/logo-mark.png";
 import sendIcon from "../../../assets/footer/send.svg";
@@ -16,12 +16,12 @@ const importantLinks = [
 ];
 
 const contactLinks = [
-    { label: "emyjameel1@gmail.com", href: "mailto:emyjameel1@gmail.com" },
-    { label: "emanJameel.pro", href: "https://emanjameel.pro" },
+    { label: "emyjameel1@gmail.com", href: "mailto:emyjameel1@gmail.com", underline: false },
+    { label: "emanJameel.pro", href: "https://emanjameel.pro", underline: true },
 ];
 
 const socials = [
-    { Icon: FaFacebookF, href: "#", label: "Facebook" },
+    { Icon: FaFacebook, href: "#", label: "Facebook" },
     { Icon: FaYoutube, href: "#", label: "YouTube" },
     { Icon: FaWhatsapp, href: "#", label: "WhatsApp" },
     { Icon: FaInstagram, href: "#", label: "Instagram" },
@@ -34,7 +34,7 @@ const linkStyle: React.CSSProperties = { fontFamily: FONT, fontWeight: 500, font
 
 /**
  * Footer — pixel-matched to Figma node 820:1945.
- * Four columns (logo+bio+socials, important links, contact, newsletter),
+ * Four columns (newsletter, contact, important links, logo+bio+socials),
  * a divider, then the bottom copyright / legal bar.
  */
 const FooterContent: React.FC = () => {
@@ -54,22 +54,23 @@ const FooterContent: React.FC = () => {
 
     return (
         <footer id="footer" className="relative w-full bg-[#040404] overflow-hidden rounded-t-[50px]">
-            {/* Purple glows (Figma 841:418 / 841:420) */}
+            {/* Warm maroon glow behind the logo — right (Figma 841:418) */}
             <div
                 className="absolute pointer-events-none"
                 style={{
-                    width: "1000px", height: "500px", top: "-320px", right: "-200px",
-                    transform: "rotate(58deg)",
-                    background: "linear-gradient(177deg, rgba(187,161,254,0.35) 2%, rgba(33,13,83,0.55) 98%)",
+                    width: "1000px", height: "500px", top: "-320px", right: "-220px",
+                    transform: "rotate(58deg) scaleY(-1)",
+                    background: "linear-gradient(177deg, rgba(198,117,136,0.4) 2%, rgba(33,13,83,0.55) 98%)",
                     filter: "blur(200px)", borderRadius: "50%",
                 }}
             />
+            {/* Purple glow — left (Figma 841:420) */}
             <div
                 className="absolute pointer-events-none"
                 style={{
                     width: "1000px", height: "500px", top: "-320px", left: "-300px",
                     transform: "rotate(121deg)",
-                    background: "linear-gradient(177deg, rgba(187,161,254,0.3) 2%, rgba(33,13,83,0.5) 98%)",
+                    background: "linear-gradient(177deg, rgba(187,161,254,0.32) 2%, rgba(33,13,83,0.5) 98%)",
                     filter: "blur(200px)", borderRadius: "50%",
                 }}
             />
@@ -78,21 +79,24 @@ const FooterContent: React.FC = () => {
                 {/* Columns */}
                 <div dir="rtl" className="flex flex-col lg:flex-row lg:justify-between gap-10 lg:gap-8">
                     {/* Logo + bio + socials */}
-                    <div className="flex flex-col items-end gap-7 text-right lg:max-w-[531px] lg:order-1">
-                        <img src={logoMark} alt="Eman" className="h-[72px] w-auto" />
-                        <p style={{ fontFamily: FONT, fontWeight: 500, fontSize: "18px", lineHeight: "1.75", letterSpacing: "-0.27px", color: "#fcfcfd" }}>
+                    <div className="flex flex-col items-end gap-7 text-right lg:max-w-[490px] lg:order-1">
+                        <img src={logoMark} alt="Eman" className="h-[89px] w-auto" />
+                        <p
+                            className="lg:w-[474px]"
+                            style={{ fontFamily: FONT, fontWeight: 500, fontSize: "16px", lineHeight: "1.746", letterSpacing: "-0.24px", color: "#fcfcfd" }}
+                        >
                             مصممة تجارب مستخدم وواجهات رقمية أعمل على تحويل الأفكار إلى تجارب مرئية مدروسة، تجمع بين
                             البساطة، الوضوح، والهوية البصرية المتناسقة. أؤمن بأن التصميم الجيد يبدأ بفهم المستخدم وينتهي
                             بتجربة تُحسّ قبل أن تُرى.
                         </p>
-                        <div dir="ltr" className="flex items-center gap-3">
+                        <div dir="ltr" className="flex items-center gap-[5px]">
                             {socials.map(({ Icon, href, label }) => (
                                 <a
                                     key={label}
                                     href={href}
                                     aria-label={label}
                                     onMouseEnter={() => playTap({ volume: 0.25 })}
-                                    className="text-white/90 hover:text-[#c67588] transition-colors duration-300"
+                                    className="text-white hover:text-[#c67588] transition-colors duration-300"
                                 >
                                     <Icon className="text-2xl" />
                                 </a>
@@ -101,23 +105,33 @@ const FooterContent: React.FC = () => {
                     </div>
 
                     {/* Important links */}
-                    <div className="flex flex-col items-end gap-4 text-right lg:order-2">
+                    <div className="flex flex-col items-end gap-7 text-right lg:order-2">
                         <h4 style={heading}>روابط مهمة</h4>
-                        {importantLinks.map((l) => (
-                            <a key={l.name} href={l.href} style={linkStyle} className="hover:text-[#c67588] transition-colors duration-300">
-                                {l.name}
-                            </a>
-                        ))}
+                        <div className="flex flex-col items-end gap-[15px]">
+                            {importantLinks.map((l) => (
+                                <a key={l.name} href={l.href} style={linkStyle} className="hover:text-[#c67588] transition-colors duration-300">
+                                    {l.name}
+                                </a>
+                            ))}
+                        </div>
                     </div>
 
                     {/* Contact */}
-                    <div className="flex flex-col items-end gap-5 text-right lg:order-3">
+                    <div className="flex flex-col items-end gap-7 text-right lg:order-3">
                         <h4 style={heading}>للتواصل</h4>
-                        {contactLinks.map((c) => (
-                            <a key={c.label} href={c.href} style={linkStyle} className="hover:text-[#c67588] transition-colors duration-300" dir="ltr">
-                                {c.label}
-                            </a>
-                        ))}
+                        <div className="flex flex-col items-end gap-5">
+                            {contactLinks.map((c) => (
+                                <a
+                                    key={c.label}
+                                    href={c.href}
+                                    style={linkStyle}
+                                    className={`hover:text-[#c67588] transition-colors duration-300${c.underline ? " underline underline-offset-2" : ""}`}
+                                    dir="ltr"
+                                >
+                                    {c.label}
+                                </a>
+                            ))}
+                        </div>
                     </div>
 
                     {/* Newsletter */}
@@ -144,7 +158,7 @@ const FooterContent: React.FC = () => {
                                 onMouseEnter={() => playTap({ volume: 0.25 })}
                                 className="w-[46px] shrink-0 bg-[#c67588] flex items-center justify-center hover:opacity-90 transition-opacity"
                             >
-                                <img src={sendIcon} alt="" className="w-5 h-5" style={{ transform: "scaleX(-1)" }} />
+                                <img src={sendIcon} alt="" className="w-6 h-6" style={{ transform: "scaleX(-1)" }} />
                             </button>
                         </form>
                     </div>
@@ -157,10 +171,10 @@ const FooterContent: React.FC = () => {
                 <div
                     dir="ltr"
                     className="flex flex-col md:flex-row items-center md:justify-between gap-3 text-white text-center"
-                    style={{ fontFamily: FONT, fontWeight: 500, letterSpacing: "-0.3px" }}
+                    style={{ fontFamily: FONT, fontWeight: 300, letterSpacing: "-0.24px" }}
                 >
-                    <p className="text-[15px] md:text-[20px]">Copyright© 2025 وكالة سمارت ديف</p>
-                    <p className="text-[13px] md:text-[20px]">{`User Terms & Conditions | Privacy Policy`}</p>
+                    <p className="text-[14px] md:text-[16px]">Copyright© 2025 وكالة سمارت ديف</p>
+                    <p className="text-[13px] md:text-[16px]">{`User Terms & Conditions | Privacy Policy`}</p>
                 </div>
             </div>
         </footer>
