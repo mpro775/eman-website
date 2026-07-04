@@ -4,7 +4,6 @@ import { HiDownload, HiMenuAlt3, HiVolumeOff, HiVolumeUp, HiX } from "react-icon
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Container from "../common/Container";
 import logoImage from "../../assets/logos/logo.png";
-import downloadIcon from "../../assets/icons/download.svg";
 import { useView } from "../../context/ViewContext";
 import { useSoundStore } from "../../store/sound.store";
 import { playToggleOff, playToggleOn } from "../../utils/soundManager";
