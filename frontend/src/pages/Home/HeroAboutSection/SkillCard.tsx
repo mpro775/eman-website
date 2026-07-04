@@ -31,7 +31,7 @@ const SkillCard: React.FC<SkillCardProps> = ({
 }) => {
     return (
         <div
-            className={`${inFlow ? "relative" : "absolute"} z-30 w-[259px]`}
+            className={`${inFlow ? "relative" : "absolute"} z-30 w-[311px]`}
             style={{
                 ...position,
                 opacity: 0,
@@ -44,23 +44,23 @@ const SkillCard: React.FC<SkillCardProps> = ({
                     dir="rtl"
                     className="relative flex flex-col items-center rounded-[30px]"
                     style={{
-                        padding: "6.82px 11.082px",
-                        gap: "8.525px",
+                        padding: "8.2px 13.3px",
+                        gap: "10.2px",
                         background: "linear-gradient(229.7deg, rgba(59,49,86,0.2) 38.21%, rgba(0,0,0,0.2) 98.39%)",
                     }}
                 >
                     {/* Chip: glass pill + overlapping 3D icon */}
-                    <div className="relative shrink-0" style={{ width: "161.85px", height: "49.7px" }}>
+                    <div className="relative shrink-0" style={{ width: "194.2px", height: "59.6px" }}>
                         <div
                             className="absolute flex items-center justify-center bg-white/10 overflow-hidden"
-                            style={{ left: "16.15px", top: "16.7px", width: "145.705px", height: "33.034px", borderRadius: "51.362px" }}
+                            style={{ left: "19.4px", top: "20px", width: "174.8px", height: "39.6px", borderRadius: "61.6px" }}
                         >
                             <span
                                 className="text-white text-center whitespace-nowrap"
                                 style={{
                                     fontFamily: '"Thmanyah Sans", "Urbanist", "Tajawal", sans-serif',
                                     fontWeight: 500,
-                                    fontSize: "14px",
+                                    fontSize: "16.8px",
                                     letterSpacing: "-0.21px",
                                 }}
                             >
@@ -72,7 +72,7 @@ const SkillCard: React.FC<SkillCardProps> = ({
                             alt=""
                             aria-hidden="true"
                             className="absolute object-contain pointer-events-none drop-shadow-lg"
-                            style={{ left: "0px", top: "0px", width: "40px", height: "40px", transform: `rotate(${iconRotate}deg)` }}
+                            style={{ left: "0px", top: "0px", width: "48px", height: "48px", transform: `rotate(${iconRotate}deg)` }}
                         />
                     </div>
 
@@ -82,10 +82,10 @@ const SkillCard: React.FC<SkillCardProps> = ({
                         style={{
                             fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
                             fontWeight: 500,
-                            fontSize: "12px",
+                            fontSize: "14.4px",
                             lineHeight: 1.56,
                             letterSpacing: "-0.18px",
-                            width: "237px",
+                            width: "284px",
                         }}
                     >
                         {description}

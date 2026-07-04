@@ -38,7 +38,7 @@ const skillsData: SkillEntry[] = [
         description:
             "تصميم تجــربة المستخدم وواجهــات الاستخــدام للتطبيقات و المواقـع ،بـــدءًا من دراسة المستخدم وتحليل الاحتياجات ، وصـولًا إلى تصميم واجهـات واضحـة، سهلــة، وقابلـــة للتنفيــــذ.",
         iconRotate: -14,
-        position: { left: "calc(50% - 129.5px)", top: "560px" },
+        position: { left: "calc(50% - 155.5px)", top: "610px" },
     },
     {
         id: 2,
@@ -47,7 +47,7 @@ const skillsData: SkillEntry[] = [
         description:
             "تصميم الجرافيكس والمواد البصرية المختلفة ، بمـــا في ذلك الهـوية البصريـــة، تصاميـم السـوشيـل ميديـــا، والمحتـوى المرئي الــــذي يوضّح الفكرة ويعـزّز العلامة.",
         iconRotate: -14,
-        position: { left: "calc(50% + 318.72px)", top: "332.39px" },
+        position: { left: "calc(50% + 390px)", top: "310px" },
     },
     {
         id: 3,
@@ -56,7 +56,7 @@ const skillsData: SkillEntry[] = [
         description:
             "تصميــــم و تحليــــل و تطــــوير تطبيقــات المــوبايــل ، بـدءًا من الفكــــرة والتخطيــــط ، وصــــولًا إلى تطبيـــــق جاهــــز للاستخــــدام",
         iconRotate: -8.21,
-        position: { left: "calc(50% + 91px)", top: "460px" },
+        position: { left: "calc(50% + 140px)", top: "485px" },
     },
     {
         id: 4,
@@ -65,7 +65,7 @@ const skillsData: SkillEntry[] = [
         description:
             "أتمتـــــة العمـــليـــــات الــرقميـــــة لتسهيـــــل العمـــــل، تحسيـــن سيــــر المهــــام، وربــــط الأدوات والأنظمـــة لزيـــادة الكفـــاءة وتقليـل الوقـــت والجهــد.",
         iconRotate: -14,
-        position: { left: "calc(50% - 367.36px)", top: "460px" },
+        position: { left: "calc(50% - 425px)", top: "485px" },
     },
     {
         id: 5,
@@ -74,7 +74,7 @@ const skillsData: SkillEntry[] = [
         description:
             "دعم العملية التعليمية في مجال الحاسوب والبرمجة، والإسهـــام في بناء مهارات الطلاب التقنيــة والبرمجيـــة بأساليب تعليمية حديثة.",
         iconRotate: -14,
-        position: { left: "calc(50% - 577.87px)", top: "332.39px" },
+        position: { left: "calc(50% - 680px)", top: "310px" },
     },
 ];
 
@@ -91,7 +91,7 @@ const AboutView: React.FC<AboutViewProps> = () => {
 
     if (isMobile) {
         return (
-            <div className="relative w-full flex flex-col items-center pt-24 pb-10 gap-5 overflow-y-auto">
+            <div className="relative w-full flex flex-col items-center pt-24 pb-10 gap-10 overflow-y-auto">
                 <div className="relative w-[min(60vw,240px)] aspect-[532/574] overflow-hidden mb-2">
                     <img src={skillsPortrait} alt="Eman" className="w-full h-full object-cover object-top" />
                 </div>
