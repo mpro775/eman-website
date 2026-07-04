@@ -79,7 +79,7 @@ const FooterContent: React.FC = () => {
                 {/* Columns */}
                 <div dir="rtl" className="flex flex-col lg:flex-row lg:justify-between gap-10 lg:gap-8">
                     {/* Logo + bio + socials */}
-                    <div className="flex flex-col items-end gap-7 text-right lg:max-w-[490px] lg:order-1">
+                    <div className="flex flex-col items-start gap-7 text-right lg:max-w-[490px] lg:order-1">
                         <img src={logoMark} alt="Eman" className="h-[89px] w-auto" />
                         <p
                             className="lg:w-[474px]"
@@ -105,9 +105,9 @@ const FooterContent: React.FC = () => {
                     </div>
 
                     {/* Important links */}
-                    <div className="flex flex-col items-end gap-7 text-right lg:order-2">
+                    <div className="flex flex-col items-start gap-7 text-right lg:order-2">
                         <h4 style={heading}>روابط مهمة</h4>
-                        <div className="flex flex-col items-end gap-[15px]">
+                        <div className="flex flex-col items-start gap-[15px]">
                             {importantLinks.map((l) => (
                                 <a key={l.name} href={l.href} style={linkStyle} className="hover:text-[#c67588] transition-colors duration-300">
                                     {l.name}
@@ -117,9 +117,9 @@ const FooterContent: React.FC = () => {
                     </div>
 
                     {/* Contact */}
-                    <div className="flex flex-col items-end gap-7 text-right lg:order-3">
+                    <div className="flex flex-col items-start gap-7 text-right lg:order-3">
                         <h4 style={heading}>للتواصل</h4>
-                        <div className="flex flex-col items-end gap-5">
+                        <div className="flex flex-col items-start gap-5">
                             {contactLinks.map((c) => (
                                 <a
                                     key={c.label}
@@ -135,7 +135,7 @@ const FooterContent: React.FC = () => {
                     </div>
 
                     {/* Newsletter */}
-                    <div className="flex flex-col items-end gap-7 text-right lg:order-4">
+                    <div className="flex flex-col items-start gap-7 text-right lg:order-4">
                         <h4 style={heading}>ابقَ على اطلاع</h4>
                         <form
                             onSubmit={handleSubmit}
