@@ -231,8 +231,8 @@ const Header: React.FC = () => {
                   (link.id === "home"
                     ? activeSection === "home" && !isAboutView
                     : link.id === "about"
-                    ? activeSection === "home" && isAboutView
-                    : activeSection === link.id);
+                      ? activeSection === "home" && isAboutView
+                      : activeSection === link.id);
                 return (
                   <motion.li
                     key={link.name}
@@ -313,7 +313,7 @@ const Header: React.FC = () => {
                     letterSpacing: '0%',
                   }}
                 >
-                  السيفي
+                  Portolio
                 </span>
                 <img
                   src={downloadIcon}
@@ -435,8 +435,8 @@ const Header: React.FC = () => {
                                 (link.id === "home"
                                   ? activeSection === "home" && !isAboutView
                                   : link.id === "about"
-                                  ? activeSection === "home" && isAboutView
-                                  : activeSection === link.id)
+                                    ? activeSection === "home" && isAboutView
+                                    : activeSection === link.id)
                                 ? "bg-accent-pink/20 text-accent-pink"
                                 : "text-text-primary hover:bg-white/5 hover:text-accent-pink"
                               }
