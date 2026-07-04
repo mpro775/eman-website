@@ -8,7 +8,6 @@ import iconApp from "../../../assets/skills/icon-app.png";
 import iconGraphic from "../../../assets/skills/icon-graphic.png";
 import iconTeaching from "../../../assets/skills/icon-teaching.png";
 // Decorative + mobile portrait
-import gridDeco from "../../../assets/skills/grid.svg";
 import frameDeco from "../../../assets/skills/frame-deco.svg";
 // Skills portrait (Figma 851:381 "ChatGPT Image") — distinct from the hero photo
 import skillsPortrait from "../../../assets/skills/portrait.png";
@@ -121,13 +120,23 @@ const AboutView: React.FC<AboutViewProps> = () => {
                 className="absolute z-[1] pointer-events-none select-none opacity-70"
                 style={{ left: "calc(50% + 513px)", top: "18px", width: "568px", height: "822px", transform: "translateX(-50%)" }}
             />
-            {/* Decorative grid glow (Figma 820:1597) */}
-            <img
-                src={gridDeco}
-                alt=""
-                aria-hidden="true"
+            {/* Background glow (Figma 820:1597 "Group 10143") — broad maroon→purple
+                glow rising from the bottom-center behind the portrait, fading to
+                black at the edges. Reproduced as a blurred CSS gradient ellipse
+                (the exported SVG's oversized blur bounds squish when scaled). */}
+            <div
                 className="absolute z-[1] pointer-events-none select-none"
-                style={{ left: "calc(50% - 380px)", top: "584px", width: "749px", height: "543px", overflow: "visible" }}
+                style={{
+                    left: "50%",
+                    bottom: "-120px",
+                    width: "780px",
+                    height: "620px",
+                    transform: "translateX(-50%)",
+                    borderRadius: "50%",
+                    background: "linear-gradient(180deg, #7A464D 0%, #210D53 100%)",
+                    opacity: 0.8,
+                    filter: "blur(160px)",
+                }}
             />
 
             {/* "UX  UI" watermark behind the portrait (Figma 822:2883) */}
