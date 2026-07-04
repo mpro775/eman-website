@@ -42,7 +42,8 @@ const ActionDock: React.FC<ActionDockProps> = ({
                 dir="ltr"
                 className="flex items-center justify-center bg-white/10 backdrop-blur-md overflow-hidden"
                 style={{
-                    width: "373px",
+                    width: "max-content",
+                    minWidth: "373px",
                     height: "84.234px",
                     gap: "10.272px",
                     padding: "10.272px",
