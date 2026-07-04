@@ -102,10 +102,10 @@ const HeroMobile: React.FC = () => {
             <div dir="ltr" className="z-10 mt-8 w-full max-w-[373px] flex items-center justify-center gap-2 bg-white/10 backdrop-blur-md rounded-full p-[6px]">
                 <a
                     href="#portfolio"
-                    className="shrink-0 flex items-center justify-center gap-1.5 bg-black border border-[#d0d5dd] rounded-full px-5 py-3 transition-transform active:scale-95"
+                    className="shrink-0 flex items-center justify-center gap-1 bg-black border border-[#d0d5dd] rounded-full px-5 py-3 transition-transform active:scale-95"
                 >
-                    <img src={arrowUpRight} alt="" className="shrink-0" style={{ width: "32px", height: "32px" }} />
                     <span className="text-white whitespace-nowrap" style={dockLabelStyle}>أعمالي</span>
+                    <img src={arrowUpRight} alt="" className="shrink-0" style={{ width: "36px", height: "36px" }} />
                 </a>
                 <a
                     href="#contact"
