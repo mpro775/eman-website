@@ -313,13 +313,8 @@ const Header: React.FC = () => {
                     letterSpacing: '0%',
                   }}
                 >
-                  Portolio
+                  Portfolio
                 </span>
-                <img
-                  src={downloadIcon}
-                  alt="Download"
-                  className="w-6 h-6 object-contain transition-all duration-300 group-hover:[filter:brightness(0)_saturate(100%)_invert(58%)_sepia(34%)_saturate(752%)_hue-rotate(305deg)_brightness(94%)_contrast(87%)]"
-                />
               </motion.a>
             </div>
 
