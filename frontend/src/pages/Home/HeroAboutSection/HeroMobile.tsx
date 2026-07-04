@@ -104,8 +104,8 @@ const HeroMobile: React.FC = () => {
                     href="#portfolio"
                     className="flex-[3] flex items-center justify-center gap-2 bg-black border border-[#d0d5dd] rounded-full px-8 py-4 transition-transform active:scale-95"
                 >
-                    <img src={arrowUpRight} alt="" className="shrink-0" style={{ width: "28px", height: "28px" }} />
                     <span className="text-white whitespace-nowrap" style={dockLabelStyle}>أعمالي</span>
+                    <img src={arrowUpRight} alt="" className="shrink-0" style={{ width: "36px", height: "36px" }} />
                 </a>
                 <a
                     href="#contact"

@@ -42,17 +42,18 @@ const ActionDock: React.FC<ActionDockProps> = ({
                 dir="ltr"
                 className="flex items-center justify-center bg-white/10 backdrop-blur-md overflow-hidden"
                 style={{
-                    width: "373px",
+                    width: "max-content",
+                    minWidth: "373px",
                     height: "84.234px",
                     gap: "10.272px",
                     padding: "10.272px",
                     borderRadius: "51.362px",
                 }}
             >
-                {/* أعمالي — black bordered button, arrow on the left */}
+                {/* أعمالي — black bordered button: "أعمالي" text then up-right arrow (Figma 820:2099) */}
                 <a
                     href="#portfolio"
-                    className="shrink-0 flex items-center justify-center gap-2 bg-black overflow-hidden transition-transform hover:scale-[1.03]"
+                    className="shrink-0 flex items-center justify-center bg-black overflow-hidden transition-transform hover:scale-[1.03]"
                     style={{
                         width: "213.668px",
                         border: "0.514px solid #d0d5dd",
@@ -60,10 +61,10 @@ const ActionDock: React.FC<ActionDockProps> = ({
                         padding: "10.272px 20.545px",
                     }}
                 >
-                    <img src={arrowUpRight} alt="" className="shrink-0" style={{ width: "40px", height: "40px" }} />
                     <span className="text-white whitespace-nowrap" style={dockLabelStyle}>
                         أعمالي
                     </span>
+                    <img src={arrowUpRight} alt="" className="shrink-0" style={{ width: "43.144px", height: "43.144px" }} />
                 </a>
 
                 {/* تواصل معي — text action */}
