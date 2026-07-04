@@ -7,7 +7,6 @@ import HeroMobile from "./HeroMobile";
 import AboutView from "./SkillsView";
 import ActionDock from "./ActionDock";
 import BackgroundGlows from "./BackgroundGlows";
-import BottomBlurEffect from "./BottomBlurEffect";
 
 // Portraits — Figma uses two different photos per view:
 //  - Hero (820:2098): beige outfit, full shot
@@ -128,13 +127,6 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                         style={{ width: "100%", height: "139.2%", left: "0", top: "-19.6%" }}
                     />
                 </div>
-
-                {/* Bottom Blur Effect - appears in Skills view */}
-                <BottomBlurEffect
-                    isVisible={isAboutView}
-                    transitionDuration={transitionDuration}
-                    transitionEase={transitionEase}
-                />
 
                 {/* Floating Action Dock (shared - animates between views) */}
                 <ActionDock
