@@ -9,8 +9,8 @@ import clickupIcon from "../../../assets/programs/clickup.svg";
 import aftereffectsIcon from "../../../assets/programs/aftereffects.svg";
 import indesignIcon from "../../../assets/programs/indesign.svg";
 import photoshopIcon from "../../../assets/programs/photoshop.svg";
-import premiereproIcon from "../../../assets/programs/premierepro.svg";
-import chatgptIcon from "../../../assets/programs/chatgpt.svg";
+import blenderIcon from "../../../assets/programs/blender.png";
+import claudeIcon from "../../../assets/programs/claude.png";
 import n8nIcon from "../../../assets/programs/n8n.svg";
 
 const GLOW = (rgb: string) => `0px 8px 21px ${rgb}`;
@@ -55,17 +55,8 @@ const ROWS: Program[][] = [
             border: "rgba(139,92,246,0.5)",
             shadow: GLOW("rgba(139,92,246,0.28)"),
             gradient:
-                "linear-gradient(158deg, rgb(13,0,36) 0%, rgb(109,40,217) 35%, rgb(219,39,119) 70%, rgb(8,145,178) 100%)",
+                "linear-gradient(159deg, rgb(13,0,36) 0%, rgb(109,40,217) 35%, rgb(219,39,119) 70%, rgb(8,145,178) 100%)",
             text: "#e0e7ff",
-        },
-        {
-            id: 5,
-            name: "After Effects",
-            icon: aftereffectsIcon,
-            border: "rgba(153,153,255,0.5)",
-            shadow: GLOW("rgba(153,153,255,0.28)"),
-            gradient: "linear-gradient(162deg, rgb(4,0,26) 0%, rgb(55,48,163) 45%, rgb(153,153,255) 100%)",
-            text: "#ede9fe",
         },
         {
             id: 6,
@@ -84,34 +75,44 @@ const ROWS: Program[][] = [
             gradient: "linear-gradient(161deg, rgba(29,78,216,0) 0%, rgb(49,168,255) 100%)",
             text: "#dbeafe",
         },
+        {
+            id: 8,
+            name: "Blender",
+            icon: blenderIcon,
+            border: "rgba(249,115,22,0.5)",
+            shadow: GLOW("rgba(249,115,22,0.28)"),
+            gradient:
+                "linear-gradient(160deg, rgb(18,5,0) 0%, rgb(180,83,9) 40%, rgb(249,115,22) 75%, rgb(251,191,36) 100%)",
+            text: "#ffedd5",
+        },
     ],
     [
         {
-            id: 8,
-            name: "Premiere Pro",
-            icon: premiereproIcon,
-            border: "rgba(224,64,251,0.5)",
-            shadow: GLOW("rgba(224,64,251,0.28)"),
-            gradient: "linear-gradient(162deg, rgb(6,0,26) 0%, rgb(76,29,149) 45%, rgb(224,64,251) 100%)",
-            text: "#f3e8ff",
+            id: 9,
+            name: "Claude",
+            icon: claudeIcon,
+            border: "#d87857",
+            shadow: GLOW("rgba(16,163,127,0.28)"),
+            gradient: "linear-gradient(158deg, rgb(0,26,13) 0%, rgb(185,77,39) 45%, rgb(231,172,146) 100%)",
+            text: "#d1fae5",
         },
         {
-            id: 9,
-            name: "ChatGPT",
-            icon: chatgptIcon,
-            border: "rgba(16,163,127,0.5)",
-            shadow: GLOW("rgba(16,163,127,0.28)"),
-            gradient: "linear-gradient(159deg, rgb(0,26,13) 0%, rgb(6,95,70) 45%, rgb(16,163,127) 100%)",
-            text: "#d1fae5",
+            id: 5,
+            name: "After Effects",
+            icon: aftereffectsIcon,
+            border: "rgba(153,153,255,0.5)",
+            shadow: GLOW("rgba(153,153,255,0.28)"),
+            gradient: "linear-gradient(162deg, rgb(4,0,26) 0%, rgb(55,48,163) 45%, rgb(153,153,255) 100%)",
+            text: "#ede9fe",
         },
         {
             id: 10,
             name: "N8N",
             icon: n8nIcon,
-            border: "rgba(249,115,22,0.5)",
+            border: "#ea4b71",
             shadow: GLOW("rgba(249,115,22,0.28)"),
             gradient:
-                "linear-gradient(154deg, rgb(18,5,0) 0%, rgb(180,83,9) 40%, rgb(249,115,22) 75%, rgb(251,191,36) 100%)",
+                "linear-gradient(156deg, rgb(18,5,0) 0%, rgb(121,1,30) 40%, rgb(234,75,113) 75%, rgb(255,197,211) 100%)",
             text: "#ffedd5",
         },
     ],
