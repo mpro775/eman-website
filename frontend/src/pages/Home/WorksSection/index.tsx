@@ -80,14 +80,14 @@ const WorksSection: React.FC = () => {
                 }}
             />
 
-            <div className="relative z-10 w-full max-w-[1232px] mx-auto px-6 flex flex-col items-center">
-                {/* Title + underline (centered — Figma 829:3374) */}
-                <div className="flex flex-col items-center" style={{ gap: "14px" }}>
+            <div className="relative z-10 w-full max-w-[1232px] mx-auto px-6 flex flex-col items-start">
+                {/* Title + underline (right-aligned) */}
+                <div className="flex flex-col items-start" style={{ gap: "14px" }}>
                     <h2
-                        className="text-white text-center whitespace-nowrap"
+                        className="text-white text-right whitespace-nowrap"
                         style={{
                             fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
-                            fontWeight: 500,
+                            fontWeight: 700,
                             fontSize: "clamp(2rem, 5vw, 48px)",
                             lineHeight: 1,
                             letterSpacing: "-0.72px",
@@ -101,7 +101,7 @@ const WorksSection: React.FC = () => {
                             maxWidth: "80vw",
                             height: "3px",
                             borderRadius: "2px",
-                            background: "linear-gradient(90deg, rgba(139,92,246,0) 0%, #C084FC 50%, rgba(139,92,246,0) 100%)",
+                            background: "linear-gradient(to left, #C084FC 0%, rgba(139,92,246,0) 100%)",
                         }}
                     />
                 </div>
