@@ -1,21 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import WorkCard, { type WorkItem } from "./WorkCard";
-
-import projectImage from "../../../assets/works/project-placeholder.png";
+import { projectsService } from "../../../services/projects.service";
 
 // Filter tabs (Figma 820:2810) — RTL reading order (الكل on the right).
 const FILTERS = ["الكل", "UI/UX", "جرافيك", "هوية بصرية", "تطبيقات"] as const;
-
-// Works pixel/text-matched to Figma node 820:1751 ("اعمالي").
-// Grid reads RTL (first card top-right).
-const WORKS: WorkItem[] = [
-    { id: 1, title: "تطبيق توصيل الطعام", tag: "تطبيق موبايل", category: "تطبيقات", image: projectImage },
-    { id: 2, title: "تطبيق توصيل الطعام", tag: "تصميم جرافيك", category: "جرافيك", image: projectImage },
-    { id: 3, title: "تطبيق توصيل الطعام", tag: "ويب", category: "UI/UX", image: projectImage },
-    { id: 4, title: "تطبيق توصيل الطعام", tag: "براندينج", category: "هوية بصرية", image: projectImage },
-    { id: 5, title: "تطبيق توصيل الطعام", tag: "ويب", category: "UI/UX", image: projectImage },
-    { id: 6, title: "تطبيق توصيل الطعام", tag: "ويب", category: "UI/UX", image: projectImage },
-];
 
 /**
  * Works / portfolio section ("اعمالي") — pixel-matched to Figma node 820:1751.
@@ -24,8 +12,53 @@ const WORKS: WorkItem[] = [
  */
 const WorksSection: React.FC = () => {
     const [active, setActive] = useState<string>("الكل");
+    const [works, setWorks] = useState<WorkItem[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
-    const visible = active === "الكل" ? WORKS : WORKS.filter((w) => w.category === active);
+    useEffect(() => {
+        const fetchWorks = async () => {
+            try {
+                setLoading(true);
+                const response = await projectsService.getAll({ limit: 100 });
+                const projects = response.data || [];
+                const mappedWorks: WorkItem[] = projects.map((p) => {
+                    const catName = typeof p.category === 'object' ? p.category.name : p.category || '';
+                    let filterCategory = 'UI/UX';
+                    let defaultTag = 'ويب';
+                    
+                    if (catName === 'UX / UI') {
+                        filterCategory = 'UI/UX';
+                        defaultTag = 'ويب';
+                    } else if (catName === 'Mobile App') {
+                        filterCategory = 'تطبيقات';
+                        defaultTag = 'تطبيق موبايل';
+                    } else if (catName === 'Graphic Design') {
+                        filterCategory = 'جرافيك';
+                        defaultTag = 'تصميم جرافيك';
+                    } else if (catName === 'Visual Identity' || catName === 'هوية بصرية') {
+                        filterCategory = 'هوية بصرية';
+                        defaultTag = 'براندينج';
+                    }
+
+                    return {
+                        id: p._id,
+                        title: p.titleAr || p.name,
+                        tag: p.subtitleAr || p.subtitle || defaultTag,
+                        category: filterCategory,
+                        image: p.image,
+                    };
+                });
+                setWorks(mappedWorks);
+            } catch (error) {
+                console.error("Failed to load portfolio works:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchWorks();
+    }, []);
+
+    const visible = active === "الكل" ? works : works.filter((w) => w.category === active);
 
     return (
         <section
@@ -116,15 +149,28 @@ const WorksSection: React.FC = () => {
                 </div>
 
                 {/* Cards grid (Figma 820:2740) — RTL, 3 columns, gap 24px */}
-                <div
-                    dir="rtl"
-                    className="mt-10 lg:mt-[40px] w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-                    style={{ gap: "24px" }}
-                >
-                    {visible.map((work, i) => (
-                        <WorkCard key={work.id} work={work} delay={0.1 + i * 0.07} />
-                    ))}
-                </div>
+                {loading && works.length === 0 ? (
+                    <div className="text-center text-text-secondary mt-10" style={{ fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif' }}>
+                        جاري تحميل أعمالي...
+                    </div>
+                ) : (
+                    <>
+                        <div
+                            dir="rtl"
+                            className="mt-10 lg:mt-[40px] w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                            style={{ gap: "24px" }}
+                        >
+                            {visible.map((work, i) => (
+                                <WorkCard key={work.id} work={work} delay={0.1 + i * 0.07} />
+                            ))}
+                        </div>
+                        {!loading && visible.length === 0 && (
+                            <div className="text-center text-text-secondary mt-10" style={{ fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif' }}>
+                                لا توجد أعمال في هذا التصنيف حالياً.
+                            </div>
+                        )}
+                    </>
+                )}
             </div>
         </section>
     );

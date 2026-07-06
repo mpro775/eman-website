@@ -1,7 +1,7 @@
 import React from "react";
 
 export interface WorkItem {
-    id: number;
+    id: number | string;
     /** Project title (Figma 820:2830 — bold white) */
     title: string;
     /** Category chip label (Figma 820:2832 — pink) */
