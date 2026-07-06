@@ -295,7 +295,7 @@ const Header: React.FC = () => {
               </motion.button>
 
               <motion.a
-                href={cvUrl}
+                href="https://www.behance.net/emanjameel4"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 text-white transition-all duration-300 hover:text-accent-pink flex-shrink-0 group"
