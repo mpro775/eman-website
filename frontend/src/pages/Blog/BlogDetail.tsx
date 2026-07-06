@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useParams, Link } from "react-router-dom";
 import {
   HiArrowUpRight,
@@ -143,6 +143,124 @@ const BlogDetail: React.FC = () => {
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+
+  // Custom toast state
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
+
+  const showToastMessage = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
+    setToast({ message, type });
+  };
+
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => {
+        setToast(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
+
+  // Load liked & bookmarked status on mount or id change
+  useEffect(() => {
+    if (!id) return;
+    try {
+      const likedPosts = JSON.parse(localStorage.getItem("liked_posts") || "[]");
+      setIsLiked(likedPosts.includes(id));
+      
+      const bookmarkedPosts = JSON.parse(localStorage.getItem("bookmarked_posts") || "[]");
+      setIsBookmarked(bookmarkedPosts.includes(id));
+    } catch (err) {
+      console.error("Failed to read localStorage:", err);
+    }
+  }, [id]);
+
+  const handleLike = async () => {
+    if (!post || !id) return;
+    try {
+      const likedPosts = JSON.parse(localStorage.getItem("liked_posts") || "[]");
+      if (!isLiked) {
+        setIsLiked(true);
+        // Call backend API
+        const res = await blogService.lovePost(id);
+        const newLoves = res.loves;
+        setPost(prev => prev ? { ...prev, likes: newLoves >= 1000 ? `${(newLoves / 1000).toFixed(1)}k` : `${newLoves}` } : null);
+        localStorage.setItem("liked_posts", JSON.stringify([...likedPosts, id]));
+        showToastMessage("شكراً لتفاعلك! تم تسجيل إعجابك بالمقال.", "success");
+      } else {
+        setIsLiked(false);
+        // Decrement locally
+        setPost(prev => {
+          if (!prev) return null;
+          const currentLoves = prev.likes.includes('k') ? parseFloat(prev.likes) * 1000 : parseInt(prev.likes) || 0;
+          const newLoves = Math.max(0, currentLoves - 1);
+          return {
+            ...prev,
+            likes: newLoves >= 1000 ? `${(newLoves / 1000).toFixed(1)}k` : `${newLoves}`
+          };
+        });
+        const updated = likedPosts.filter((item: string) => item !== id);
+        localStorage.setItem("liked_posts", JSON.stringify(updated));
+        showToastMessage("تم إلغاء الإعجاب.", "info");
+      }
+    } catch (err) {
+      console.error(err);
+      showToastMessage("عذراً، حدث خطأ أثناء تسجيل الإعجاب.", "error");
+    }
+  };
+
+  const handleBookmark = () => {
+    if (!id) return;
+    try {
+      const bookmarkedPosts = JSON.parse(localStorage.getItem("bookmarked_posts") || "[]");
+      if (!isBookmarked) {
+        setIsBookmarked(true);
+        localStorage.setItem("bookmarked_posts", JSON.stringify([...bookmarkedPosts, id]));
+        showToastMessage("تم حفظ المقال في مفضلتك!", "success");
+      } else {
+        setIsBookmarked(false);
+        const updated = bookmarkedPosts.filter((item: string) => item !== id);
+        localStorage.setItem("bookmarked_posts", JSON.stringify(updated));
+        showToastMessage("تم إزالة المقال من مفضلتك.", "info");
+      }
+    } catch (err) {
+      console.error(err);
+      showToastMessage("عذراً، حدث خطأ أثناء حفظ المقال.", "error");
+    }
+  };
+
+  const handleShare = async () => {
+    if (!post || !id) return;
+    const shareUrl = window.location.href;
+    const shareTitle = post.title;
+    
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: shareTitle,
+          url: shareUrl,
+        });
+        showToastMessage("تمت المشاركة بنجاح!", "success");
+      } else {
+        await navigator.clipboard.writeText(shareUrl);
+        showToastMessage("تم نسخ رابط المقال بنجاح!", "success");
+      }
+      
+      // Increment share count in backend
+      const res = await blogService.sharePost(id);
+      const newShares = res.shares;
+      setPost(prev => prev ? { ...prev, comments: newShares } : null);
+    } catch (err) {
+      // AbortError is triggered if the user cancels sharing dialog, we don't treat it as error
+      if (err instanceof Error && err.name !== 'AbortError') {
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          showToastMessage("تم نسخ رابط المقال بنجاح!", "success");
+        } catch (clipErr) {
+          showToastMessage("فشل في مشاركة الرابط أو نسخه.", "error");
+        }
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchPostData = async () => {
@@ -442,10 +560,10 @@ const BlogDetail: React.FC = () => {
               viewport={{ once: true }}
             >
               <button
-                onClick={() => setIsLiked(!isLiked)}
+                onClick={handleLike}
                 className={`flex items-center gap-2 px-6 py-3 rounded-full border transition-all duration-300 ${isLiked
-                  ? "bg-red-500/20 border-red-500 text-red-400"
-                  : "border-white/20 text-text-secondary hover:border-red-500 hover:text-red-400"
+                  ? "bg-red-500/20 border-red-500 text-red-400 cursor-pointer"
+                  : "border-white/20 text-text-secondary hover:border-red-500 hover:text-red-400 cursor-pointer"
                   }`}
               >
                 <HiOutlineHeart className={`text-lg ${isLiked ? "fill-current" : ""}`} />
@@ -453,17 +571,20 @@ const BlogDetail: React.FC = () => {
               </button>
 
               <button
-                onClick={() => setIsBookmarked(!isBookmarked)}
+                onClick={handleBookmark}
                 className={`flex items-center gap-2 px-6 py-3 rounded-full border transition-all duration-300 ${isBookmarked
-                  ? "bg-accent-pink/20 border-accent-pink text-accent-pink"
-                  : "border-white/20 text-text-secondary hover:border-accent-pink hover:text-accent-pink"
+                  ? "bg-accent-pink/20 border-accent-pink text-accent-pink cursor-pointer"
+                  : "border-white/20 text-text-secondary hover:border-accent-pink hover:text-accent-pink cursor-pointer"
                   }`}
               >
                 <HiOutlineBookmark className={`text-lg ${isBookmarked ? "fill-current" : ""}`} />
                 <span>حفظ المقال</span>
               </button>
 
-              <button className="flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 text-text-secondary hover:border-accent-cyan hover:text-accent-cyan transition-all duration-300">
+              <button
+                onClick={handleShare}
+                className="flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 text-text-secondary hover:border-accent-cyan hover:text-accent-cyan transition-all duration-300 cursor-pointer"
+              >
                 <HiOutlineShare className="text-lg" />
                 <span>مشاركة</span>
               </button>
@@ -539,6 +660,34 @@ const BlogDetail: React.FC = () => {
       </section>
 
       <Footer />
+
+      {/* Toast Notification Container */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            transition={{ duration: 0.3 }}
+            className={`fixed bottom-8 left-8 z-[2000] px-6 py-4 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] border backdrop-blur-md flex items-center gap-3 ${
+              toast.type === 'success'
+                ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
+                : toast.type === 'error'
+                ? 'bg-red-500/10 border-red-500/20 text-red-400'
+                : 'bg-white/5 border-white/10 text-white'
+            }`}
+            dir="rtl"
+          >
+            <span className="font-arabic text-sm font-medium">{toast.message}</span>
+            <button
+              onClick={() => setToast(null)}
+              className="text-white/60 hover:text-white transition-colors text-lg font-bold mr-2 cursor-pointer"
+            >
+              ×
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
