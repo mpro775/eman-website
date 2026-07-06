@@ -1,186 +1,218 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram, FaYoutube, FaBehance } from "react-icons/fa";
+import { FaFacebook, FaYoutube, FaWhatsapp, FaInstagram, FaTwitter, FaBehance } from "react-icons/fa";
+import { useNewsletter } from "../../hooks";
+import logoMark from "../../assets/footer/logo-mark.png";
+import sendIcon from "../../assets/footer/send.svg";
+import { playTap, playType } from "../../utils/soundManager";
 
-const Footer: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const navigate = useNavigate();
-  const location = useLocation();
+const FONT = '"Thmanyah Sans", "Tajawal", sans-serif';
 
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Newsletter subscription:", email);
-    setEmail("");
-  };
-
-  const handleNavClick = (sectionId: string) => {
-    // If we're not on the home page, navigate there first
-    if (location.pathname !== "/") {
-      navigate(`/#${sectionId}`);
-      // Small delay to allow navigation, then scroll
-      setTimeout(() => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }, 100);
-    } else {
-      // Already on home page, just scroll
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
-  };
-
-  const quickLinks = [
+const importantLinks = [
     { name: "الرئيسية", id: "home" },
-    { name: "مهاراتي", id: "about" },
-    { name: "الخبرات", id: "experience" },
-    { name: "الخدمات", id: "services" },
-  ];
+    { name: "من أنا", id: "about" },
+    { name: "الخبرات العملية", id: "experience" },
+    { name: "أعمالي", id: "portfolio" },
+    { name: "تواصل معي", id: "contact" },
+];
 
-  const servicesLinks = [
-    { name: "تصميم واجهات", id: "services" },
-    { name: "تصميم تطبيقات", id: "services" },
-    { name: "الهوية البصرية", id: "services" },
-    { name: "استشارات تصميم", id: "services" },
-  ];
+const contactLinks = [
+    { label: "emyjameel1@gmail.com", href: "mailto:emyjameel1@gmail.com", underline: false },
+    { label: "emanJameel.pro", href: "https://emanjameel.pro", underline: true },
+];
 
+const socials = [
+    { Icon: FaFacebook, href: "#", label: "Facebook" },
+    { Icon: FaYoutube, href: "#", label: "YouTube" },
+    { Icon: FaWhatsapp, href: "#", label: "WhatsApp" },
+    { Icon: FaInstagram, href: "#", label: "Instagram" },
+    { Icon: FaTwitter, href: "#", label: "Twitter" },
+    { Icon: FaBehance, href: "#", label: "Behance" },
+];
 
+const heading: React.CSSProperties = { fontFamily: FONT, fontWeight: 500, fontSize: "20px", letterSpacing: "-0.3px", color: "#c67588" };
+const linkStyle: React.CSSProperties = { fontFamily: FONT, fontWeight: 500, fontSize: "18px", letterSpacing: "-0.27px", color: "#fcfcfd" };
 
-  const socialLinks = [
-    { icon: FaFacebookF, href: "#" },
-    { icon: FaTwitter, href: "#" },
-    { icon: FaLinkedinIn, href: "#" },
-    { icon: FaInstagram, href: "#" },
-    { icon: FaYoutube, href: "#" },
-    { icon: FaBehance, href: "#" },
-  ];
+/**
+ * Footer — pixel-matched to Figma node 820:1945.
+ * Four columns (newsletter, contact, important links, logo+bio+socials),
+ * a divider, then the bottom copyright / legal bar.
+ * Restyled to match the Home page's footer design, but maintaining layout routing.
+ */
+const Footer: React.FC = () => {
+    const { email, handleEmailChange, handleSubmit } = useNewsletter();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const lastTypeAtRef = useRef(0);
 
-  return (
-    <footer id="footer" className="scroll-section relative w-full bg-gradient-to-b from-bg-primary to-[#0d0d14] border-t border-white/5">
-      {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
-          {/* Column 1: Logo and Description */}
-          <div className="lg:col-span-1">
-            {/* Logo */}
-            <div className="mb-6">
-              <button
-                onClick={() => handleNavClick("home")}
-                className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-accent-pink to-accent-pink-light cursor-pointer hover:opacity-80 transition-opacity"
-              >
-                إيمان.
-              </button>
-            </div>
+    const onTypeKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.ctrlKey || e.metaKey || e.altKey) return;
+        const isChar = e.key.length === 1;
+        const isBackspace = e.key === "Backspace";
+        if (!isChar && !isBackspace) return;
+        const now = performance.now();
+        if (now - lastTypeAtRef.current < 45) return;
+        lastTypeAtRef.current = now;
+        playType({ volume: 0.2 });
+    };
 
-            {/* Description */}
-            <p className="text-text-secondary text-sm leading-relaxed mb-6 text-right">
-              مصممة تجارب مستخدم وواجهات رقمية أعمل على تحويل الأفكار إلى تجارب
-              مرئية مدروسة. تجمع بين المساحات، الموضوع، والهوية البصرية المتناسقة. أؤمن
-              بأن التصميم الجيد يبدأ بفهم المستخدم ويتمتع بحرية تحمل قيم كل ذوق.
-            </p>
+    const handleNavClick = (sectionId: string) => {
+        // If we're not on the home page, navigate there first
+        if (location.pathname !== "/") {
+            navigate(`/#${sectionId}`);
+            // Small delay to allow navigation, then scroll
+            setTimeout(() => {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    element.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            }, 100);
+        } else {
+            // Already on home page, just scroll
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        }
+    };
 
-            {/* Social Links */}
-            <div className="flex items-center gap-3">
-              {socialLinks.map((social, index) => (
-                <a
-                  key={index}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-9 h-9 bg-white/5 hover:bg-accent-pink rounded-full flex items-center justify-center text-text-secondary hover:text-white transition-all duration-300 hover:scale-110"
+    return (
+        <footer id="footer" className="relative w-full bg-[#040404] overflow-hidden rounded-t-[50px]">
+            {/* Warm maroon glow behind the logo — right (Figma 841:418) */}
+            <div
+                className="absolute pointer-events-none"
+                style={{
+                    width: "1000px", height: "500px", top: "-320px", right: "-220px",
+                    transform: "rotate(58deg) scaleY(-1)",
+                    background: "linear-gradient(177deg, rgba(198,117,136,0.4) 2%, rgba(33,13,83,0.55) 98%)",
+                    filter: "blur(200px)", borderRadius: "50%",
+                }}
+            />
+            {/* Purple glow — left (Figma 841:420) */}
+            <div
+                className="absolute pointer-events-none"
+                style={{
+                    width: "1000px", height: "500px", top: "-320px", left: "-300px",
+                    transform: "rotate(121deg)",
+                    background: "linear-gradient(177deg, rgba(187,161,254,0.32) 2%, rgba(33,13,83,0.5) 98%)",
+                    filter: "blur(200px)", borderRadius: "50%",
+                }}
+            />
+
+            <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12 lg:px-[71px] py-14 md:py-16">
+                {/* Columns */}
+                <div dir="rtl" className="flex flex-col lg:flex-row lg:justify-between gap-10 lg:gap-8">
+                    {/* Logo + bio + socials */}
+                    <div className="flex flex-col items-start gap-7 text-right lg:max-w-[490px] lg:order-1">
+                        <button
+                            onClick={() => handleNavClick("home")}
+                            className="focus:outline-none cursor-pointer"
+                        >
+                            <img src={logoMark} alt="Eman" className="h-[89px] w-auto" />
+                        </button>
+                        <p
+                            className="lg:w-[474px]"
+                            style={{ fontFamily: FONT, fontWeight: 500, fontSize: "16px", lineHeight: "1.746", letterSpacing: "-0.24px", color: "#fcfcfd" }}
+                        >
+                            مصممة تجارب مستخدم وواجهات رقمية أعمل على تحويل الأفكار إلى تجارب مرئية مدروسة، تجمع بين
+                            البساطة، الوضوح، والهوية البصرية المتناسقة. أؤمن بأن التصميم الجيد يبدأ بفهم المستخدم وينتهي
+                            بتجربة تُحسّ قبل أن تُرى.
+                        </p>
+                        <div dir="ltr" className="flex items-center gap-[5px]">
+                            {socials.map(({ Icon, href, label }) => (
+                                <a
+                                    key={label}
+                                    href={href}
+                                    aria-label={label}
+                                    onMouseEnter={() => playTap({ volume: 0.25 })}
+                                    className="text-white hover:text-[#c67588] transition-colors duration-300"
+                                >
+                                    <Icon className="text-2xl" />
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Important links */}
+                    <div className="flex flex-col items-start gap-7 text-right lg:order-2">
+                        <h4 style={heading}>روابط مهمة</h4>
+                        <div className="flex flex-col items-start gap-[15px]">
+                            {importantLinks.map((l) => (
+                                <button
+                                    key={l.name}
+                                    onClick={() => handleNavClick(l.id)}
+                                    style={linkStyle}
+                                    className="hover:text-[#c67588] transition-colors duration-300 cursor-pointer focus:outline-none"
+                                >
+                                    {l.name}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Contact */}
+                    <div className="flex flex-col items-start gap-7 text-right lg:order-3">
+                        <h4 style={heading}>للتواصل</h4>
+                        <div className="flex flex-col items-start gap-5">
+                            {contactLinks.map((c) => (
+                                <a
+                                    key={c.label}
+                                    href={c.href}
+                                    style={linkStyle}
+                                    className={`hover:text-[#c67588] transition-colors duration-300${c.underline ? " underline underline-offset-2" : ""}`}
+                                    dir="ltr"
+                                >
+                                    {c.label}
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Newsletter */}
+                    <div className="flex flex-col items-start gap-7 text-right lg:order-4">
+                        <h4 style={heading}>ابقَ على اطلاع</h4>
+                        <form
+                            onSubmit={handleSubmit}
+                            dir="rtl"
+                            className="flex w-[304px] max-w-full h-[51px] overflow-hidden rounded-[14px]"
+                        >
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={handleEmailChange}
+                                onKeyDown={onTypeKeyDown}
+                                placeholder="البريد الإلكتروني"
+                                required
+                                className="flex-1 min-w-0 bg-white text-black text-right px-4 placeholder:text-black/50 focus:outline-none"
+                                style={{ fontFamily: FONT, fontWeight: 500, fontSize: "16px" }}
+                            />
+                            <button
+                                type="submit"
+                                aria-label="اشترك"
+                                onMouseEnter={() => playTap({ volume: 0.25 })}
+                                className="w-[46px] shrink-0 bg-[#c67588] flex items-center justify-center hover:opacity-90 transition-opacity cursor-pointer"
+                            >
+                                <img src={sendIcon} alt="" className="w-6 h-6" style={{ transform: "scaleX(-1)" }} />
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                {/* Divider */}
+                <div className="h-px bg-white/10 my-8" />
+
+                {/* Bottom bar */}
+                <div
+                    dir="ltr"
+                    className="flex flex-col md:flex-row items-center md:justify-between gap-3 text-white text-center"
+                    style={{ fontFamily: FONT, fontWeight: 300, letterSpacing: "-0.24px" }}
                 >
-                  <social.icon className="text-sm" />
-                </a>
-              ))}
+                    <p className="text-[14px] md:text-[16px]">Copyright© 2025 وكالة سمارت ديف</p>
+                    <p className="text-[13px] md:text-[16px]">{`User Terms & Conditions | Privacy Policy`}</p>
+                </div>
             </div>
-          </div>
-
-          {/* Column 2: Quick Links */}
-          <div className="text-right">
-            <h4 className="text-white text-lg font-semibold mb-6">روابط سريعة</h4>
-            <ul className="space-y-3">
-              {quickLinks.map((link, index) => (
-                <li key={index}>
-                  <button
-                    onClick={() => handleNavClick(link.id)}
-                    className="text-text-secondary hover:text-accent-pink transition-colors duration-300 text-sm cursor-pointer"
-                  >
-                    {link.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 3: Services */}
-          <div className="text-right">
-            <h4 className="text-white text-lg font-semibold mb-6">الخدمات المقدمة</h4>
-            <ul className="space-y-3">
-              {servicesLinks.map((link, index) => (
-                <li key={index}>
-                  <button
-                    onClick={() => handleNavClick(link.id)}
-                    className="text-text-secondary hover:text-accent-pink transition-colors duration-300 text-sm cursor-pointer"
-                  >
-                    {link.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 4: Newsletter */}
-          <div className="text-right">
-            <h4 className="text-white text-lg font-semibold mb-6">اشترك في النشرة</h4>
-            <p className="text-text-secondary text-sm mb-4">
-              احصل على آخر التحديثات والمقالات مباشرة إلى بريدك
-            </p>
-            <form onSubmit={handleSubscribe} className="flex flex-col gap-3">
-              <input
-                type="email"
-                placeholder="emyJameel1@gmail.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-text-muted text-right focus:border-accent-pink focus:outline-none transition-colors duration-300 text-sm"
-                required
-              />
-              <button
-                type="submit"
-                className="bg-gradient-to-r from-accent-pink to-accent-pink-dark text-white px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-300 hover:scale-105 hover:shadow-glow-pink"
-              >
-                اشترك الآن
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Bar */}
-      <div className="border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-muted">
-            {/* Copyright */}
-            <p className="text-center md:text-left">
-              Copyright© 2026 إيمان جميل - جميع الحقوق محفوظة
-            </p>
-
-            {/* Privacy Links */}
-            <div className="flex items-center gap-6">
-              <a href="#" className="hover:text-accent-pink transition-colors duration-300">
-                سياسة الخصوصية
-              </a>
-              <a href="#" className="hover:text-accent-pink transition-colors duration-300">
-                الشروط والأحكام
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
+        </footer>
+    );
 };
 
 export default Footer;
