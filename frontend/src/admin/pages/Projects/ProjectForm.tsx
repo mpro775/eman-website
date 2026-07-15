@@ -54,7 +54,7 @@ export const ProjectForm = () => {
           typeof project.category === 'object' ? project.category._id : project.category,
       });
     } catch (error) {
-      showToast('فشل تحميل المشروع', 'error');
+      showToast('فشل تحميل العمل', 'error');
       navigate('/admin/projects');
     } finally {
       setLoading(false);
@@ -68,10 +68,10 @@ export const ProjectForm = () => {
     try {
       if (isEdit) {
         await projectsService.update(id!, formData);
-        showToast('تم تحديث المشروع بنجاح', 'success');
+        showToast('تم تحديث العمل بنجاح', 'success');
       } else {
         await projectsService.create(formData);
-        showToast('تم إنشاء المشروع بنجاح', 'success');
+        showToast('تم إنشاء العمل بنجاح', 'success');
       }
       navigate('/admin/projects');
     } catch (error: any) {
@@ -92,13 +92,13 @@ export const ProjectForm = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold text-[color:var(--color-admin-text-primary)] mb-6">
-        {isEdit ? 'تعديل المشروع' : 'إضافة مشروع جديد'}
+        {isEdit ? 'تعديل العمل' : 'إضافة عمل جديد'}
       </h1>
 
       <Card>
         <form onSubmit={handleSubmit} className="space-y-6">
           <FormInput
-            label="اسم المشروع"
+            label="اسم العمل"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
@@ -106,7 +106,7 @@ export const ProjectForm = () => {
           />
 
           <ImageUpload
-            label="صورة المشروع"
+            label="صورة العمل"
             value={formData.image}
             onChange={(url) => setFormData({ ...formData, image: url })}
             required
@@ -146,7 +146,7 @@ export const ProjectForm = () => {
               disabled={loading}
             >
               {loading && <LoadingSpinner size="sm" />}
-              {isEdit ? 'حفظ التغييرات' : 'إنشاء المشروع'}
+              {isEdit ? 'حفظ التغييرات' : 'إنشاء العمل'}
             </button>
           </div>
         </form>

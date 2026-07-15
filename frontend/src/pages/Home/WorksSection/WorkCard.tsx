@@ -1,12 +1,10 @@
 import React from "react";
 
 export interface WorkItem {
-    id: number;
+    id: string;
     /** Project title (Figma 820:2830 — bold white) */
     title: string;
-    /** Category chip label (Figma 820:2832 — pink) */
-    tag: string;
-    /** Filter category this work belongs to */
+    /** Category name — drives both the filter tabs and the pink chip (Figma 820:2832) */
     category: string;
     /** Card image */
     image: string;
@@ -77,7 +75,7 @@ const WorkCard: React.FC<WorkCardProps> = ({ work, delay }) => {
                                 color: "#c67588",
                             }}
                         >
-                            {work.tag}
+                            {work.category}
                         </span>
                     </div>
                 </div>

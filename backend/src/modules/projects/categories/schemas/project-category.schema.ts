@@ -6,9 +6,6 @@ export class ProjectCategory extends Document {
   @Prop({ required: true, trim: true })
   name: string;
 
-  @Prop({ required: true })
-  image: string;
-
   @Prop({ type: Number, default: 0 })
   order: number;
 

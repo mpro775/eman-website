@@ -31,11 +31,11 @@ const sidebarItems: SidebarItem[] = [
   { path: '/admin/dashboard', label: 'لوحة التحكم', icon: <FiHome /> },
   {
     path: '/admin/projects',
-    label: 'المشاريع',
+    label: 'أعمالي',
     icon: <FiFolder />,
     subItems: [
-      { path: '/admin/projects', label: 'كل المشاريع' },
-      { path: '/admin/projects/categories', label: 'فئات المشاريع' },
+      { path: '/admin/projects', label: 'كل الأعمال' },
+      { path: '/admin/projects/categories', label: 'فئات الأعمال' },
     ]
   },
   {

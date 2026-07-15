@@ -3,13 +3,8 @@ export interface Project {
   name: string;
   image: string;
   description: string;
+  /** Always populated by the API, but may be a bare id before population. */
   category: string | { _id: string; name: string };
-  titleAr?: string;
-  subtitle?: string;
-  subtitleAr?: string;
-  descriptionAr?: string;
-  tools?: string[];
-  projectLink?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -17,7 +12,6 @@ export interface Project {
 export interface ProjectCategory {
   _id: string;
   name: string;
-  image: string;
   order: number;
   createdAt: string;
   updatedAt: string;
@@ -25,7 +19,6 @@ export interface ProjectCategory {
 
 export interface CreateProjectCategoryDto {
   name: string;
-  image: string;
   order?: number;
 }
 

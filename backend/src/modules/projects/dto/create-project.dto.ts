@@ -1,4 +1,4 @@
-import { IsString, IsMongoId, MinLength, IsOptional, IsArray } from 'class-validator';
+import { IsString, IsMongoId, MinLength } from 'class-validator';
 
 export class CreateProjectDto {
   @IsString()
@@ -15,29 +15,5 @@ export class CreateProjectDto {
 
   @IsMongoId({ message: 'معرف الفئة غير صحيح' })
   category: string;
-
-  @IsString()
-  @IsOptional()
-  titleAr?: string;
-
-  @IsString()
-  @IsOptional()
-  subtitle?: string;
-
-  @IsString()
-  @IsOptional()
-  subtitleAr?: string;
-
-  @IsString()
-  @IsOptional()
-  descriptionAr?: string;
-
-  @IsArray()
-  @IsOptional()
-  tools?: string[];
-
-  @IsString()
-  @IsOptional()
-  projectLink?: string;
 }
 

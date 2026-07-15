@@ -41,7 +41,7 @@ export const ProjectsList = () => {
       setTotalPages(response.meta.totalPages);
       setTotalItems(response.meta.total);
     } catch (error: any) {
-      showToast('فشل تحميل المشاريع', 'error');
+      showToast('فشل تحميل الأعمال', 'error');
     } finally {
       setLoading(false);
     }
@@ -51,12 +51,12 @@ export const ProjectsList = () => {
     if (!deleteId) return;
     try {
       await projectsService.delete(deleteId);
-      showToast('تم حذف المشروع بنجاح', 'success');
+      showToast('تم حذف العمل بنجاح', 'success');
       setShowDeleteDialog(false);
       setDeleteId(null);
       fetchProjects();
     } catch (error: any) {
-      showToast('فشل حذف المشروع', 'error');
+      showToast('فشل حذف العمل', 'error');
     }
   };
 
@@ -126,12 +126,12 @@ export const ProjectsList = () => {
           <h1 className="text-3xl font-bold text-[color:var(--color-admin-text-primary)] mb-2"
             style={{ animation: 'slideUp 0.3s ease-out' }}
           >
-            إدارة المشاريع
+            إدارة أعمالي
           </h1>
           <p className="text-sm text-[color:var(--color-admin-text-muted)]"
             style={{ animation: 'slideUp 0.4s ease-out' }}
           >
-            إضافة وتعديل مشاريعك
+            إضافة وتعديل أعمالك
           </p>
         </div>
         <button
@@ -140,7 +140,7 @@ export const ProjectsList = () => {
           style={{ animation: 'slideUp 0.5s ease-out' }}
         >
           <FiPlus className="text-lg" />
-          إضافة مشروع
+          إضافة عمل
         </button>
       </div>
 
@@ -151,7 +151,7 @@ export const ProjectsList = () => {
             setSearch(value);
             setCurrentPage(1);
           }}
-          placeholder="بحث في المشاريع..."
+          placeholder="بحث في الأعمال..."
         />
       </Card>
 
@@ -182,7 +182,7 @@ export const ProjectsList = () => {
         }}
         onConfirm={handleDelete}
         title="تأكيد الحذف"
-        message="هل أنت متأكد من حذف هذا المشروع؟ لا يمكن التراجع عن هذا الإجراء."
+        message="هل أنت متأكد من حذف هذا العمل؟ لا يمكن التراجع عن هذا الإجراء."
         confirmText="حذف"
         cancelText="إلغاء"
         variant="danger"

@@ -136,7 +136,7 @@ export class StatsService {
             stats: [
                 {
                     key: 'projects',
-                    title: 'المشاريع',
+                    title: 'أعمالي',
                     total: projectsTotal,
                     previousTotal: projectsPrevious,
                     trend: this.calculateTrend(projectsCurrent, projectsPrevious),

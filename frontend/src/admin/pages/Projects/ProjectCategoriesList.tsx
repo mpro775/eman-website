@@ -5,21 +5,20 @@ import { Card } from '../../components/ui/Card';
 import { Modal } from '../../components/ui/Modal';
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog';
 import { FormInput } from '../../components/forms/FormInput';
-import { ImageUpload } from '../../components/forms/ImageUpload';
 import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
 import { useUIStore } from '../../../store/ui.store';
 import { projectsService } from '../../../services/projects.service';
 import type { ProjectCategory } from '../../../types/project.types';
 
+// Categories render as plain text tabs on the site ("الكل" + each name), so a
+// category is just a label and a sort position.
 interface FormData {
     name: string;
-    image: string;
     order: number;
 }
 
 const initialFormData: FormData = {
     name: '',
-    image: '',
     order: 0,
 };
 
@@ -46,7 +45,7 @@ export const ProjectCategoriesList = () => {
             const sorted = [...(cats || [])].sort((a, b) => a.order - b.order);
             setCategories(sorted);
         } catch (error) {
-            showToast('فشل تحميل فئات المشاريع', 'error');
+            showToast('فشل تحميل فئات الأعمال', 'error');
         } finally {
             setLoading(false);
         }
@@ -57,11 +56,6 @@ export const ProjectCategoriesList = () => {
 
         if (!formData.name.trim()) {
             showToast('يرجى إدخال اسم الفئة', 'error');
-            return;
-        }
-
-        if (!formData.image) {
-            showToast('يرجى رفع صورة الفئة', 'error');
             return;
         }
 
@@ -87,7 +81,6 @@ export const ProjectCategoriesList = () => {
         setEditingId(category._id);
         setFormData({
             name: category.name,
-            image: category.image,
             order: category.order || 0,
         });
         setShowModal(true);
@@ -102,7 +95,10 @@ export const ProjectCategoriesList = () => {
             setDeleteId(null);
             fetchCategories();
         } catch (error: any) {
-            showToast('فشل حذف الفئة', 'error');
+            // The API refuses to delete a category that still has works linked to it.
+            showToast(error.response?.data?.message || 'فشل حذف الفئة', 'error');
+            setShowDeleteDialog(false);
+            setDeleteId(null);
         }
     };
 
@@ -113,17 +109,6 @@ export const ProjectCategoriesList = () => {
     };
 
     const columns: Column<ProjectCategory>[] = [
-        {
-            key: 'image',
-            header: 'الصورة',
-            render: (item) => (
-                <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-16 h-16 object-cover rounded-lg"
-                />
-            ),
-        },
         { key: 'name', header: 'الاسم' },
         {
             key: 'order',
@@ -167,12 +152,12 @@ export const ProjectCategoriesList = () => {
                     <h1 className="text-3xl font-bold text-[color:var(--color-admin-text-primary)] mb-2"
                         style={{ animation: 'slideUp 0.3s ease-out' }}
                     >
-                        إدارة فئات المشاريع
+                        إدارة فئات الأعمال
                     </h1>
                     <p className="text-sm text-[color:var(--color-admin-text-muted)]"
                         style={{ animation: 'slideUp 0.4s ease-out' }}
                     >
-                        إضافة وتعديل فئات المشاريع
+                        الفئات تظهر كتبويبات في قسم «أعمالي» بالموقع
                     </p>
                 </div>
                 <button
@@ -223,13 +208,6 @@ export const ProjectCategoriesList = () => {
                         disabled={submitting}
                     />
 
-                    <ImageUpload
-                        label="صورة الفئة"
-                        value={formData.image}
-                        onChange={(url) => setFormData({ ...formData, image: url })}
-                        required
-                    />
-
                     <FormInput
                         label="الترتيب"
                         type="number"
@@ -267,7 +245,7 @@ export const ProjectCategoriesList = () => {
                 }}
                 onConfirm={handleDelete}
                 title="تأكيد الحذف"
-                message="هل أنت متأكد من حذف هذه الفئة؟ سيتم أيضاً حذف أي مشاريع مرتبطة بها."
+                message="هل أنت متأكد من حذف هذه الفئة؟ لا يمكن حذف فئة مرتبطة بأعمال — انقل أعمالها إلى فئة أخرى أولاً."
                 confirmText="حذف"
                 cancelText="إلغاء"
                 variant="danger"

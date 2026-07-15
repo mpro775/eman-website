@@ -11,7 +11,6 @@ import { initSoundKit, playSwipe, playTap, stopProgressLoop } from './utils/soun
 const Home = lazy(() => import('./pages/Home/Home'));
 const Blog = lazy(() => import('./pages/Blog/Blog'));
 const BlogDetail = lazy(() => import('./pages/Blog/BlogDetail'));
-const PortfolioCategory = lazy(() => import('./pages/Portfolio/PortfolioCategory'));
 const About = lazy(() => import('./pages/About/About'));
 const Experience = lazy(() => import('./pages/Experience/Experience'));
 const Contact = lazy(() => import('./pages/Contact/Contact'));
@@ -180,8 +179,6 @@ function App() {
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:id" element={<BlogDetail />} />
-                  <Route path="/portfolio" element={<Navigate to="/portfolio/ux-ui" replace />} />
-                  <Route path="/portfolio/:category" element={<PortfolioCategory />} />
 
                   {/* Admin Routes */}
                   <Route path="/admin/login" element={<Login />} />

@@ -15,24 +15,6 @@ export class Project extends Document {
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'ProjectCategory', required: true })
   category: MongooseSchema.Types.ObjectId;
 
-  @Prop({ trim: true })
-  titleAr?: string;
-
-  @Prop({ trim: true })
-  subtitle?: string;
-
-  @Prop({ trim: true })
-  subtitleAr?: string;
-
-  @Prop({ trim: true })
-  descriptionAr?: string;
-
-  @Prop({ type: [String], default: [] })
-  tools?: string[];
-
-  @Prop({ trim: true })
-  projectLink?: string;
-
   createdAt: Date;
   updatedAt: Date;
 }

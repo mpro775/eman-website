@@ -39,7 +39,7 @@ const Header: React.FC = () => {
       { name: "الرئيسية", kind: "scroll" as const, id: "home", href: "#home" },
       { name: "مهاراتي", kind: "scroll" as const, id: "about", href: "#about" },
       { name: "الخبرات العملية", kind: "scroll" as const, id: "experience", href: "#experience" },
-      { name: "أعمالي", kind: "route" as const, to: "/portfolio" },
+      { name: "أعمالي", kind: "scroll" as const, id: "portfolio", href: "#portfolio" },
       { name: "المدونة", kind: "route" as const, to: "/blog" },
       { name: "تواصل معي", kind: "scroll" as const, id: "contact", href: "#contact" },
     ],

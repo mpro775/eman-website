@@ -1,31 +1,62 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WorkCard, { type WorkItem } from "./WorkCard";
+import { projectsService } from "../../../services/projects.service";
 
-import projectImage from "../../../assets/works/project-placeholder.png";
-
-// Filter tabs (Figma 820:2810) — RTL reading order (الكل on the right).
-const FILTERS = ["الكل", "UI/UX", "جرافيك", "هوية بصرية", "تطبيقات"] as const;
-
-// Works pixel/text-matched to Figma node 820:1751 ("اعمالي").
-// Grid reads RTL (first card top-right).
-const WORKS: WorkItem[] = [
-    { id: 1, title: "تطبيق توصيل الطعام", tag: "تطبيق موبايل", category: "تطبيقات", image: projectImage },
-    { id: 2, title: "تطبيق توصيل الطعام", tag: "تصميم جرافيك", category: "جرافيك", image: projectImage },
-    { id: 3, title: "تطبيق توصيل الطعام", tag: "ويب", category: "UI/UX", image: projectImage },
-    { id: 4, title: "تطبيق توصيل الطعام", tag: "براندينج", category: "هوية بصرية", image: projectImage },
-    { id: 5, title: "تطبيق توصيل الطعام", tag: "ويب", category: "UI/UX", image: projectImage },
-    { id: 6, title: "تطبيق توصيل الطعام", tag: "ويب", category: "UI/UX", image: projectImage },
-];
+/** The "show everything" tab — a client-side view, not a stored category. */
+const ALL = "الكل";
 
 /**
  * Works / portfolio section ("اعمالي") — pixel-matched to Figma node 820:1751.
  * Solid #040404 backdrop with a rotated glow, a centered title + underline,
  * a row of filter tabs, and a responsive 3-column grid of project cards.
+ *
+ * Categories and works both come from the API; the tabs are `الكل` plus every
+ * category name (ordered by `order`), and filtering is client-side by name.
  */
 const WorksSection: React.FC = () => {
-    const [active, setActive] = useState<string>("الكل");
+    const [active, setActive] = useState<string>(ALL);
+    const [filters, setFilters] = useState<string[]>([ALL]);
+    const [works, setWorks] = useState<WorkItem[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [failed, setFailed] = useState(false);
 
-    const visible = active === "الكل" ? WORKS : WORKS.filter((w) => w.category === active);
+    useEffect(() => {
+        let cancelled = false;
+
+        const load = async () => {
+            try {
+                const [categories, paginated] = await Promise.all([
+                    projectsService.getCategories(),
+                    projectsService.getAll({ limit: 100 }),
+                ]);
+                if (cancelled) return;
+
+                const ordered = [...(categories || [])].sort((a, b) => a.order - b.order);
+                setFilters([ALL, ...ordered.map((c) => c.name)]);
+
+                setWorks(
+                    (paginated?.data || []).map((p) => ({
+                        id: p._id,
+                        title: p.name,
+                        // The API populates `category`; guard in case it ever isn't.
+                        category: typeof p.category === "object" && p.category ? p.category.name : "",
+                        image: p.image,
+                    }))
+                );
+            } catch {
+                if (!cancelled) setFailed(true);
+            } finally {
+                if (!cancelled) setLoading(false);
+            }
+        };
+
+        load();
+        return () => {
+            cancelled = true;
+        };
+    }, []);
+
+    const visible = active === ALL ? works : works.filter((w) => w.category === active);
 
     return (
         <section
@@ -79,7 +110,7 @@ const WorksSection: React.FC = () => {
                     className="mt-10 lg:mt-[55px] flex flex-wrap items-center justify-center"
                     style={{ gap: "18.045px" }}
                 >
-                    {FILTERS.map((label) => {
+                    {filters.map((label) => {
                         const isActive = label === active;
                         return (
                             <button
@@ -116,15 +147,34 @@ const WorksSection: React.FC = () => {
                 </div>
 
                 {/* Cards grid (Figma 820:2740) — RTL, 3 columns, gap 24px */}
-                <div
-                    dir="rtl"
-                    className="mt-10 lg:mt-[40px] w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-                    style={{ gap: "24px" }}
-                >
-                    {visible.map((work, i) => (
-                        <WorkCard key={work.id} work={work} delay={0.1 + i * 0.07} />
-                    ))}
-                </div>
+                {loading || visible.length === 0 ? (
+                    <p
+                        dir="rtl"
+                        className="mt-10 lg:mt-[40px] text-center"
+                        style={{
+                            fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                            fontWeight: 500,
+                            fontSize: "18px",
+                            color: "#a5a0c8",
+                        }}
+                    >
+                        {loading
+                            ? "جاري تحميل الأعمال..."
+                            : failed
+                              ? "تعذّر تحميل الأعمال حالياً."
+                              : "لا توجد أعمال في هذا التصنيف حالياً."}
+                    </p>
+                ) : (
+                    <div
+                        dir="rtl"
+                        className="mt-10 lg:mt-[40px] w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                        style={{ gap: "24px" }}
+                    >
+                        {visible.map((work, i) => (
+                            <WorkCard key={work.id} work={work} delay={0.1 + i * 0.07} />
+                        ))}
+                    </div>
+                )}
             </div>
         </section>
     );

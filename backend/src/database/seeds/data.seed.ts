@@ -103,22 +103,13 @@ export async function seedProjectsAndCategories(
   categoryModel: Model<ProjectCategory>,
   projectModel: Model<Project>
 ) {
+  // Categories mirror the site's "أعمالي" filter tabs (Figma 820:2810).
+  // The "الكل" tab is a client-side view, not a stored category.
   const categories = [
-    {
-      name: 'UX / UI',
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
-      order: 1,
-    },
-    {
-      name: 'Mobile App',
-      image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop',
-      order: 2,
-    },
-    {
-      name: 'Graphic Design',
-      image: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&h=400&fit=crop',
-      order: 3,
-    },
+    { name: 'UI/UX', order: 1 },
+    { name: 'جرافيك', order: 2 },
+    { name: 'هوية بصرية', order: 3 },
+    { name: 'تطبيقات', order: 4 },
   ];
 
   await categoryModel.deleteMany({});
@@ -134,153 +125,68 @@ export async function seedProjectsAndCategories(
   });
 
   const projects = [
-    // UX / UI Projects
+    // UI/UX
     {
-      name: 'Kleim',
-      titleAr: 'كليـــم',
+      name: 'لوحة تحكم متجر إلكتروني',
       image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
       description:
-        'A comprehensive e-commerce dashboard solution for managing online stores, featuring intuitive analytics, order management, and customer insights. Built with modern design principles to ensure a seamless user experience.',
-      descriptionAr:
-        'لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر ر',
-      category: catMap['UX / UI']._id,
-      subtitle: 'E-commerce Dashboard Management',
-      subtitleAr: 'لإدارة المتاجر الإلكترونية',
-      tools: ['Figma', 'Adobe XD', 'Photoshop'],
-      projectLink: '#',
+        'تصميم لوحة تحكم متكاملة لإدارة المتاجر الإلكترونية، تشمل التحليلات وإدارة الطلبات ورؤى العملاء بواجهة واضحة وسهلة.',
+      category: catMap['UI/UX']._id,
     },
     {
-      name: 'Kleim',
-      titleAr: 'كليـــم',
+      name: 'منصة تحليلات البيانات',
       image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop',
       description:
-        'Advanced analytics platform with real-time data visualization and reporting capabilities.',
-      descriptionAr:
-        'لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر',
-      category: catMap['UX / UI']._id,
-      subtitle: 'Analytics Platform',
-      subtitleAr: 'لإدارة المتاجر الإلكترونية',
-      tools: ['Figma', 'Sketch'],
-      projectLink: '#',
+        'منصة تحليلات متقدمة مع عرض بصري للبيانات في الوقت الفعلي وتقارير قابلة للتصدير، صُمّمت لتبسيط القرارات.',
+      category: catMap['UI/UX']._id,
     },
     {
-      name: 'Kleim',
-      titleAr: 'كليـــم',
+      name: 'نظام إدارة المخزون',
       image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop',
-      description: 'Smart inventory management system with automated tracking and alerts.',
-      descriptionAr:
-        'لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر',
-      category: catMap['UX / UI']._id,
-      subtitle: 'Inventory System',
-      subtitleAr: 'لإدارة المتاجر الإلكترونية',
-      tools: ['Figma', 'Adobe XD'],
-      projectLink: '#',
-    },
-    {
-      name: 'Kleim',
-      titleAr: 'كليـــم',
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
-      description: 'Customer-facing portal for order tracking and account management.',
-      descriptionAr:
-        'لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر',
-      category: catMap['UX / UI']._id,
-      subtitle: 'Customer Portal',
-      subtitleAr: 'لإدارة المتاجر الإلكترونية',
-      tools: ['Figma'],
-      projectLink: '#',
-    },
-    {
-      name: 'Kleim',
-      titleAr: 'كليـــم',
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop',
-      description: 'Mobile-responsive dashboard for on-the-go store management.',
-      descriptionAr:
-        'لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر',
-      category: catMap['UX / UI']._id,
-      subtitle: 'Mobile Dashboard',
-      subtitleAr: 'لإدارة المتاجر الإلكترونية',
-      tools: ['Figma', 'Illustrator'],
-      projectLink: '#',
-    },
-    {
-      name: 'Kleim',
-      titleAr: 'كليـــم',
-      image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop',
-      description: 'Comprehensive reporting module with export capabilities.',
-      descriptionAr:
-        'لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر',
-      category: catMap['UX / UI']._id,
-      subtitle: 'Reports Module',
-      subtitleAr: 'لإدارة المتاجر الإلكترونية',
-      tools: ['Figma', 'Adobe XD'],
-      projectLink: '#',
-    },
-    {
-      name: 'Kleim',
-      titleAr: 'كليـــم',
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
-      description: 'User settings and preferences panel.',
-      descriptionAr:
-        'لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر',
-      category: catMap['UX / UI']._id,
-      subtitle: 'Settings Panel',
-      subtitleAr: 'لإدارة المتاجر الإلكترونية',
-      tools: ['Figma'],
-      projectLink: '#',
-    },
-    {
-      name: 'Kleim',
-      titleAr: 'كليـــم',
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop',
-      description: 'Centralized notifications management system.',
-      descriptionAr:
-        'لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر',
-      category: catMap['UX / UI']._id,
-      subtitle: 'Notifications Center',
-      subtitleAr: 'لإدارة المتاجر الإلكترونية',
-      tools: ['Figma', 'Sketch'],
-      projectLink: '#',
-    },
-    {
-      name: 'Kleim',
-      titleAr: 'كليـــم',
-      image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop',
-      description: 'Help and documentation center.',
-      descriptionAr:
-        'لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر لوحة تحكم لإدارة المتاجر',
-      category: catMap['UX / UI']._id,
-      subtitle: 'Help Center',
-      subtitleAr: 'لإدارة المتاجر الإلكترونية',
-      tools: ['Figma', 'Adobe XD'],
-      projectLink: '#',
+      description:
+        'نظام ذكي لإدارة المخزون مع تتبّع تلقائي وتنبيهات فورية، يوازن بين كثافة المعلومات ووضوح الواجهة.',
+      category: catMap['UI/UX']._id,
     },
 
-    // Mobile App Projects
+    // جرافيك
     {
-      name: 'FitTrack',
-      titleAr: 'فيت تراك',
-      image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop',
-      description: 'A comprehensive fitness tracking application.',
-      descriptionAr: 'تطبيق شامل لتتبع اللياقة البدنية مع خطط التمارين وتتبع التغذية',
-      category: catMap['Mobile App']._id,
-      subtitle: 'Fitness App',
-      subtitleAr: 'تطبيق اللياقة البدنية',
-      tools: ['Figma', 'Illustrator'],
-      projectLink: '#',
-    },
-
-    // Graphic Design Projects
-    {
-      name: 'Nova',
-      titleAr: 'نوفا',
+      name: 'حملة سوشيال ميديا',
       image: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&h=400&fit=crop',
-      description: 'Complete brand identity design.',
-      descriptionAr: 'تصميم هوية العلامة التجارية الكاملة بما في ذلك الشعار ولوحة الألوان',
-      category: catMap['Graphic Design']._id,
-      subtitle: 'Brand Identity',
-      subtitleAr: 'الهوية البصرية',
-      tools: ['Illustrator', 'Photoshop'],
-      projectLink: '#',
+      description:
+        'سلسلة تصاميم بصرية لحملة على منصات التواصل الاجتماعي، تجمع بين الوضوح والاتساق مع الهوية البصرية للعلامة.',
+      category: catMap['جرافيك']._id,
+    },
+    {
+      name: 'بوسترات إعلانية',
+      image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=600&h=400&fit=crop',
+      description:
+        'مجموعة بوسترات إعلانية مطبوعة ورقمية بتوجيه فني موحّد، تركّز على التسلسل البصري وإيصال الرسالة بسرعة.',
+      category: catMap['جرافيك']._id,
+    },
+
+    // هوية بصرية
+    {
+      name: 'هوية علامة نوفا',
+      image: 'https://images.unsplash.com/photo-1600607686527-6fb886090705?w=600&h=400&fit=crop',
+      description:
+        'تصميم هوية بصرية متكاملة تشمل الشعار ولوحة الألوان وأنظمة الخطوط ودليل الاستخدام لضمان اتساق العلامة.',
+      category: catMap['هوية بصرية']._id,
+    },
+
+    // تطبيقات
+    {
+      name: 'تطبيق توصيل الطعام',
+      image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop',
+      description:
+        'تصميم تجربة وواجهات تطبيق توصيل طعام، من تصفّح المطاعم حتى تتبّع الطلب، بتركيز على سرعة إتمام المهمة.',
+      category: catMap['تطبيقات']._id,
+    },
+    {
+      name: 'تطبيق تتبّع اللياقة',
+      image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&h=400&fit=crop',
+      description:
+        'تطبيق شامل لتتبّع اللياقة البدنية مع خطط التمارين وتتبّع التغذية وتقارير التقدّم بواجهة محفّزة وبسيطة.',
+      category: catMap['تطبيقات']._id,
     },
   ];
 
