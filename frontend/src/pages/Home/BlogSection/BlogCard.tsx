@@ -41,7 +41,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
         <article className="group flex flex-col gap-4">
             {/* Cover image */}
             <Link
-                to="/blog"
+                to={`/blog/${post.id}`}
                 onMouseEnter={() => playTap({ volume: 0.25 })}
                 className="block relative rounded-[10px] overflow-hidden"
                 style={{ height: "185px" }}
@@ -86,7 +86,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
             {/* Read more + stats */}
             <div dir="ltr" className="flex items-center gap-4 w-full">
                 <Link
-                    to="/blog"
+                    to={`/blog/${post.id}`}
                     onMouseEnter={() => playTap({ volume: 0.25 })}
                     className="flex-1 flex items-center justify-center gap-1 rounded-[12px] bg-[rgba(42,51,80,0.2)] border border-[#2a3350] transition-colors duration-300 group-hover:bg-[rgba(42,51,80,0.45)]"
                     style={{ padding: "14px 20px" }}

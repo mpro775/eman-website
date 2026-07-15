@@ -37,6 +37,16 @@ export const blogService = {
     await api.delete<ApiResponse<null>>(`/blog/posts/${id}`);
   },
 
+  async lovePost(id: string): Promise<{ loves: number }> {
+    const response = await api.post<ApiResponse<{ loves: number }>>(`/blog/posts/${id}/love`);
+    return response.data.data;
+  },
+
+  async sharePost(id: string): Promise<{ shares: number }> {
+    const response = await api.post<ApiResponse<{ shares: number }>>(`/blog/posts/${id}/share`);
+    return response.data.data;
+  },
+
   // Categories
   async getCategories(): Promise<BlogCategory[]> {
     const response = await api.get<ApiResponse<BlogCategory[]>>('/blog/categories');
