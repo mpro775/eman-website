@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useRef } from "react";
 import { motion } from "framer-motion";
+import VariableProximity from "../../../components/ui/VariableProximity";
 
 // Image imports (Figma hero assets — node 820:2060)
 import sparkImage from "../../../assets/illustrations/hero/spark.svg";
@@ -21,6 +22,8 @@ interface HeroViewProps {
  * "UX/UI Designer" title + arrow decoration, and the right-side quote.
  */
 const HeroView: React.FC<HeroViewProps> = ({ heroElementsVariants }) => {
+    const quoteContainerRef = useRef<HTMLDivElement>(null);
+
     return (
         <motion.div
             className="relative w-full h-full"
@@ -125,6 +128,7 @@ const HeroView: React.FC<HeroViewProps> = ({ heroElementsVariants }) => {
 
             {/* Quote (Figma 820:2094) — right side, top 530px */}
             <div
+                ref={quoteContainerRef}
                 className="absolute z-30 flex flex-col items-start"
                 style={{ left: "calc(50% + 275px)", top: "530px", width: "362px", gap: "20px" }}
             >
@@ -132,23 +136,25 @@ const HeroView: React.FC<HeroViewProps> = ({ heroElementsVariants }) => {
                 <div className="flex flex-col items-end w-full">
                     <img src={quoteIcon} alt="" aria-hidden="true" style={{ width: "36px", height: "36px" }} />
                 </div>
-                <p
+                <VariableProximity
+                    label="أؤمـــن بـــأن جوهــــر التصميــــم يكمـــــن فــي الإحساس، لذا أعمل على تصميم تجارب رقمية واعيـــة، وبنـــــاء واجهــــــــات مستخــــــدم تعكــــــس هويــــــــة العلامــــــــــة التجاريــــة بدقـــــــة وتــــوازن بيـن الجمـال والوضــــوح."
                     className="text-white"
+                    fromFontVariationSettings="'wght' 400, 'opsz' 9"
+                    toFontVariationSettings="'wght' 900, 'opsz' 40"
+                    containerRef={quoteContainerRef}
+                    radius={100}
+                    falloff="linear"
                     style={{
                         fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
                         fontWeight: 500,
                         fontSize: "24px",
                         lineHeight: 1.34,
                         letterSpacing: "-0.36px",
-                        textAlign: "right",
-                        direction: "rtl",
+                        textAlign: "right" as const,
+                        direction: "rtl" as const,
                         width: "354.75px",
                     }}
-                >
-                    أؤمـــن بأن جوهـــر التصميـــم يكمـــــن فــي الإحساس، لذا أعمل على تصميم تجارب
-                    رقمية واعيـــة، وبنـــــاء واجهــــات مستخــــدم تعكــــــس هويـــة العلامــــة
-                    التجاريــــة بدقـــــة وتــــوازن بيـن الجمـال والوضــــوح.
-                </p>
+                />
             </div>
         </motion.div>
     );
