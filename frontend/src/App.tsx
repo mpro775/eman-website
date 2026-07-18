@@ -10,6 +10,7 @@ import { initSoundKit, playSwipe, playTap, stopProgressLoop } from './utils/soun
 // Lazy load public pages
 const Home = lazy(() => import('./pages/Home/Home'));
 const Blog = lazy(() => import('./pages/Blog/Blog'));
+import { SplashCursor } from './components/ui';
 const BlogDetail = lazy(() => import('./pages/Blog/BlogDetail'));
 const About = lazy(() => import('./pages/About/About'));
 const Experience = lazy(() => import('./pages/Experience/Experience'));
@@ -170,6 +171,7 @@ function App() {
           <ViewProvider>
             <SoundBridge />
             <div className="App">
+              <SplashCursor RAINBOW_MODE={false} COLOR="#7A464D" />
               <Suspense fallback={<PageLoader />}>
                 <Routes>
                   {/* Public Routes */}
