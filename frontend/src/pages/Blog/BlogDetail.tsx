@@ -98,7 +98,7 @@ const RelatedPostCard: React.FC<{
     transition={{ duration: 0.5, delay: index * 0.15 }}
   >
     <Link to={`/blog/${post.id}`} className="block">
-      <div className="bg-white/5 rounded-2xl overflow-hidden border border-white/10 hover:border-accent-pink/30 hover:shadow-glow-pink/10 transition-all duration-300">
+      <div data-no-splash="true" className="bg-white/5 rounded-2xl overflow-hidden border border-white/10 hover:border-accent-pink/30 hover:shadow-glow-pink/10 transition-all duration-300">
         <div className="aspect-[16/10] overflow-hidden">
           <img
             src={post.image}

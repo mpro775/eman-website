@@ -38,7 +38,7 @@ const statText: React.CSSProperties = {
  */
 const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
     return (
-        <article className="group flex flex-col gap-4">
+        <article data-no-splash="true" className="group flex flex-col gap-4">
             {/* Cover image */}
             <Link
                 to={`/blog/${post.id}`}

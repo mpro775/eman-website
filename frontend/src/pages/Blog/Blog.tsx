@@ -208,6 +208,7 @@ const Blog: React.FC = () => {
             ].map((stat, index) => (
               <motion.div
                 key={index}
+                data-no-splash="true"
                 className="text-center p-6 bg-white/5 rounded-2xl border border-white/10 hover:border-accent-pink/30 transition-all duration-300"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}

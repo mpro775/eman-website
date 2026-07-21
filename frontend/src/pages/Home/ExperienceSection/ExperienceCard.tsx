@@ -23,6 +23,7 @@ interface ExperienceCardProps {
 const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, delay }) => {
     return (
         <div
+            data-no-splash="true"
             dir="ltr"
             className="flex items-center justify-between w-full max-w-[557px]"
             style={{ opacity: 0, animation: `skillIn 0.5s cubic-bezier(0.25,0.46,0.45,0.94) ${delay}s forwards` }}

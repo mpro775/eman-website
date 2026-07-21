@@ -19,6 +19,7 @@ const FloatingSkillCard: React.FC<FloatingSkillCardProps> = ({
     delay,
 }) => (
     <motion.div
+        data-no-splash="true"
         className={`absolute z-30 ${className}`}
         initial={{ opacity: 0, scale: 0.5, x: 20 }}
         animate={{ opacity: 1, scale: 1, x: 0 }}

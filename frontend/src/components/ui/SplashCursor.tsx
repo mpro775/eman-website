@@ -985,6 +985,7 @@ function SplashCursor({
 
     // Named event handlers for proper cleanup
     function handleMouseDown(e: MouseEvent) {
+      if ((e.target as HTMLElement)?.closest?.('[data-no-splash], .border-glow-card')) return;
       const pointer = pointers[0];
       const posX = scaleByPixelRatio(e.clientX);
       const posY = scaleByPixelRatio(e.clientY);
@@ -994,6 +995,7 @@ function SplashCursor({
 
     let firstMouseMoveHandled = false;
     function handleMouseMove(e: MouseEvent) {
+      if ((e.target as HTMLElement)?.closest?.('[data-no-splash], .border-glow-card')) return;
       const pointer = pointers[0];
       const posX = scaleByPixelRatio(e.clientX);
       const posY = scaleByPixelRatio(e.clientY);
@@ -1007,6 +1009,7 @@ function SplashCursor({
     }
 
     function handleTouchStart(e: TouchEvent) {
+      if ((e.target as HTMLElement)?.closest?.('[data-no-splash], .border-glow-card')) return;
       const touches = e.targetTouches;
       const pointer = pointers[0];
       for (let i = 0; i < touches.length; i++) {
@@ -1017,6 +1020,7 @@ function SplashCursor({
     }
 
     function handleTouchMove(e: TouchEvent) {
+      if ((e.target as HTMLElement)?.closest?.('[data-no-splash], .border-glow-card')) return;
       const touches = e.targetTouches;
       const pointer = pointers[0];
       for (let i = 0; i < touches.length; i++) {

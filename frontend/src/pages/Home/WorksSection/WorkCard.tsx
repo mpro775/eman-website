@@ -25,6 +25,7 @@ interface WorkCardProps {
 const WorkCard: React.FC<WorkCardProps> = ({ work, delay }) => {
     return (
         <div
+            data-no-splash="true"
             className="group flex flex-col overflow-hidden bg-[rgba(17,15,46,0.2)] border-[0.667px] border-[rgba(38,38,38,0.15)] w-full"
             style={{
                 borderRadius: "16px",

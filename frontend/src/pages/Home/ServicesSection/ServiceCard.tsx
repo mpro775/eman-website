@@ -1,4 +1,5 @@
 import React from "react";
+import { BorderGlow } from "../../../components/ui";
 
 export interface ServiceItem {
     id: number;
@@ -26,43 +27,56 @@ const FONT = '"Thmanyah Sans", "Tajawal", sans-serif';
  */
 const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
     return (
-        <div
-            dir="rtl"
-            className="group flex flex-col items-start overflow-hidden bg-[rgba(17,15,46,0.2)] border-[0.729px] border-[rgba(139,92,246,0.13)] w-full lg:w-[419px] lg:shrink-0 lg:h-[324px] transition-colors duration-300 hover:border-[rgba(139,92,246,0.35)]"
-            style={{ gap: "17.491px", padding: "26.965px", borderRadius: "17.491px" }}
+        <BorderGlow
+            className="group w-full lg:w-[419px] lg:shrink-0 lg:h-[324px]"
+            edgeSensitivity={30}
+            glowColor="40 80 80"
+            backgroundColor="#120F17"
+            borderRadius={28}
+            glowRadius={40}
+            glowIntensity={1.0}
+            coneSpread={25}
+            animated={false}
+            colors={['#c084fc', '#f472b6', '#38bdf8']}
         >
-            {/* Icon chip */}
             <div
-                className="flex items-center justify-center shrink-0 bg-[rgba(139,92,246,0.12)] border-[0.729px] border-[rgba(139,92,246,0.2)]"
-                style={{ width: "52.473px", height: "52.473px", borderRadius: "15.305px" }}
+                dir="rtl"
+                className="flex flex-col items-start w-full h-full"
+                style={{ gap: "17.491px", padding: "26.965px" }}
             >
-                <img src={service.icon} alt="" aria-hidden="true" className="block" style={{ width: "24px", height: "24px" }} />
-            </div>
-
-            {/* Bilingual title */}
-            <div className="flex flex-col items-start w-full" style={{ gap: "13.118px" }}>
-                <p
-                    className="text-white whitespace-nowrap"
-                    style={{ fontFamily: FONT, fontWeight: 700, fontSize: "26.236px", lineHeight: "26.236px" }}
+                {/* Icon chip */}
+                <div
+                    className="flex items-center justify-center shrink-0 bg-[rgba(139,92,246,0.12)] border-[0.729px] border-[rgba(139,92,246,0.2)]"
+                    style={{ width: "52.473px", height: "52.473px", borderRadius: "15.305px" }}
                 >
-                    {service.arabicTitle}
-                </p>
+                    <img src={service.icon} alt="" aria-hidden="true" className="block" style={{ width: "24px", height: "24px" }} />
+                </div>
+
+                {/* Bilingual title */}
+                <div className="flex flex-col items-start w-full" style={{ gap: "13.118px" }}>
+                    <p
+                        className="text-white whitespace-nowrap"
+                        style={{ fontFamily: FONT, fontWeight: 700, fontSize: "26.236px", lineHeight: "26.236px" }}
+                    >
+                        {service.arabicTitle}
+                    </p>
+                    <p
+                        className="text-[#6b6a8e] whitespace-nowrap"
+                        style={{ fontFamily: FONT, fontWeight: 500, fontSize: "18px", lineHeight: "17.491px" }}
+                    >
+                        {service.englishSubtitle}
+                    </p>
+                </div>
+
+                {/* Description */}
                 <p
-                    className="text-[#6b6a8e] whitespace-nowrap"
-                    style={{ fontFamily: FONT, fontWeight: 500, fontSize: "18px", lineHeight: "17.491px" }}
+                    className="text-[#a5a0c8] text-right w-full"
+                    style={{ fontFamily: FONT, fontWeight: 500, fontSize: "22px", lineHeight: "35px" }}
                 >
-                    {service.englishSubtitle}
+                    {service.arabicDescription}
                 </p>
             </div>
-
-            {/* Description */}
-            <p
-                className="text-[#a5a0c8] text-right w-full"
-                style={{ fontFamily: FONT, fontWeight: 500, fontSize: "22px", lineHeight: "35px" }}
-            >
-                {service.arabicDescription}
-            </p>
-        </div>
+        </BorderGlow>
     );
 };
 

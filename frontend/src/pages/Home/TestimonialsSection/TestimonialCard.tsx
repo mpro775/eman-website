@@ -27,6 +27,7 @@ interface TestimonialCardProps {
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial, active }) => {
     return (
         <div
+            data-no-splash="true"
             className="relative w-full rounded-[16px]"
             style={{
                 height: active ? "358px" : "302px",

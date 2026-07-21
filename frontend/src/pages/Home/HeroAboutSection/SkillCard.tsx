@@ -31,6 +31,7 @@ const SkillCard: React.FC<SkillCardProps> = ({
 }) => {
     return (
         <div
+            data-no-splash="true"
             className={`${inFlow ? "relative" : "absolute"} z-30 w-[311px]`}
             style={{
                 ...position,
