@@ -7,6 +7,7 @@ export default registerAs('cloudflare', () => ({
     secretKey: process.env.CLOUDFLARE_R2_SECRET_KEY || '',
     bucket: process.env.CLOUDFLARE_R2_BUCKET || 'eman-portfolio-files',
     endpoint: process.env.CLOUDFLARE_R2_ENDPOINT || '',
+    publicUrl: process.env.CLOUDFLARE_R2_PUBLIC_URL || '',
   },
   images: {
     token: process.env.CLOUDFLARE_IMAGES_TOKEN || '',

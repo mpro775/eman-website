@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { playTap } from "../../../utils/soundManager";
+import { resolveImageUrl } from "../../../utils/imageUrl";
 
 import readMoreIcon from "../../../assets/blog/readmore.svg";
 import shareIcon from "../../../assets/blog/share.svg";
@@ -47,7 +48,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
                 style={{ height: "185px" }}
             >
                 <img
-                    src={post.image}
+                    src={resolveImageUrl(post.image)}
                     alt={post.title}
                     loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"

@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { FiUpload, FiX, FiImage, FiCheck } from 'react-icons/fi';
 import { uploadImage, validateImageFile, type UploadOptions } from '../../../services/upload.service';
 import { handleApiError } from '../../../utils/errorHandler';
+import { resolveImageUrl } from '../../../utils/imageUrl';
 
 interface ImageUploadProps {
   label?: string;
@@ -28,7 +29,7 @@ export const ImageUpload = ({
   folder,
   showProgress = true,
 }: ImageUploadProps) => {
-  const [preview, setPreview] = useState<string | null>(value || null);
+  const [preview, setPreview] = useState<string | null>(value ? resolveImageUrl(value) : null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadError, setUploadError] = useState<string | null>(null);

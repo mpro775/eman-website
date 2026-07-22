@@ -17,6 +17,7 @@ import Container from "../../components/common/Container";
 import { useSEO } from "../../hooks/useSEO";
 import { SEOSchema } from "../../components/common/SEOSchema";
 import { blogService } from "../../services/blog.service";
+import { resolveImageUrl } from "../../utils/imageUrl";
 
 // Blog post interface
 interface BlogPost {
@@ -101,7 +102,7 @@ const RelatedPostCard: React.FC<{
       <div data-no-splash="true" className="bg-white/5 rounded-2xl overflow-hidden border border-white/10 hover:border-accent-pink/30 hover:shadow-glow-pink/10 transition-all duration-300">
         <div className="aspect-[16/10] overflow-hidden">
           <img
-            src={post.image}
+            src={resolveImageUrl(post.image)}
             alt={post.title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
@@ -379,7 +380,7 @@ const BlogDetail: React.FC = () => {
         {/* Background Image */}
         <div className="absolute inset-0">
           <img
-            src={post.image}
+            src={resolveImageUrl(post.image)}
             alt={post.title}
             className="w-full h-full object-cover"
           />

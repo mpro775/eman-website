@@ -1,4 +1,5 @@
 import React from "react";
+import { resolveImageUrl } from "../../../utils/imageUrl";
 
 export interface WorkItem {
     id: string;
@@ -36,7 +37,7 @@ const WorkCard: React.FC<WorkCardProps> = ({ work, delay }) => {
             {/* Cover image (Figma 820:2743 — h220 within w394.667) */}
             <div className="relative w-full overflow-hidden" style={{ aspectRatio: "395 / 220" }}>
                 <img
-                    src={work.image}
+                    src={resolveImageUrl(work.image)}
                     alt={work.title}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"

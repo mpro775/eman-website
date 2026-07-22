@@ -9,6 +9,7 @@ import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
 import { useUIStore } from '../../../store/ui.store';
 import { programsService } from '../../../services/programs.service';
 import type { UsedProgram } from '../../../types/program.types';
+import { resolveImageUrl } from '../../../utils/imageUrl';
 
 export const ProgramsList = () => {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ export const ProgramsList = () => {
       key: 'image',
       header: 'الصورة',
       render: (item) => (
-        <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-lg" />
+        <img src={resolveImageUrl(item.image)} alt={item.name} className="w-16 h-16 object-cover rounded-lg" />
       ),
     },
     { key: 'name', header: 'الاسم' },

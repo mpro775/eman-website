@@ -9,6 +9,7 @@ import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
 import { useUIStore } from '../../../store/ui.store';
 import { testimonialsService } from '../../../services/testimonials.service';
 import type { Testimonial } from '../../../types/testimonial.types';
+import { resolveImageUrl } from '../../../utils/imageUrl';
 
 export const TestimonialsList = () => {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ export const TestimonialsList = () => {
       header: 'الصورة',
       render: (item) => (
         <img
-          src={item.image}
+          src={resolveImageUrl(item.image)}
           alt={item.personName}
           className="w-16 h-16 object-cover rounded-lg"
         />

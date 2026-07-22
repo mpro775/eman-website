@@ -10,6 +10,7 @@ import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
 import { useUIStore } from '../../../store/ui.store';
 import { projectsService } from '../../../services/projects.service';
 import type { Project } from '../../../types/project.types';
+import { resolveImageUrl } from '../../../utils/imageUrl';
 
 export const ProjectsList = () => {
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ export const ProjectsList = () => {
       header: 'الصورة',
       render: (item) => (
         <img
-          src={item.image}
+          src={resolveImageUrl(item.image)}
           alt={item.name}
           className="w-16 h-16 object-cover rounded-lg"
         />

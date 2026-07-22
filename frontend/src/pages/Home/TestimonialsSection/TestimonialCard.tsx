@@ -1,4 +1,5 @@
 import React from "react";
+import { resolveImageUrl } from "../../../utils/imageUrl";
 
 export interface Testimonial {
     id: number;
@@ -49,7 +50,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial, active }
                 }}
             >
                 <img
-                    src={testimonial.avatar}
+                    src={resolveImageUrl(testimonial.avatar)}
                     alt={testimonial.name}
                     className="w-full h-full object-cover"
                     loading="lazy"

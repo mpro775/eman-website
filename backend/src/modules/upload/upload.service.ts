@@ -1,15 +1,22 @@
-import { Injectable, Logger, BadRequestException } from '@nestjs/common';
+import { Injectable, Logger, BadRequestException, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import * as fs from 'fs';
 import * as path from 'path';
 import sharp from 'sharp';
+import { Readable } from 'stream';
 
 export interface UploadResponse {
   url: string;
   filename: string;
   size: number;
   mimetype: string;
+}
+
+export interface FileResponse {
+  stream: Readable;
+  contentType: string;
+  contentLength?: number;
 }
 
 @Injectable()
@@ -19,6 +26,7 @@ export class UploadService {
   private readonly bucketName: string;
   private readonly endpoint: string;
   private readonly publicUrl: string;
+  private readonly appUrl: string;
 
   constructor(private readonly configService: ConfigService) {
     const accessKey = this.configService.get<string>('cloudflare.r2.accessKey');
@@ -26,6 +34,7 @@ export class UploadService {
     this.endpoint = this.configService.get<string>('cloudflare.r2.endpoint') || '';
     this.bucketName = this.configService.get<string>('cloudflare.r2.bucket') || 'eman-portfolio-files';
     this.publicUrl = this.configService.get<string>('cloudflare.r2.publicUrl') || '';
+    this.appUrl = this.configService.get<string>('app.url') || 'http://localhost:3000';
 
     if (accessKey && secretKey && this.endpoint) {
       this.s3Client = new S3Client({
@@ -79,6 +88,17 @@ export class UploadService {
     }
   }
 
+  /**
+   * Get a file from R2 storage (used as proxy when no public URL is configured)
+   */
+  async getFile(key: string): Promise<FileResponse> {
+    if (this.s3Client) {
+      return this.getFileFromR2(key);
+    } else {
+      return this.getFileFromLocal(key);
+    }
+  }
+
   private async uploadToR2(
     key: string,
     buffer: Buffer,
@@ -97,9 +117,11 @@ export class UploadService {
 
       let url: string;
       if (this.publicUrl) {
+        // Use the configured public URL (R2.dev subdomain or custom domain)
         url = `${this.publicUrl.replace(/\/$/, '')}/${key}`;
       } else {
-        url = `${this.endpoint.replace(/\/$/, '')}/${this.bucketName}/${key}`;
+        // Fallback: use backend proxy endpoint to serve the file
+        url = `${this.appUrl.replace(/\/$/, '')}/api/upload/files/${key}`;
       }
 
       return {
@@ -111,6 +133,33 @@ export class UploadService {
     } catch (error) {
       this.logger.error(`Failed to upload to Cloudflare R2: ${error.message}`, error.stack);
       throw new BadRequestException(`فشل رفع الملف إلى Cloudflare R2: ${error.message}`);
+    }
+  }
+
+  private async getFileFromR2(key: string): Promise<FileResponse> {
+    try {
+      const command = new GetObjectCommand({
+        Bucket: this.bucketName,
+        Key: key,
+      });
+
+      const response = await this.s3Client!.send(command);
+
+      if (!response.Body) {
+        throw new NotFoundException('الملف غير موجود');
+      }
+
+      return {
+        stream: response.Body as Readable,
+        contentType: response.ContentType || 'application/octet-stream',
+        contentLength: response.ContentLength,
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      this.logger.error(`Failed to get file from R2: ${error.message}`, error.stack);
+      throw new NotFoundException('الملف غير موجود');
     }
   }
 
@@ -131,8 +180,7 @@ export class UploadService {
 
       await fs.promises.writeFile(targetPath, buffer);
 
-      const appUrl = this.configService.get<string>('app.url') || 'http://localhost:3000';
-      const url = `${appUrl.replace(/\/$/, '')}/uploads/${filename}`;
+      const url = `${this.appUrl.replace(/\/$/, '')}/uploads/${filename}`;
 
       return {
         url,
@@ -144,5 +192,34 @@ export class UploadService {
       this.logger.error(`Failed to upload to local storage: ${error.message}`, error.stack);
       throw new BadRequestException(`فشل حفظ الملف محلياً: ${error.message}`);
     }
+  }
+
+  private async getFileFromLocal(key: string): Promise<FileResponse> {
+    const filePath = path.join(process.cwd(), 'uploads', key);
+
+    // Prevent path traversal
+    const resolvedPath = path.resolve(filePath);
+    const uploadsDir = path.resolve(path.join(process.cwd(), 'uploads'));
+    if (!resolvedPath.startsWith(uploadsDir)) {
+      throw new BadRequestException('مسار غير صالح');
+    }
+
+    if (!fs.existsSync(resolvedPath)) {
+      throw new NotFoundException('الملف غير موجود');
+    }
+
+    const ext = path.extname(key).toLowerCase();
+    const mimeTypes: Record<string, string> = {
+      '.webp': 'image/webp',
+      '.jpg': 'image/jpeg',
+      '.jpeg': 'image/jpeg',
+      '.png': 'image/png',
+      '.gif': 'image/gif',
+    };
+
+    return {
+      stream: fs.createReadStream(resolvedPath),
+      contentType: mimeTypes[ext] || 'application/octet-stream',
+    };
   }
 }

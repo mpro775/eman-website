@@ -1,6 +1,9 @@
 import {
   Controller,
   Post,
+  Get,
+  Param,
+  Res,
   UseInterceptors,
   UploadedFile,
   Body,
@@ -8,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiOperation, ApiConsumes, ApiBody } from '@nestjs/swagger';
+import { Response } from 'express';
 import { UploadService, UploadResponse } from './upload.service';
 import { Public } from '../../common/decorators/public.decorator';
 
@@ -61,5 +65,31 @@ export class UploadController {
       throw new BadRequestException('لم يتم تقديم أي ملف للرفع');
     }
     return this.uploadService.uploadImage(file, folder || 'projects');
+  }
+
+  @Public()
+  @Get('files/*')
+  @ApiOperation({ summary: 'Get uploaded file (proxy for R2 storage)' })
+  async getFile(
+    @Param() params: Record<string, string>,
+    @Res() res: Response,
+  ): Promise<void> {
+    // Extract the wildcard path - NestJS puts it in params['0'] for wildcard routes
+    const key = params['0'] || params['*'];
+
+    if (!key) {
+      throw new BadRequestException('مسار الملف مطلوب');
+    }
+
+    const fileResponse = await this.uploadService.getFile(key);
+
+    res.setHeader('Content-Type', fileResponse.contentType);
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+
+    if (fileResponse.contentLength) {
+      res.setHeader('Content-Length', fileResponse.contentLength);
+    }
+
+    fileResponse.stream.pipe(res);
   }
 }
