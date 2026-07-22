@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiOperation, ApiConsumes, ApiBody } from '@nestjs/swagger';
-import { Response } from 'express';
+import type { Response } from 'express';
 import { UploadService, UploadResponse } from './upload.service';
 import { Public } from '../../common/decorators/public.decorator';
 
