@@ -93,7 +93,7 @@ export class UploadService {
         ContentType: mimetype,
       });
 
-      await this.s3Client.send(command);
+      await this.s3Client!.send(command);
 
       let url: string;
       if (this.publicUrl) {
