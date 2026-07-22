@@ -84,7 +84,7 @@ export const uploadImage = async (
       }
     );
 
-    return response.data.data;
+    return (response.data as any)?.data || response.data;
   } catch (error: any) {
     // If upload endpoint doesn't exist, fallback to base64
     if (error.response?.status === 404 || error.response?.status === 501) {

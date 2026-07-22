@@ -4,6 +4,8 @@ import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import * as bodyParser from 'body-parser';
+import * as express from 'express';
+import * as path from 'path';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
@@ -11,6 +13,9 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
+
+  // Serve static uploaded files
+  app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
   // Increase body size limit for base64 images (50MB)
   app.use(bodyParser.json({ limit: '50mb' }));

@@ -15,6 +15,8 @@ import { UsedProgramsModule } from './modules/used-programs/used-programs.module
 import { NewsletterModule } from './modules/newsletter/newsletter.module';
 import { StatsModule } from './modules/stats/stats.module';
 import { ExperiencesModule } from './modules/experiences/experiences.module';
+import { UploadModule } from './modules/upload/upload.module';
+import { ErrorsModule } from './modules/errors/errors.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import databaseConfig from './config/database.config';
 import jwtConfig from './config/jwt.config';
@@ -48,6 +50,8 @@ import { AppService } from './app.service';
     NewsletterModule,
     StatsModule,
     ExperiencesModule,
+    UploadModule,
+    ErrorsModule,
   ],
   controllers: [AppController],
   providers: [

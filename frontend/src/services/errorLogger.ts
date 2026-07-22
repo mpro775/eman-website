@@ -102,22 +102,21 @@ class ErrorLogger {
    */
   private async sendToBackend(errorInfo: Record<string, unknown>): Promise<void> {
     try {
-      // Only send if API is available
-      const apiUrl = import.meta.env.VITE_API_URL;
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://api.emanjameel.pro/api';
       if (apiUrl) {
-        await fetch(`${apiUrl}/errors`, {
+        const cleanUrl = apiUrl.replace(/\/$/, '');
+        await fetch(`${cleanUrl}/errors`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(errorInfo),
-          // Don't wait for response to avoid blocking
         }).catch(() => {
-          // Silently fail if backend is not available
+          // Silently ignore network failures for error logging
         });
       }
     } catch {
-      // Silently fail
+      // Silently fail if fetch or JSON fails
     }
   }
 
