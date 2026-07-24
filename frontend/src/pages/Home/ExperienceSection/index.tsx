@@ -2,19 +2,19 @@ import React from "react";
 import ExperienceCard, { type ExperienceItem } from "./ExperienceCard";
 
 // Content pixel/text-matched to Figma node 820:1646 ("الخبرات العملية").
-// Left column (820:1653) then right column (820:1702).
+// Left column (994:600) then right column (994:625).
 const LEFT_COLUMN: ExperienceItem[] = [
-    { id: 1, title: "UX/UI & Graphic Designer", subtitle: "أعمال حرة" },
-    { id: 2, title: "دعم فني", subtitle: "في مجموعة هائل سعيد أنعم" },
-    { id: 3, title: "Flutter App", subtitle: "مشروع تخرج في جامعة العلوم الحديثة" },
-    { id: 4, title: "سكرتارية + أمين صندوق", subtitle: "في مركز يونك للإنظمة المحاسبية" },
+    { id: 1, title: "UX/UI & Graphic Designer", subtitle: "Free Lancer", year: "2022-2026", highlight: true },
+    { id: 2, title: "دعم فني", subtitle: "في مجموعة هائل سعيد أنعم", year: "2023" },
+    { id: 3, title: "Flutter App", subtitle: "مشروع تخرج في جامعة العلوم الحديثة", year: "2024" },
+    { id: 4, title: "سكرتارية + أمين صندوق", subtitle: "في مركز يونك للإنظمة المحاسبية", year: "2019-2021" },
 ];
 
 const RIGHT_COLUMN: ExperienceItem[] = [
-    { id: 5, title: "UX/UI", subtitle: "في محفظة جيب  &  Free Lancer" },
-    { id: 6, title: "أستاذ مساعد", subtitle: "في جامعة العلوم الحديثة" },
-    { id: 7, title: "أستاذة UX/UI", subtitle: "في أكاديمية سمارت ديف" },
-    { id: 8, title: "Graphic Designer", subtitle: "في وكالة حريف" },
+    { id: 5, title: "UX/UI", subtitle: "في محفظة جيب", year: "2024-2026" },
+    { id: 6, title: "أستاذ مساعد", subtitle: "في جامعة العلوم الحديثة", year: "2024-2026" },
+    { id: 7, title: "أستاذة UX/UI", subtitle: "في أكاديمية سمارت ديف & اونلاين", year: "2025" },
+    { id: 8, title: "Graphic Designer", subtitle: "في وكالة حريف", year: "2024-2026" },
 ];
 
 /**
@@ -73,14 +73,14 @@ const ExperienceSection: React.FC = () => {
                     Left column sits on the left, right column on the right; gap 78.702px. */}
                 <div
                     dir="ltr"
-                    className="flex flex-col lg:flex-row lg:justify-center w-full items-center gap-[36.5px] lg:gap-[78.702px]"
+                    className="flex flex-col lg:flex-row lg:justify-center w-full items-center gap-[25px] lg:gap-[78.702px]"
                 >
-                    <div className="flex flex-col items-center w-full lg:w-auto" style={{ gap: "36.499px" }}>
+                    <div className="flex flex-col items-center w-full lg:w-auto" style={{ gap: "25px" }}>
                         {LEFT_COLUMN.map((exp, i) => (
                             <ExperienceCard key={exp.id} experience={exp} delay={0.1 + i * 0.08} />
                         ))}
                     </div>
-                    <div className="flex flex-col items-center w-full lg:w-auto" style={{ gap: "36.499px" }}>
+                    <div className="flex flex-col items-center w-full lg:w-auto" style={{ gap: "25px" }}>
                         {RIGHT_COLUMN.map((exp, i) => (
                             <ExperienceCard key={exp.id} experience={exp} delay={0.15 + i * 0.08} />
                         ))}
