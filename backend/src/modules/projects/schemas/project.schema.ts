@@ -45,6 +45,10 @@ export class Project extends Document {
   @Prop({ type: String, trim: true, default: '' })
   projectLink: string;
 
+  /** External URL for Figma Community CTA. Empty hides the button. */
+  @Prop({ type: String, trim: true, default: '' })
+  figmaLink: string;
+
   createdAt: Date;
   updatedAt: Date;
 }

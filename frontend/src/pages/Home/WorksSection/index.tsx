@@ -34,12 +34,18 @@ const WorksSection: React.FC = () => {
                 setFilters([ALL, ...ordered.map((c) => c.name)]);
 
                 setWorks(
-                    (paginated?.data || []).map((p) => ({
-                        id: p._id,
-                        title: p.name,
-                        category: typeof p.category === "object" && p.category ? p.category.name : "",
-                        image: p.image,
-                    }))
+                    (paginated?.data || []).map((p) => {
+                        const item: WorkItem = {
+                            id: p._id,
+                            title: p.name,
+                            category: typeof p.category === "object" && p.category ? p.category.name : "",
+                            image: p.image,
+                        };
+                        if (p.projectLink) item.link = p.projectLink;
+                        if (p.figmaLink) item.figmaLink = p.figmaLink;
+                        if (p.description) item.description = p.description;
+                        return item;
+                    })
                 );
             } catch {
                 if (!cancelled) setFailed(true);

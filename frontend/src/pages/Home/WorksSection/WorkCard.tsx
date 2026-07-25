@@ -11,6 +11,12 @@ export interface WorkItem {
     category: string;
     /** Card image */
     image: string;
+    /** External preview URL or details link */
+    link?: string | undefined;
+    /** Figma Community link */
+    figmaLink?: string | undefined;
+    /** Optional project description */
+    description?: string | undefined;
 }
 
 interface WorkCardProps {

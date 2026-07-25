@@ -73,4 +73,9 @@ export class CreateProjectDto {
   @IsString()
   @MaxLength(2048)
   projectLink?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(2048)
+  figmaLink?: string;
 }

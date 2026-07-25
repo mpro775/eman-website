@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FiArrowLeft, FiArrowRight, FiExternalLink } from "react-icons/fi";
+import { FaFigma } from "react-icons/fa";
 import type { ProjectDetailRow } from "../../types/project.types";
 import { resolveDetailIcon } from "../../utils/detailIcons";
 import { normalizeExternalUrl } from "../../utils/externalUrl";
@@ -11,7 +12,8 @@ interface ProjectSidebarProps {
     description: string;
     tags: string[];
     details: ProjectDetailRow[];
-    projectLink: string;
+    projectLink?: string;
+    figmaLink?: string;
     /** `null` hides the counter and the arrows (list unavailable). */
     position: { index: number; total: number } | null;
     /** Ids of the neighbouring projects across the whole list; `null` at an end. */
@@ -26,8 +28,7 @@ const navClass =
 
 /**
  * The detail page's right-hand panel: category, project-to-project navigation,
- * title, description, tags, the free-form details table, and the live-site CTA.
- * Every block below the title hides itself when it has no data.
+ * title, description, tags, free-form details table, live-site CTA, and Figma Community CTA.
  */
 const ProjectSidebar: React.FC<ProjectSidebarProps> = ({
     categoryName,
@@ -35,12 +36,14 @@ const ProjectSidebar: React.FC<ProjectSidebarProps> = ({
     description,
     tags,
     details,
-    projectLink,
+    projectLink = "",
+    figmaLink = "",
     position,
     prevId,
     nextId,
 }) => {
     const href = normalizeExternalUrl(projectLink);
+    const figmaHref = normalizeExternalUrl(figmaLink);
 
     return (
         <aside className="flex flex-col gap-6 p-6 lg:p-8 rounded-2xl bg-[#110f2e] border border-white/10 lg:sticky lg:top-8">
@@ -160,21 +163,38 @@ const ProjectSidebar: React.FC<ProjectSidebarProps> = ({
                 </dl>
             )}
 
-            {href && (
-                <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-white font-medium transition-all duration-300 hover:shadow-[0_0_24px_rgba(255,92,131,0.45)] active:scale-[0.99]"
-                    style={{
-                        fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
-                        background: "linear-gradient(252.89deg, #c67588 1.84%, #603942 98.17%)",
-                    }}
-                >
-                    <span>زيارة المشروع مباشر</span>
-                    <FiExternalLink className="w-4 h-4" />
-                </a>
-            )}
+            {/* CTA Buttons */}
+            <div className="flex flex-col gap-3">
+                {href && (
+                    <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-white font-medium transition-all duration-300 hover:shadow-[0_0_24px_rgba(255,92,131,0.45)] active:scale-[0.99]"
+                        style={{
+                            fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                            background: "linear-gradient(252.89deg, #c67588 1.84%, #603942 98.17%)",
+                        }}
+                    >
+                        <span>زيارة المشروع مباشر</span>
+                        <FiExternalLink className="w-4 h-4" />
+                    </a>
+                )}
+
+                {/* Button #2: Figma Community link matching user design */}
+                {figmaHref && (
+                    <a
+                        href={figmaHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-3 w-full py-3.5 px-4 rounded-xl bg-white/[0.03] border border-white/15 hover:border-[rgba(162,89,255,0.6)] hover:bg-[#181236] text-white/90 hover:text-white transition-all duration-300 group shadow-sm hover:shadow-[0_0_20px_rgba(162,89,255,0.25)] active:scale-[0.99]"
+                        style={{ fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif' }}
+                    >
+                        <span className="text-sm font-medium">على Figma Community</span>
+                        <FaFigma className="w-4 h-4 text-[#a259ff] group-hover:text-white transition-colors duration-300 shrink-0" />
+                    </a>
+                )}
+            </div>
         </aside>
     );
 };

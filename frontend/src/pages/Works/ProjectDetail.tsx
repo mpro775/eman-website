@@ -181,6 +181,7 @@ const ProjectDetail: React.FC = () => {
                             tags={(project.tags || []).filter(Boolean)}
                             details={(project.details || []).filter((row) => row?.label)}
                             projectLink={project.projectLink || ""}
+                            figmaLink={project.figmaLink || ""}
                             position={position}
                             prevId={position && position.index > 0 ? siblings[position.index - 1]._id : null}
                             nextId={

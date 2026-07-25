@@ -43,6 +43,7 @@ export const ProjectForm = () => {
     tags: [] as string[],
     details: isEdit ? ([] as ProjectDetailRow[]) : makeDefaultDetailRows(),
     projectLink: '',
+    figmaLink: '',
   }));
 
   useEffect(() => {
@@ -74,8 +75,6 @@ export const ProjectForm = () => {
           typeof project.category === 'object' ? project.category._id : project.category,
         gallery: Array.isArray(project.gallery) ? project.gallery.filter(Boolean) : [],
         tags: Array.isArray(project.tags) ? project.tags.filter(Boolean) : [],
-        // Rebuilt from the three whitelisted keys only. Echoing back an `_id`
-        // (or anything else the API attached) makes the next save a 400.
         details: Array.isArray(project.details)
           ? project.details.map((row) => ({
               icon: row?.icon ?? '',
@@ -84,6 +83,7 @@ export const ProjectForm = () => {
             }))
           : [],
         projectLink: project.projectLink ?? '',
+        figmaLink: project.figmaLink ?? '',
       });
     } catch (error) {
       showToast('فشل تحميل العمل', 'error');
@@ -133,6 +133,7 @@ export const ProjectForm = () => {
           value: (row.value || '').trim(),
         })),
       projectLink: normalizeExternalUrl(formData.projectLink),
+      figmaLink: normalizeExternalUrl(formData.figmaLink),
     };
 
     try {
@@ -145,7 +146,6 @@ export const ProjectForm = () => {
       }
       navigate('/admin/projects');
     } catch (error: any) {
-      // A validation failure returns an array of messages.
       const message = error.response?.data?.message;
       showToast(Array.isArray(message) ? message.join(' · ') : message || 'حدث خطأ', 'error');
     } finally {
@@ -210,9 +210,6 @@ export const ProjectForm = () => {
               disabled={loading}
             />
 
-            {/* type="text", not "url": native URL validation rejects
-                scheme-less input with an untranslatable browser bubble.
-                normalizeExternalUrl adds the scheme on submit instead. */}
             <FormInput
               label="رابط المشروع"
               type="text"
@@ -221,6 +218,17 @@ export const ProjectForm = () => {
               value={formData.projectLink}
               onChange={(e) => setFormData({ ...formData, projectLink: e.target.value })}
               helperText="يظهر كزر «زيارة المشروع مباشر». اتركه فارغاً لإخفاء الزر."
+              disabled={loading}
+            />
+
+            <FormInput
+              label="رابط Figma Community"
+              type="text"
+              dir="ltr"
+              placeholder="https://www.figma.com/community/..."
+              value={formData.figmaLink}
+              onChange={(e) => setFormData({ ...formData, figmaLink: e.target.value })}
+              helperText="يظهر كزر «المشروع على Figma Community». اتركه فارغاً لإخفاء الزر."
               disabled={loading}
             />
           </div>

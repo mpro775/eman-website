@@ -20,6 +20,7 @@ export interface Project {
   tags?: string[];
   details?: ProjectDetailRow[];
   projectLink?: string;
+  figmaLink?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -48,6 +49,7 @@ export interface CreateProjectDto {
   tags?: string[];
   details?: ProjectDetailRow[];
   projectLink?: string;
+  figmaLink?: string;
 }
 
 export interface UpdateProjectDto extends Partial<CreateProjectDto> { }
