@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { FiX, FiExternalLink } from "react-icons/fi";
 import WorkCard, { type WorkItem } from "./WorkCard";
 import { projectsService } from "../../../services/projects.service";
-import { resolveImageUrl } from "../../../utils/imageUrl";
 
 /** The "show everything" tab — a client-side view, not a stored category. */
 const ALL = "الكل";
@@ -18,7 +16,6 @@ const WorksSection: React.FC = () => {
     const [works, setWorks] = useState<WorkItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [failed, setFailed] = useState(false);
-    const [selectedWork, setSelectedWork] = useState<WorkItem | null>(null);
 
     useEffect(() => {
         let cancelled = false;
@@ -27,7 +24,9 @@ const WorksSection: React.FC = () => {
             try {
                 const [categories, paginated] = await Promise.all([
                     projectsService.getCategories(),
-                    projectsService.getAll({ limit: 100 }),
+                    // Sort pinned so this order matches the detail page's
+                    // prev/next list exactly.
+                    projectsService.getAll({ limit: 100, sortBy: "createdAt", sortOrder: "desc" }),
                 ]);
                 if (cancelled) return;
 
@@ -40,7 +39,6 @@ const WorksSection: React.FC = () => {
                         title: p.name,
                         category: typeof p.category === "object" && p.category ? p.category.name : "",
                         image: p.image,
-                        description: p.description,
                     }))
                 );
             } catch {
@@ -171,84 +169,11 @@ const WorksSection: React.FC = () => {
                         style={{ gap: "24px" }}
                     >
                         {visible.map((work, i) => (
-                            <WorkCard
-                                key={work.id}
-                                work={work}
-                                delay={0.1 + i * 0.07}
-                                onPreview={(w) => setSelectedWork(w)}
-                            />
+                            <WorkCard key={work.id} work={work} delay={0.1 + i * 0.07} />
                         ))}
                     </div>
                 )}
             </div>
-
-            {/* Project Preview Modal Overlay */}
-            {selectedWork && (
-                <div
-                    className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md animate-fadeIn"
-                    onClick={() => setSelectedWork(null)}
-                >
-                    <div
-                        dir="rtl"
-                        className="relative w-full max-w-4xl bg-[#110f2e]/95 border border-white/10 rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 animate-scaleUp"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        {/* Close Button */}
-                        <button
-                            type="button"
-                            onClick={() => setSelectedWork(null)}
-                            className="absolute top-4 left-4 z-30 flex items-center justify-center w-10 h-10 rounded-full bg-black/50 border border-white/20 text-white hover:bg-[#c67588] transition-all duration-300 cursor-pointer"
-                        >
-                            <FiX className="w-5 h-5" />
-                        </button>
-
-                        {/* Image Preview Container */}
-                        <div className="relative w-full bg-black max-h-[70vh] flex items-center justify-center overflow-hidden">
-                            <img
-                                src={resolveImageUrl(selectedWork.image)}
-                                alt={selectedWork.title}
-                                className="w-full h-full max-h-[70vh] object-contain"
-                            />
-                        </div>
-
-                        {/* Details Footer */}
-                        <div className="p-6 bg-[#0a091d] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-white/5">
-                            <div>
-                                <div className="flex items-center gap-3 mb-1">
-                                    <h3
-                                        className="text-2xl font-bold text-white"
-                                        style={{ fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif' }}
-                                    >
-                                        {selectedWork.title}
-                                    </h3>
-                                    {selectedWork.category && (
-                                        <span className="px-3 py-1 text-xs rounded-full bg-[rgba(255,92,131,0.15)] text-[#c67588] border border-[rgba(255,92,131,0.3)]">
-                                            {selectedWork.category}
-                                        </span>
-                                    )}
-                                </div>
-                                {selectedWork.description && (
-                                    <p className="text-gray-300 text-sm mt-1 max-w-xl">
-                                        {selectedWork.description}
-                                    </p>
-                                )}
-                            </div>
-
-                            {selectedWork.link && (
-                                <a
-                                    href={selectedWork.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#c67588] to-[#8b5cf6] text-white font-medium text-sm hover:shadow-[0_0_20px_rgba(255,92,131,0.5)] hover:scale-105 transition-all duration-300 shrink-0"
-                                >
-                                    <span>زيارة المشروع</span>
-                                    <FiExternalLink className="w-4 h-4" />
-                                </a>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            )}
         </section>
     );
 };

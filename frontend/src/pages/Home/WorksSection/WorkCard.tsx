@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { FiEye, FiArrowUpRight } from "react-icons/fi";
 import { resolveImageUrl } from "../../../utils/imageUrl";
 
@@ -10,37 +11,26 @@ export interface WorkItem {
     category: string;
     /** Card image */
     image: string;
-    /** External preview URL or details link */
-    link?: string;
-    /** Optional project description */
-    description?: string;
 }
 
 interface WorkCardProps {
     work: WorkItem;
     delay: number;
-    onPreview?: (work: WorkItem) => void;
 }
 
 /**
  * Portfolio card — redesigned with aspect-ratio 166 / 209 and info bar height 84px.
  * Features glassmorphic backdrop, gradient border highlights, smooth image scaling,
- * bottom vignette gradient, responsive glowing category badge, and interactive preview button.
+ * bottom vignette gradient, and a responsive glowing category badge.
+ *
+ * The whole card is one link to `/works/:id`; the hover button and the corner
+ * icon are decorative, so each card is a single tab stop with no nested controls.
  */
-const WorkCard: React.FC<WorkCardProps> = ({ work, delay, onPreview }) => {
-    const handlePreviewClick = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        if (onPreview) {
-            onPreview(work);
-        } else if (work.link) {
-            window.open(work.link, "_blank", "noopener,noreferrer");
-        } else {
-            window.open(resolveImageUrl(work.image), "_blank", "noopener,noreferrer");
-        }
-    };
-
+const WorkCard: React.FC<WorkCardProps> = ({ work, delay }) => {
     return (
-        <div
+        <Link
+            to={`/works/${work.id}`}
+            aria-label={`عرض تفاصيل ${work.title}`}
             data-no-splash="true"
             className="group relative flex flex-col overflow-hidden bg-[rgba(17,15,46,0.35)] backdrop-blur-md border border-[rgba(255,255,255,0.08)] hover:border-[rgba(255,92,131,0.4)] transition-all duration-500 ease-out shadow-lg hover:shadow-[0_12px_32px_rgba(255,92,131,0.2)] w-full hover:-translate-y-1.5 cursor-pointer"
             style={{
@@ -48,7 +38,6 @@ const WorkCard: React.FC<WorkCardProps> = ({ work, delay, onPreview }) => {
                 opacity: 0,
                 animation: `skillIn 0.5s cubic-bezier(0.25,0.46,0.45,0.94) ${delay}s forwards`,
             }}
-            onClick={handlePreviewClick}
         >
             {/* Ambient glow highlight on hover */}
             <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(ellipse_at_top_right,rgba(255,92,131,0.15),transparent_70%)] z-10" />
@@ -65,17 +54,16 @@ const WorkCard: React.FC<WorkCardProps> = ({ work, delay, onPreview }) => {
                 {/* Dark backdrop overlay on hover */}
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10" />
 
-                {/* Animated Hover Preview Button */}
+                {/* Animated hover preview affordance — decorative; the card is the link */}
                 <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
-                    <button
-                        type="button"
-                        onClick={handlePreviewClick}
-                        className="pointer-events-auto group/btn opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 ease-out flex items-center gap-2 px-4 py-2.5 rounded-xl bg-black/70 backdrop-blur-md border border-white/20 text-white font-medium text-sm hover:bg-gradient-to-r hover:from-[#c67588] hover:to-[#8b5cf6] hover:border-transparent hover:scale-105 active:scale-95 hover:shadow-[0_0_20px_rgba(255,92,131,0.6)] cursor-pointer"
+                    <span
+                        aria-hidden="true"
+                        className="opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 ease-out flex items-center gap-2 px-4 py-2.5 rounded-xl bg-black/70 backdrop-blur-md border border-white/20 group-hover:border-transparent group-hover:bg-gradient-to-r group-hover:from-[#c67588] group-hover:to-[#8b5cf6] group-hover:shadow-[0_0_20px_rgba(255,92,131,0.6)] text-white font-medium text-sm"
                     >
-                        <FiEye className="w-4 h-4 text-[#ff8ba7] group-hover/btn:text-white transition-all duration-300 group-hover/btn:scale-110 group-hover/btn:rotate-6" />
+                        <FiEye className="w-4 h-4 text-[#ff8ba7] group-hover:text-white transition-all duration-300" />
                         <span style={{ fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif' }}>معاينة المشروع</span>
-                        <FiArrowUpRight className="w-4 h-4 text-white/70 group-hover/btn:text-white group-hover/btn:-translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-300" />
-                    </button>
+                        <FiArrowUpRight className="w-4 h-4 text-white/70 group-hover:text-white transition-transform duration-300" />
+                    </span>
                 </div>
 
                 {/* Bottom gradient overlay for smooth transition into info bar */}
@@ -84,7 +72,7 @@ const WorkCard: React.FC<WorkCardProps> = ({ work, delay, onPreview }) => {
 
             {/* Info bar (height: 84px) */}
             <div className="relative z-20 flex items-center justify-center p-4 bg-[rgba(17,15,46,0.4)]" style={{ height: "84px" }}>
-                <div dir="rtl" className="flex items-center justify-between w-full gap-3" style={{ maxWidth: "362px" }}>
+                <div className="flex items-center justify-between w-full gap-3" style={{ maxWidth: "362px" }}>
                     {/* Title (right) */}
                     <p
                         dir="auto"
@@ -100,7 +88,7 @@ const WorkCard: React.FC<WorkCardProps> = ({ work, delay, onPreview }) => {
                         {work.title}
                     </p>
 
-                    {/* Category chip + Preview action icon (left) */}
+                    {/* Category chip + decorative action icon (left) */}
                     <div className="flex items-center gap-2 shrink-0">
                         <div
                             className="flex items-center shrink-0 bg-[rgba(255,92,131,0.15)] border border-[rgba(255,92,131,0.25)] group-hover:border-[rgba(255,92,131,0.5)] group-hover:bg-[rgba(255,92,131,0.25)] transition-all duration-300"
@@ -121,18 +109,16 @@ const WorkCard: React.FC<WorkCardProps> = ({ work, delay, onPreview }) => {
                             </span>
                         </div>
 
-                        {/* Quick preview icon button */}
                         <div
-                            onClick={handlePreviewClick}
-                            title="معاينة المشروع"
-                            className="flex items-center justify-center w-[30px] h-[30px] rounded-[10px] bg-white/5 border border-white/10 text-white/70 hover:text-white hover:bg-[rgba(255,92,131,0.4)] hover:border-[rgba(255,92,131,0.6)] hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-[0_0_12px_rgba(255,92,131,0.4)]"
+                            aria-hidden="true"
+                            className="flex items-center justify-center w-[30px] h-[30px] rounded-[10px] bg-white/5 border border-white/10 text-white/70 group-hover:text-white group-hover:bg-[rgba(255,92,131,0.4)] group-hover:border-[rgba(255,92,131,0.6)] group-hover:scale-110 transition-all duration-300 shadow-sm group-hover:shadow-[0_0_12px_rgba(255,92,131,0.4)]"
                         >
                             <FiArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-45" />
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 };
 

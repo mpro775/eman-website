@@ -124,6 +124,9 @@ export async function seedProjectsAndCategories(
     catMap[cat.name] = cat;
   });
 
+  // Note on coverage: the first project is fully populated, two more carry
+  // partial detail data, and the rest are left bare on purpose so a seeded
+  // database also exercises every empty state on the detail page.
   const projects = [
     // UI/UX
     {
@@ -132,6 +135,22 @@ export async function seedProjectsAndCategories(
       description:
         'تصميم لوحة تحكم متكاملة لإدارة المتاجر الإلكترونية، تشمل التحليلات وإدارة الطلبات ورؤى العملاء بواجهة واضحة وسهلة.',
       category: catMap['UI/UX']._id,
+      gallery: [
+        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=750&fit=crop',
+        'https://images.unsplash.com/photo-1551288049-a0ffb92a2b06?w=1200&h=750&fit=crop',
+        'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=750&fit=crop',
+        'https://images.unsplash.com/photo-1543286386-713bdd548da4?w=1200&h=750&fit=crop',
+        'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=1200&h=750&fit=crop',
+        'https://images.unsplash.com/photo-1555421689-491a97ff2040?w=1200&h=750&fit=crop',
+      ],
+      tags: ['Dashboard', 'Analytics', 'Data Visualization'],
+      details: [
+        { icon: 'layers', label: 'نوع المشروع', value: 'لوحة تحكم ويب' },
+        { icon: 'calendar', label: 'السنة', value: '2024' },
+        { icon: 'figma', label: 'الأدوات', value: 'Figma' },
+        { icon: 'user', label: 'العميل', value: 'مشروع شخصي' },
+      ],
+      projectLink: 'https://www.behance.net/',
     },
     {
       name: 'منصة تحليلات البيانات',
@@ -139,6 +158,17 @@ export async function seedProjectsAndCategories(
       description:
         'منصة تحليلات متقدمة مع عرض بصري للبيانات في الوقت الفعلي وتقارير قابلة للتصدير، صُمّمت لتبسيط القرارات.',
       category: catMap['UI/UX']._id,
+      gallery: [
+        'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=750&fit=crop',
+        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=750&fit=crop',
+        'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=1200&h=750&fit=crop',
+      ],
+      tags: ['Analytics', 'Reports'],
+      details: [
+        { icon: 'layers', label: 'نوع المشروع', value: 'منصة ويب' },
+        { icon: 'calendar', label: 'السنة', value: '2025' },
+        { icon: 'pen-tool', label: 'الأدوات', value: 'Figma · Adobe XD' },
+      ],
     },
     {
       name: 'نظام إدارة المخزون',
@@ -180,6 +210,13 @@ export async function seedProjectsAndCategories(
       description:
         'تصميم تجربة وواجهات تطبيق توصيل طعام، من تصفّح المطاعم حتى تتبّع الطلب، بتركيز على سرعة إتمام المهمة.',
       category: catMap['تطبيقات']._id,
+      tags: ['Mobile App', 'UX Research'],
+      details: [
+        { icon: 'smartphone', label: 'نوع المشروع', value: 'تطبيق جوال' },
+        { icon: 'calendar', label: 'السنة', value: '2023' },
+        { icon: 'briefcase', label: 'العميل', value: 'وكالة حريف' },
+      ],
+      projectLink: 'https://dribbble.com/',
     },
     {
       name: 'تطبيق تتبّع اللياقة',
