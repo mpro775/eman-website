@@ -59,11 +59,11 @@ export const WorkCardPreview: React.FC<WorkCardPreviewProps> = ({
                     <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
                         <span
                             aria-hidden="true"
-                            className="opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 ease-out flex items-center gap-2 px-4 py-2.5 rounded-xl bg-black/70 backdrop-blur-md border border-white/20 group-hover:border-transparent group-hover:bg-gradient-to-r group-hover:from-[#c67588] group-hover:to-[#8b5cf6] group-hover:shadow-[0_0_20px_rgba(255,92,131,0.6)] text-white font-medium text-sm"
+                            className="opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 ease-out flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#C67588] text-white shadow-[0_0_20px_rgba(198,117,136,0.5)] border border-white/20 font-medium text-sm"
                         >
-                            <FiEye className="w-4 h-4 text-[#ff8ba7] group-hover:text-white transition-all duration-300" />
+                            <FiEye className="w-4 h-4 text-white transition-all duration-300" />
                             <span style={{ fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif' }}>معاينة المشروع</span>
-                            <FiArrowUpRight className="w-4 h-4 text-white/70 group-hover:text-white transition-transform duration-300" />
+                            <FiArrowUpRight className="w-4 h-4 text-white transition-transform duration-300" />
                         </span>
                     </div>
 
