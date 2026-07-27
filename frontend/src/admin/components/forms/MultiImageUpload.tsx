@@ -135,9 +135,15 @@ export const MultiImageUpload = ({
         {value.map((url, index) => (
           <div
             key={`${url}-${index}`}
-            className="relative aspect-square rounded-lg overflow-hidden border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-bg-secondary)] group"
+            className="relative aspect-square rounded-lg overflow-hidden border border-[color:var(--color-admin-border)] bg-[#0d0c1d] group flex items-center justify-center p-1"
           >
-            <img src={resolveImageUrl(url)} alt={`صورة ${index + 1}`} className="w-full h-full object-cover" />
+            <img
+              src={resolveImageUrl(url)}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 w-full h-full object-cover blur-sm opacity-25 pointer-events-none"
+            />
+            <img src={resolveImageUrl(url)} alt={`صورة ${index + 1}`} className="relative z-10 w-full h-full object-contain" />
 
             <button
               type="button"

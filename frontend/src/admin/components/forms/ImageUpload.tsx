@@ -130,11 +130,19 @@ export const ImageUpload = ({
       )}
       <div className="flex flex-col gap-3">
         {preview ? (
-          <div className="relative w-full h-48 rounded-lg overflow-hidden border border-[color:var(--color-admin-border)]">
+          <div className="relative w-full min-h-[180px] max-h-[320px] rounded-xl overflow-hidden border border-[color:var(--color-admin-border)] bg-[#0d0c1d] flex items-center justify-center p-3">
+            {/* Blurred background fill */}
+            <img
+              src={preview}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 w-full h-full object-cover blur-md opacity-30 pointer-events-none"
+            />
+            {/* Crisp natural aspect ratio image */}
             <img
               src={preview}
               alt="Preview"
-              className="w-full h-full object-cover"
+              className="relative z-10 max-h-[295px] w-auto max-w-full object-contain rounded-lg shadow-md"
             />
             {isUploading && showProgress && (
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
