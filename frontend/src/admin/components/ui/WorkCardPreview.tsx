@@ -38,11 +38,21 @@ export const WorkCardPreview: React.FC<WorkCardPreviewProps> = ({
                 {/* Cover image container (aspect-ratio: 166 / 209) */}
                 <div className="relative w-full overflow-hidden bg-[#0d0c1d]" style={{ aspectRatio: "166 / 209" }}>
                     {hasImage ? (
-                        <img
-                            src={resolveImageUrl(image)}
-                            alt={displayTitle}
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
-                        />
+                        <>
+                            {/* Background ambient fill using blurred image */}
+                            <img
+                                src={resolveImageUrl(image)}
+                                alt=""
+                                aria-hidden="true"
+                                className="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-30 transition-transform duration-700 group-hover:scale-120"
+                            />
+                            {/* Main crisp image maintaining original aspect ratio without distortion or forced stretching */}
+                            <img
+                                src={resolveImageUrl(image)}
+                                alt={displayTitle}
+                                className="relative z-10 w-full h-full object-contain p-1.5 transition-transform duration-700 ease-out group-hover:scale-105"
+                            />
+                        </>
                     ) : (
                         <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-white/30 p-4 text-center bg-gradient-to-b from-white/5 to-transparent">
                             <FiImage className="w-10 h-10 stroke-[1.5]" />
