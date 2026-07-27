@@ -13,9 +13,9 @@ export class ProjectCategory extends Document {
   updatedAt: Date;
 }
 
-export const ProjectCategorySchema = SchemaFactory.createForClass(ProjectCategory);
+export const ProjectCategorySchema =
+  SchemaFactory.createForClass(ProjectCategory);
 
 // Indexes for better performance
 ProjectCategorySchema.index({ order: 1 });
 ProjectCategorySchema.index({ name: 1 });
-

@@ -12,7 +12,7 @@ export class ProfileService {
 
   async getProfile(): Promise<Profile> {
     const profile = await this.profileModel.findOne();
-    
+
     if (!profile) {
       throw new NotFoundException('الملف الشخصي غير موجود');
     }
@@ -37,7 +37,7 @@ export class ProfileService {
 
   async createInitialProfile(data: Partial<Profile>): Promise<Profile> {
     const existingProfile = await this.profileModel.findOne();
-    
+
     if (existingProfile) {
       return existingProfile;
     }
@@ -46,4 +46,3 @@ export class ProfileService {
     return profile.save();
   }
 }
-

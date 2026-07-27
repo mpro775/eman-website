@@ -9,7 +9,7 @@ import { createPaginatedResponse } from '../../../common/utils/pagination.util';
 
 @Injectable()
 export class PostsService {
-  constructor(@InjectModel(PostBlog.name) private postModel: Model<PostBlog>) { }
+  constructor(@InjectModel(PostBlog.name) private postModel: Model<PostBlog>) {}
 
   private generateSlug(title: string): string {
     return title
@@ -26,7 +26,10 @@ export class PostsService {
     return Math.ceil(words / wordsPerMinute);
   }
 
-  async create(createPostDto: CreatePostDto, authorId: string): Promise<PostBlog> {
+  async create(
+    createPostDto: CreatePostDto,
+    authorId: string,
+  ): Promise<PostBlog> {
     const slug = this.generateSlug(createPostDto.title);
     const readTime =
       createPostDto.readTime || this.calculateReadTime(createPostDto.content);

@@ -37,4 +37,3 @@ export class CreateMessageDto {
   @Min(0, { message: 'الميزانية يجب أن تكون أكبر من أو تساوي صفر' })
   budget?: number;
 }
-

@@ -6,11 +6,12 @@ import { Testimonial, TestimonialSchema } from './schemas/testimonial.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Testimonial.name, schema: TestimonialSchema }]),
+    MongooseModule.forFeature([
+      { name: Testimonial.name, schema: TestimonialSchema },
+    ]),
   ],
   controllers: [TestimonialsController],
   providers: [TestimonialsService],
   exports: [TestimonialsService],
 })
 export class TestimonialsModule {}
-

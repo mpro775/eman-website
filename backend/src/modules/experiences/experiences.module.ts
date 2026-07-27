@@ -5,13 +5,13 @@ import { ExperiencesService } from './experiences.service';
 import { Experience, ExperienceSchema } from './schemas/experience.schema';
 
 @Module({
-    imports: [
-        MongooseModule.forFeature([
-            { name: Experience.name, schema: ExperienceSchema },
-        ]),
-    ],
-    controllers: [ExperiencesController],
-    providers: [ExperiencesService],
-    exports: [ExperiencesService],
+  imports: [
+    MongooseModule.forFeature([
+      { name: Experience.name, schema: ExperienceSchema },
+    ]),
+  ],
+  controllers: [ExperiencesController],
+  providers: [ExperiencesService],
+  exports: [ExperiencesService],
 })
-export class ExperiencesModule { }
+export class ExperiencesModule {}

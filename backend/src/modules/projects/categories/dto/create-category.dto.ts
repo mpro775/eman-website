@@ -9,4 +9,3 @@ export class CreateCategoryDto {
   @IsNumber()
   order?: number;
 }
-

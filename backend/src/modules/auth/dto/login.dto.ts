@@ -8,4 +8,3 @@ export class LoginDto {
   @MinLength(6, { message: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل' })
   password: string;
 }
-

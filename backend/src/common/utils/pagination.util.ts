@@ -7,7 +7,7 @@ export function createPaginatedResponse<T>(
   limit: number,
 ): IPaginatedResponse<T> {
   const totalPages = Math.ceil(total / limit);
-  
+
   return {
     data,
     meta: {
@@ -20,4 +20,3 @@ export function createPaginatedResponse<T>(
     },
   };
 }
-

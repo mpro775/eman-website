@@ -82,4 +82,3 @@ export class UpdateProfileDto {
   @Type(() => CertificateDto)
   certificates?: CertificateDto[];
 }
-

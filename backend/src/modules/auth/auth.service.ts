@@ -11,13 +11,15 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private configService: ConfigService,
-  ) { }
+  ) {}
 
   async login(loginDto: LoginDto) {
     const user = await this.usersService.findByEmail(loginDto.email);
 
     if (!user) {
-      throw new UnauthorizedException('البريد الإلكتروني أو كلمة المرور غير صحيحة');
+      throw new UnauthorizedException(
+        'البريد الإلكتروني أو كلمة المرور غير صحيحة',
+      );
     }
 
     const isPasswordValid = await this.usersService.validatePassword(
@@ -26,14 +28,19 @@ export class AuthService {
     );
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException('البريد الإلكتروني أو كلمة المرور غير صحيحة');
+      throw new UnauthorizedException(
+        'البريد الإلكتروني أو كلمة المرور غير صحيحة',
+      );
     }
 
     const tokens = await this.generateTokens(user);
 
     // Save refresh token
     const refreshTokens = [...user.refreshTokens, tokens.refreshToken];
-    await this.usersService.updateRefreshTokens(user._id.toString(), refreshTokens);
+    await this.usersService.updateRefreshTokens(
+      user._id.toString(),
+      refreshTokens,
+    );
 
     return {
       message: 'تم تسجيل الدخول بنجاح',
@@ -53,7 +60,9 @@ export class AuthService {
     const user = await this.usersService.findById(userId);
 
     if (user) {
-      const refreshTokens = user.refreshTokens.filter((token) => token !== refreshToken);
+      const refreshTokens = user.refreshTokens.filter(
+        (token) => token !== refreshToken,
+      );
       await this.usersService.updateRefreshTokens(userId, refreshTokens);
     }
 
@@ -76,14 +85,19 @@ export class AuthService {
       }
 
       // Remove old refresh token
-      const refreshTokens = user.refreshTokens.filter((token) => token !== refreshToken);
+      const refreshTokens = user.refreshTokens.filter(
+        (token) => token !== refreshToken,
+      );
 
       // Generate new tokens
       const tokens = await this.generateTokens(user);
 
       // Save new refresh token
       refreshTokens.push(tokens.refreshToken);
-      await this.usersService.updateRefreshTokens(user._id.toString(), refreshTokens);
+      await this.usersService.updateRefreshTokens(
+        user._id.toString(),
+        refreshTokens,
+      );
 
       return {
         message: 'تم تحديث التوكن بنجاح',
@@ -110,7 +124,10 @@ export class AuthService {
       throw new UnauthorizedException('كلمة المرور الحالية غير صحيحة');
     }
 
-    await this.usersService.updatePassword(userId, changePasswordDto.newPassword);
+    await this.usersService.updatePassword(
+      userId,
+      changePasswordDto.newPassword,
+    );
 
     // Clear all refresh tokens (force re-login)
     await this.usersService.updateRefreshTokens(userId, []);
@@ -162,4 +179,3 @@ export class AuthService {
     };
   }
 }
-

@@ -14,8 +14,16 @@ export async function seedExperiences(model: Model<Experience>) {
     { name: 'Graphic Designer', description: 'في وكالة حريف', order: 4 },
     { name: 'UX/UI & Graphic Designer', description: 'أعمال حرة', order: 5 },
     { name: 'دعم فني', description: 'في مجموعة هائل سعيد أنعم', order: 6 },
-    { name: 'Flutter App', description: 'مشروع تخرج في جامعة العلوم الحديثة', order: 7 },
-    { name: 'سكرتارية + أمين صندوق', description: 'في مركز يونك للأنظمة المحاسبية', order: 8 },
+    {
+      name: 'Flutter App',
+      description: 'مشروع تخرج في جامعة العلوم الحديثة',
+      order: 7,
+    },
+    {
+      name: 'سكرتارية + أمين صندوق',
+      description: 'في مركز يونك للأنظمة المحاسبية',
+      order: 8,
+    },
   ];
 
   await model.deleteMany({});
@@ -27,21 +35,24 @@ export async function seedServices(model: Model<Service>) {
   const services = [
     {
       name: 'Digital Marketing',
-      description: 'إنشاء صفحات السوشل ميديا, وإدارة الحملات الإعلانية، والرد على العملاء',
+      description:
+        'إنشاء صفحات السوشل ميديا, وإدارة الحملات الإعلانية، والرد على العملاء',
       icon: 'digital_Service.png',
       order: 1,
       isPublished: true,
     },
     {
       name: 'Graphic Designs',
-      description: 'تصميم الهوية التجارية المتكاملة ، شعارات . بوسترات إعلانية و بنرات',
+      description:
+        'تصميم الهوية التجارية المتكاملة ، شعارات . بوسترات إعلانية و بنرات',
       icon: 'graghic_Service.png',
       order: 2,
       isPublished: true,
     },
     {
       name: 'UX / UI Design',
-      description: 'تطبيقات الموبايل ، المواقع الإلكترونية ، لوحات التحكم و الإنظمة المتكاملة',
+      description:
+        'تطبيقات الموبايل ، المواقع الإلكترونية ، لوحات التحكم و الإنظمة المتكاملة',
       icon: 'ui_ux_Service.png',
       order: 3,
       isPublished: true,
@@ -72,7 +83,8 @@ export async function seedTestimonials(model: Model<Testimonial>) {
     {
       personName: 'Fletcher Howard',
       companyName: 'Chief Executive Officer - GIGL',
-      ratingText: 'A great worker. He thinks about design and has a awesome working morale',
+      ratingText:
+        'A great worker. He thinks about design and has a awesome working morale',
       image: 'https://randomuser.me/api/portraits/men/32.jpg',
       orderNumber: 1,
     },
@@ -101,7 +113,7 @@ export async function seedTestimonials(model: Model<Testimonial>) {
 
 export async function seedProjectsAndCategories(
   categoryModel: Model<ProjectCategory>,
-  projectModel: Model<Project>
+  projectModel: Model<Project>,
 ) {
   // Categories mirror the site's "أعمالي" filter tabs (Figma 820:2810).
   // The "الكل" tab is a client-side view, not a stored category.
@@ -131,7 +143,8 @@ export async function seedProjectsAndCategories(
     // UI/UX
     {
       name: 'لوحة تحكم متجر إلكتروني',
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
+      image:
+        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
       description:
         'تصميم لوحة تحكم متكاملة لإدارة المتاجر الإلكترونية، تشمل التحليلات وإدارة الطلبات ورؤى العملاء بواجهة واضحة وسهلة.',
       category: catMap['UI/UX']._id,
@@ -154,7 +167,8 @@ export async function seedProjectsAndCategories(
     },
     {
       name: 'منصة تحليلات البيانات',
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop',
+      image:
+        'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop',
       description:
         'منصة تحليلات متقدمة مع عرض بصري للبيانات في الوقت الفعلي وتقارير قابلة للتصدير، صُمّمت لتبسيط القرارات.',
       category: catMap['UI/UX']._id,
@@ -172,7 +186,8 @@ export async function seedProjectsAndCategories(
     },
     {
       name: 'نظام إدارة المخزون',
-      image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop',
+      image:
+        'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop',
       description:
         'نظام ذكي لإدارة المخزون مع تتبّع تلقائي وتنبيهات فورية، يوازن بين كثافة المعلومات ووضوح الواجهة.',
       category: catMap['UI/UX']._id,
@@ -181,14 +196,16 @@ export async function seedProjectsAndCategories(
     // جرافيك
     {
       name: 'حملة سوشيال ميديا',
-      image: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&h=400&fit=crop',
+      image:
+        'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&h=400&fit=crop',
       description:
         'سلسلة تصاميم بصرية لحملة على منصات التواصل الاجتماعي، تجمع بين الوضوح والاتساق مع الهوية البصرية للعلامة.',
       category: catMap['جرافيك']._id,
     },
     {
       name: 'بوسترات إعلانية',
-      image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=600&h=400&fit=crop',
+      image:
+        'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=600&h=400&fit=crop',
       description:
         'مجموعة بوسترات إعلانية مطبوعة ورقمية بتوجيه فني موحّد، تركّز على التسلسل البصري وإيصال الرسالة بسرعة.',
       category: catMap['جرافيك']._id,
@@ -197,7 +214,8 @@ export async function seedProjectsAndCategories(
     // هوية بصرية
     {
       name: 'هوية علامة نوفا',
-      image: 'https://images.unsplash.com/photo-1600607686527-6fb886090705?w=600&h=400&fit=crop',
+      image:
+        'https://images.unsplash.com/photo-1600607686527-6fb886090705?w=600&h=400&fit=crop',
       description:
         'تصميم هوية بصرية متكاملة تشمل الشعار ولوحة الألوان وأنظمة الخطوط ودليل الاستخدام لضمان اتساق العلامة.',
       category: catMap['هوية بصرية']._id,
@@ -206,7 +224,8 @@ export async function seedProjectsAndCategories(
     // تطبيقات
     {
       name: 'تطبيق توصيل الطعام',
-      image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop',
+      image:
+        'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop',
       description:
         'تصميم تجربة وواجهات تطبيق توصيل طعام، من تصفّح المطاعم حتى تتبّع الطلب، بتركيز على سرعة إتمام المهمة.',
       category: catMap['تطبيقات']._id,
@@ -220,7 +239,8 @@ export async function seedProjectsAndCategories(
     },
     {
       name: 'تطبيق تتبّع اللياقة',
-      image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&h=400&fit=crop',
+      image:
+        'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&h=400&fit=crop',
       description:
         'تطبيق شامل لتتبّع اللياقة البدنية مع خطط التمارين وتتبّع التغذية وتقارير التقدّم بواجهة محفّزة وبسيطة.',
       category: catMap['تطبيقات']._id,

@@ -5,4 +5,3 @@ export class RefreshTokenDto {
   @IsNotEmpty({ message: 'التوكن مطلوب' })
   refreshToken: string;
 }
-

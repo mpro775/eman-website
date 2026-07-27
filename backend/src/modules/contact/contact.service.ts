@@ -1,7 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ContactMessage, MessageStatus } from './schemas/contact-message.schema';
+import {
+  ContactMessage,
+  MessageStatus,
+} from './schemas/contact-message.schema';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { createPaginatedResponse } from '../../common/utils/pagination.util';
 
@@ -26,7 +29,7 @@ export class ContactService {
   }
 
   async findAll(page: number = 1, limit: number = 10, status?: MessageStatus) {
-    const query: any = {};
+    const query: Record<string, unknown> = {};
 
     if (status) {
       query.status = status;
@@ -60,7 +63,10 @@ export class ContactService {
     return message;
   }
 
-  async updateStatus(id: string, status: MessageStatus): Promise<ContactMessage> {
+  async updateStatus(
+    id: string,
+    status: MessageStatus,
+  ): Promise<ContactMessage> {
     const message = await this.contactMessageModel.findByIdAndUpdate(
       id,
       { status },
@@ -82,4 +88,3 @@ export class ContactService {
     }
   }
 }
-

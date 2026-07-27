@@ -15,4 +15,3 @@ export class FilterPostDto extends PaginationDto {
   @IsEnum(PostStatus)
   status?: PostStatus;
 }
-

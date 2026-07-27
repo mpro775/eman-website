@@ -18,4 +18,3 @@ import {
   exports: [ContactService],
 })
 export class ContactModule {}
-

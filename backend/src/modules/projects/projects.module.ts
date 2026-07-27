@@ -15,4 +15,3 @@ import { CategoriesModule } from './categories/categories.module';
   exports: [ProjectsService],
 })
 export class ProjectsModule {}
-

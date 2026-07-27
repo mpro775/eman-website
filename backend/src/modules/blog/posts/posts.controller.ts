@@ -17,8 +17,6 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { FilterPostDto } from './dto/filter-post.dto';
 import { Public } from '../../../common/decorators/public.decorator';
 import { JwtAuthGuard } from '../../../common/guards/jwt-auth.guard';
-import { PostBlog } from './schemas/post.schema';
-import { Category } from '../categories/schemas/category.schema';
 
 interface AuthenticatedRequest extends Request {
   user: {
@@ -30,23 +28,20 @@ interface AuthenticatedRequest extends Request {
 }
 
 // Helper function to extract category ID from populated or unpopulated category
-function extractCategoryId(
-  category:
-    | Types.ObjectId
-    | (Category & { _id: Types.ObjectId })
-    | null
-    | undefined,
-): string | null {
+function extractCategoryId(category: unknown): string | null {
   if (!category) {
     return null;
   }
   // Check if it's a populated category (has _id property and is an object)
   if (typeof category === 'object' && '_id' in category && category._id) {
-    return category._id.toString();
+    return (category as { _id: Types.ObjectId })._id.toString();
   }
   // Otherwise it's an ObjectId
   if (category instanceof Types.ObjectId) {
     return category.toString();
+  }
+  if (typeof category === 'string') {
+    return category;
   }
   return null;
 }
@@ -69,7 +64,7 @@ export class PostsController {
   @Get('slug/:slug')
   async findBySlug(@Param('slug') slug: string) {
     const post = await this.postsService.findBySlug(slug);
-    const categoryId = extractCategoryId(post.category as any);
+    const categoryId = extractCategoryId(post.category);
     const relatedPosts = await this.postsService.getRelatedPosts(
       categoryId || '',
       post._id.toString(),
@@ -91,7 +86,7 @@ export class PostsController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const post = await this.postsService.findOne(id);
-    const categoryId = extractCategoryId(post.category as any);
+    const categoryId = extractCategoryId(post.category);
     const relatedPosts = await this.postsService.getRelatedPosts(
       categoryId || '',
       post._id.toString(),

@@ -7,4 +7,3 @@ export class FilterSubscribersDto extends PaginationDto {
   @IsString()
   status?: SubscriberStatus;
 }
-

@@ -33,4 +33,3 @@ export const NewsletterSubscriberSchema =
 
 NewsletterSubscriberSchema.index({ email: 1 });
 NewsletterSubscriberSchema.index({ status: 1, createdAt: -1 });
-

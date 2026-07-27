@@ -18,7 +18,7 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @Controller('used-programs')
 export class UsedProgramsController {
-  constructor(private readonly usedProgramsService: UsedProgramsService) { }
+  constructor(private readonly usedProgramsService: UsedProgramsService) {}
 
   @Public()
   @Get()
@@ -43,7 +43,8 @@ export class UsedProgramsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createUsedProgramDto: CreateUsedProgramDto) {
-    const usedProgram = await this.usedProgramsService.create(createUsedProgramDto);
+    const usedProgram =
+      await this.usedProgramsService.create(createUsedProgramDto);
     return {
       message: 'تم إنشاء البرنامج بنجاح',
       data: usedProgram,
@@ -56,7 +57,10 @@ export class UsedProgramsController {
     @Param('id') id: string,
     @Body() updateUsedProgramDto: UpdateUsedProgramDto,
   ) {
-    const usedProgram = await this.usedProgramsService.update(id, updateUsedProgramDto);
+    const usedProgram = await this.usedProgramsService.update(
+      id,
+      updateUsedProgramDto,
+    );
     return {
       message: 'تم تحديث البرنامج بنجاح',
       data: usedProgram,
@@ -73,4 +77,3 @@ export class UsedProgramsController {
     };
   }
 }
-

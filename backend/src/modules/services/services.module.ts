@@ -13,4 +13,3 @@ import { Service, ServiceSchema } from './schemas/service.schema';
   exports: [ServicesService],
 })
 export class ServicesModule {}
-

@@ -13,4 +13,3 @@ import { PostBlog, PostSchema } from './schemas/post.schema';
   exports: [PostsService],
 })
 export class PostsModule {}
-

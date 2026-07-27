@@ -14,4 +14,3 @@ export default registerAs('cloudflare', () => ({
     accountHash: process.env.CLOUDFLARE_IMAGES_ACCOUNT_HASH || '',
   },
 }));
-

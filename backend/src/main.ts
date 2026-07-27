@@ -55,7 +55,7 @@ async function bootstrap() {
   // Swagger Documentation
   const config = new DocumentBuilder()
     .setTitle('Eman Portfolio API')
-    .setDescription('API documentation for Eman\'s personal portfolio website')
+    .setDescription("API documentation for Eman's personal portfolio website")
     .setVersion('1.0')
     .addBearerAuth(
       {

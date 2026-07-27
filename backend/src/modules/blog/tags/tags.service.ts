@@ -1,6 +1,10 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, UpdateQuery } from 'mongoose';
 import { Tag } from './schemas/tag.schema';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
@@ -49,7 +53,7 @@ export class TagsService {
   }
 
   async update(id: string, updateTagDto: UpdateTagDto): Promise<Tag> {
-    const updateData: any = { ...updateTagDto };
+    const updateData: UpdateQuery<Tag> = { ...updateTagDto };
 
     if (updateTagDto.name) {
       updateData.slug = this.generateSlug(updateTagDto.name);
@@ -74,4 +78,3 @@ export class TagsService {
     }
   }
 }
-

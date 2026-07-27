@@ -20,4 +20,3 @@ export const UsedProgramSchema = SchemaFactory.createForClass(UsedProgram);
 
 // Indexes for better performance
 UsedProgramSchema.index({ orderNumber: 1 });
-

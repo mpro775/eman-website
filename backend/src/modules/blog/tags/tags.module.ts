@@ -5,12 +5,9 @@ import { TagsController } from './tags.controller';
 import { Tag, TagSchema } from './schemas/tag.schema';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: Tag.name, schema: TagSchema }]),
-  ],
+  imports: [MongooseModule.forFeature([{ name: Tag.name, schema: TagSchema }])],
   controllers: [TagsController],
   providers: [TagsService],
   exports: [TagsService],
 })
 export class TagsModule {}
-

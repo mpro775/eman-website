@@ -62,4 +62,3 @@ export class CreatePostDto {
   @Type(() => SEODto)
   seo?: SEODto;
 }
-

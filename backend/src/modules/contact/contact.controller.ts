@@ -21,7 +21,7 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @Controller('contact')
 export class ContactController {
-  constructor(private readonly contactService: ContactService) { }
+  constructor(private readonly contactService: ContactService) {}
 
   @Public()
   @Throttle({ default: { ttl: 3600000, limit: 3 } }) // 3 messages per hour
@@ -84,4 +84,3 @@ export class ContactController {
     };
   }
 }
-

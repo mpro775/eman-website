@@ -6,4 +6,3 @@ export class FilterProjectDto extends PaginationDto {
   @IsMongoId({ message: 'معرف الفئة غير صحيح' })
   category?: string;
 }
-

@@ -183,11 +183,11 @@ export const ProjectForm = () => {
             />
 
             <ImageUpload
-              label="الصورة الرئيسية (غلاف البطاقة)"
+              label="صورة بطاقة المشروع (غلاف البطاقة)"
               value={formData.image}
               onChange={(url) => setFormData({ ...formData, image: url })}
               folder="projects"
-              helperText="تظهر في شبكة الأعمال وفي نتائج البحث."
+              helperText="تظهر هذه الصورة في بطاقة المشروع ضمن قائمة/شبكة الأعمال."
               required
             />
 
@@ -235,15 +235,18 @@ export const ProjectForm = () => {
         </Card>
 
         <Card>
-          <h2 className="text-lg font-semibold text-[color:var(--color-admin-text-primary)] mb-4">
-            معرض الصور
+          <h2 className="text-lg font-semibold text-[color:var(--color-admin-text-primary)] mb-1">
+            صور تفاصيل المشروع (عند النقر لاستعراض التفاصيل)
           </h2>
+          <p className="text-sm text-[color:var(--color-admin-text-muted)] mb-4">
+            الصور الخاصة باستعراض تفاصيل المشروع كاملة عند النقر على بطاقة المشروع.
+          </p>
           <MultiImageUpload
             value={formData.gallery}
             onChange={(gallery) => setFormData({ ...formData, gallery })}
             folder="projects"
             disabled={loading}
-            helperText="تظهر بهذا الترتيب في صفحة المشروع. إن تُركت فارغة ستُعرض الصورة الرئيسية فقط."
+            helperText="تظهر هذه الصور بهذا الترتيب في معرض صفحة تفاصيل المشروع. (إن تُرِكت فارغة ستُعرض صورة البطاقة)."
           />
         </Card>
 

@@ -19,7 +19,7 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @Controller('newsletter')
 export class NewsletterController {
-  constructor(private readonly newsletterService: NewsletterService) { }
+  constructor(private readonly newsletterService: NewsletterService) {}
 
   @Public()
   @Throttle({ default: { ttl: 3600000, limit: 3 } }) // 3 requests per hour
@@ -82,4 +82,3 @@ export class NewsletterController {
     };
   }
 }
-

@@ -24,7 +24,7 @@ export class ProjectsController {
   constructor(
     private readonly projectsService: ProjectsService,
     private readonly categoriesService: CategoriesService,
-  ) { }
+  ) {}
 
   // Categories
   @Public()
@@ -135,4 +135,3 @@ export class ProjectsController {
     };
   }
 }
-

@@ -39,4 +39,3 @@ export interface IPaginatedResponse<T> {
     hasPrevPage: boolean;
   };
 }
-

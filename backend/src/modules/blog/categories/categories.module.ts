@@ -15,4 +15,3 @@ import { Category, CategorySchema } from './schemas/category.schema';
   exports: [CategoriesService],
 })
 export class CategoriesModule {}
-

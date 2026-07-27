@@ -26,4 +26,3 @@ export const TestimonialSchema = SchemaFactory.createForClass(Testimonial);
 
 // Indexes for better performance
 TestimonialSchema.index({ orderNumber: 1 });
-

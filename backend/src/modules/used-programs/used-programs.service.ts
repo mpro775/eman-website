@@ -13,7 +13,9 @@ export class UsedProgramsService {
     @InjectModel(UsedProgram.name) private usedProgramModel: Model<UsedProgram>,
   ) {}
 
-  async create(createUsedProgramDto: CreateUsedProgramDto): Promise<UsedProgram> {
+  async create(
+    createUsedProgramDto: CreateUsedProgramDto,
+  ): Promise<UsedProgram> {
     const usedProgram = new this.usedProgramModel(createUsedProgramDto);
     await usedProgram.save();
     return usedProgram;
@@ -28,7 +30,7 @@ export class UsedProgramsService {
       sortOrder = 'asc',
     } = filterDto;
 
-    const query: any = {};
+    const query: Record<string, unknown> = {};
 
     // Apply search
     if (search) {
@@ -36,7 +38,7 @@ export class UsedProgramsService {
     }
 
     const skip = (page - 1) * limit;
-    const sort: any = {};
+    const sort: Record<string, 1 | -1> = {};
     sort[sortBy] = sortOrder === 'asc' ? 1 : -1;
 
     const [data, total] = await Promise.all([
@@ -62,7 +64,10 @@ export class UsedProgramsService {
     return usedProgram;
   }
 
-  async update(id: string, updateUsedProgramDto: UpdateUsedProgramDto): Promise<UsedProgram> {
+  async update(
+    id: string,
+    updateUsedProgramDto: UpdateUsedProgramDto,
+  ): Promise<UsedProgram> {
     const usedProgram = await this.usedProgramModel
       .findByIdAndUpdate(id, updateUsedProgramDto, { new: true })
       .exec();
@@ -82,4 +87,3 @@ export class UsedProgramsService {
     }
   }
 }
-

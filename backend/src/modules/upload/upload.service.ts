@@ -1,6 +1,15 @@
-import { Injectable, Logger, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} from '@aws-sdk/client-s3';
 import * as fs from 'fs';
 import * as path from 'path';
 import sharp from 'sharp';
@@ -31,10 +40,15 @@ export class UploadService {
   constructor(private readonly configService: ConfigService) {
     const accessKey = this.configService.get<string>('cloudflare.r2.accessKey');
     const secretKey = this.configService.get<string>('cloudflare.r2.secretKey');
-    this.endpoint = this.configService.get<string>('cloudflare.r2.endpoint') || '';
-    this.bucketName = this.configService.get<string>('cloudflare.r2.bucket') || 'eman-portfolio-files';
-    this.publicUrl = this.configService.get<string>('cloudflare.r2.publicUrl') || '';
-    this.appUrl = this.configService.get<string>('app.url') || 'http://localhost:3000';
+    this.endpoint =
+      this.configService.get<string>('cloudflare.r2.endpoint') || '';
+    this.bucketName =
+      this.configService.get<string>('cloudflare.r2.bucket') ||
+      'eman-portfolio-files';
+    this.publicUrl =
+      this.configService.get<string>('cloudflare.r2.publicUrl') || '';
+    this.appUrl =
+      this.configService.get<string>('app.url') || 'http://localhost:3000';
 
     if (accessKey && secretKey && this.endpoint) {
       this.s3Client = new S3Client({
@@ -47,7 +61,9 @@ export class UploadService {
       });
       this.logger.log('Cloudflare R2 storage initialized.');
     } else {
-      this.logger.warn('Cloudflare R2 credentials not provided. Falling back to local file storage.');
+      this.logger.warn(
+        'Cloudflare R2 credentials not provided. Falling back to local file storage.',
+      );
     }
   }
 
@@ -74,7 +90,10 @@ export class UploadService {
         mimetype = 'image/webp';
       }
     } catch (err) {
-      this.logger.warn(`Sharp processing skipped/failed: ${err.message}. Using original file buffer.`);
+      const error = err as Error;
+      this.logger.warn(
+        `Sharp processing skipped/failed: ${error.message}. Using original file buffer.`,
+      );
       processedBuffer = file.buffer;
     }
 
@@ -82,9 +101,9 @@ export class UploadService {
     const filename = `${folder}/${uniqueSuffix}${extension}`;
 
     if (this.s3Client) {
-      return this.uploadToR2(filename, processedBuffer, mimetype, file.originalname);
+      return this.uploadToR2(filename, processedBuffer, mimetype);
     } else {
-      return this.uploadToLocal(filename, processedBuffer, mimetype, file.originalname);
+      return this.uploadToLocal(filename, processedBuffer, mimetype);
     }
   }
 
@@ -103,7 +122,6 @@ export class UploadService {
     key: string,
     buffer: Buffer,
     mimetype: string,
-    originalName: string,
   ): Promise<UploadResponse> {
     try {
       const command = new PutObjectCommand({
@@ -130,9 +148,15 @@ export class UploadService {
         size: buffer.length,
         mimetype,
       };
-    } catch (error) {
-      this.logger.error(`Failed to upload to Cloudflare R2: ${error.message}`, error.stack);
-      throw new BadRequestException(`فشل رفع الملف إلى Cloudflare R2: ${error.message}`);
+    } catch (err) {
+      const error = err as Error;
+      this.logger.error(
+        `Failed to upload to Cloudflare R2: ${error.message}`,
+        error.stack,
+      );
+      throw new BadRequestException(
+        `فشل رفع الملف إلى Cloudflare R2: ${error.message}`,
+      );
     }
   }
 
@@ -154,11 +178,15 @@ export class UploadService {
         contentType: response.ContentType || 'application/octet-stream',
         contentLength: response.ContentLength,
       };
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        throw err;
       }
-      this.logger.error(`Failed to get file from R2: ${error.message}`, error.stack);
+      const error = err as Error;
+      this.logger.error(
+        `Failed to get file from R2: ${error.message}`,
+        error.stack,
+      );
       throw new NotFoundException('الملف غير موجود');
     }
   }
@@ -167,7 +195,6 @@ export class UploadService {
     filename: string,
     buffer: Buffer,
     mimetype: string,
-    originalName: string,
   ): Promise<UploadResponse> {
     try {
       const uploadsDir = path.join(process.cwd(), 'uploads');
@@ -175,7 +202,7 @@ export class UploadService {
       const targetDir = path.dirname(targetPath);
 
       if (!fs.existsSync(targetDir)) {
-        fs.mkdirSync(targetDir, { recursive: true });
+        await fs.promises.mkdir(targetDir, { recursive: true });
       }
 
       await fs.promises.writeFile(targetPath, buffer);
@@ -188,8 +215,12 @@ export class UploadService {
         size: buffer.length,
         mimetype,
       };
-    } catch (error) {
-      this.logger.error(`Failed to upload to local storage: ${error.message}`, error.stack);
+    } catch (err) {
+      const error = err as Error;
+      this.logger.error(
+        `Failed to upload to local storage: ${error.message}`,
+        error.stack,
+      );
       throw new BadRequestException(`فشل حفظ الملف محلياً: ${error.message}`);
     }
   }
@@ -204,7 +235,9 @@ export class UploadService {
       throw new BadRequestException('مسار غير صالح');
     }
 
-    if (!fs.existsSync(resolvedPath)) {
+    try {
+      await fs.promises.access(resolvedPath);
+    } catch {
       throw new NotFoundException('الملف غير موجود');
     }
 

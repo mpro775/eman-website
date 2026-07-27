@@ -9,4 +9,3 @@ export class ChangePasswordDto {
   @MinLength(6, { message: 'كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل' })
   newPassword: string;
 }
-

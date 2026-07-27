@@ -26,7 +26,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       if (typeof exceptionResponse === 'object') {
         const responseObj = exceptionResponse as any;
         message = responseObj.message || exception.message;
-        
+
         // Handle validation errors
         if (Array.isArray(responseObj.message)) {
           message = 'خطأ في التحقق من البيانات';
@@ -38,7 +38,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
           errors = responseObj.errors;
         }
       } else {
-        message = exceptionResponse as string;
+        message = exceptionResponse;
       }
     } else if (exception instanceof Error) {
       message = exception.message;
@@ -62,4 +62,3 @@ export class HttpExceptionFilter implements ExceptionFilter {
     return match ? match[1] : 'unknown';
   }
 }
-

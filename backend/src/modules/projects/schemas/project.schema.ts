@@ -20,7 +20,11 @@ export class Project extends Document {
   @Prop({ required: true })
   description: string;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'ProjectCategory', required: true })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'ProjectCategory',
+    required: true,
+  })
   category: MongooseSchema.Types.ObjectId;
 
   /**
@@ -58,4 +62,3 @@ export const ProjectSchema = SchemaFactory.createForClass(Project);
 // Indexes for better performance
 ProjectSchema.index({ name: 'text', description: 'text' });
 ProjectSchema.index({ category: 1 });
-

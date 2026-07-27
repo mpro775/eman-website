@@ -13,7 +13,9 @@ export class TestimonialsService {
     @InjectModel(Testimonial.name) private testimonialModel: Model<Testimonial>,
   ) {}
 
-  async create(createTestimonialDto: CreateTestimonialDto): Promise<Testimonial> {
+  async create(
+    createTestimonialDto: CreateTestimonialDto,
+  ): Promise<Testimonial> {
     const testimonial = new this.testimonialModel(createTestimonialDto);
     await testimonial.save();
     return testimonial;
@@ -28,7 +30,7 @@ export class TestimonialsService {
       sortOrder = 'asc',
     } = filterDto;
 
-    const query: any = {};
+    const query: Record<string, unknown> = {};
 
     // Apply search
     if (search) {
@@ -40,7 +42,7 @@ export class TestimonialsService {
     }
 
     const skip = (page - 1) * limit;
-    const sort: any = {};
+    const sort: Record<string, 1 | -1> = {};
     sort[sortBy] = sortOrder === 'asc' ? 1 : -1;
 
     const [data, total] = await Promise.all([
@@ -66,7 +68,10 @@ export class TestimonialsService {
     return testimonial;
   }
 
-  async update(id: string, updateTestimonialDto: UpdateTestimonialDto): Promise<Testimonial> {
+  async update(
+    id: string,
+    updateTestimonialDto: UpdateTestimonialDto,
+  ): Promise<Testimonial> {
     const testimonial = await this.testimonialModel
       .findByIdAndUpdate(id, updateTestimonialDto, { new: true })
       .exec();
@@ -86,4 +91,3 @@ export class TestimonialsService {
     }
   }
 }
-

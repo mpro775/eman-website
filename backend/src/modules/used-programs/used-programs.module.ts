@@ -6,11 +6,12 @@ import { UsedProgram, UsedProgramSchema } from './schemas/used-program.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: UsedProgram.name, schema: UsedProgramSchema }]),
+    MongooseModule.forFeature([
+      { name: UsedProgram.name, schema: UsedProgramSchema },
+    ]),
   ],
   controllers: [UsedProgramsController],
   providers: [UsedProgramsService],
   exports: [UsedProgramsService],
 })
 export class UsedProgramsModule {}
-

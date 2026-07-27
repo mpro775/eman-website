@@ -8,4 +8,3 @@ import { PostsModule } from './posts/posts.module';
   exports: [CategoriesModule, TagsModule, PostsModule],
 })
 export class BlogModule {}
-

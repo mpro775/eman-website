@@ -18,7 +18,7 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @Controller('testimonials')
 export class TestimonialsController {
-  constructor(private readonly testimonialsService: TestimonialsService) { }
+  constructor(private readonly testimonialsService: TestimonialsService) {}
 
   @Public()
   @Get()
@@ -43,7 +43,8 @@ export class TestimonialsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createTestimonialDto: CreateTestimonialDto) {
-    const testimonial = await this.testimonialsService.create(createTestimonialDto);
+    const testimonial =
+      await this.testimonialsService.create(createTestimonialDto);
     return {
       message: 'تم إنشاء رأي العميل بنجاح',
       data: testimonial,
@@ -56,7 +57,10 @@ export class TestimonialsController {
     @Param('id') id: string,
     @Body() updateTestimonialDto: UpdateTestimonialDto,
   ) {
-    const testimonial = await this.testimonialsService.update(id, updateTestimonialDto);
+    const testimonial = await this.testimonialsService.update(
+      id,
+      updateTestimonialDto,
+    );
     return {
       message: 'تم تحديث رأي العميل بنجاح',
       data: testimonial,
@@ -73,4 +77,3 @@ export class TestimonialsController {
     };
   }
 }
-

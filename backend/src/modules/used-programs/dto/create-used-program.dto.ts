@@ -1,4 +1,10 @@
-import { IsString, IsNumber, IsOptional, MinLength, Min } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsOptional,
+  MinLength,
+  Min,
+} from 'class-validator';
 
 export class CreateUsedProgramDto {
   @IsString()
@@ -14,4 +20,3 @@ export class CreateUsedProgramDto {
   @Min(0, { message: 'رقم الترتيب يجب أن يكون أكبر من أو يساوي 0' })
   orderNumber?: number;
 }
-
