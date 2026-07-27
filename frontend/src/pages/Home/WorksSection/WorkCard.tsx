@@ -50,18 +50,10 @@ const WorkCard: React.FC<WorkCardProps> = ({ work, delay }) => {
 
             {/* Cover image container (aspect-ratio: 166 / 209) */}
             <div className="relative w-full overflow-hidden bg-[#0d0c1d]" style={{ aspectRatio: "166 / 209" }}>
-                {/* Background ambient fill using blurred image */}
-                <img
-                    src={resolveImageUrl(work.image)}
-                    alt=""
-                    aria-hidden="true"
-                    className="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-30 transition-transform duration-700 group-hover:scale-120"
-                />
-                {/* Main crisp image maintaining original aspect ratio without distortion or forced stretching */}
                 <img
                     src={resolveImageUrl(work.image)}
                     alt={work.title}
-                    className="relative z-10 w-full h-full object-contain p-1.5 transition-transform duration-700 ease-out group-hover:scale-105"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
                     loading="lazy"
                 />
 
