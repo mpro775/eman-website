@@ -23,12 +23,45 @@ export class CategoriesService {
     return category.save();
   }
 
-  async findAll(): Promise<ProjectCategory[]> {
-    return this.categoryModel.find().sort({ order: 1, createdAt: -1 });
+  async findAll(): Promise<any[]> {
+    const categories = await this.categoryModel
+      .find()
+      .populate('featuredProjects')
+      .sort({ order: 1, createdAt: -1 })
+      .lean();
+
+    const result = await Promise.all(
+      categories.map(async (cat: any) => {
+        const count = await this.projectModel.countDocuments({ category: cat._id });
+
+        let previewProjects: any[] = [];
+        if (cat.featuredProjects && Array.isArray(cat.featuredProjects) && cat.featuredProjects.length > 0) {
+          previewProjects = cat.featuredProjects.filter(Boolean).slice(0, 3);
+        }
+
+        if (previewProjects.length < 3) {
+          const excludeIds = previewProjects.map((p: any) => p._id);
+          const fallback = await this.projectModel
+            .find({ category: cat._id, _id: { $nin: excludeIds } })
+            .sort({ createdAt: -1 })
+            .limit(3 - previewProjects.length)
+            .lean();
+          previewProjects = [...previewProjects, ...fallback];
+        }
+
+        return {
+          ...cat,
+          projectsCount: count,
+          previewProjects,
+        };
+      }),
+    );
+
+    return result;
   }
 
   async findOne(id: string): Promise<ProjectCategory> {
-    const category = await this.categoryModel.findById(id);
+    const category = await this.categoryModel.findById(id).populate('featuredProjects');
 
     if (!category) {
       throw new NotFoundException('الفئة غير موجودة');

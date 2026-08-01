@@ -29,6 +29,9 @@ export interface ProjectCategory {
   _id: string;
   name: string;
   order: number;
+  featuredProjects?: (string | Project)[];
+  previewProjects?: Project[];
+  projectsCount?: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -36,6 +39,7 @@ export interface ProjectCategory {
 export interface CreateProjectCategoryDto {
   name: string;
   order?: number;
+  featuredProjects?: string[];
 }
 
 export interface UpdateProjectCategoryDto extends Partial<CreateProjectCategoryDto> { }

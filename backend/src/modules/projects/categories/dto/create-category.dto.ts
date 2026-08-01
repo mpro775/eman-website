@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsNumber, MinLength } from 'class-validator';
+import { IsString, IsOptional, IsNumber, MinLength, IsArray, IsMongoId } from 'class-validator';
 
 export class CreateCategoryDto {
   @IsString()
@@ -8,4 +8,10 @@ export class CreateCategoryDto {
   @IsOptional()
   @IsNumber()
   order?: number;
+
+  @IsOptional()
+  @IsArray()
+  @IsMongoId({ each: true })
+  featuredProjects?: string[];
 }
+

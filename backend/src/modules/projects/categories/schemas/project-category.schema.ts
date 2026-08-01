@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class ProjectCategory extends Document {
@@ -8,6 +8,9 @@ export class ProjectCategory extends Document {
 
   @Prop({ type: Number, default: 0 })
   order: number;
+
+  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Project' }], default: [] })
+  featuredProjects?: MongooseSchema.Types.ObjectId[];
 
   createdAt: Date;
   updatedAt: Date;
@@ -19,3 +22,4 @@ export const ProjectCategorySchema =
 // Indexes for better performance
 ProjectCategorySchema.index({ order: 1 });
 ProjectCategorySchema.index({ name: 1 });
+

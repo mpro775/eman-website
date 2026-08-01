@@ -13,6 +13,7 @@ const Blog = lazy(() => import('./pages/Blog/Blog'));
 import { SplashCursor } from './components/ui';
 const BlogDetail = lazy(() => import('./pages/Blog/BlogDetail'));
 const ProjectDetail = lazy(() => import('./pages/Works/ProjectDetail'));
+const CategoryWorks = lazy(() => import('./pages/Works/CategoryWorks'));
 const About = lazy(() => import('./pages/About/About'));
 const Experience = lazy(() => import('./pages/Experience/Experience'));
 const Contact = lazy(() => import('./pages/Contact/Contact'));
@@ -182,6 +183,7 @@ function App() {
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:id" element={<BlogDetail />} />
+                  <Route path="/works/category/:id" element={<CategoryWorks />} />
                   <Route path="/works/:id" element={<ProjectDetail />} />
 
                   {/* Admin Routes */}

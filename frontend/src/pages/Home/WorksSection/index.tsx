@@ -1,52 +1,28 @@
 import React, { useEffect, useState } from "react";
-import WorkCard, { type WorkItem } from "./WorkCard";
+import { useNavigate } from "react-router-dom";
+import { CategoryCardStack } from "./CategoryCardStack";
 import { projectsService } from "../../../services/projects.service";
-
-/** The "show everything" tab — a client-side view, not a stored category. */
-const ALL = "الكل";
+import type { ProjectCategory } from "../../../types/project.types";
 
 /**
- * Works / portfolio section ("اعمالي") — pixel-matched to Figma node 820:1751.
- * Solid #040404 backdrop with a rotated glow, a centered title + underline,
- * a row of filter tabs, and a responsive 3-column grid of project cards.
+ * Works / portfolio section ("اعمالي") — Redesigned to show ONLY Categories
+ * as 3-card stack cards with dynamic hover effects.
  */
 const WorksSection: React.FC = () => {
-    const [active, setActive] = useState<string>(ALL);
-    const [filters, setFilters] = useState<string[]>([ALL]);
-    const [works, setWorks] = useState<WorkItem[]>([]);
+    const navigate = useNavigate();
+    const [categories, setCategories] = useState<ProjectCategory[]>([]);
     const [loading, setLoading] = useState(true);
     const [failed, setFailed] = useState(false);
 
     useEffect(() => {
         let cancelled = false;
 
-        const load = async () => {
+        const loadCategories = async () => {
             try {
-                const [categories, paginated] = await Promise.all([
-                    projectsService.getCategories(),
-                    // Sort pinned so this order matches the detail page's
-                    // prev/next list exactly.
-                    projectsService.getAll({ limit: 100, sortBy: "createdAt", sortOrder: "desc" }),
-                ]);
+                const cats = await projectsService.getCategories();
                 if (cancelled) return;
-
-                const ordered = [...(categories || [])].sort((a, b) => a.order - b.order);
-                setFilters([ALL, ...ordered.map((c) => c.name)]);
-
-                setWorks(
-                    (paginated?.data || []).map((p) => {
-                        const item: WorkItem = {
-                            id: p._id,
-                            title: p.name,
-                            category: typeof p.category === "object" && p.category ? p.category.name : "",
-                            image: p.image,
-                        };
-                        if (p.projectLink) item.link = p.projectLink;
-                        if (p.figmaLink) item.figmaLink = p.figmaLink;
-                        if (p.description) item.description = p.description;
-                        return item;
-                    })
-                );
+                const sorted = [...(cats || [])].sort((a, b) => a.order - b.order);
+                setCategories(sorted);
             } catch {
                 if (!cancelled) setFailed(true);
             } finally {
@@ -54,13 +30,11 @@ const WorksSection: React.FC = () => {
             }
         };
 
-        load();
+        loadCategories();
         return () => {
             cancelled = true;
         };
     }, []);
-
-    const visible = active === ALL ? works : works.filter((w) => w.category === active);
 
     return (
         <section
@@ -83,7 +57,7 @@ const WorksSection: React.FC = () => {
             />
 
             <div className="relative z-10 w-full max-w-[1232px] mx-auto px-6 flex flex-col items-center">
-                {/* Title + underline (centered — Figma 829:3374) */}
+                {/* Title + underline */}
                 <div className="flex flex-col items-center" style={{ gap: "14px" }}>
                     <h2
                         className="text-white text-center whitespace-nowrap"
@@ -108,74 +82,43 @@ const WorksSection: React.FC = () => {
                     />
                 </div>
 
-                {/* Filter tabs (Figma 820:2810) — RTL */}
-                <div
+                {/* Subtitle / Hint */}
+                <p
                     dir="rtl"
-                    className="mt-10 lg:mt-[55px] flex flex-wrap items-center justify-center"
-                    style={{ gap: "18.045px" }}
+                    className="mt-4 text-[#a5a0c8] text-center max-w-lg font-arabic text-sm sm:text-base"
                 >
-                    {filters.map((label) => {
-                        const isActive = label === active;
-                        return (
-                            <button
-                                key={label}
-                                type="button"
-                                onClick={() => setActive(label)}
-                                className="flex items-center justify-center transition-all duration-300 cursor-pointer"
-                                style={{
-                                    borderRadius: "11.278px",
-                                    padding: "10.752px 33.752px",
-                                    fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
-                                    fontWeight: 500,
-                                    fontSize: "18px",
-                                    lineHeight: "22.557px",
-                                    whiteSpace: "nowrap",
-                                    ...(isActive
-                                        ? {
-                                              color: "#ffffff",
-                                              background: "linear-gradient(252.89deg, #c67588 1.84%, #603942 98.17%)",
-                                              border: "0.752px solid transparent",
-                                              filter: "drop-shadow(0px 4.511px 9.023px rgba(204,204,204,0.4))",
-                                          }
-                                        : {
-                                              color: "#a5a0c8",
-                                              background: "rgba(42,51,80,0.1)",
-                                              border: "0.752px solid rgba(139,92,246,0.2)",
-                                          }),
-                                }}
-                            >
-                                {label}
-                            </button>
-                        );
-                    })}
-                </div>
+                    اختر إحدى فئات الأعمال التالية لاستكشاف جميع المشاريع والتصاميم الخاصة بها
+                </p>
 
-                {/* Cards grid (Figma 820:2740) — RTL, 3 columns, gap 24px */}
-                {loading || visible.length === 0 ? (
+                {/* Categories Grid — RTL, 3 columns */}
+                {loading || categories.length === 0 ? (
                     <p
                         dir="rtl"
-                        className="mt-10 lg:mt-[40px] text-center"
+                        className="mt-16 text-center font-arabic"
                         style={{
-                            fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
                             fontWeight: 500,
                             fontSize: "18px",
                             color: "#a5a0c8",
                         }}
                     >
                         {loading
-                            ? "جاري تحميل الأعمال..."
+                            ? "جاري تحميل فئات الأعمال..."
                             : failed
-                              ? "تعذّر تحميل الأعمال حالياً."
-                              : "لا توجد أعمال في هذا التصنيف حالياً."}
+                              ? "تعذّر تحميل الفئات حالياً."
+                              : "لا توجد فئات أُضيفت بعد."}
                     </p>
                 ) : (
                     <div
                         dir="rtl"
-                        className="mt-10 lg:mt-[40px] w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-                        style={{ gap: "24px" }}
+                        className="mt-14 w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12 items-stretch"
                     >
-                        {visible.map((work, i) => (
-                            <WorkCard key={work.id} work={work} delay={0.1 + i * 0.07} />
+                        {categories.map((cat, i) => (
+                            <CategoryCardStack
+                                key={cat._id}
+                                category={cat}
+                                index={i}
+                                onClick={() => navigate(`/works/category/${cat._id}`)}
+                            />
                         ))}
                     </div>
                 )}
@@ -185,3 +128,4 @@ const WorksSection: React.FC = () => {
 };
 
 export default WorksSection;
+

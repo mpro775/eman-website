@@ -8,23 +8,25 @@ import { FormInput } from '../../components/forms/FormInput';
 import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
 import { useUIStore } from '../../../store/ui.store';
 import { projectsService } from '../../../services/projects.service';
-import type { ProjectCategory } from '../../../types/project.types';
+import { resolveImageUrl } from '../../../utils/imageUrl';
+import type { Project, ProjectCategory } from '../../../types/project.types';
 
-// Categories render as plain text tabs on the site ("الكل" + each name), so a
-// category is just a label and a sort position.
 interface FormData {
     name: string;
     order: number;
+    featuredProjects: string[];
 }
 
 const initialFormData: FormData = {
     name: '',
     order: 0,
+    featuredProjects: [],
 };
 
 export const ProjectCategoriesList = () => {
     const { showToast } = useUIStore();
     const [categories, setCategories] = useState<ProjectCategory[]>([]);
+    const [allProjects, setAllProjects] = useState<Project[]>([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
@@ -40,10 +42,13 @@ export const ProjectCategoriesList = () => {
     const fetchCategories = async () => {
         setLoading(true);
         try {
-            const cats = await projectsService.getCategories();
-            // Sort by order
+            const [cats, projectsRes] = await Promise.all([
+                projectsService.getCategories(),
+                projectsService.getAll({ limit: 100 }),
+            ]);
             const sorted = [...(cats || [])].sort((a, b) => a.order - b.order);
             setCategories(sorted);
+            setAllProjects(projectsRes?.data || []);
         } catch (error) {
             showToast('فشل تحميل فئات الأعمال', 'error');
         } finally {
@@ -79,9 +84,15 @@ export const ProjectCategoriesList = () => {
 
     const handleEdit = (category: ProjectCategory) => {
         setEditingId(category._id);
+
+        const currentFeatured = (category.featuredProjects || []).map((p) =>
+            typeof p === 'object' ? p._id : p
+        );
+
         setFormData({
             name: category.name,
             order: category.order || 0,
+            featuredProjects: currentFeatured,
         });
         setShowModal(true);
     };
@@ -95,7 +106,6 @@ export const ProjectCategoriesList = () => {
             setDeleteId(null);
             fetchCategories();
         } catch (error: any) {
-            // The API refuses to delete a category that still has works linked to it.
             showToast(error.response?.data?.message || 'فشل حذف الفئة', 'error');
             setShowDeleteDialog(false);
             setDeleteId(null);
@@ -108,6 +118,32 @@ export const ProjectCategoriesList = () => {
         setFormData(initialFormData);
     };
 
+    const toggleFeaturedProject = (projectId: string) => {
+        setFormData((prev) => {
+            const exists = prev.featuredProjects.includes(projectId);
+            if (exists) {
+                return {
+                    ...prev,
+                    featuredProjects: prev.featuredProjects.filter((id) => id !== projectId),
+                };
+            }
+            if (prev.featuredProjects.length >= 3) {
+                showToast('يمكنك اختيار 3 أعمال فقط كأعمال بارزة بالفئة', 'error');
+                return prev;
+            }
+            return {
+                ...prev,
+                featuredProjects: [...prev.featuredProjects, projectId],
+            };
+        });
+    };
+
+    const categoryProjects = allProjects.filter((p) => {
+        if (!editingId) return true;
+        const catId = typeof p.category === 'object' ? p.category?._id : p.category;
+        return catId === editingId;
+    });
+
     const columns: Column<ProjectCategory>[] = [
         { key: 'name', header: 'الاسم' },
         {
@@ -116,6 +152,15 @@ export const ProjectCategoriesList = () => {
             render: (item) => (
                 <span className="px-3 py-1 bg-[color:var(--color-admin-bg-card)] rounded-full text-sm font-medium">
                     {item.order || 0}
+                </span>
+            ),
+        },
+        {
+            key: 'projectsCount',
+            header: 'عدد الأعمال',
+            render: (item) => (
+                <span className="px-3 py-1 bg-[#8b5cf6]/20 text-[#c084fc] rounded-full text-sm font-medium">
+                    {item.projectsCount ?? (item.previewProjects?.length || 0)} عمل
                 </span>
             ),
         },
@@ -146,18 +191,20 @@ export const ProjectCategoriesList = () => {
 
     return (
         <div>
-            {/* Header with gradient background */}
+            {/* Header */}
             <div className="flex justify-between items-center mb-8">
                 <div>
-                    <h1 className="text-3xl font-bold text-[color:var(--color-admin-text-primary)] mb-2"
+                    <h1
+                        className="text-3xl font-bold text-[color:var(--color-admin-text-primary)] mb-2"
                         style={{ animation: 'slideUp 0.3s ease-out' }}
                     >
                         إدارة فئات الأعمال
                     </h1>
-                    <p className="text-sm text-[color:var(--color-admin-text-muted)]"
+                    <p
+                        className="text-sm text-[color:var(--color-admin-text-muted)]"
                         style={{ animation: 'slideUp 0.4s ease-out' }}
                     >
-                        الفئات تظهر كتبويبات في قسم «أعمالي» بالموقع
+                        تظهر الفئات في قسم «أعمالي» بالصفحة الرئيسية كـ 3 بطاقات متكدسة مائلة
                     </p>
                 </div>
                 <button
@@ -199,7 +246,7 @@ export const ProjectCategoriesList = () => {
                 onClose={handleCloseModal}
                 title={editingId ? 'تعديل الفئة' : 'إضافة فئة جديدة'}
             >
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-5">
                     <FormInput
                         label="اسم الفئة"
                         value={formData.name}
@@ -215,6 +262,50 @@ export const ProjectCategoriesList = () => {
                         onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
                         disabled={submitting}
                     />
+
+                    {/* Featured Projects Selection */}
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-[color:var(--color-admin-text-primary)]">
+                            الأعمال البارزة للـ (3-Card Stack) بالصفحة الرئيسية (اختياري - 3 كروت كحد أقصى)
+                        </label>
+                        <p className="text-xs text-[color:var(--color-admin-text-muted)]">
+                            إذا تركتها فارغة، سيتم اختيار أحدث 3 أعمال تابعة لهذه الفئة تلقائياً.
+                        </p>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto p-2 border border-[color:var(--color-admin-border)] rounded-xl bg-[color:var(--color-admin-bg-card)]">
+                            {categoryProjects.length === 0 ? (
+                                <p className="text-xs text-center py-4 text-[color:var(--color-admin-text-muted)] col-span-2">
+                                    لا توجد أعمال منسوبة لهذه الفئة حتى الآن
+                                </p>
+                            ) : (
+                                categoryProjects.map((p) => {
+                                    const isSelected = formData.featuredProjects.includes(p._id);
+                                    return (
+                                        <button
+                                            key={p._id}
+                                            type="button"
+                                            onClick={() => toggleFeaturedProject(p._id)}
+                                            className={`flex items-center gap-3 p-2 rounded-lg text-right transition-all border ${
+                                                isSelected
+                                                    ? 'border-[#4a9eff] bg-[#4a9eff]/10 text-white'
+                                                    : 'border-transparent hover:bg-[color:var(--color-admin-bg-card-hover)] text-[color:var(--color-admin-text-muted)]'
+                                            }`}
+                                        >
+                                            <img
+                                                src={resolveImageUrl(p.image)}
+                                                alt=""
+                                                className="w-10 h-10 object-cover rounded-md shrink-0"
+                                            />
+                                            <span className="text-xs font-medium truncate flex-1">{p.name}</span>
+                                            {isSelected && (
+                                                <span className="text-xs text-[#4a9eff] font-bold">✓</span>
+                                            )}
+                                        </button>
+                                    );
+                                })
+                            )}
+                        </div>
+                    </div>
 
                     <div className="flex gap-3 justify-end pt-4">
                         <button
@@ -253,3 +344,4 @@ export const ProjectCategoriesList = () => {
         </div>
     );
 };
+
