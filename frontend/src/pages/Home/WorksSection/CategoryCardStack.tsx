@@ -43,75 +43,75 @@ export const CategoryCardStack: React.FC<CategoryCardStackProps> = ({
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative cursor-pointer flex flex-col items-center w-full max-w-[360px] mx-auto"
+      className="group relative cursor-pointer flex flex-col items-center w-full max-w-[360px] mx-auto py-2"
       dir="rtl"
     >
       {/* Cards Stack Container */}
       <div className="relative w-full h-[320px] sm:h-[340px] flex items-center justify-center">
         {/* Glow backdrop effect on hover */}
         <div
-          className={`absolute inset-4 rounded-3xl bg-gradient-to-tr from-[#c67588]/30 via-[#8b5cf6]/20 to-[#603942]/40 blur-2xl transition-opacity duration-500 ${
-            isHovered ? "opacity-100 scale-105" : "opacity-0 scale-95"
+          className={`absolute inset-2 rounded-3xl bg-gradient-to-tr from-[#c67588]/40 via-[#8b5cf6]/30 to-[#603942]/50 blur-2xl transition-opacity duration-500 ${
+            isHovered ? "opacity-100 scale-110" : "opacity-30 scale-95"
           }`}
         />
 
-        {/* --- CARD 3 (Left / Bottom-most Layer) --- */}
+        {/* --- CARD 3 (Left Layer) --- */}
         <motion.div
           animate={
             isHovered
-              ? { x: -45, y: -8, rotate: -14, scale: 0.95 }
-              : { x: -16, y: 8, rotate: -7, scale: 0.92 }
+              ? { x: -68, y: -16, rotate: -16, scale: 0.98 }
+              : { x: -34, y: -8, rotate: -10, scale: 0.94 }
           }
-          transition={{ type: "spring", stiffness: 260, damping: 20 }}
-          className="absolute w-[84%] aspect-[4/3] rounded-2xl overflow-hidden border border-white/15 bg-[#0e0d1d] shadow-2xl z-10"
+          transition={{ type: "spring", stiffness: 280, damping: 22 }}
+          className="absolute w-[84%] aspect-[4/3] rounded-2xl overflow-hidden border border-white/30 bg-[#0e0d1d] shadow-[0_12px_30px_rgba(0,0,0,0.6)] z-10 group-hover:border-[#8b5cf6]/50 transition-colors duration-300"
         >
           {cardImages[2] ? (
             <img
               src={cardImages[2]}
               alt=""
-              className="w-full h-full object-cover brightness-[0.7] group-hover:brightness-90 transition-all duration-300"
+              className="w-full h-full object-cover brightness-90 group-hover:brightness-105 group-hover:scale-105 transition-all duration-300"
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-[#1a1429] to-[#0a0814] flex items-center justify-center">
-              <FiFolder className="w-10 h-10 text-white/20" />
+              <FiFolder className="w-10 h-10 text-white/30" />
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
         </motion.div>
 
-        {/* --- CARD 2 (Right / Middle Layer) --- */}
+        {/* --- CARD 2 (Right Layer) --- */}
         <motion.div
           animate={
             isHovered
-              ? { x: 45, y: -8, rotate: 14, scale: 0.95 }
-              : { x: 16, y: 8, rotate: 7, scale: 0.92 }
+              ? { x: 68, y: -16, rotate: 16, scale: 0.98 }
+              : { x: 34, y: -8, rotate: 10, scale: 0.94 }
           }
-          transition={{ type: "spring", stiffness: 260, damping: 20 }}
-          className="absolute w-[84%] aspect-[4/3] rounded-2xl overflow-hidden border border-white/15 bg-[#0e0d1d] shadow-2xl z-20"
+          transition={{ type: "spring", stiffness: 280, damping: 22 }}
+          className="absolute w-[84%] aspect-[4/3] rounded-2xl overflow-hidden border border-white/30 bg-[#0e0d1d] shadow-[0_12px_30px_rgba(0,0,0,0.6)] z-20 group-hover:border-[#c67588]/50 transition-colors duration-300"
         >
           {cardImages[1] ? (
             <img
               src={cardImages[1]}
               alt=""
-              className="w-full h-full object-cover brightness-[0.8] group-hover:brightness-95 transition-all duration-300"
+              className="w-full h-full object-cover brightness-95 group-hover:brightness-105 group-hover:scale-105 transition-all duration-300"
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-[#211633] to-[#0c0919] flex items-center justify-center">
-              <FiFolder className="w-10 h-10 text-white/20" />
+              <FiFolder className="w-10 h-10 text-white/30" />
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
         </motion.div>
 
         {/* --- CARD 1 (Center / Front Main Layer) --- */}
         <motion.div
           animate={
             isHovered
-              ? { y: -12, scale: 1.03, rotate: 0 }
-              : { y: 0, scale: 1, rotate: 0 }
+              ? { y: 6, scale: 1.02, rotate: 0 }
+              : { y: 12, scale: 0.98, rotate: 0 }
           }
-          transition={{ type: "spring", stiffness: 300, damping: 22 }}
-          className="absolute w-[88%] aspect-[4/3] rounded-2xl overflow-hidden border border-white/25 bg-[#141226] shadow-[0_15px_35px_rgba(0,0,0,0.6)] z-30 group-hover:border-[#c67588]/60 transition-colors duration-300"
+          transition={{ type: "spring", stiffness: 300, damping: 24 }}
+          className="absolute w-[85%] aspect-[4/3] rounded-2xl overflow-hidden border-2 border-white/40 bg-[#141226] shadow-[0_20px_45px_rgba(0,0,0,0.8)] z-30 group-hover:border-[#c67588] transition-all duration-300"
         >
           {cardImages[0] ? (
             <img
@@ -125,11 +125,11 @@ export const CategoryCardStack: React.FC<CategoryCardStackProps> = ({
               <span className="text-white/40 text-xs font-arabic">لا توجد أعمال بعد</span>
             </div>
           )}
-          {/* Subtle overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+          {/* Overlay gradient for front card text/badge readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 
           {/* Top Badge */}
-          <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-xs font-medium font-arabic flex items-center gap-1.5 shadow-lg">
+          <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/30 text-white text-xs font-medium font-arabic flex items-center gap-1.5 shadow-lg">
             <span className="w-2 h-2 rounded-full bg-[#c67588] animate-pulse" />
             <span>{count} {count === 1 ? "عمل" : "أعمال"}</span>
           </div>
