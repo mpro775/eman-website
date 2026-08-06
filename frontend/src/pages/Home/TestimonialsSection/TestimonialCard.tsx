@@ -8,7 +8,7 @@ export interface TestimonialData {
     id?: number | string;
     type?: "text" | "image";
     reviewImage?: string;
-    image: string;
+    image?: string;
     personName: string;
     companyName: string;
     position?: string;
@@ -33,7 +33,6 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
     onOpenImageModal,
 }) => {
     const isImageTestimonial = testimonial.type === "image" && !!testimonial.reviewImage;
-    const avatarUrl = resolveImageUrl(testimonial.image || testimonial.avatar || "");
     const reviewImgUrl = testimonial.reviewImage ? resolveImageUrl(testimonial.reviewImage) : "";
     const quoteText = testimonial.quote || testimonial.ratingText || "";
     const personName = testimonial.personName || "عميل مميز";
@@ -112,31 +111,14 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                 )}
             </div>
 
-            {/* Bottom Row: User Avatar + Details */}
-            <div className="relative z-10 flex items-center gap-4 pt-4 mt-2 border-t border-purple-500/15">
-                <div
-                    className={`relative rounded-full overflow-hidden flex-shrink-0 transition-all duration-300 ${
-                        active
-                            ? "w-12 h-12 sm:w-14 sm:h-14 ring-2 ring-purple-400/60 shadow-[0_0_15px_rgba(192,132,252,0.4)]"
-                            : "w-10 h-10 sm:w-12 sm:h-12 border border-purple-400/20 opacity-80"
-                    }`}
-                >
-                    <img
-                        src={avatarUrl}
-                        alt={personName}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                    />
-                </div>
-
-                <div className="flex flex-col text-right overflow-hidden">
-                    <h3 className="text-white font-bold text-sm sm:text-base truncate drop-shadow-sm">
-                        {personName}
-                    </h3>
-                    <p className="text-purple-300/70 text-xs sm:text-sm font-medium truncate">
-                        {companyName}
-                    </p>
-                </div>
+            {/* Bottom Row: Client Details (No Avatar) */}
+            <div className="relative z-10 flex flex-col items-center text-center pt-4 mt-2 border-t border-purple-500/15">
+                <h3 className="text-white font-bold text-sm sm:text-base truncate drop-shadow-sm">
+                    {personName}
+                </h3>
+                <p className="text-purple-300/70 text-xs sm:text-sm font-medium truncate mt-0.5">
+                    {companyName}
+                </p>
             </div>
         </div>
     );

@@ -9,9 +9,9 @@ export class CreateTestimonialDto {
   @IsString()
   reviewImage?: string;
 
+  @IsOptional()
   @IsString()
-  @MinLength(1, { message: 'الصورة مطلوبة' })
-  image: string;
+  image?: string;
 
   @IsString()
   @MinLength(2, { message: 'اسم الشخص يجب أن يكون حرفين على الأقل' })

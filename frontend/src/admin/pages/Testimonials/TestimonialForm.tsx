@@ -57,12 +57,17 @@ export const TestimonialForm = () => {
     e.preventDefault();
     setLoading(true);
 
+    const payload = {
+      ...formData,
+      image: formData.image || formData.reviewImage || '',
+    };
+
     try {
       if (isEdit) {
-        await testimonialsService.update(id!, formData);
+        await testimonialsService.update(id!, payload);
         showToast('تم تحديث الشهادة بنجاح', 'success');
       } else {
-        await testimonialsService.create(formData);
+        await testimonialsService.create(payload);
         showToast('تم إنشاء الشهادة بنجاح', 'success');
       }
       navigate('/admin/testimonials');
@@ -119,13 +124,6 @@ export const TestimonialForm = () => {
               </button>
             </div>
           </div>
-
-          <ImageUpload
-            label="صورة الشخص (الأفاتار)"
-            value={formData.image}
-            onChange={(url) => setFormData({ ...formData, image: url })}
-            required
-          />
 
           {formData.type === 'image' && (
             <ImageUpload

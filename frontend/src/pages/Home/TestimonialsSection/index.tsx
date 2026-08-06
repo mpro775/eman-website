@@ -3,10 +3,6 @@ import { FiChevronLeft, FiChevronRight, FiX } from "react-icons/fi";
 import TestimonialCard, { type TestimonialData } from "./TestimonialCard";
 import { testimonialsService } from "../../../services/testimonials.service";
 
-import estherAvatar from "../../../assets/testimonials/esther.png";
-import cameronAvatar from "../../../assets/testimonials/cameron.png";
-import savannahAvatar from "../../../assets/testimonials/savannah.png";
-
 // Fallback testimonials (Includes both text & image reviews for rich demonstration)
 const FALLBACK_TESTIMONIALS: TestimonialData[] = [
     {
@@ -16,7 +12,6 @@ const FALLBACK_TESTIMONIALS: TestimonialData[] = [
         companyName: "المدير التنفيذي - GIGL",
         quote:
             "عمل ممتاز ومتقن جداً في تحريك التصاميم والمؤثرات البصرية. تم إنجاز العمل بسرعة فائقة وجودة استثنائية تفوق التوقعات!",
-        image: cameronAvatar,
     },
     {
         _id: "fb-2",
@@ -25,7 +20,6 @@ const FALLBACK_TESTIMONIALS: TestimonialData[] = [
         companyName: "متجر ريادة الإلكتروني",
         reviewImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80",
         quote: "تقييم العميل ورأيه عبر المحادثة المباشرة",
-        image: estherAvatar,
     },
     {
         _id: "fb-3",
@@ -34,7 +28,6 @@ const FALLBACK_TESTIMONIALS: TestimonialData[] = [
         companyName: "مؤسسة الابتكار التقني",
         quote:
             "مصممة مبدعة ومحترفة للغاية، تفهم متطلبات واجهات المستخدم UX/UI بدقة وتنفذها بأعلى معايير الدقة والجمال.",
-        image: savannahAvatar,
     },
     {
         _id: "fb-4",
@@ -43,7 +36,6 @@ const FALLBACK_TESTIMONIALS: TestimonialData[] = [
         companyName: "شركة الرؤية المستقبلية",
         quote:
             "التعامل راقي جداً والالتزام بالمواعيد ممتاز. تم تطوير الموقع بشكل احترافي ومتوافق مع جميع الشاشات.",
-        image: estherAvatar,
     },
 ];
 

@@ -54,17 +54,6 @@ export const TestimonialsList = () => {
   };
 
   const columns: Column<Testimonial>[] = [
-    {
-      key: 'image',
-      header: 'الصورة',
-      render: (item) => (
-        <img
-          src={resolveImageUrl(item.image)}
-          alt={item.personName}
-          className="w-12 h-12 object-cover rounded-full border border-purple-500/30"
-        />
-      ),
-    },
     { key: 'personName', header: 'اسم الشخص' },
     { key: 'companyName', header: 'الجهة / الشركة' },
     {
