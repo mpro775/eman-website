@@ -1,29 +1,38 @@
 import React from "react";
-import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram, FaBehance } from "react-icons/fa";
-import phoneIcon from "../../../assets/icons/PhoneCall.svg";
+import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram, FaBehance, FaTelegramPlane } from "react-icons/fa";
 import emailIcon from "../../../assets/icons/email.svg";
 import { playTap } from "../../../utils/soundManager";
 
 const FONT = '"Thmanyah Sans", "Tajawal", sans-serif';
 
-const InfoRow: React.FC<{ icon: string; label: string; value: string }> = ({ icon, label, value }) => (
-    <div className="flex items-center gap-4">
-        <div
-            className="shrink-0 flex items-center justify-center rounded-[15px] bg-[rgba(42,51,80,0.12)] border border-[rgba(42,51,80,0.2)]"
-            style={{ padding: "16px" }}
-        >
-            <img src={icon} alt="" className="w-6 h-6" />
+const InfoRow: React.FC<{ icon: React.ReactNode | string; label: string; value: string; href?: string }> = ({ icon, label, value, href }) => {
+    const content = (
+        <div className="flex items-center gap-4 group">
+            <div
+                className="shrink-0 flex items-center justify-center rounded-[15px] bg-[rgba(42,51,80,0.12)] border border-[rgba(42,51,80,0.2)] text-purple-400 group-hover:border-purple-400/40 transition-colors"
+                style={{ padding: "16px" }}
+            >
+                {typeof icon === "string" ? <img src={icon} alt="" className="w-6 h-6" /> : icon}
+            </div>
+            <div className="flex flex-col gap-1.5 text-right">
+                <p style={{ fontFamily: FONT, fontWeight: 300, fontSize: "14px", lineHeight: "20px", color: "#fff" }}>
+                    {label}
+                </p>
+                <p style={{ fontFamily: FONT, fontWeight: 500, fontSize: "16px", lineHeight: "24px", color: "#fff" }}>
+                    {value}
+                </p>
+            </div>
         </div>
-        <div className="flex flex-col gap-1.5 text-right">
-            <p style={{ fontFamily: FONT, fontWeight: 300, fontSize: "14px", lineHeight: "20px", color: "#fff" }}>
-                {label}
-            </p>
-            <p style={{ fontFamily: FONT, fontWeight: 500, fontSize: "16px", lineHeight: "24px", color: "#fff" }}>
-                {value}
-            </p>
-        </div>
-    </div>
-);
+    );
+
+    return href ? (
+        <a href={href} target="_blank" rel="noopener noreferrer" className="hover:opacity-90 transition-opacity">
+            {content}
+        </a>
+    ) : (
+        content
+    );
+};
 
 const socialBtn =
     "flex items-center justify-center rounded-full transition-transform duration-300 hover:scale-110";
@@ -31,7 +40,7 @@ const socialSize = "w-11 h-11 sm:w-12 sm:h-12";
 
 /**
  * Contact info column — pixel-matched to Figma 820:1914.
- * Heading + intro paragraph, phone / email rows, and a "follow me" card
+ * Heading + intro paragraph, telegram / email rows, and a "follow me" card
  * with social buttons.
  */
 const ContactInfo: React.FC = () => {
@@ -49,10 +58,15 @@ const ContactInfo: React.FC = () => {
                 </p>
             </div>
 
-            {/* Phone + email */}
+            {/* Telegram + email */}
             <div className="flex flex-col gap-6">
-                <InfoRow icon={phoneIcon} label="تواصل معي" value="+1-202-555-0190" />
-                <InfoRow icon={emailIcon} label="ارسل لي رسالة" value="emyjaeel1@gmail.com" />
+                <InfoRow
+                    icon={<FaTelegramPlane className="w-6 h-6 text-purple-400" />}
+                    label="تواصل تلجرام"
+                    value="@Emy_jameel"
+                    href="https://t.me/Emy_jameel"
+                />
+                <InfoRow icon={emailIcon} label="ارسل لي رسالة" value="emyjameel1@gmail.com" />
             </div>
 
             {/* Follow me card */}
