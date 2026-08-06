@@ -16,6 +16,8 @@ export const TestimonialForm = () => {
 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
+    type: 'text' as 'text' | 'image',
+    reviewImage: '',
     image: '',
     personName: '',
     companyName: '',
@@ -35,10 +37,12 @@ export const TestimonialForm = () => {
     try {
       const testimonial = await testimonialsService.getById(id);
       setFormData({
+        type: (testimonial.type as 'text' | 'image') || 'text',
+        reviewImage: testimonial.reviewImage || '',
         image: testimonial.image,
         personName: testimonial.personName,
         companyName: testimonial.companyName,
-        ratingText: testimonial.ratingText,
+        ratingText: testimonial.ratingText || '',
         orderNumber: testimonial.orderNumber,
       });
     } catch (error) {
@@ -85,12 +89,52 @@ export const TestimonialForm = () => {
 
       <Card>
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Type Selector */}
+          <div>
+            <label className="block text-sm font-medium text-[color:var(--color-admin-text-primary)] mb-2">
+              نوع الشهادة
+            </label>
+            <div className="flex gap-4">
+              <button
+                type="button"
+                onClick={() => setFormData({ ...formData, type: 'text' })}
+                className={`flex-1 py-3 px-4 rounded-xl border font-medium text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
+                  formData.type === 'text'
+                    ? 'bg-purple-600/20 border-purple-500 text-purple-400 shadow-lg shadow-purple-500/10'
+                    : 'bg-[color:var(--color-admin-bg-secondary)] border-[color:var(--color-admin-border)] text-[color:var(--color-admin-text-muted)] hover:border-purple-500/50'
+                }`}
+              >
+                <span>💬</span> رأي نصي
+              </button>
+              <button
+                type="button"
+                onClick={() => setFormData({ ...formData, type: 'image' })}
+                className={`flex-1 py-3 px-4 rounded-xl border font-medium text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
+                  formData.type === 'image'
+                    ? 'bg-purple-600/20 border-purple-500 text-purple-400 shadow-lg shadow-purple-500/10'
+                    : 'bg-[color:var(--color-admin-bg-secondary)] border-[color:var(--color-admin-border)] text-[color:var(--color-admin-text-muted)] hover:border-purple-500/50'
+                }`}
+              >
+                <span>🖼️</span> صورة رأي / سكرين شوت
+              </button>
+            </div>
+          </div>
+
           <ImageUpload
-            label="صورة الشخص"
+            label="صورة الشخص (الأفاتار)"
             value={formData.image}
             onChange={(url) => setFormData({ ...formData, image: url })}
             required
           />
+
+          {formData.type === 'image' && (
+            <ImageUpload
+              label="صورة الشهادة / السكرين شوت (Screenshot Review)"
+              value={formData.reviewImage}
+              onChange={(url) => setFormData({ ...formData, reviewImage: url })}
+              required
+            />
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormInput
@@ -102,7 +146,7 @@ export const TestimonialForm = () => {
             />
 
             <FormInput
-              label="اسم الشركة"
+              label="اسم الشركة / الصفة"
               value={formData.companyName}
               onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
               required
@@ -111,11 +155,11 @@ export const TestimonialForm = () => {
           </div>
 
           <FormTextarea
-            label="نص الشهادة"
+            label={formData.type === 'image' ? 'تعليق / نص إضافي (اختياري)' : 'نص الشهادة'}
             value={formData.ratingText}
             onChange={(e) => setFormData({ ...formData, ratingText: e.target.value })}
-            required
-            rows={6}
+            required={formData.type === 'text'}
+            rows={formData.type === 'image' ? 3 : 6}
             disabled={loading}
           />
 

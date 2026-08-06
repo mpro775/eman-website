@@ -1,6 +1,14 @@
-import { IsString, IsNumber, MinLength, Min } from 'class-validator';
+import { IsString, IsNumber, MinLength, Min, IsOptional, IsIn } from 'class-validator';
 
 export class CreateTestimonialDto {
+  @IsOptional()
+  @IsIn(['text', 'image'], { message: 'نوع التقييم غير صالح' })
+  type?: string;
+
+  @IsOptional()
+  @IsString()
+  reviewImage?: string;
+
   @IsString()
   @MinLength(1, { message: 'الصورة مطلوبة' })
   image: string;
@@ -13,9 +21,9 @@ export class CreateTestimonialDto {
   @MinLength(2, { message: 'اسم الشركة يجب أن يكون حرفين على الأقل' })
   companyName: string;
 
+  @IsOptional()
   @IsString()
-  @MinLength(10, { message: 'نص التقييم يجب أن يكون 10 أحرف على الأقل' })
-  ratingText: string;
+  ratingText?: string;
 
   @IsNumber()
   @Min(0, { message: 'رقم الترتيب يجب أن يكون أكبر من أو يساوي 0' })

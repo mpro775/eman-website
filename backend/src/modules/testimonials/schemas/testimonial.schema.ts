@@ -3,6 +3,12 @@ import { Document } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class Testimonial extends Document {
+  @Prop({ type: String, enum: ['text', 'image'], default: 'text' })
+  type: string;
+
+  @Prop()
+  reviewImage?: string;
+
   @Prop({ required: true })
   image: string;
 
@@ -12,7 +18,7 @@ export class Testimonial extends Document {
   @Prop({ required: true, trim: true })
   companyName: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false, default: '' })
   ratingText: string;
 
   @Prop({ type: Number, required: true, default: 0 })

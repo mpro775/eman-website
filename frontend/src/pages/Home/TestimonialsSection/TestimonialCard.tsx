@@ -1,108 +1,142 @@
 import React from "react";
+import { FaStar, FaQuoteRight } from "react-icons/fa";
+import { FiMaximize2 } from "react-icons/fi";
 import { resolveImageUrl } from "../../../utils/imageUrl";
 
-export interface Testimonial {
-    id: number;
-    name: string;
-    /** Role line, e.g. "Chief Executive Officer of" */
-    position: string;
-    /** Company (bold, white) appended after the role */
-    company: string;
-    quote: string;
-    avatar: string;
+export interface TestimonialData {
+    _id?: string;
+    id?: number | string;
+    type?: "text" | "image";
+    reviewImage?: string;
+    image: string;
+    personName: string;
+    companyName: string;
+    position?: string;
+    quote?: string;
+    ratingText?: string;
+    avatar?: string;
 }
 
 interface TestimonialCardProps {
-    testimonial: Testimonial;
-    /** Center (active) card is taller, brighter and shows the avatar ring. */
+    testimonial: TestimonialData;
     active: boolean;
+    onOpenImageModal?: (imageUrl: string) => void;
 }
 
 /**
- * Testimonial card — pixel-matched to Figma 820:1783 (cards 820:1784 / 820:1796).
- * A translucent rounded card with a circular avatar overlapping the top edge,
- * a centered quote (Sora), then the person's name and role.
- * Active (center) card: h358, bg rgba(42,51,80,0.3) + shadow.
- * Side cards: h302, bg rgba(19,34,56,0.2).
+ * TestimonialCard Component — Zid Stacked Glassmorphism Style
+ * Supports both Text reviews and Image (Screenshot) reviews.
  */
-const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial, active }) => {
+const TestimonialCard: React.FC<TestimonialCardProps> = ({
+    testimonial,
+    active,
+    onOpenImageModal,
+}) => {
+    const isImageTestimonial = testimonial.type === "image" && !!testimonial.reviewImage;
+    const avatarUrl = resolveImageUrl(testimonial.image || testimonial.avatar || "");
+    const reviewImgUrl = testimonial.reviewImage ? resolveImageUrl(testimonial.reviewImage) : "";
+    const quoteText = testimonial.quote || testimonial.ratingText || "";
+    const personName = testimonial.personName || "عميل مميز";
+    const companyName = testimonial.companyName || testimonial.position || "";
+
     return (
         <div
             data-no-splash="true"
-            className="relative w-full rounded-[16px]"
+            className={`relative w-full rounded-3xl p-6 sm:p-8 transition-all duration-500 flex flex-col justify-between overflow-hidden border backdrop-blur-2xl select-none ${
+                active
+                    ? "border-purple-400/30 bg-gradient-to-b from-[#24133d]/90 via-[#180c2e]/95 to-[#0f071f]/95 shadow-[0_20px_50px_rgba(139,92,246,0.25)]"
+                    : "border-purple-900/20 bg-[#120824]/70 shadow-lg"
+            }`}
             style={{
-                height: active ? "358px" : "302px",
-                background: active ? "rgba(42,51,80,0.3)" : "rgba(19,34,56,0.2)",
-                boxShadow: active ? "0px 40px 64px 0px rgba(19,34,56,0.08)" : "none",
-                transition: "height 0.5s cubic-bezier(0.25,0.46,0.45,0.94), background 0.5s ease",
+                minHeight: isImageTestimonial ? "420px" : "360px",
             }}
         >
-            {/* Avatar — 100px, overlapping the top edge (-50px) */}
+            {/* Ambient inner card purple light glow */}
             <div
-                className="absolute left-1/2 -translate-x-1/2 rounded-full overflow-hidden"
+                className="absolute top-0 right-1/2 translate-x-1/2 w-64 h-32 pointer-events-none rounded-full blur-3xl opacity-30"
                 style={{
-                    width: "100px",
-                    height: "100px",
-                    top: "-50px",
-                    boxShadow: active
-                        ? "0px 0px 24px 0px rgba(187,161,254,0.45), 0px 0px 0px 1px rgba(255,255,255,0.15)"
-                        : "none",
+                    background: "radial-gradient(circle, rgba(192,132,252,0.8) 0%, rgba(139,92,246,0) 70%)",
                 }}
-            >
-                <img
-                    src={resolveImageUrl(testimonial.avatar)}
-                    alt={testimonial.name}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                />
+            />
+
+            {/* Top Row: Star Ratings & Type Badge */}
+            <div className="relative z-10 flex items-center justify-between w-full mb-4">
+                <div className="flex items-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                        <FaStar key={i} className="text-amber-400 text-sm sm:text-base drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" />
+                    ))}
+                </div>
+                <div className="flex items-center gap-2">
+                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/15 border border-purple-400/20 text-purple-300 backdrop-blur-md">
+                        {isImageTestimonial ? "🖼️ رأي مصور" : "💬 رأي عميل"}
+                    </span>
+                </div>
             </div>
 
-            {/* Quote */}
-            <p
-                className="absolute left-1/2 -translate-x-1/2 text-center text-white px-6"
-                style={{
-                    top: "90px",
-                    maxWidth: "568px",
-                    width: "100%",
-                    fontFamily: '"Sora", sans-serif',
-                    fontWeight: 300,
-                    fontSize: "clamp(16px, 1.4vw, 20px)",
-                    lineHeight: "28px",
-                }}
-            >
-                {testimonial.quote}
-            </p>
+            {/* Middle Section: Image Review OR Text Quote */}
+            <div className="relative z-10 flex-1 flex flex-col justify-center my-2">
+                {isImageTestimonial ? (
+                    <div
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            if (onOpenImageModal && reviewImgUrl) {
+                                onOpenImageModal(reviewImgUrl);
+                            }
+                        }}
+                        className="relative group rounded-2xl overflow-hidden border border-purple-500/20 bg-[#0a0414] cursor-pointer max-h-56 sm:max-h-64 flex items-center justify-center shadow-inner"
+                    >
+                        <img
+                            src={reviewImgUrl}
+                            alt={`رأي ${personName}`}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            loading="lazy"
+                        />
+                        {/* Hover Overlay with Zoom Icon */}
+                        <div className="absolute inset-0 bg-purple-950/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2 text-white font-medium text-sm">
+                            <FiMaximize2 className="text-xl text-purple-300 animate-pulse" />
+                            <span>تكبير المعاينة</span>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="relative text-center px-2 sm:px-4">
+                        <FaQuoteRight className="text-purple-400/25 text-3xl sm:text-4xl mx-auto mb-2" />
+                        <p
+                            className="text-gray-100 font-normal leading-relaxed text-sm sm:text-base md:text-lg line-clamp-4 sm:line-clamp-5"
+                            style={{
+                                fontFamily: '"Thmanyah Sans", "Tajawal", "Sora", sans-serif',
+                            }}
+                        >
+                            "{quoteText}"
+                        </p>
+                    </div>
+                )}
+            </div>
 
-            {/* Name + role */}
-            <div
-                className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-center w-full px-6"
-                style={{ bottom: "34px" }}
-            >
-                <p
-                    className="text-white"
-                    style={{
-                        fontFamily: '"Sora", sans-serif',
-                        fontWeight: 400,
-                        fontSize: "20px",
-                        lineHeight: "28px",
-                    }}
+            {/* Bottom Row: User Avatar + Details */}
+            <div className="relative z-10 flex items-center gap-4 pt-4 mt-2 border-t border-purple-500/15">
+                <div
+                    className={`relative rounded-full overflow-hidden flex-shrink-0 transition-all duration-300 ${
+                        active
+                            ? "w-12 h-12 sm:w-14 sm:h-14 ring-2 ring-purple-400/60 shadow-[0_0_15px_rgba(192,132,252,0.4)]"
+                            : "w-10 h-10 sm:w-12 sm:h-12 border border-purple-400/20 opacity-80"
+                    }`}
                 >
-                    {testimonial.name}
-                </p>
-                <p
-                    style={{
-                        fontFamily: '"Sora", sans-serif',
-                        fontWeight: 300,
-                        fontSize: "14px",
-                        lineHeight: "20px",
-                        color: "#697484",
-                    }}
-                >
-                    {testimonial.position}{" "}
-                    <span className="text-white" style={{ fontWeight: 400 }}>
-                        {testimonial.company}
-                    </span>
-                </p>
+                    <img
+                        src={avatarUrl}
+                        alt={personName}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                    />
+                </div>
+
+                <div className="flex flex-col text-right overflow-hidden">
+                    <h3 className="text-white font-bold text-sm sm:text-base truncate drop-shadow-sm">
+                        {personName}
+                    </h3>
+                    <p className="text-purple-300/70 text-xs sm:text-sm font-medium truncate">
+                        {companyName}
+                    </p>
+                </div>
             </div>
         </div>
     );
