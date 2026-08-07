@@ -28,6 +28,7 @@ const PostsList = lazy(() => import('./admin/pages/Blog/PostsList').then(module 
 const PostForm = lazy(() => import('./admin/pages/Blog/PostForm').then(module => ({ default: module.PostForm })));
 const CategoriesList = lazy(() => import('./admin/pages/Blog/CategoriesList').then(module => ({ default: module.CategoriesList })));
 const TagsList = lazy(() => import('./admin/pages/Blog/TagsList').then(module => ({ default: module.TagsList })));
+const AuthorSettingsPage = lazy(() => import('./admin/pages/Blog/AuthorSettingsPage').then(module => ({ default: module.AuthorSettingsPage })));
 const ServicesList = lazy(() => import('./admin/pages/Services/ServicesList').then(module => ({ default: module.ServicesList })));
 const ServiceForm = lazy(() => import('./admin/pages/Services/ServiceForm').then(module => ({ default: module.ServiceForm })));
 const ContactMessages = lazy(() => import('./admin/pages/Contact/ContactMessages').then(module => ({ default: module.ContactMessages })));
@@ -208,6 +209,7 @@ function App() {
               <Route path="blog/posts/:id" element={<PostForm />} />
               <Route path="blog/categories" element={<CategoriesList />} />
               <Route path="blog/tags" element={<TagsList />} />
+              <Route path="blog/author" element={<AuthorSettingsPage />} />
               <Route path="services" element={<ServicesList />} />
               <Route path="services/new" element={<ServiceForm />} />
               <Route path="services/:id" element={<ServiceForm />} />
