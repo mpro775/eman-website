@@ -1,11 +1,49 @@
-import React from "react";
-import { FaFacebook, FaYoutube, FaWhatsapp, FaInstagram, FaTwitter, FaBehance } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import {
+    FaFacebookF,
+    FaTwitter,
+    FaLinkedinIn,
+    FaInstagram,
+    FaBehance,
+    FaTelegramPlane,
+    FaGithub,
+    FaDribbble,
+    FaYoutube,
+    FaTiktok,
+    FaWhatsapp,
+    FaSnapchat
+} from "react-icons/fa";
 import { useNewsletter } from "../../../hooks";
 import logoMark from "../../../assets/footer/logo-mark.png";
 import sendIcon from "../../../assets/footer/send.svg";
 import { playTap, playType } from "../../../utils/soundManager";
+import { profileService, type SocialLink, SOCIAL_PLATFORMS } from "../../../services/profile.service";
 
 const FONT = '"Thmanyah Sans", "Tajawal", sans-serif';
+
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+    linkedin: FaLinkedinIn,
+    github: FaGithub,
+    twitter: FaTwitter,
+    behance: FaBehance,
+    dribbble: FaDribbble,
+    instagram: FaInstagram,
+    facebook: FaFacebookF,
+    youtube: FaYoutube,
+    tiktok: FaTiktok,
+    whatsapp: FaWhatsapp,
+    telegram: FaTelegramPlane,
+    snapchat: FaSnapchat,
+};
+
+const DEFAULT_SOCIALS: SocialLink[] = [
+    { platform: "facebook", url: "#" },
+    { platform: "youtube", url: "#" },
+    { platform: "whatsapp", url: "#" },
+    { platform: "instagram", url: "#" },
+    { platform: "twitter", url: "#" },
+    { platform: "behance", url: "#" },
+];
 
 const importantLinks = [
     { name: "الرئيسية", href: "#home" },
@@ -13,20 +51,6 @@ const importantLinks = [
     { name: "الخبرات العملية", href: "#experience" },
     { name: "أعمالي", href: "#portfolio" },
     { name: "تواصل معي", href: "#contact" },
-];
-
-const contactLinks = [
-    { label: "emyjameel1@gmail.com", href: "mailto:emyjameel1@gmail.com", underline: false },
-    { label: "emanJameel.pro", href: "https://emanjameel.pro", underline: true },
-];
-
-const socials = [
-    { Icon: FaFacebook, href: "#", label: "Facebook" },
-    { Icon: FaYoutube, href: "#", label: "YouTube" },
-    { Icon: FaWhatsapp, href: "#", label: "WhatsApp" },
-    { Icon: FaInstagram, href: "#", label: "Instagram" },
-    { Icon: FaTwitter, href: "#", label: "Twitter" },
-    { Icon: FaBehance, href: "#", label: "Behance" },
 ];
 
 const heading: React.CSSProperties = { fontFamily: FONT, fontWeight: 500, fontSize: "20px", letterSpacing: "-0.3px", color: "#c67588" };
@@ -40,6 +64,35 @@ const linkStyle: React.CSSProperties = { fontFamily: FONT, fontWeight: 500, font
 const FooterContent: React.FC = () => {
     const { email, handleEmailChange, handleSubmit } = useNewsletter();
     const lastTypeAtRef = React.useRef(0);
+
+    const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
+    const [displayEmail, setDisplayEmail] = useState<string>("emyjameel1@gmail.com");
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const profile = await profileService.get();
+                if (profile) {
+                    if (profile.email) {
+                        setDisplayEmail(profile.email);
+                    }
+                    if (profile.socialLinks && profile.socialLinks.length > 0) {
+                        setSocialLinks(profile.socialLinks);
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to fetch profile in FooterContent:", error);
+            }
+        };
+        fetchProfile();
+    }, []);
+
+    const linksToRender = socialLinks.length > 0 ? socialLinks : DEFAULT_SOCIALS;
+
+    const contactLinks = [
+        { label: displayEmail, href: `mailto:${displayEmail}`, underline: false },
+        { label: "emanJameel.pro", href: "https://emanjameel.pro", underline: true },
+    ];
 
     const onTypeKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.ctrlKey || e.metaKey || e.altKey) return;
@@ -90,17 +143,25 @@ const FooterContent: React.FC = () => {
                             بتجربة تُحسّ قبل أن تُرى.
                         </p>
                         <div dir="ltr" className="flex items-center gap-[5px]">
-                            {socials.map(({ Icon, href, label }) => (
-                                <a
-                                    key={label}
-                                    href={href}
-                                    aria-label={label}
-                                    onMouseEnter={() => playTap({ volume: 0.25 })}
-                                    className="text-white hover:text-[#c67588] transition-colors duration-300"
-                                >
-                                    <Icon className="text-2xl" />
-                                </a>
-                            ))}
+                            {linksToRender.map((link, index) => {
+                                const Icon = ICON_MAP[link.platform] || FaLinkedinIn;
+                                const platformInfo = SOCIAL_PLATFORMS.find(p => p.id === link.platform);
+                                const label = platformInfo?.name || link.platform;
+
+                                return (
+                                    <a
+                                        key={`${link.platform}-${index}`}
+                                        href={link.url || "#"}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={label}
+                                        onMouseEnter={() => playTap({ volume: 0.25 })}
+                                        className="text-white hover:text-[#c67588] transition-colors duration-300 p-1"
+                                    >
+                                        <Icon className="text-2xl" />
+                                    </a>
+                                );
+                            })}
                         </div>
                     </div>
 
@@ -182,3 +243,4 @@ const FooterContent: React.FC = () => {
 };
 
 export default FooterContent;
+
