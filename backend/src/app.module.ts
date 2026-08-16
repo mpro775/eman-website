@@ -34,7 +34,7 @@ import { AppService } from './app.service';
     ThrottlerModule.forRoot([
       {
         ttl: 60000, // 60 seconds
-        limit: 10, // 10 requests per TTL
+        limit: 120, // 120 requests per minute to allow smooth site browsing
       },
     ]),
     DatabaseModule,

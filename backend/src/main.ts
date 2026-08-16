@@ -14,6 +14,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
 
+  // Trust proxy for correct client IP identification behind reverse proxies (Nginx / Cloudflare)
+  const expressApp = app.getHttpAdapter().getInstance();
+  if (expressApp && typeof expressApp.set === 'function') {
+    expressApp.set('trust proxy', 1);
+  }
+
   // Serve static uploaded files
   app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 

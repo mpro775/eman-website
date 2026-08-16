@@ -63,15 +63,47 @@ export const SOCIAL_PLATFORMS = [
   { id: 'snapchat', name: 'Snapchat', icon: 'FaSnapchat', color: '#FFFC00' },
 ] as const;
 
+let cachedProfile: Profile | null = null;
+let pendingProfilePromise: Promise<Profile> | null = null;
+let cacheExpiry: number = 0;
+const CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutes cache
+
 export const profileService = {
-  async get(): Promise<Profile> {
-    const response = await api.get<ApiResponse<Profile>>('/profile');
-    return response.data.data;
+  async get(forceRefresh = false): Promise<Profile> {
+    const now = Date.now();
+    if (!forceRefresh && cachedProfile && now < cacheExpiry) {
+      return cachedProfile;
+    }
+
+    if (!forceRefresh && pendingProfilePromise) {
+      return pendingProfilePromise;
+    }
+
+    pendingProfilePromise = (async () => {
+      try {
+        const response = await api.get<ApiResponse<Profile>>('/profile');
+        cachedProfile = response.data.data;
+        cacheExpiry = Date.now() + CACHE_DURATION_MS;
+        return cachedProfile;
+      } finally {
+        pendingProfilePromise = null;
+      }
+    })();
+
+    return pendingProfilePromise;
   },
 
   async update(data: UpdateProfileDto): Promise<Profile> {
     const response = await api.put<ApiResponse<Profile>>('/profile', data);
-    return response.data.data;
+    cachedProfile = response.data.data;
+    cacheExpiry = Date.now() + CACHE_DURATION_MS;
+    return cachedProfile;
+  },
+
+  clearCache(): void {
+    cachedProfile = null;
+    pendingProfilePromise = null;
+    cacheExpiry = 0;
   },
 
   async uploadCV(file: File): Promise<string> {
