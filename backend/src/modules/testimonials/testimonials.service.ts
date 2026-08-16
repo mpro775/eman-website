@@ -16,7 +16,11 @@ export class TestimonialsService {
   async create(
     createTestimonialDto: CreateTestimonialDto,
   ): Promise<Testimonial> {
-    const testimonial = new this.testimonialModel(createTestimonialDto);
+    const data = {
+      ...createTestimonialDto,
+      image: createTestimonialDto.image || createTestimonialDto.reviewImage || '',
+    };
+    const testimonial = new this.testimonialModel(data);
     await testimonial.save();
     return testimonial;
   }

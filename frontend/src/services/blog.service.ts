@@ -7,6 +7,7 @@ import type {
   CreatePostDto,
   UpdatePostDto,
   FilterPostDto,
+  BlogAuthorSettings,
 } from '../types/blog.types';
 
 export const blogService = {
@@ -91,6 +92,17 @@ export const blogService = {
 
   async deleteTag(id: string): Promise<void> {
     await api.delete<ApiResponse<null>>(`/blog/tags/${id}`);
+  },
+
+  // Author Settings
+  async getAuthorSettings(): Promise<BlogAuthorSettings> {
+    const response = await api.get<ApiResponse<BlogAuthorSettings>>('/blog/author');
+    return response.data.data;
+  },
+
+  async updateAuthorSettings(data: Partial<BlogAuthorSettings>): Promise<BlogAuthorSettings> {
+    const response = await api.put<ApiResponse<BlogAuthorSettings>>('/blog/author', data);
+    return response.data.data;
   },
 };
 

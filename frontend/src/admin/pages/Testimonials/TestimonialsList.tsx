@@ -54,26 +54,39 @@ export const TestimonialsList = () => {
   };
 
   const columns: Column<Testimonial>[] = [
+    { key: 'personName', header: 'اسم الشخص' },
+    { key: 'companyName', header: 'الجهة / الشركة' },
     {
-      key: 'image',
-      header: 'الصورة',
+      key: 'type',
+      header: 'النوع',
       render: (item) => (
-        <img
-          src={resolveImageUrl(item.image)}
-          alt={item.personName}
-          className="w-16 h-16 object-cover rounded-lg"
-        />
+        <span
+          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${
+            item.type === 'image'
+              ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
+              : 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
+          }`}
+        >
+          {item.type === 'image' ? '🖼️ صورة رأي' : '💬 نصي'}
+        </span>
       ),
     },
-    { key: 'personName', header: 'اسم الشخص' },
-    { key: 'companyName', header: 'اسم الشركة' },
     {
       key: 'ratingText',
-      header: 'الشهادة',
+      header: 'الشهادة / المحتوى',
       render: (item) => (
-        <span className="text-sm text-[color:var(--color-admin-text-secondary)] line-clamp-2">
-          {item.ratingText}
-        </span>
+        <div className="flex items-center gap-2">
+          {item.type === 'image' && item.reviewImage && (
+            <img
+              src={resolveImageUrl(item.reviewImage)}
+              alt="صورة الرأي"
+              className="w-10 h-10 object-cover rounded border border-white/20 flex-shrink-0"
+            />
+          )}
+          <span className="text-sm text-[color:var(--color-admin-text-secondary)] line-clamp-2">
+            {item.ratingText || (item.type === 'image' ? 'صورة رأي (Screenshot)' : '')}
+          </span>
+        </div>
       ),
     },
     {

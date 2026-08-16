@@ -46,6 +46,7 @@ const sidebarItems: SidebarItem[] = [
       { path: '/admin/blog/posts', label: 'المقالات' },
       { path: '/admin/blog/categories', label: 'فئات المدونة' },
       { path: '/admin/blog/tags', label: 'الوسوم' },
+      { path: '/admin/blog/author', label: 'تخصيص الكاتب' },
     ]
   },
   { path: '/admin/services', label: 'الخدمات', icon: <FiSettings /> },

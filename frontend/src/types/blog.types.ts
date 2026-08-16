@@ -72,3 +72,12 @@ export interface FilterPostDto {
   search?: string | undefined;
 }
 
+export interface BlogAuthorSettings {
+  _id?: string;
+  name: string;
+  title: string;
+  image: string;
+  buttonText: string;
+  buttonLink: string;
+  isEnabled: boolean;
+}

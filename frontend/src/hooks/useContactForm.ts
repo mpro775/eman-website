@@ -7,7 +7,6 @@ interface ContactFormData {
     name: string;
     email: string;
     service: string;
-    budget: string;
     address: string;
     message: string;
 }
@@ -16,7 +15,6 @@ const initialData: ContactFormData = {
     name: "",
     email: "",
     service: "",
-    budget: "",
     address: "",
     message: "",
 };
@@ -62,11 +60,6 @@ export const useContactForm = () => {
         setIsSubmitting(true);
 
         try {
-            let budgetNum: number | undefined;
-            if (formData.budget === "500-1000") budgetNum = 1000;
-            else if (formData.budget === "1000-5000") budgetNum = 5000;
-            else if (formData.budget === "5000+") budgetNum = 10000;
-
             const selectedServiceObj = services.find(s => s._id === formData.service);
             const serviceName = selectedServiceObj ? selectedServiceObj.name : "عام";
 
@@ -76,7 +69,6 @@ export const useContactForm = () => {
                 subject: `طلب خدمة: ${serviceName} من ${formData.name}`,
                 message: formData.message + (formData.address ? `\n\nالعنوان: ${formData.address}` : ""),
                 selectedService: formData.service || undefined,
-                budget: budgetNum,
             });
 
             setIsSuccess(true);

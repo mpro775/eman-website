@@ -83,6 +83,7 @@ export async function seedTestimonials(model: Model<Testimonial>) {
     {
       personName: 'Fletcher Howard',
       companyName: 'Chief Executive Officer - GIGL',
+      type: 'text',
       ratingText:
         'A great worker. He thinks about design and has a awesome working morale',
       image: 'https://randomuser.me/api/portraits/men/32.jpg',
@@ -91,6 +92,7 @@ export async function seedTestimonials(model: Model<Testimonial>) {
     {
       personName: 'Cameron Williamson',
       companyName: 'Chief Executive Officer - GIGL',
+      type: 'text',
       ratingText:
         'Kevin Did a wonderful job animating set of static stickers. Work was done very quickly and the quality is outstanding. she managed to create great looking, flawless animation even with very limited number of frames allowed per stickers',
       image: 'https://randomuser.me/api/portraits/men/44.jpg',
@@ -99,6 +101,7 @@ export async function seedTestimonials(model: Model<Testimonial>) {
     {
       personName: 'Savannah Nguyen',
       companyName: 'Chief Executive Officer - GIGL',
+      type: 'text',
       ratingText:
         "Great Designer, does great work and is open to change. if you're a programmer and looking for a designer is definitely well qualified.",
       image: 'https://randomuser.me/api/portraits/women/65.jpg',

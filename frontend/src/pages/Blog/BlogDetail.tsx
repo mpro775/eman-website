@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import type { BlogAuthorSettings } from "../../types/blog.types";
 import {
   HiArrowUpRight,
   HiOutlineChatBubbleLeft,
@@ -138,7 +139,10 @@ const RelatedPostCard: React.FC<{
 
 const BlogDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [post, setPost] = useState<BlogPost | null>(null);
+  const [authorSettings, setAuthorSettings] = useState<BlogAuthorSettings | null>(null);
+
   const [relatedPosts, setRelatedPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
@@ -264,6 +268,16 @@ const BlogDetail: React.FC = () => {
   };
 
   useEffect(() => {
+    const fetchAuthorSettings = async () => {
+      try {
+        const settings = await blogService.getAuthorSettings();
+        setAuthorSettings(settings);
+      } catch (err) {
+        console.error("Failed to load author settings:", err);
+      }
+    };
+    fetchAuthorSettings();
+
     const fetchPostData = async () => {
       if (!id) return;
       setLoading(true);
@@ -592,27 +606,69 @@ const BlogDetail: React.FC = () => {
             </motion.div>
 
             {/* Author Card */}
-            <motion.div
-              className="bg-white/5 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-white/10 flex flex-col md:flex-row items-center gap-6"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <img
-                src={post.authorImage}
-                alt={post.author}
-                className="w-20 h-20 rounded-full object-cover border-2 border-accent-pink"
-              />
-              <div className="text-center md:text-right flex-1">
-                <h4 className="text-white text-lg font-semibold mb-2">{post.author}</h4>
-                <p className="text-text-secondary text-sm mb-4">
-                  كاتب ومتخصص في التكنولوجيا والذكاء الاصطناعي
-                </p>
-                <button className="text-accent-pink text-sm font-medium hover:text-accent-pink-light transition-colors duration-300">
-                  عرض المزيد من المقالات
-                </button>
-              </div>
-            </motion.div>
+            {authorSettings ? (
+              authorSettings.isEnabled && (
+                <motion.div
+                  className="bg-white/5 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-white/10 flex flex-col md:flex-row items-center gap-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                >
+                  <img
+                    src={resolveImageUrl(authorSettings.image) || post.authorImage}
+                    alt={authorSettings.name || post.author}
+                    className="w-20 h-20 rounded-full object-cover border-2 border-accent-pink"
+                  />
+                  <div className="text-center md:text-right flex-1">
+                    <h4 className="text-white text-lg font-semibold mb-2">
+                      {authorSettings.name || post.author}
+                    </h4>
+                    <p className="text-text-secondary text-sm mb-4">
+                      {authorSettings.title || "كاتب ومتخصص في التكنولوجيا والذكاء الاصطناعي"}
+                    </p>
+                    <button
+                      onClick={() => {
+                        const link = authorSettings.buttonLink || '/blog';
+                        if (link.startsWith('http')) {
+                          window.open(link, '_blank');
+                        } else {
+                          navigate(link);
+                        }
+                      }}
+                      className="text-accent-pink text-sm font-medium hover:text-accent-pink-light transition-colors duration-300 cursor-pointer"
+                    >
+                      {authorSettings.buttonText || "عرض المزيد من المقالات"}
+                    </button>
+                  </div>
+                </motion.div>
+              )
+            ) : (
+              <motion.div
+                className="bg-white/5 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-white/10 flex flex-col md:flex-row items-center gap-6"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <img
+                  src={post.authorImage}
+                  alt={post.author}
+                  className="w-20 h-20 rounded-full object-cover border-2 border-accent-pink"
+                />
+                <div className="text-center md:text-right flex-1">
+                  <h4 className="text-white text-lg font-semibold mb-2">{post.author}</h4>
+                  <p className="text-text-secondary text-sm mb-4">
+                    كاتب ومتخصص في التكنولوجيا والذكاء الاصطناعي
+                  </p>
+                  <button
+                    onClick={() => navigate('/blog')}
+                    className="text-accent-pink text-sm font-medium hover:text-accent-pink-light transition-colors duration-300 cursor-pointer"
+                  >
+                    عرض المزيد من المقالات
+                  </button>
+                </div>
+              </motion.div>
+            )}
+
           </div>
         </Container>
       </section>
