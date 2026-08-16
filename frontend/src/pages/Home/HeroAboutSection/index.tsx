@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import HeroView from "./HeroView";
 import HeroMobile from "./HeroMobile";
 import AboutView from "./SkillsView";
+import SkillsMobile from "./SkillsMobile";
 import ActionDock from "./ActionDock";
 import BackgroundGlows from "./BackgroundGlows";
 
@@ -42,19 +43,43 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
     return (
         <section
             id="home"
-            className="scroll-section relative w-full min-h-screen bg-bg-primary overflow-hidden flex items-end justify-center"
+            className="scroll-section relative w-full min-h-screen bg-bg-primary overflow-visible lg:overflow-hidden flex flex-col lg:flex-row items-center lg:items-end justify-center"
         >
             {/* Black background overlay - covers entire section in About view */}
             <motion.div
-                className="absolute inset-0 z-0"
+                className="absolute inset-0 z-0 pointer-events-none"
                 animate={{
                     backgroundColor: isAboutView ? "#000000" : "transparent",
                 }}
                 transition={{ duration: transitionDuration, ease: transitionEase }}
             />
 
-            {/* Mobile / small-screen hero (vertical flow) — shown below lg */}
-            <HeroMobile />
+            {/* Mobile / small-screen views (vertical flow) — shown below lg */}
+            <div className="w-full lg:hidden relative z-10">
+                <AnimatePresence mode="wait">
+                    {!isAboutView ? (
+                        <motion.div
+                            key="hero-mobile"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.35, ease: transitionEase }}
+                        >
+                            <HeroMobile />
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            key="skills-mobile"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.35, ease: transitionEase }}
+                        >
+                            <SkillsMobile />
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
 
             {/* Desktop canvas - 1440px × 918px (Figma frame 820:2060) — lg and up */}
             <div

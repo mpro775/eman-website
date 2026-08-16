@@ -1,25 +1,22 @@
 import React from "react";
 import SkillCard from "./SkillCard";
-import { useMediaQuery } from "../../../hooks";
 
 // Skill chip 3D icons (Figma 820:1595)
 import iconUxUi from "../../../assets/skills/icon-uxui.png";
 import iconApp from "../../../assets/skills/icon-app.png";
 import iconGraphic from "../../../assets/skills/icon-graphic.png";
 import iconTeaching from "../../../assets/skills/icon-teaching.png";
-// Decorative + mobile portrait
+// Decorative
 import frameDeco from "../../../assets/skills/frame-deco.svg";
-// Skills portrait (Figma 851:381 "ChatGPT Image") — distinct from the hero photo
-import skillsPortrait from "../../../assets/skills/portrait.png";
 
-interface AboutViewProps {
-    aboutElementsVariants: {
+export interface AboutViewProps {
+    aboutElementsVariants?: {
         visible: { opacity: number; x: number };
         hidden: { opacity: number; x: number };
     };
 }
 
-interface SkillEntry {
+export interface SkillEntry {
     id: number;
     icon: string;
     title: string;
@@ -30,7 +27,7 @@ interface SkillEntry {
 }
 
 // Content + positions pixel-matched to Figma 820:1595 (frame center = 722px).
-const skillsData: SkillEntry[] = [
+export const skillsData: SkillEntry[] = [
     {
         id: 1,
         icon: iconUxUi,
@@ -82,34 +79,8 @@ const skillsData: SkillEntry[] = [
  * Skills view ("مهاراتي") — pixel-matched to Figma node 820:1595.
  * A centered portrait with five floating skill chips arranged around it,
  * a large faded "UX  UI" watermark, and soft decorative grid/frame glows.
- * Desktop uses absolute positioning; mobile stacks the chips vertically.
  */
 const AboutView: React.FC<AboutViewProps> = () => {
-    // Align with the `lg` breakpoint (>=1024 shows the desktop canvas) to avoid
-    // the mobile branch rendering inside the visible desktop canvas at 1024px.
-    const isMobile = useMediaQuery("(max-width: 1023px)");
-
-    if (isMobile) {
-        return (
-            <div className="relative w-full flex flex-col items-center pt-24 pb-10 gap-10 overflow-y-auto">
-                <div className="relative w-[min(60vw,240px)] aspect-[532/574] overflow-hidden mb-2">
-                    <img src={skillsPortrait} alt="Eman" className="w-full h-full object-cover object-top" />
-                </div>
-                {skillsData.map((s, i) => (
-                    <SkillCard
-                        key={s.id}
-                        inFlow
-                        icon={s.icon}
-                        title={s.title}
-                        description={s.description}
-                        iconRotate={s.iconRotate}
-                        delay={0.1 + i * 0.08}
-                    />
-                ))}
-            </div>
-        );
-    }
-
     return (
         <div className="absolute inset-0">
             {/* Decorative top-right frame glow (Figma 822:3051) */}
