@@ -10,7 +10,7 @@ interface HeroVideoProps {
 export default function HeroVideo({ kind, paused, className = "" }: HeroVideoProps) {
     const ref = useRef<HTMLVideoElement>(null);
     const [failed, setFailed] = useState(false);
-    const base = `${import.meta.env.BASE_URL}videos/${kind}`;
+    const base = `${import.meta.env.BASE_URL}videos/${kind === "portrait" ? "portrait-black" : kind}`;
 
     useEffect(() => {
         const video = ref.current;
