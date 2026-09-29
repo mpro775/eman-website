@@ -20,7 +20,13 @@ const dockLabelStyle: React.CSSProperties = {
  * (node 820:2060). Rendered only below the `lg` breakpoint; the desktop
  * pixel-perfect absolute layout lives in index.tsx and is hidden on mobile.
  */
-const HeroMobile: React.FC<{ paused: boolean }> = ({ paused }) => {
+interface HeroMobileProps {
+    paused: boolean;
+    portraitSrc: string;
+    onMediaPlaying?: ((kind: "sunset" | "portrait") => void) | undefined;
+}
+
+const HeroMobile: React.FC<HeroMobileProps> = ({ paused, portraitSrc, onMediaPlaying }) => {
     return (
         <div className="lg:hidden relative w-full min-h-screen flex flex-col items-center text-center px-6 pt-28 pb-12 overflow-hidden">
             {/* Badge "مرحباً" + spark */}
@@ -67,7 +73,7 @@ const HeroMobile: React.FC<{ paused: boolean }> = ({ paused }) => {
                     style={{ background: "linear-gradient(180deg, #7A464D 0%, #120002 100%)", filter: "blur(45px)" }}
                 />
                 <div className="relative w-full aspect-[531/606] overflow-hidden" style={{ maskImage: "linear-gradient(to bottom, black 85%, transparent 100%)" }}>
-                    <HeroVideo kind="portrait" paused={paused} className="w-full h-full" />
+                    <HeroVideo kind="portrait" paused={paused} src={portraitSrc} onPlaying={onMediaPlaying} className="w-full h-full" />
                 </div>
             </div>
 

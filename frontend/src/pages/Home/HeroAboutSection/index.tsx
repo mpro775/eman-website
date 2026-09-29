@@ -18,6 +18,8 @@ import skillsImage from "../../../assets/skills/portrait.png";
 // Types
 export interface HeroAboutSectionProps {
     isAboutView: boolean;
+    mediaSources?: { sunset: string; portrait: string };
+    onMediaPlaying?: (kind: "sunset" | "portrait") => void;
     onViewChange?: (isAbout: boolean) => void;
 }
 
@@ -25,7 +27,14 @@ export interface HeroAboutSectionProps {
  * Combined Hero and About section with smooth transitions
  * Switches between Hero and About views based on isAboutView prop
  */
-const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
+const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
+    isAboutView,
+    mediaSources = {
+        sunset: `${import.meta.env.BASE_URL}videos/sunset.mp4`,
+        portrait: `${import.meta.env.BASE_URL}videos/portrait-black.webm`,
+    },
+    onMediaPlaying,
+}) => {
     const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     useEffect(() => {
         const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -56,7 +65,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
             className="scroll-section relative w-full min-h-screen bg-bg-primary overflow-visible lg:overflow-hidden flex flex-col lg:flex-row items-center lg:items-end justify-center"
         >
             {!isAboutView && <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <HeroVideo kind="sunset" paused={paused} className="w-full h-full" />
+                <HeroVideo kind="sunset" paused={paused} src={mediaSources.sunset} onPlaying={onMediaPlaying} className="w-full h-full" />
                 <div className="absolute inset-0 bg-black/55" />
                 <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-transparent to-bg-primary/40" />
             </div>}
@@ -86,7 +95,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.35, ease: transitionEase }}
                         >
-                            <HeroMobile paused={paused} />
+                            <HeroMobile paused={paused} portraitSrc={mediaSources.portrait} onMediaPlaying={onMediaPlaying} />
                         </motion.div>
                     ) : (
                         <motion.div
@@ -137,7 +146,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                         maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%)",
                     }}
                 >
-                    <HeroVideo kind="portrait" paused={paused} className="w-full h-full" />
+                    <HeroVideo kind="portrait" paused={paused} src={mediaSources.portrait} onPlaying={onMediaPlaying} className="w-full h-full" />
                 </div>
 
                 {/* Skills portrait (Figma 851:381 "ChatGPT Image") — fades in in Skills view */}

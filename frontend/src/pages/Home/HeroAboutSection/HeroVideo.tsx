@@ -3,11 +3,13 @@ import { useEffect, useRef, useState } from "react";
 interface HeroVideoProps {
     kind: "sunset" | "portrait";
     paused: boolean;
+    src?: string;
+    onPlaying?: ((kind: "sunset" | "portrait") => void) | undefined;
     className?: string;
 }
 
 /** Decorative motion pauses when hidden, offscreen, or in a background tab. */
-export default function HeroVideo({ kind, paused, className = "" }: HeroVideoProps) {
+export default function HeroVideo({ kind, paused, src, onPlaying, className = "" }: HeroVideoProps) {
     const ref = useRef<HTMLVideoElement>(null);
     const [failed, setFailed] = useState(false);
     const base = `${import.meta.env.BASE_URL}videos/${kind === "portrait" ? "portrait-black" : kind}`;
@@ -39,10 +41,11 @@ export default function HeroVideo({ kind, paused, className = "" }: HeroVideoPro
             {failed && <img src={`${base}.webp`} alt="" className={`absolute inset-0 w-full h-full ${kind === "portrait" ? "object-contain object-bottom" : "object-cover"}`} />}
             {!failed && <video
                 ref={ref}
-                src={`${base}.${kind === "portrait" ? "webm" : "mp4"}`}
+                src={src ?? `${base}.${kind === "portrait" ? "webm" : "mp4"}`}
                 poster={`${base}.webp`}
                 muted loop playsInline preload="auto" tabIndex={-1}
                 onError={() => setFailed(true)}
+                onPlaying={() => onPlaying?.(kind)}
                 className={`absolute inset-0 w-full h-full ${kind === "portrait" ? "object-contain object-bottom" : "object-cover"}`}
             />}
         </div>
