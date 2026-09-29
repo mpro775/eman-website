@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Components
@@ -7,12 +7,12 @@ import HeroMobile from "./HeroMobile";
 import AboutView from "./SkillsView";
 import SkillsMobile from "./SkillsMobile";
 import ActionDock from "./ActionDock";
-import BackgroundGlows from "./BackgroundGlows";
+import HeroVideo from "./HeroVideo";
 
 // Portraits — Figma uses two different photos per view:
 //  - Hero (820:2098): beige outfit, full shot
 //  - Skills (851:381 "ChatGPT Image"): black outfit, centered close-up
-import heroImage from "../../../assets/illustrations/hero/portrait.png";
+
 import skillsImage from "../../../assets/skills/portrait.png";
 
 // Types
@@ -26,6 +26,16 @@ export interface HeroAboutSectionProps {
  * Switches between Hero and About views based on isAboutView prop
  */
 const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
+    const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    useEffect(() => {
+        const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const update = () => setReducedMotion(preference.matches);
+        preference.addEventListener("change", update);
+        return () => preference.removeEventListener("change", update);
+    }, []);
+    const [motionPaused, setMotionPaused] = useState(false);
+    const paused = motionPaused || !!reducedMotion || isAboutView;
+
     // Animation configuration
     const transitionDuration = 0.8;
     const transitionEase: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94];
@@ -45,6 +55,17 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
             id="home"
             className="scroll-section relative w-full min-h-screen bg-bg-primary overflow-visible lg:overflow-hidden flex flex-col lg:flex-row items-center lg:items-end justify-center"
         >
+            {!isAboutView && <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <HeroVideo kind="sunset" paused={paused} className="w-full h-full" />
+                <div className="absolute inset-0 bg-black/55" />
+                <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-transparent to-bg-primary/40" />
+            </div>}
+            {!isAboutView && !reducedMotion && <button
+                type="button"
+                onClick={() => setMotionPaused(value => !value)}
+                aria-pressed={motionPaused}
+                className="absolute left-4 top-24 z-40 rounded-full border border-white/30 bg-black/60 px-4 py-2 text-sm text-white backdrop-blur-md hover:bg-black/80 focus-visible:outline-2 focus-visible:outline-white"
+            >{motionPaused ? "تشغيل الحركة" : "إيقاف الحركة"}</button>}
             {/* Black background overlay - covers entire section in About view */}
             <motion.div
                 className="absolute inset-0 z-0 pointer-events-none"
@@ -65,7 +86,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.35, ease: transitionEase }}
                         >
-                            <HeroMobile />
+                            <HeroMobile paused={paused} />
                         </motion.div>
                     ) : (
                         <motion.div
@@ -85,12 +106,6 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
             <div
                 className="relative hidden lg:block w-full max-w-[1440px] mx-auto overflow-visible lg:h-[918px]"
             >
-                <BackgroundGlows
-                    isAboutView={isAboutView}
-                    transitionDuration={transitionDuration}
-                    transitionEase={transitionEase}
-                />
-
                 {/* Hero Elements (disappear on transition) */}
                 <AnimatePresence>
                     {!isAboutView && (
@@ -112,22 +127,17 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
                     className="absolute z-[25] overflow-hidden pointer-events-none"
                     style={{
                         width: "531px",
-                        height: "606px",
+                        height: "557px",
                         left: "calc(50% - 14.5px)",
                         transform: "translateX(-50%)",
-                        top: "321px",
+                        top: "370px",
                         opacity: isAboutView ? 0 : 1,
                         transition: `opacity ${transitionDuration}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`,
                         WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%)",
                         maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%)",
                     }}
                 >
-                    <img
-                        src={heroImage}
-                        alt="Eman UI Designer"
-                        className="absolute max-w-none object-cover pointer-events-none"
-                        style={{ width: "164.01%", height: "216.16%", left: "-30.86%", top: "-36%" }}
-                    />
+                    <HeroVideo kind="portrait" paused={paused} className="w-full h-full" />
                 </div>
 
                 {/* Skills portrait (Figma 851:381 "ChatGPT Image") — fades in in Skills view */}
