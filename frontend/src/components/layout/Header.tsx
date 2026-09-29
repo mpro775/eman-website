@@ -6,8 +6,6 @@ import Container from "../common/Container";
 import logoImage from "../../assets/logos/logo.png";
 import { useView } from "../../context/ViewContext";
 import { useSoundStore } from "../../store/sound.store";
-import { playToggleOff, playToggleOn } from "../../utils/soundManager";
-import { profileService } from "../../services/profile.service";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -23,6 +21,7 @@ const Header: React.FC = () => {
   useEffect(() => {
     const fetchCV = async () => {
       try {
+        const { profileService } = await import("../../services/profile.service");
         const profile = await profileService.get();
         if (profile && profile.cvFile) {
           setCvUrl(profile.cvFile);
@@ -31,8 +30,23 @@ const Header: React.FC = () => {
         console.error("Failed to fetch profile CV:", error);
       }
     };
-    fetchCV();
-  }, []);
+    if (location.pathname !== "/") {
+      void fetchCV();
+      return;
+    }
+    const loadAfterHero = () => { void fetchCV(); };
+    window.addEventListener("hero-media-ready", loadAfterHero, { once: true });
+    return () => window.removeEventListener("hero-media-ready", loadAfterHero);
+  }, [location.pathname]);
+
+  const handleSoundToggle = () => {
+    const wasEnabled = soundEnabled;
+    toggleSoundEnabled();
+    void import("../../utils/soundManager").then(({ playToggleOff, playToggleOn }) => {
+      if (wasEnabled) playToggleOff();
+      else playToggleOn();
+    });
+  };
 
   const navLinks = useMemo(
     () => [
@@ -103,22 +117,29 @@ const Header: React.FC = () => {
       }
     );
 
-    allSections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    return () => {
+    const observed = new Set<Element>();
+    const observeAvailableSections = () => {
       allSections.forEach((id) => {
         const el = document.getElementById(id);
-        if (el) observer.unobserve(el);
+        if (el && !observed.has(el)) {
+          observed.add(el);
+          observer.observe(el);
+        }
       });
+    };
+    observeAvailableSections();
+    const mutationObserver = new MutationObserver(observeAvailableSections);
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      mutationObserver.disconnect();
+      observer.disconnect();
     };
   }, [location.pathname]);
 
   const scrollToSectionWithRetry = (targetId: string) => {
     let tries = 0;
-    const maxTries = 60;
+    const maxTries = 180;
     const tick = () => {
       const el = document.getElementById(targetId);
       if (el) {
@@ -285,10 +306,7 @@ const Header: React.FC = () => {
                 whileTap={{ scale: 0.95 }}
                 aria-label={soundEnabled ? "إيقاف الصوت" : "تشغيل الصوت"}
                 onClick={() => {
-                  const wasEnabled = soundEnabled;
-                  if (wasEnabled) playToggleOff();
-                  toggleSoundEnabled();
-                  if (!wasEnabled) playToggleOn();
+                  handleSoundToggle();
                 }}
               >
                 {soundEnabled ? <HiVolumeUp className="text-2xl" /> : <HiVolumeOff className="text-2xl" />}
@@ -366,10 +384,7 @@ const Header: React.FC = () => {
                     whileTap={{ scale: 0.95 }}
                     aria-label={soundEnabled ? "إيقاف الصوت" : "تشغيل الصوت"}
                     onClick={() => {
-                      const wasEnabled = soundEnabled;
-                      if (wasEnabled) playToggleOff();
-                      toggleSoundEnabled();
-                      if (!wasEnabled) playToggleOn();
+                      handleSoundToggle();
                     }}
                   >
                     {soundEnabled ? <HiVolumeUp className="text-2xl" /> : <HiVolumeOff className="text-2xl" />}

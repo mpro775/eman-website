@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Components
 import HeroView from "./HeroView";
 import HeroMobile from "./HeroMobile";
-import AboutView from "./SkillsView";
-import SkillsMobile from "./SkillsMobile";
+const AboutView = lazy(() => import("./SkillsView"));
+const SkillsMobile = lazy(() => import("./SkillsMobile"));
 import ActionDock from "./ActionDock";
 import HeroVideo from "./HeroVideo";
 
 // Portraits — Figma uses two different photos per view:
 //  - Hero (820:2098): beige outfit, full shot
 //  - Skills (851:381 "ChatGPT Image"): black outfit, centered close-up
-
-import skillsImage from "../../../assets/skills/portrait.png";
 
 // Types
 export interface HeroAboutSectionProps {
@@ -36,12 +34,21 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
     onMediaPlaying,
 }) => {
     const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    const [skillsImage, setSkillsImage] = useState<string | null>(null);
     useEffect(() => {
         const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
         const update = () => setReducedMotion(preference.matches);
         preference.addEventListener("change", update);
         return () => preference.removeEventListener("change", update);
     }, []);
+    useEffect(() => {
+        if (!isAboutView || skillsImage) return;
+        let active = true;
+        void import("../../../assets/skills/portrait.png").then(module => {
+            if (active) setSkillsImage(module.default);
+        });
+        return () => { active = false; };
+    }, [isAboutView, skillsImage]);
     const [motionPaused, setMotionPaused] = useState(false);
     const paused = motionPaused || !!reducedMotion || isAboutView;
 
@@ -105,7 +112,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.35, ease: transitionEase }}
                         >
-                            <SkillsMobile />
+                            <Suspense fallback={null}><SkillsMobile /></Suspense>
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -125,7 +132,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
                 {/* About Elements (appear on transition) */}
                 <AnimatePresence>
                     {isAboutView && (
-                        <AboutView aboutElementsVariants={aboutElementsVariants} />
+                        <Suspense fallback={null}><AboutView aboutElementsVariants={aboutElementsVariants} /></Suspense>
                     )}
                 </AnimatePresence>
 
@@ -164,12 +171,12 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
                         maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%)",
                     }}
                 >
-                    <img
+                    {skillsImage && <img
                         src={skillsImage}
                         alt="Eman — UI/UX Designer"
                         className="absolute max-w-none pointer-events-none"
                         style={{ width: "100%", height: "139.2%", left: "0", top: "-19.6%" }}
-                    />
+                    />}
                 </div>
 
                 {/* Floating Action Dock (shared - animates between views) */}

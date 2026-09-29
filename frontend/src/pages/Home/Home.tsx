@@ -1,17 +1,18 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Header, ScrollPagination } from "../../components";
-import { useSEO } from "../../hooks";
-import { useView } from "../../context";
+import React, { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import Header from "../../components/layout/Header";
+import ScrollPagination from "../../components/layout/ScrollPagination";
+import { useSEO } from "../../hooks/useSEO";
+import { useView } from "../../context/ViewContext";
 
 // Section imports from new folder structure
 import HeroAboutSection from "./HeroAboutSection";
-import ExperienceSection from "./ExperienceSection";
-import ServicesSection from "./ServicesSection";
-import WorksSection from "./WorksSection";
-import TestimonialsSection from "./TestimonialsSection";
-import ProgramsSection from "./ProgramsSection";
-import BlogSection from "./BlogSection";
-import ContactSection from "./ContactSection";
+const ExperienceSection = lazy(() => import("./ExperienceSection"));
+const ServicesSection = lazy(() => import("./ServicesSection"));
+const WorksSection = lazy(() => import("./WorksSection"));
+const TestimonialsSection = lazy(() => import("./TestimonialsSection"));
+const ProgramsSection = lazy(() => import("./ProgramsSection"));
+const BlogSection = lazy(() => import("./BlogSection"));
+const ContactSection = lazy(() => import("./ContactSection"));
 
 type HeroVideoKind = "sunset" | "portrait";
 type HeroMediaSources = Record<HeroVideoKind, string>;
@@ -114,6 +115,10 @@ const useHeroMediaReady = () => {
     };
   }, [ready]);
 
+  useEffect(() => {
+    if (ready) window.dispatchEvent(new Event("hero-media-ready"));
+  }, [ready]);
+
   return { sources, ready, handlePlaying };
 };
 
@@ -122,6 +127,32 @@ const useHeroMediaReady = () => {
 const HomeContent: React.FC = () => {
   const { isAboutView } = useView();
   const { sources, ready, handlePlaying } = useHeroMediaReady();
+  const [loadBelowFold, setLoadBelowFold] = useState(false);
+
+  useLayoutEffect(() => {
+    const previousScrollRestoration = window.history.scrollRestoration;
+    window.history.scrollRestoration = "manual";
+    if (window.location.hash) {
+      window.history.replaceState(window.history.state, "", `${window.location.pathname}${window.location.search}`);
+    }
+    const resetPosition = () => {
+      document.querySelector<HTMLElement>(".scroll-container")?.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    };
+    resetPosition();
+    const frame = window.requestAnimationFrame(resetPosition);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.history.scrollRestoration = previousScrollRestoration;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!ready) return;
+    // Give the hero a clean first second, then fetch the lower sections in the background.
+    const timer = window.setTimeout(() => setLoadBelowFold(true), 1000);
+    return () => window.clearTimeout(timer);
+  }, [ready]);
 
   // SEO optimization for home page
   useSEO({
@@ -139,25 +170,15 @@ const HomeContent: React.FC = () => {
         {/* Home & About Section (merged) */}
         {sources && <HeroAboutSection isAboutView={isAboutView} mediaSources={sources} onMediaPlaying={handlePlaying} />}
 
-        {/* Experience Section */}
-        <ExperienceSection />
-
-        {/* Services Section */}
-        <ServicesSection />
-        {/* Portfolio Section */}
-        <WorksSection />
-        {/* Testimonials Section */}
-        <TestimonialsSection />
-
-        {/* Programs Section */}
-        <ProgramsSection />
-
-
-        {/* Blog Section */}
-        <BlogSection />
-
-        {/* Contact Section (includes Footer) */}
-        <ContactSection />
+        {loadBelowFold && <Suspense fallback={null}>
+          <ExperienceSection />
+          <ServicesSection />
+          <WorksSection />
+          <TestimonialsSection />
+          <ProgramsSection />
+          <BlogSection />
+          <ContactSection />
+        </Suspense>}
       </main>
     </div>
   );
