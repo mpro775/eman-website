@@ -67,7 +67,10 @@ export default function HeroVideo({ kind, paused, src, onPlaying, className = ""
                 src={mediaSrc}
                 poster={`${base}.webp`}
                 muted loop playsInline preload="auto" tabIndex={-1}
-                onError={() => setFailed(true)}
+                onError={() => {
+                    setFailed(true);
+                    onPlaying?.(kind);
+                }}
                 onLoadedMetadata={(event) => {
                     if (warmingRef.current) event.currentTarget.playbackRate = 4;
                 }}

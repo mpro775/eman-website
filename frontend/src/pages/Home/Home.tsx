@@ -18,8 +18,8 @@ type HeroVideoKind = "sunset" | "portrait";
 type HeroMediaSources = Record<HeroVideoKind, string>;
 
 const HERO_VIDEOS: HeroMediaSources = {
-  sunset: `${import.meta.env.BASE_URL}videos/sunset.mp4`,
-  portrait: `${import.meta.env.BASE_URL}videos/portrait-black.webm`,
+  sunset: `${import.meta.env.BASE_URL}videos/sunset.mp4?v=20260929-2`,
+  portrait: `${import.meta.env.BASE_URL}videos/portrait-black.webm?v=20260929-2`,
 };
 
 const HomeMediaLoader: React.FC = () => (
@@ -50,54 +50,18 @@ const HomeMediaLoader: React.FC = () => (
 );
 
 const useHeroMediaReady = () => {
-  const [sources, setSources] = useState<HeroMediaSources | null>(null);
-  const [ready, setReady] = useState(false);
+  const [ready, setReady] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const playingKinds = useRef(new Set<HeroVideoKind>());
 
   useEffect(() => {
-    let disposed = false;
-    const controller = new AbortController();
-    const objectUrls: string[] = [];
-
-    const loadVideo = async (src: string) => {
-      const response = await fetch(src, { cache: "force-cache", signal: controller.signal });
-      if (!response.ok) throw new Error(`Unable to preload ${src}`);
-      const objectUrl = URL.createObjectURL(await response.blob());
-      objectUrls.push(objectUrl);
-      return objectUrl;
-    };
-
-    void Promise.all([
-      loadVideo(HERO_VIDEOS.sunset),
-      loadVideo(HERO_VIDEOS.portrait),
-    ]).then(([sunset, portrait]) => {
-      if (disposed) return;
-      setSources({ sunset, portrait });
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setReady(true);
-    }).catch(() => {
-      if (!disposed) setSources(HERO_VIDEOS);
-    });
-
-    // Fall back to direct URLs on very slow connections, then let the real
-    // video elements report when playback has actually started.
-    const sourceFallbackTimer = window.setTimeout(() => {
-      if (!disposed) {
-        controller.abort();
-        setSources(current => current ?? HERO_VIDEOS);
-      }
-    }, 25000);
-
-    // A broken media response must not trap the visitor indefinitely.
+    // Both videos stream immediately. The portrait element warms its decoder
+    // while bytes arrive, so download and preparation no longer run serially.
     const finalSafetyTimer = window.setTimeout(() => {
-      if (!disposed) setReady(true);
-    }, 40000);
+      setReady(true);
+    }, 20000);
 
     return () => {
-      disposed = true;
-      controller.abort();
-      window.clearTimeout(sourceFallbackTimer);
       window.clearTimeout(finalSafetyTimer);
-      objectUrls.forEach(url => URL.revokeObjectURL(url));
     };
   }, []);
 
@@ -119,7 +83,7 @@ const useHeroMediaReady = () => {
     if (ready) window.dispatchEvent(new Event("hero-media-ready"));
   }, [ready]);
 
-  return { sources, ready, handlePlaying };
+  return { sources: HERO_VIDEOS, ready, handlePlaying };
 };
 
 
