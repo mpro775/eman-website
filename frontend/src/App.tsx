@@ -1,15 +1,16 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ViewProvider } from './context/ViewContext';
 import { LoadingProvider } from './context/LoadingContext';
-import ErrorBoundary from './components/common/ErrorBoundary';
+import { ErrorBoundary } from './components/common';
+import { ProtectedRoute } from './admin/components/ProtectedRoute';
+import { AdminLayout } from './admin/components/layout/AdminLayout';
+import { initSoundKit, playSwipe, playTap, stopProgressLoop } from './utils/soundManager';
 
 // Lazy load public pages
 const Home = lazy(() => import('./pages/Home/Home'));
 const Blog = lazy(() => import('./pages/Blog/Blog'));
-const SplashCursor = lazy(() => import('./components/ui/SplashCursor'));
-const ProtectedRoute = lazy(() => import('./admin/components/ProtectedRoute').then(module => ({ default: module.ProtectedRoute })));
-const AdminLayout = lazy(() => import('./admin/components/layout/AdminLayout').then(module => ({ default: module.AdminLayout })));
+import { SplashCursor } from './components/ui';
 const BlogDetail = lazy(() => import('./pages/Blog/BlogDetail'));
 const ProjectDetail = lazy(() => import('./pages/Works/ProjectDetail'));
 const CategoryWorks = lazy(() => import('./pages/Works/CategoryWorks'));
@@ -74,22 +75,18 @@ const SoundBridge = () => {
 
     if (prevPathnameRef.current !== location.pathname) {
       // Slight delay so it feels tied to the transition
-      void import('./utils/soundManager').then(({ playSwipe }) => playSwipe({ volume: 0.35, delay: 0.02 }));
+      playSwipe({ volume: 0.35, delay: 0.02 });
       prevPathnameRef.current = location.pathname;
     }
   }, [location.pathname]);
 
   useEffect(() => {
-    if (location.pathname === '/') {
-      const initialize = () => { void import('./utils/soundManager').then(({ initSoundKit }) => initSoundKit()); };
-      window.addEventListener('hero-media-ready', initialize, { once: true });
-      return () => window.removeEventListener('hero-media-ready', initialize);
-    }
+    // Kick off async kit load on public pages for best UX (first click has sound)
     if (!location.pathname.startsWith('/admin')) {
-      void import('./utils/soundManager').then(({ initSoundKit }) => initSoundKit());
+      void initSoundKit();
     } else {
       // Safety: ensure no public loops keep running on admin routes.
-      void import('./utils/soundManager').then(({ stopProgressLoop }) => stopProgressLoop());
+      stopProgressLoop();
     }
   }, [location.pathname]);
 
@@ -112,7 +109,7 @@ const SoundBridge = () => {
       if (clickable instanceof HTMLButtonElement && clickable.disabled) return;
       if (clickable.getAttribute('aria-disabled') === 'true') return;
 
-      void import('./utils/soundManager').then(({ playTap }) => playTap());
+      playTap();
     };
 
     document.addEventListener('pointerdown', onPointerDown, true);
@@ -154,12 +151,12 @@ const SoundBridge = () => {
 
       // Header hover: force the first tap variation (index 0)
       if (isInHeader) {
-        void import('./utils/soundManager').then(({ playTap }) => playTap({ index: 0, volume: 0.25 }));
+        playTap({ index: 0, volume: 0.25 });
         return;
       }
 
       // Elsewhere: slightly quieter than click, allow random variation
-      void import('./utils/soundManager').then(({ playTap }) => playTap({ volume: 0.25 }));
+      playTap({ volume: 0.25 });
     };
 
     document.addEventListener('pointerover', onPointerOver, true);
@@ -167,23 +164,6 @@ const SoundBridge = () => {
   }, []);
 
   return null;
-};
-
-const DeferredSplashCursor = () => {
-  const location = useLocation();
-  const [enabled, setEnabled] = useState(false);
-
-  useEffect(() => {
-    if (location.pathname !== '/') {
-      const timer = window.setTimeout(() => setEnabled(true), 1200);
-      return () => window.clearTimeout(timer);
-    }
-    const enable = () => setEnabled(true);
-    window.addEventListener('hero-media-ready', enable, { once: true });
-    return () => window.removeEventListener('hero-media-ready', enable);
-  }, [location.pathname]);
-
-  return enabled ? <Suspense fallback={null}><SplashCursor RAINBOW_MODE={false} COLOR="#7A464D" /></Suspense> : null;
 };
 
 function App() {
@@ -194,7 +174,7 @@ function App() {
           <ViewProvider>
             <SoundBridge />
             <div className="App">
-              <DeferredSplashCursor />
+              <SplashCursor RAINBOW_MODE={false} COLOR="#7A464D" />
               <Suspense fallback={<PageLoader />}>
                 <Routes>
                   {/* Public Routes */}

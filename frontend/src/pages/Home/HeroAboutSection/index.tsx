@@ -1,11 +1,11 @@
-import React, { lazy, Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Components
 import HeroView from "./HeroView";
 import HeroMobile from "./HeroMobile";
-const AboutView = lazy(() => import("./SkillsView"));
-const SkillsMobile = lazy(() => import("./SkillsMobile"));
+import AboutView from "./SkillsView";
+import SkillsMobile from "./SkillsMobile";
 import ActionDock from "./ActionDock";
 import HeroVideo from "./HeroVideo";
 
@@ -13,11 +13,11 @@ import HeroVideo from "./HeroVideo";
 //  - Hero (820:2098): beige outfit, full shot
 //  - Skills (851:381 "ChatGPT Image"): black outfit, centered close-up
 
+import skillsImage from "../../../assets/skills/portrait.png";
+
 // Types
 export interface HeroAboutSectionProps {
     isAboutView: boolean;
-    mediaSources?: { sunset: string; portrait: string };
-    onMediaPlaying?: (kind: "sunset" | "portrait") => void;
     onViewChange?: (isAbout: boolean) => void;
 }
 
@@ -25,37 +25,14 @@ export interface HeroAboutSectionProps {
  * Combined Hero and About section with smooth transitions
  * Switches between Hero and About views based on isAboutView prop
  */
-const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
-    isAboutView,
-    mediaSources = {
-        sunset: `${import.meta.env.BASE_URL}videos/sunset.mp4`,
-        portrait: `${import.meta.env.BASE_URL}videos/portrait-black.webm`,
-    },
-    onMediaPlaying,
-}) => {
+const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({ isAboutView }) => {
     const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-    const [isDesktop, setIsDesktop] = useState(() => window.matchMedia("(min-width: 1024px)").matches);
-    const [skillsImage, setSkillsImage] = useState<string | null>(null);
     useEffect(() => {
         const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
         const update = () => setReducedMotion(preference.matches);
         preference.addEventListener("change", update);
         return () => preference.removeEventListener("change", update);
     }, []);
-    useEffect(() => {
-        const breakpoint = window.matchMedia("(min-width: 1024px)");
-        const update = () => setIsDesktop(breakpoint.matches);
-        breakpoint.addEventListener("change", update);
-        return () => breakpoint.removeEventListener("change", update);
-    }, []);
-    useEffect(() => {
-        if (!isAboutView || skillsImage) return;
-        let active = true;
-        void import("../../../assets/skills/portrait.png").then(module => {
-            if (active) setSkillsImage(module.default);
-        });
-        return () => { active = false; };
-    }, [isAboutView, skillsImage]);
     const [motionPaused, setMotionPaused] = useState(false);
     const paused = motionPaused || !!reducedMotion || isAboutView;
 
@@ -79,7 +56,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
             className="scroll-section relative w-full min-h-screen bg-bg-primary overflow-visible lg:overflow-hidden flex flex-col lg:flex-row items-center lg:items-end justify-center"
         >
             {!isAboutView && <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <HeroVideo kind="sunset" paused={paused} src={mediaSources.sunset} onPlaying={onMediaPlaying} className="w-full h-full" />
+                <HeroVideo kind="sunset" paused={paused} className="w-full h-full" />
                 <div className="absolute inset-0 bg-black/55" />
                 <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-transparent to-bg-primary/40" />
             </div>}
@@ -99,7 +76,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
             />
 
             {/* Mobile / small-screen views (vertical flow) — shown below lg */}
-            {!isDesktop && <div className="w-full lg:hidden relative z-10">
+            <div className="w-full lg:hidden relative z-10">
                 <AnimatePresence mode="wait">
                     {!isAboutView ? (
                         <motion.div
@@ -109,7 +86,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.35, ease: transitionEase }}
                         >
-                            <HeroMobile paused={paused} portraitSrc={mediaSources.portrait} onMediaPlaying={onMediaPlaying} />
+                            <HeroMobile paused={paused} />
                         </motion.div>
                     ) : (
                         <motion.div
@@ -119,14 +96,14 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.35, ease: transitionEase }}
                         >
-                            <Suspense fallback={null}><SkillsMobile /></Suspense>
+                            <SkillsMobile />
                         </motion.div>
                     )}
                 </AnimatePresence>
-            </div>}
+            </div>
 
             {/* Desktop canvas - 1440px × 918px (Figma frame 820:2060) — lg and up */}
-            {isDesktop && <div
+            <div
                 className="relative hidden lg:block w-full max-w-[1440px] mx-auto overflow-visible lg:h-[918px]"
             >
                 {/* Hero Elements (disappear on transition) */}
@@ -139,7 +116,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
                 {/* About Elements (appear on transition) */}
                 <AnimatePresence>
                     {isAboutView && (
-                        <Suspense fallback={null}><AboutView aboutElementsVariants={aboutElementsVariants} /></Suspense>
+                        <AboutView aboutElementsVariants={aboutElementsVariants} />
                     )}
                 </AnimatePresence>
 
@@ -160,7 +137,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
                         maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%)",
                     }}
                 >
-                    <HeroVideo kind="portrait" paused={paused} src={mediaSources.portrait} onPlaying={onMediaPlaying} className="w-full h-full" />
+                    <HeroVideo kind="portrait" paused={paused} className="w-full h-full" />
                 </div>
 
                 {/* Skills portrait (Figma 851:381 "ChatGPT Image") — fades in in Skills view */}
@@ -178,12 +155,12 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
                         maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%)",
                     }}
                 >
-                    {skillsImage && <img
+                    <img
                         src={skillsImage}
                         alt="Eman — UI/UX Designer"
                         className="absolute max-w-none pointer-events-none"
                         style={{ width: "100%", height: "139.2%", left: "0", top: "-19.6%" }}
-                    />}
+                    />
                 </div>
 
                 {/* Floating Action Dock (shared - animates between views) */}
@@ -192,7 +169,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
                     transitionDuration={transitionDuration}
                     transitionEase={transitionEase}
                 />
-            </div>}
+            </div>
         </section>
     );
 };

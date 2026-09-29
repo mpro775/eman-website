@@ -40,21 +40,8 @@ export default defineConfig({
         categories: ['portfolio', 'design', 'development'],
       },
       workbox: {
-        // Keep installation light: large page images and route chunks are
-        // cached only when the visitor actually opens them.
-        globPatterns: ['**/*.{html,ico}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         runtimeCaching: [
-          {
-            urlPattern: /\.(?:js|css)$/,
-            handler: 'StaleWhileRevalidate',
-            options: {
-              cacheName: 'app-code-cache',
-              expiration: {
-                maxEntries: 60,
-                maxAgeSeconds: 60 * 60 * 24 * 30,
-              },
-            },
-          },
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
             handler: 'CacheFirst',

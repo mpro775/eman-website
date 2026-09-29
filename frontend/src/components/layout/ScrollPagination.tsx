@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
+import { playCustomSwipe } from "../../utils/swipeSoundPlayer";
 
 interface Section {
   id: string;
@@ -29,7 +30,7 @@ const ScrollPagination: React.FC = () => {
       return;
     }
     if (prevSectionRef.current !== activeSection) {
-      void import("../../utils/swipeSoundPlayer").then(({ playCustomSwipe }) => playCustomSwipe());
+      playCustomSwipe();
       prevSectionRef.current = activeSection;
     }
   }, [activeSection]);
@@ -50,19 +51,13 @@ const ScrollPagination: React.FC = () => {
       }
     );
 
-    const observed = new Set<Element>();
-    const observeAvailableSections = () => {
-      sections.forEach((section) => {
-        const element = document.getElementById(section.id);
-        if (element && !observed.has(element)) {
-          observed.add(element);
-          observerRef.current?.observe(element);
-        }
-      });
-    };
-    observeAvailableSections();
-    const mutationObserver = new MutationObserver(observeAvailableSections);
-    mutationObserver.observe(document.body, { childList: true, subtree: true });
+    // Observe all sections
+    sections.forEach((section) => {
+      const element = document.getElementById(section.id);
+      if (element) {
+        observerRef.current?.observe(element);
+      }
+    });
 
     // Handle scroll to bottom for last section
     const handleScroll = () => {
@@ -80,8 +75,14 @@ const ScrollPagination: React.FC = () => {
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      mutationObserver.disconnect();
-      observerRef.current?.disconnect();
+      if (observerRef.current) {
+        sections.forEach((section) => {
+          const element = document.getElementById(section.id);
+          if (element) {
+            observerRef.current?.unobserve(element);
+          }
+        });
+      }
     };
   }, []);
 

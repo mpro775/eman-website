@@ -1,122 +1,22 @@
-import React, { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import Header from "../../components/layout/Header";
-import ScrollPagination from "../../components/layout/ScrollPagination";
-import { useSEO } from "../../hooks/useSEO";
-import { useView } from "../../context/ViewContext";
+import React from "react";
+import { Header, ScrollPagination } from "../../components";
+import { useSEO } from "../../hooks";
+import { useView } from "../../context";
 
 // Section imports from new folder structure
 import HeroAboutSection from "./HeroAboutSection";
-const ExperienceSection = lazy(() => import("./ExperienceSection"));
-const ServicesSection = lazy(() => import("./ServicesSection"));
-const WorksSection = lazy(() => import("./WorksSection"));
-const TestimonialsSection = lazy(() => import("./TestimonialsSection"));
-const ProgramsSection = lazy(() => import("./ProgramsSection"));
-const BlogSection = lazy(() => import("./BlogSection"));
-const ContactSection = lazy(() => import("./ContactSection"));
-
-type HeroVideoKind = "sunset" | "portrait";
-type HeroMediaSources = Record<HeroVideoKind, string>;
-
-const HERO_VIDEOS: HeroMediaSources = {
-  sunset: `${import.meta.env.BASE_URL}videos/sunset.mp4?v=20260929-2`,
-  portrait: `${import.meta.env.BASE_URL}videos/portrait-black.webm?v=20260929-2`,
-};
-
-const HomeMediaLoader: React.FC = () => (
-  <div
-    className="fixed inset-0 z-[9999] grid place-items-center bg-[#040404] text-white"
-    dir="rtl"
-    role="status"
-    aria-live="polite"
-    aria-label="يرجى الانتظار قليلًا"
-  >
-    <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-      <div className="absolute left-[-15%] top-[-20%] h-[65vw] w-[65vw] rounded-full bg-[#6f55bd]/20 blur-[150px]" />
-      <div className="absolute bottom-[-30%] right-[-15%] h-[55vw] w-[55vw] rounded-full bg-[#c67588]/15 blur-[150px]" />
-    </div>
-    <div className="relative flex w-[min(82vw,390px)] flex-col items-center text-center">
-      <div className="relative mb-8 grid h-20 w-20 place-items-center" aria-hidden="true">
-        <div className="absolute inset-0 rounded-full border border-[#bba1fe]/20" />
-        <div className="absolute inset-0 animate-spin rounded-full border border-transparent border-t-[#de97a7] border-r-[#bba1fe]" />
-        <span className="h-2 w-2 rounded-full bg-[#de97a7] shadow-[0_0_24px_8px_rgba(222,151,167,.32)]" />
-      </div>
-      <div>
-        <span className="block font-english text-[11px] tracking-[0.32em] text-[#bba1fe]">EMAN PORTFOLIO</span>
-        <p className="mt-4 font-thmanyah text-3xl">لحظات ونبدأ</p>
-        <p className="mt-2 font-thmanyah text-sm text-white/50">يرجى الانتظار قليلًا</p>
-      </div>
-    </div>
-  </div>
-);
-
-const useHeroMediaReady = () => {
-  const [ready, setReady] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-  const playingKinds = useRef(new Set<HeroVideoKind>());
-
-  useEffect(() => {
-    // Both videos stream immediately. The portrait element warms its decoder
-    // while bytes arrive, so download and preparation no longer run serially.
-    const finalSafetyTimer = window.setTimeout(() => {
-      setReady(true);
-    }, 20000);
-
-    return () => {
-      window.clearTimeout(finalSafetyTimer);
-    };
-  }, []);
-
-  const handlePlaying = useCallback((kind: HeroVideoKind) => {
-    playingKinds.current.add(kind);
-    if (playingKinds.current.size === 2) setReady(true);
-  }, []);
-
-  useEffect(() => {
-    if (ready) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [ready]);
-
-  useEffect(() => {
-    if (ready) window.dispatchEvent(new Event("hero-media-ready"));
-  }, [ready]);
-
-  return { sources: HERO_VIDEOS, ready, handlePlaying };
-};
+import ExperienceSection from "./ExperienceSection";
+import ServicesSection from "./ServicesSection";
+import WorksSection from "./WorksSection";
+import TestimonialsSection from "./TestimonialsSection";
+import ProgramsSection from "./ProgramsSection";
+import BlogSection from "./BlogSection";
+import ContactSection from "./ContactSection";
 
 
 // Inner component that uses the context
 const HomeContent: React.FC = () => {
   const { isAboutView } = useView();
-  const { sources, ready, handlePlaying } = useHeroMediaReady();
-  const [loadBelowFold, setLoadBelowFold] = useState(false);
-
-  useLayoutEffect(() => {
-    const previousScrollRestoration = window.history.scrollRestoration;
-    window.history.scrollRestoration = "manual";
-    if (window.location.hash) {
-      window.history.replaceState(window.history.state, "", `${window.location.pathname}${window.location.search}`);
-    }
-    const resetPosition = () => {
-      document.querySelector<HTMLElement>(".scroll-container")?.scrollTo({ top: 0, left: 0, behavior: "instant" });
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    };
-    resetPosition();
-    const frame = window.requestAnimationFrame(resetPosition);
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.history.scrollRestoration = previousScrollRestoration;
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!ready) return;
-    // Give the hero a clean first second, then fetch the lower sections in the background.
-    const timer = window.setTimeout(() => setLoadBelowFold(true), 1000);
-    return () => window.clearTimeout(timer);
-  }, [ready]);
 
   // SEO optimization for home page
   useSEO({
@@ -127,22 +27,31 @@ const HomeContent: React.FC = () => {
 
   return (
     <div className="scroll-container bg-bg-primary">
-      {!ready && <HomeMediaLoader />}
       <Header />
       <ScrollPagination />
       <main className="relative">
         {/* Home & About Section (merged) */}
-        {sources && <HeroAboutSection isAboutView={isAboutView} mediaSources={sources} onMediaPlaying={handlePlaying} />}
+        <HeroAboutSection isAboutView={isAboutView} />
 
-        {loadBelowFold && <Suspense fallback={null}>
-          <ExperienceSection />
-          <ServicesSection />
-          <WorksSection />
-          <TestimonialsSection />
-          <ProgramsSection />
-          <BlogSection />
-          <ContactSection />
-        </Suspense>}
+        {/* Experience Section */}
+        <ExperienceSection />
+
+        {/* Services Section */}
+        <ServicesSection />
+        {/* Portfolio Section */}
+        <WorksSection />
+        {/* Testimonials Section */}
+        <TestimonialsSection />
+
+        {/* Programs Section */}
+        <ProgramsSection />
+
+
+        {/* Blog Section */}
+        <BlogSection />
+
+        {/* Contact Section (includes Footer) */}
+        <ContactSection />
       </main>
     </div>
   );
