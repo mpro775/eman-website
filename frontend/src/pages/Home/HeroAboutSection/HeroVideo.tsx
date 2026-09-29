@@ -47,6 +47,7 @@ export default function HeroVideo({ kind, paused, src, onPlaying, className = ""
                 onError={() => setFailed(true)}
                 onPlaying={() => onPlaying?.(kind)}
                 className={`absolute inset-0 w-full h-full ${kind === "portrait" ? "object-contain object-bottom" : "object-cover"}`}
+                style={{ transform: "translateZ(0)", backfaceVisibility: "hidden" }}
             />}
         </div>
     );
