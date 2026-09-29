@@ -41,7 +41,7 @@ export default function HeroVideo({ kind, paused, className = "" }: HeroVideoPro
                 ref={ref}
                 src={`${base}.${kind === "portrait" ? "webm" : "mp4"}`}
                 poster={`${base}.webp`}
-                muted loop playsInline preload="none" tabIndex={-1}
+                muted loop playsInline preload="auto" tabIndex={-1}
                 onError={() => setFailed(true)}
                 className={`absolute inset-0 w-full h-full ${kind === "portrait" ? "object-contain object-bottom" : "object-cover"}`}
             />}

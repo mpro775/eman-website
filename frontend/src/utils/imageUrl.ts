@@ -9,12 +9,20 @@ const API_BASE_URL =
  *    → Converts to backend proxy: /api/upload/files/{key}
  * 2. Relative URLs → Prepends API base
  * 3. Already-correct URLs (data:, public URLs) → Returns as-is
+ * 4. Vite asset imports (development or build) → Keeps the frontend URL
  */
 export function resolveImageUrl(url: string | undefined | null): string {
   if (!url) return '';
 
   // Already a data URL or blob URL - return as-is
   if (url.startsWith('data:') || url.startsWith('blob:')) {
+    return url;
+  }
+
+  // Imported frontend images are served by Vite, not the upload API.
+  // Respect BASE_URL for installations hosted below a path prefix.
+  const appBase = import.meta.env.BASE_URL;
+  if (url.startsWith(`${appBase}src/`) || url.startsWith(`${appBase}assets/`)) {
     return url;
   }
 
