@@ -4,7 +4,7 @@ import arrowUpRight from "../../../assets/hero/arrow-up-right.svg";
 // Figma hero assets (node 820:2060)
 import sparkImage from "../../../assets/illustrations/hero/spark.svg";
 import quoteIcon from "../../../assets/illustrations/hero/quote.svg";
-import HeroVideo from "./HeroVideo";
+import heroImage from "../../../assets/illustrations/hero/portrait.png";
 
 const headingFontSize = "clamp(2.1rem, 10vw, 3rem)";
 
@@ -20,9 +20,18 @@ const dockLabelStyle: React.CSSProperties = {
  * (node 820:2060). Rendered only below the `lg` breakpoint; the desktop
  * pixel-perfect absolute layout lives in index.tsx and is hidden on mobile.
  */
-const HeroMobile: React.FC<{ paused: boolean }> = ({ paused }) => {
+const HeroMobile: React.FC = () => {
     return (
         <div className="lg:hidden relative w-full min-h-screen flex flex-col items-center text-center px-6 pt-28 pb-12 overflow-hidden">
+            {/* Purple glow (top) */}
+            <div
+                className="absolute top-[-6%] left-1/2 -translate-x-1/2 w-[150%] h-[340px] rounded-full pointer-events-none"
+                style={{
+                    background: "linear-gradient(177deg, rgba(187,161,254,0.45) 0%, rgba(33,13,83,0.65) 100%)",
+                    filter: "blur(90px)",
+                }}
+            />
+
             {/* Badge "مرحباً" + spark */}
             <div className="relative z-10 inline-flex">
                 <img
@@ -66,8 +75,13 @@ const HeroMobile: React.FC<{ paused: boolean }> = ({ paused }) => {
                     className="absolute inset-[-12%_-8%] rounded-[50%] pointer-events-none"
                     style={{ background: "linear-gradient(180deg, #7A464D 0%, #120002 100%)", filter: "blur(45px)" }}
                 />
-                <div className="relative w-full aspect-[531/606] overflow-hidden" style={{ maskImage: "linear-gradient(to bottom, black 85%, transparent 100%)" }}>
-                    <HeroVideo kind="portrait" paused={paused} className="w-full h-full" />
+                <div className="relative w-full aspect-[531/606] overflow-hidden">
+                    <img
+                        src={heroImage}
+                        alt="Eman UI Designer"
+                        className="absolute max-w-none object-cover pointer-events-none"
+                        style={{ width: "164.01%", height: "216.16%", left: "-30.86%", top: "-36%" }}
+                    />
                 </div>
             </div>
 
