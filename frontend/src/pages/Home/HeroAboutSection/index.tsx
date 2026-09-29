@@ -34,12 +34,19 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
     onMediaPlaying,
 }) => {
     const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    const [isDesktop, setIsDesktop] = useState(() => window.matchMedia("(min-width: 1024px)").matches);
     const [skillsImage, setSkillsImage] = useState<string | null>(null);
     useEffect(() => {
         const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
         const update = () => setReducedMotion(preference.matches);
         preference.addEventListener("change", update);
         return () => preference.removeEventListener("change", update);
+    }, []);
+    useEffect(() => {
+        const breakpoint = window.matchMedia("(min-width: 1024px)");
+        const update = () => setIsDesktop(breakpoint.matches);
+        breakpoint.addEventListener("change", update);
+        return () => breakpoint.removeEventListener("change", update);
     }, []);
     useEffect(() => {
         if (!isAboutView || skillsImage) return;
@@ -92,7 +99,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
             />
 
             {/* Mobile / small-screen views (vertical flow) — shown below lg */}
-            <div className="w-full lg:hidden relative z-10">
+            {!isDesktop && <div className="w-full lg:hidden relative z-10">
                 <AnimatePresence mode="wait">
                     {!isAboutView ? (
                         <motion.div
@@ -116,10 +123,10 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
                         </motion.div>
                     )}
                 </AnimatePresence>
-            </div>
+            </div>}
 
             {/* Desktop canvas - 1440px × 918px (Figma frame 820:2060) — lg and up */}
-            <div
+            {isDesktop && <div
                 className="relative hidden lg:block w-full max-w-[1440px] mx-auto overflow-visible lg:h-[918px]"
             >
                 {/* Hero Elements (disappear on transition) */}
@@ -185,7 +192,7 @@ const HeroAboutSection: React.FC<HeroAboutSectionProps> = ({
                     transitionDuration={transitionDuration}
                     transitionEase={transitionEase}
                 />
-            </div>
+            </div>}
         </section>
     );
 };
