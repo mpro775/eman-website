@@ -39,7 +39,7 @@ const statText: React.CSSProperties = {
  */
 const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
     return (
-        <article data-no-splash="true" className="group flex flex-col gap-4">
+        <article dir="rtl" data-no-splash="true" className="group flex flex-col gap-4">
             {/* Cover image */}
             <Link
                 to={`/blog/${post.id}`}
@@ -57,7 +57,8 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
 
             {/* Title + category */}
             <div className="flex flex-col gap-1 w-full text-right">
-                <p
+                <h3
+                    dir="auto"
                     className="text-white w-full"
                     style={{
                         fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
@@ -65,11 +66,14 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
                         fontSize: "18px",
                         lineHeight: "1.5",
                         letterSpacing: "-0.54px",
+                        textAlign: "right",
+                        unicodeBidi: "plaintext",
                     }}
                 >
                     {post.title}
-                </p>
+                </h3>
                 <p
+                    dir="auto"
                     className="w-full"
                     style={{
                         fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
@@ -78,6 +82,8 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
                         lineHeight: "1.5",
                         letterSpacing: "-0.54px",
                         color: "#98989a",
+                        textAlign: "right",
+                        unicodeBidi: "plaintext",
                     }}
                 >
                     {post.category}
@@ -85,7 +91,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
             </div>
 
             {/* Read more + stats */}
-            <div dir="ltr" className="flex items-center gap-4 w-full">
+            <div dir="rtl" className="flex items-center gap-4 w-full">
                 <Link
                     to={`/blog/${post.id}`}
                     onMouseEnter={() => playTap({ volume: 0.25 })}

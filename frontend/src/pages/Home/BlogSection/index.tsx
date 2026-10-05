@@ -103,7 +103,7 @@ const BlogSection: React.FC = () => {
                 </div>
 
                 {/* Cards grid (Figma 820:1824) */}
-                <div dir="ltr" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[30px] w-full">
+                <div dir="rtl" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[30px] w-full">
                     {posts.map((post) => (
                         <BlogCard key={post.id} post={post} />
                     ))}
