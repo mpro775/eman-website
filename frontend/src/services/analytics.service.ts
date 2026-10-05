@@ -45,6 +45,51 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://api.emanjameel.pro
 const VISITOR_KEY = 'em_analytics_visitor';
 const SESSION_KEY = 'em_analytics_session';
 const SESSION_AT_KEY = 'em_analytics_session_at';
+const pageNameCache = new Map<string, Promise<string>>();
+const staticPageNames: Record<string, string> = {
+  '/': 'الرئيسية',
+  '/about': 'من أنا',
+  '/experience': 'الخبرات',
+  '/contact': 'تواصل معي',
+  '/blog': 'المدونة',
+};
+
+const resolvePageName = (path: string): Promise<string> => {
+  if (staticPageNames[path]) return Promise.resolve(staticPageNames[path]);
+  const cached = pageNameCache.get(path);
+  if (cached) return cached;
+
+  const request = (async () => {
+    try {
+      const category = path.match(/^\/works\/category\/([a-f\d]{24})$/i);
+      if (category) {
+        const response = await api.get<{ data: { name: string } }>(`/projects/categories/${category[1]}`);
+        return `فئة: ${response.data.data.name}`;
+      }
+      const project = path.match(/^\/works\/([a-f\d]{24})$/i);
+      if (project) {
+        const response = await api.get<{ data: { name: string } }>(`/projects/${project[1]}`);
+        return `عمل: ${response.data.data.name}`;
+      }
+      const post = path.match(/^\/blog\/([^/]+)$/i);
+      if (post) {
+        const endpoint = /^[a-f\d]{24}$/i.test(post[1]) ? `/blog/posts/${post[1]}` : `/blog/posts/slug/${post[1]}`;
+        const response = await api.get<{ data: { title: string } }>(endpoint);
+        return `مقال: ${response.data.data.title}`;
+      }
+    } catch {
+      // Keep the path as a safe fallback when content was removed.
+    }
+    return path;
+  })();
+  pageNameCache.set(path, request);
+  return request;
+};
+
+const resolveNames = async (paths: string[]) => {
+  const entries = await Promise.all([...new Set(paths)].map(async path => [path, await resolvePageName(path)] as const));
+  return new Map(entries);
+};
 
 const randomId = () => crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
@@ -79,10 +124,30 @@ export const trackAnalyticsEvent = (type: string, extra: Record<string, unknown>
 export const analyticsService = {
   async getReport(params: { days?: string; from?: string; to?: string }): Promise<AnalyticsReport> {
     const response = await api.get<{ data: AnalyticsReport }>('/analytics/report', { params });
-    return response.data.data;
+    const report = response.data.data;
+    const names = await resolveNames([
+      ...report.pages.map(page => page.label),
+      ...report.entryPages.map(page => page.label),
+      ...report.exitPages.map(page => page.label),
+    ]);
+    return {
+      ...report,
+      pages: report.pages.map(page => ({ ...page, displayName: names.get(page.label) || page.displayName || page.label })),
+      entryPages: report.entryPages.map(page => ({ ...page, displayName: names.get(page.label) || page.displayName || page.label })),
+      exitPages: report.exitPages.map(page => ({ ...page, displayName: names.get(page.label) || page.displayName || page.label })),
+    };
   },
   async getLive(): Promise<LiveAnalytics> {
     const response = await api.get<{ data: LiveAnalytics }>('/analytics/live');
-    return response.data.data;
+    const live = response.data.data;
+    const names = await resolveNames([
+      ...live.topPages.map(page => page.path),
+      ...live.recentEvents.map(event => event.path),
+    ]);
+    return {
+      ...live,
+      topPages: live.topPages.map(page => ({ ...page, displayName: names.get(page.path) || page.displayName || page.path })),
+      recentEvents: live.recentEvents.map(event => ({ ...event, displayName: names.get(event.path) || event.displayName || event.path })),
+    };
   },
 };
