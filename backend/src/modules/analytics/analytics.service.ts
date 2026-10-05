@@ -6,6 +6,10 @@ import { ConfigService } from '@nestjs/config';
 import { AnalyticsEvent } from './schemas/analytics-event.schema';
 import { TrackEventDto } from './dto/track-event.dto';
 import { AnalyticsQueryDto } from './dto/analytics-query.dto';
+import { Project } from '../projects/schemas/project.schema';
+import { ProjectCategory } from '../projects/categories/schemas/project-category.schema';
+import { PostBlog } from '../blog/posts/schemas/post.schema';
+import * as geoip from 'geoip-lite';
 
 interface CountResult {
   count: number;
@@ -22,6 +26,7 @@ interface JourneyResult {
 
 interface BreakdownResult {
   label: string;
+  displayName?: string;
   views: number;
   visitors: number;
   sessions: number;
@@ -43,6 +48,10 @@ export class AnalyticsService {
   constructor(
     @InjectModel(AnalyticsEvent.name)
     private readonly eventModel: Model<AnalyticsEvent>,
+    @InjectModel(Project.name) private readonly projectModel: Model<Project>,
+    @InjectModel(ProjectCategory.name)
+    private readonly projectCategoryModel: Model<ProjectCategory>,
+    @InjectModel(PostBlog.name) private readonly postModel: Model<PostBlog>,
     private readonly config: ConfigService,
   ) {}
 
@@ -60,6 +69,93 @@ export class AnalyticsService {
     } catch {
       return String(value || '');
     }
+  }
+
+  private clientIp(headers: Record<string, string | string[] | undefined>) {
+    const raw = String(
+      headers['cf-connecting-ip'] ||
+        headers['x-forwarded-for'] ||
+        headers['x-real-ip'] ||
+        '',
+    )
+      .split(',')[0]
+      .trim();
+    return raw;
+  }
+
+  private maskIp(ip: string) {
+    if (!ip) return undefined;
+    if (ip.includes(':')) {
+      const parts = ip.split(':').filter(Boolean);
+      return `${parts.slice(0, 3).join(':')}:…`;
+    }
+    const parts = ip.split('.');
+    return parts.length === 4
+      ? `${parts[0]}.${parts[1]}.${parts[2]}.xxx`
+      : undefined;
+  }
+
+  private async resolvePageNames(paths: string[]) {
+    const uniquePaths = [...new Set(paths.filter(Boolean))];
+    const names = new Map<string, string>([
+      ['/', 'الرئيسية'],
+      ['/about', 'من أنا'],
+      ['/experience', 'الخبرات'],
+      ['/contact', 'تواصل معي'],
+      ['/blog', 'المدونة'],
+    ]);
+    const projectIds: string[] = [];
+    const categoryIds: string[] = [];
+    const postKeys: string[] = [];
+
+    for (const path of uniquePaths) {
+      const category = path.match(/^\/works\/category\/([a-f\d]{24})$/i);
+      const project = path.match(/^\/works\/([a-f\d]{24})$/i);
+      const post = path.match(/^\/blog\/([^/]+)$/i);
+      if (category) categoryIds.push(category[1]);
+      else if (project) projectIds.push(project[1]);
+      else if (post) postKeys.push(post[1]);
+    }
+
+    const [projects, categories, posts] = await Promise.all([
+      projectIds.length
+        ? this.projectModel
+            .find({ _id: { $in: projectIds } })
+            .select('name')
+            .lean()
+        : [],
+      categoryIds.length
+        ? this.projectCategoryModel
+            .find({ _id: { $in: categoryIds } })
+            .select('name')
+            .lean()
+        : [],
+      postKeys.length
+        ? this.postModel
+            .find({
+              $or: [
+                {
+                  _id: {
+                    $in: postKeys.filter((key) => /^[a-f\d]{24}$/i.test(key)),
+                  },
+                },
+                { slug: { $in: postKeys } },
+              ],
+            })
+            .select('title slug')
+            .lean()
+        : [],
+    ]);
+
+    for (const item of projects)
+      names.set(`/works/${String(item._id)}`, `عمل: ${item.name}`);
+    for (const item of categories)
+      names.set(`/works/category/${String(item._id)}`, `فئة: ${item.name}`);
+    for (const item of posts) {
+      names.set(`/blog/${String(item._id)}`, `مقال: ${item.title}`);
+      names.set(`/blog/${item.slug}`, `مقال: ${item.title}`);
+    }
+    return names;
   }
 
   private parseAgent(userAgent = '') {
@@ -129,6 +225,8 @@ export class AnalyticsService {
     const occurredAt = new Date();
     const visitorId = this.hash(dto.visitorId);
     const sessionId = this.hash(dto.sessionId);
+    const clientIp = this.clientIp(headers);
+    const geo = clientIp ? geoip.lookup(clientIp) : null;
 
     if (dto.type === 'page_view') {
       const duplicate = await this.eventModel.exists({
@@ -162,11 +260,33 @@ export class AnalyticsService {
         ? String(dto.campaign.utm_term).slice(0, 120)
         : undefined,
       country: String(
-        headers['cf-ipcountry'] || headers['x-vercel-ip-country'] || '',
+        headers['cf-ipcountry'] ||
+          headers['x-vercel-ip-country'] ||
+          geo?.country ||
+          '',
       ).slice(0, 80),
       city: this.decodeHeader(
-        headers['cf-ipcity'] || headers['x-vercel-ip-city'],
+        headers['cf-ipcity'] || headers['x-vercel-ip-city'] || geo?.city,
       ).slice(0, 100),
+      region: this.decodeHeader(
+        headers['cf-region'] ||
+          headers['x-vercel-ip-country-region'] ||
+          geo?.region,
+      ).slice(0, 100),
+      timezone: String(headers['cf-timezone'] || geo?.timezone || '').slice(
+        0,
+        80,
+      ),
+      latitude: String(headers['cf-iplatitude'] || geo?.ll?.[0] || '').slice(
+        0,
+        30,
+      ),
+      longitude: String(headers['cf-iplongitude'] || geo?.ll?.[1] || '').slice(
+        0,
+        30,
+      ),
+      ipHash: clientIp ? this.hash(`ip:${clientIp}`) : undefined,
+      ipAddressMasked: this.maskIp(clientIp),
       occurredAt,
       expiresAt: new Date(occurredAt.getTime() + 400 * 86400000),
     });
@@ -282,9 +402,16 @@ export class AnalyticsService {
           .find(match)
           .sort({ occurredAt: -1 })
           .limit(12)
-          .select('type path source device country occurredAt -_id')
+          .select(
+            'type path title source device country city region timezone ipHash ipAddressMasked occurredAt -_id',
+          )
           .lean(),
       ]);
+
+    const pageNames = await this.resolvePageNames([
+      ...topPages.map((page) => page.path),
+      ...recentEvents.map((event) => event.path),
+    ]);
 
     return {
       generatedAt: now,
@@ -292,8 +419,24 @@ export class AnalyticsService {
       activeVisitors: activeVisitorIds.length,
       pageViews,
       goalEvents,
-      topPages,
-      recentEvents,
+      topPages: topPages.map((page) => ({
+        ...page,
+        displayName: pageNames.get(page.path) || page.path,
+      })),
+      recentEvents: recentEvents.map((event) => ({
+        type: event.type,
+        path: event.path,
+        displayName: pageNames.get(event.path) || event.title || event.path,
+        source: event.source,
+        device: event.device,
+        country: event.country,
+        city: event.city,
+        region: event.region,
+        timezone: event.timezone,
+        visitorCode: event.ipHash?.slice(0, 8).toUpperCase(),
+        ipAddressMasked: event.ipAddressMasked,
+        occurredAt: event.occurredAt,
+      })),
     };
   }
 
@@ -419,6 +562,18 @@ export class AnalyticsService {
         occurredAt: { $gte: new Date(Date.now() - 5 * 60000) },
       })
     ).length;
+    const journeyEntries = journeys[0]?.entries || [];
+    const journeyExits = journeys[0]?.exits || [];
+    const pageNames = await this.resolvePageNames([
+      ...pages.map((page) => page.label),
+      ...journeyEntries.map((page) => page.label),
+      ...journeyExits.map((page) => page.label),
+    ]);
+    const withDisplayNames = <T extends { label: string }>(items: T[]) =>
+      items.map((item) => ({
+        ...item,
+        displayName: pageNames.get(item.label) || item.label,
+      }));
     const trend = (value: number, old: number) =>
       old ? Math.round(((value - old) / old) * 100) : value ? 100 : 0;
     return {
@@ -449,14 +604,14 @@ export class AnalyticsService {
       },
       timeline,
       sources,
-      pages,
+      pages: withDisplayNames(pages),
       devices,
       browsers,
       countries,
       cities,
       events,
-      entryPages: journeys[0]?.entries || [],
-      exitPages: journeys[0]?.exits || [],
+      entryPages: withDisplayNames(journeyEntries),
+      exitPages: withDisplayNames(journeyExits),
       activeHours: hours,
     };
   }

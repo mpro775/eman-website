@@ -20,6 +20,12 @@ export class AnalyticsEvent extends Document {
   @Prop() language?: string;
   @Prop() country?: string;
   @Prop() city?: string;
+  @Prop() region?: string;
+  @Prop() timezone?: string;
+  @Prop() latitude?: string;
+  @Prop() longitude?: string;
+  @Prop({ index: true }) ipHash?: string;
+  @Prop() ipAddressMasked?: string;
   @Prop() target?: string;
   @Prop({ default: 0 }) durationMs: number;
   @Prop({ required: true, index: true }) occurredAt: Date;

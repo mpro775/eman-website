@@ -1,6 +1,6 @@
 import api from './api';
 
-export interface BreakdownItem { label: string; views: number; visitors: number; sessions: number }
+export interface BreakdownItem { label: string; displayName?: string; views: number; visitors: number; sessions: number }
 export interface AnalyticsReport {
   range: { from: string; to: string };
   summary: {
@@ -13,8 +13,8 @@ export interface AnalyticsReport {
   sources: BreakdownItem[]; pages: BreakdownItem[]; devices: BreakdownItem[];
   browsers: BreakdownItem[]; countries: BreakdownItem[];
   cities: BreakdownItem[]; activeHours: BreakdownItem[];
-  entryPages: Array<{ label: string; views: number }>;
-  exitPages: Array<{ label: string; views: number }>;
+  entryPages: Array<{ label: string; displayName?: string; views: number }>;
+  exitPages: Array<{ label: string; displayName?: string; views: number }>;
   events: Array<{ type: string; count: number }>;
 }
 
@@ -24,13 +24,19 @@ export interface LiveAnalytics {
   activeVisitors: number;
   pageViews: number;
   goalEvents: number;
-  topPages: Array<{ path: string; views: number }>;
+  topPages: Array<{ path: string; displayName: string; views: number }>;
   recentEvents: Array<{
     type: string;
     path: string;
+    displayName: string;
     source: string;
     device: string;
     country?: string;
+    city?: string;
+    region?: string;
+    timezone?: string;
+    visitorCode?: string;
+    ipAddressMasked?: string;
     occurredAt: string;
   }>;
 }
