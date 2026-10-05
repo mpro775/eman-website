@@ -1,4 +1,12 @@
 import { useEffect } from 'react';
+import {
+    DEFAULT_SEO_DESCRIPTION,
+    DEFAULT_SEO_IMAGE,
+    DEFAULT_SEO_TITLE,
+    SITE_NAME,
+    toAbsoluteUrl,
+    toCanonicalUrl,
+} from '../config/seo';
 
 interface SEOProps {
     title?: string | undefined;
@@ -12,12 +20,8 @@ interface SEOProps {
     modifiedTime?: string | undefined;
     section?: string | undefined;
     tags?: string[] | undefined;
+    noindex?: boolean | undefined;
 }
-
-const DEFAULT_TITLE = 'إيمان - مصممة UI/UX ومطورة تطبيقات محترفة';
-const DEFAULT_DESCRIPTION = 'خبيرة في تصميم واجهات المستخدم وتجربة المستخدم (UI/UX) وتطوير تطبيقات الموبايل. أقدم خدمات التصميم الجرافيكي والتدريب والاستشارات.';
-const DEFAULT_IMAGE = '/logo.png';
-const SITE_URL = 'https://eman.dev';
 
 /**
  * Custom hook for managing SEO meta tags dynamically
@@ -35,12 +39,13 @@ export const useSEO = ({
     modifiedTime,
     section,
     tags,
+    noindex = false,
 }: SEOProps = {}) => {
     useEffect(() => {
-        const fullTitle = title ? `${title} | إيمان` : DEFAULT_TITLE;
-        const fullDescription = description || DEFAULT_DESCRIPTION;
-        const fullImage = image || DEFAULT_IMAGE;
-        const fullUrl = url ? `${SITE_URL}${url}` : SITE_URL;
+        const fullTitle = title ? `${title} | ${SITE_NAME}` : DEFAULT_SEO_TITLE;
+        const fullDescription = description || DEFAULT_SEO_DESCRIPTION;
+        const fullImage = toAbsoluteUrl(image || DEFAULT_SEO_IMAGE);
+        const fullUrl = toCanonicalUrl(url);
 
         // Update document title
         document.title = fullTitle;
@@ -49,7 +54,6 @@ export const useSEO = ({
         const updateMeta = (
             selector: string,
             content: string,
-            _attribute: 'name' | 'property' = 'name'
         ) => {
             let element = document.querySelector(selector) as HTMLMetaElement;
             if (!element) {
@@ -74,6 +78,12 @@ export const useSEO = ({
         // Basic meta tags
         updateMeta('meta[name="title"]', fullTitle);
         updateMeta('meta[name="description"]', fullDescription);
+        updateMeta(
+            'meta[name="robots"]',
+            noindex
+                ? 'noindex, nofollow'
+                : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+        );
         if (keywords) {
             updateMeta('meta[name="keywords"]', keywords);
         }
@@ -82,29 +92,33 @@ export const useSEO = ({
         }
 
         // Open Graph tags
-        updateMeta('meta[property="og:type"]', type, 'property');
-        updateMeta('meta[property="og:url"]', fullUrl, 'property');
-        updateMeta('meta[property="og:title"]', fullTitle, 'property');
-        updateMeta('meta[property="og:description"]', fullDescription, 'property');
-        updateMeta('meta[property="og:image"]', fullImage, 'property');
+        updateMeta('meta[property="og:type"]', type);
+        updateMeta('meta[property="og:url"]', fullUrl);
+        updateMeta('meta[property="og:title"]', fullTitle);
+        updateMeta('meta[property="og:description"]', fullDescription);
+        updateMeta('meta[property="og:image"]', fullImage);
+        updateMeta('meta[property="og:image:secure_url"]', fullImage);
+        updateMeta('meta[property="og:image:alt"]', fullTitle);
+        updateMeta('meta[property="og:locale"]', 'ar_SA');
+        updateMeta('meta[property="og:site_name"]', SITE_NAME);
 
         // Article specific tags
         if (type === 'article') {
             if (publishedTime) {
-                updateMeta('meta[property="article:published_time"]', publishedTime, 'property');
+                updateMeta('meta[property="article:published_time"]', publishedTime);
             }
             if (modifiedTime) {
-                updateMeta('meta[property="article:modified_time"]', modifiedTime, 'property');
+                updateMeta('meta[property="article:modified_time"]', modifiedTime);
             }
             if (author) {
-                updateMeta('meta[property="article:author"]', author, 'property');
+                updateMeta('meta[property="article:author"]', author);
             }
             if (section) {
-                updateMeta('meta[property="article:section"]', section, 'property');
+                updateMeta('meta[property="article:section"]', section);
             }
             if (tags && tags.length > 0) {
                 tags.forEach((tag, index) => {
-                    updateMeta(`meta[property="article:tag"][data-index="${index}"]`, tag, 'property');
+                    updateMeta(`meta[property="article:tag"][data-index="${index}"]`, tag);
                 });
             }
         }
@@ -114,24 +128,27 @@ export const useSEO = ({
         updateMeta('meta[name="twitter:title"]', fullTitle);
         updateMeta('meta[name="twitter:description"]', fullDescription);
         updateMeta('meta[name="twitter:image"]', fullImage);
+        updateMeta('meta[name="twitter:image:alt"]', fullTitle);
 
         // Cleanup function - reset to defaults when component unmounts
         return () => {
-            document.title = DEFAULT_TITLE;
-            updateMeta('meta[name="title"]', DEFAULT_TITLE);
-            updateMeta('meta[name="description"]', DEFAULT_DESCRIPTION);
-            updateMeta('meta[property="og:title"]', DEFAULT_TITLE, 'property');
-            updateMeta('meta[property="og:description"]', DEFAULT_DESCRIPTION, 'property');
-            updateMeta('meta[property="og:image"]', DEFAULT_IMAGE, 'property');
-            updateMeta('meta[property="og:type"]', 'website', 'property');
-            updateMeta('meta[name="twitter:title"]', DEFAULT_TITLE);
-            updateMeta('meta[name="twitter:description"]', DEFAULT_DESCRIPTION);
-            updateMeta('meta[name="twitter:image"]', DEFAULT_IMAGE);
+            document.querySelectorAll('meta[property^="article:"]').forEach((element) => element.remove());
+            document.title = DEFAULT_SEO_TITLE;
+            updateMeta('meta[name="title"]', DEFAULT_SEO_TITLE);
+            updateMeta('meta[name="description"]', DEFAULT_SEO_DESCRIPTION);
+            updateMeta('meta[name="robots"]', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
+            updateMeta('meta[property="og:title"]', DEFAULT_SEO_TITLE);
+            updateMeta('meta[property="og:description"]', DEFAULT_SEO_DESCRIPTION);
+            updateMeta('meta[property="og:image"]', DEFAULT_SEO_IMAGE);
+            updateMeta('meta[property="og:type"]', 'website');
+            updateMeta('meta[name="twitter:title"]', DEFAULT_SEO_TITLE);
+            updateMeta('meta[name="twitter:description"]', DEFAULT_SEO_DESCRIPTION);
+            updateMeta('meta[name="twitter:image"]', DEFAULT_SEO_IMAGE);
             if (canonical) {
-                canonical.href = SITE_URL;
+                canonical.href = toCanonicalUrl('/');
             }
         };
-    }, [title, description, keywords, image, url, type, author, publishedTime, modifiedTime, section, tags]);
+    }, [title, description, keywords, image, url, type, author, publishedTime, modifiedTime, section, tags, noindex]);
 };
 
 export default useSEO;

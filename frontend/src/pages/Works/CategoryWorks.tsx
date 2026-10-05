@@ -18,8 +18,10 @@ export const CategoryWorks: React.FC = () => {
     const [error, setError] = useState(false);
 
     useSEO({
-        title: category ? `${category.name} | أعمال إيمان جميل` : "فئة الأعمال | إيمان جميل",
-        description: `استعرض جميع المشاريع والأعمال الخاصة بفئة ${category?.name || "الأعمال"}`,
+        title: category ? `${category.name} - أعمال ومشاريع` : "فئة الأعمال والمشاريع",
+        description: `استعرض مشاريع إيمان جميل وأعمالها في ${category?.name || "التصميم وتطوير التطبيقات"}.`,
+        url: id ? `/works/category/${id}` : undefined,
+        noindex: !loading && error,
     });
 
     useEffect(() => {

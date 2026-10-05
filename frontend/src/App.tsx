@@ -18,6 +18,7 @@ const CategoryWorks = lazy(() => import('./pages/Works/CategoryWorks'));
 const About = lazy(() => import('./pages/About/About'));
 const Experience = lazy(() => import('./pages/Experience/Experience'));
 const Contact = lazy(() => import('./pages/Contact/Contact'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Lazy load admin pages
 const Login = lazy(() => import('./admin/pages/Login').then(module => ({ default: module.Login })));
@@ -228,6 +229,7 @@ function App() {
               <Route path="experiences" element={<ExperiencesList />} />
                   <Route path="profile" element={<ProfileEdit />} />
                 </Route>
+                  <Route path="*" element={<NotFound />} />
               </Routes>
               </Suspense>
             </div>

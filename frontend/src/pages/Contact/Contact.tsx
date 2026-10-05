@@ -5,8 +5,8 @@ import { useSEO } from "../../hooks/useSEO";
 
 const Contact: React.FC = () => {
   useSEO({
-    title: "تواصل معي - إيمان",
-    description: "صفحة التواصل.",
+    title: "تواصل مع إيمان جميل",
+    description: "تواصل مع إيمان جميل لطلب خدمات تصميم UI/UX وتطوير التطبيقات والتصميم الجرافيكي أو للاستفسار عن البرامج التدريبية.",
     keywords: "تواصل, إيمان, contact",
     url: "/contact",
   });

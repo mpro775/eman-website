@@ -35,6 +35,11 @@ interface BlogPost {
   readingTime: string;
   author: string;
   authorImage: string;
+  seoTitle: string;
+  seoDescription: string;
+  publishedAt: string;
+  modifiedAt: string;
+  tags: string[];
   content: {
     intro: string;
     sections: {
@@ -137,13 +142,15 @@ const RelatedPostCard: React.FC<{
   </motion.article>
 );
 
+type RelatedPost = React.ComponentProps<typeof RelatedPostCard>["post"];
+
 const BlogDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [authorSettings, setAuthorSettings] = useState<BlogAuthorSettings | null>(null);
 
-  const [relatedPosts, setRelatedPosts] = useState<any[]>([]);
+  const [relatedPosts, setRelatedPosts] = useState<RelatedPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -260,7 +267,7 @@ const BlogDetail: React.FC = () => {
         try {
           await navigator.clipboard.writeText(shareUrl);
           showToastMessage("تم نسخ رابط المقال بنجاح!", "success");
-        } catch (clipErr) {
+        } catch {
           showToastMessage("فشل في مشاركة الرابط أو نسخه.", "error");
         }
       }
@@ -300,6 +307,13 @@ const BlogDetail: React.FC = () => {
           readingTime: rawPost.readTime ? `${rawPost.readTime} دقيقة` : "5 دقائق",
           author: "إيمان جميل",
           authorImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+          seoTitle: rawPost.seo?.metaTitle || rawPost.title,
+          seoDescription: rawPost.seo?.metaDescription || rawPost.summary || parsed.intro,
+          publishedAt: rawPost.publishDate || rawPost.createdAt,
+          modifiedAt: rawPost.updatedAt,
+          tags: Array.isArray(rawPost.tags)
+            ? rawPost.tags.map((tag) => (typeof tag === "object" ? tag.name : tag))
+            : [],
           content: parsed
         };
         setPost(mapped);
@@ -346,15 +360,18 @@ const BlogDetail: React.FC = () => {
   }, [id]);
 
   useSEO({
-    title: post ? (post.titleAr || post.title) : 'تفاصيل المقال',
-    description: post ? post.content.intro.substring(0, 160) : 'تفاصيل المقال',
-    keywords: post ? `${post.categoryAr}, ${post.category}, مقالات, ${post.author}` : 'مقالات',
+    title: post?.seoTitle || (!loading ? 'المقال غير موجود' : undefined),
+    description: post?.seoDescription.slice(0, 160),
+    keywords: post ? [post.categoryAr, ...post.tags, 'مقالات', post.author].filter(Boolean).join(', ') : undefined,
     image: post ? post.image : undefined,
     url: `/blog/${id}`,
     type: 'article',
     author: post ? post.author : undefined,
-    publishedTime: post ? post.publishDate : undefined,
+    publishedTime: post?.publishedAt,
+    modifiedTime: post?.modifiedAt,
     section: post ? post.categoryAr : undefined,
+    tags: post?.tags,
+    noindex: !loading && !post,
   });
 
   if (loading) {
@@ -381,11 +398,13 @@ const BlogDetail: React.FC = () => {
         type="article"
         data={{
           title: post.titleAr || post.title,
-          description: post.content.intro.substring(0, 160),
+          description: post.seoDescription.slice(0, 160),
           image: post.image,
           author: post.author,
-          datePublished: post.publishDate,
+          datePublished: post.publishedAt,
+          dateModified: post.modifiedAt,
           category: post.categoryAr,
+          url: `/blog/${id}`,
         }}
       />
 

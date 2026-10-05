@@ -6,6 +6,7 @@ import Container from "../../components/common/Container";
 import { useSEO } from "../../hooks/useSEO";
 import { projectsService } from "../../services/projects.service";
 import { resolveImageUrl } from "../../utils/imageUrl";
+import { SEOSchema } from "../../components/common/SEOSchema";
 import type { Project } from "../../types/project.types";
 import ProjectGallery from "./ProjectGallery";
 import ProjectSidebar from "./ProjectSidebar";
@@ -103,7 +104,7 @@ const ProjectDetail: React.FC = () => {
     }, [project, siblings]);
 
     useSEO({
-        title: project?.name,
+        title: project?.name || (!loading ? "المشروع غير موجود" : undefined),
         description: project?.description?.slice(0, 160),
         keywords: project ? [categoryName, ...(project.tags || [])].filter(Boolean).join(", ") : undefined,
         image: project?.image ? resolveImageUrl(project.image) : undefined,
@@ -111,6 +112,7 @@ const ProjectDetail: React.FC = () => {
         type: "article",
         section: categoryName || undefined,
         tags: project?.tags,
+        noindex: !loading && !project,
     });
 
     if (loading) {
@@ -142,6 +144,16 @@ const ProjectDetail: React.FC = () => {
 
     return (
         <div dir="rtl" className="min-h-screen bg-[#040404]">
+            <SEOSchema
+                type="project"
+                data={{
+                    name: project.name,
+                    description: project.description,
+                    image: project.image,
+                    category: categoryName || undefined,
+                    url: `/works/${project._id}`,
+                }}
+            />
             <Container size="xl">
                 {/* Top bar: back button only — no header, logo or nav on this page.
                     justify-end puts it on the visual left under RTL. */}

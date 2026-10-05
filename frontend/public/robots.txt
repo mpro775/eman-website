@@ -1,5 +1,5 @@
 # Robots.txt for Eman Portfolio Website
-# https://eman.dev
+# https://emanjameel.pro
 
 User-agent: *
 Allow: /
@@ -7,10 +7,7 @@ Disallow: /admin/
 Disallow: /admin/*
 
 # Sitemap
-Sitemap: https://eman.dev/sitemap.xml
-
-# Crawl-delay for polite bots
-Crawl-delay: 1
+Sitemap: https://emanjameel.pro/sitemap.xml
 
 # Block specific bots if needed
 User-agent: GPTBot

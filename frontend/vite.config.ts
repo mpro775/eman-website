@@ -12,8 +12,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['logo.png', 'robots.txt', 'sitemap.xml'],
       manifest: {
-        name: 'إيمان - مصممة UI/UX ومطورة تطبيقات',
-        short_name: 'إيمان',
+        name: 'إيمان جميل - مصممة UI/UX ومطورة تطبيقات',
+        short_name: 'إيمان جميل',
         description: 'خبيرة في تصميم واجهات المستخدم وتجربة المستخدم (UI/UX) وتطوير تطبيقات الموبايل',
         theme_color: '#1a0e2e',
         background_color: '#0a0a0f',

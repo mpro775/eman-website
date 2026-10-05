@@ -1,6 +1,6 @@
 {
-  "name": "إيمان - مصممة UI/UX ومطورة تطبيقات",
-  "short_name": "إيمان",
+  "name": "إيمان جميل - مصممة UI/UX ومطورة تطبيقات",
+  "short_name": "إيمان جميل",
   "description": "خبيرة في تصميم واجهات المستخدم وتجربة المستخدم (UI/UX) وتطوير تطبيقات الموبايل",
   "start_url": "/",
   "display": "standalone",
@@ -37,7 +37,7 @@
       "name": "معرض الأعمال",
       "short_name": "أعمال",
       "description": "استعرض المشاريع",
-      "url": "/portfolio/ux-ui",
+      "url": "/#portfolio",
       "icons": [{ "src": "/logo.png", "sizes": "96x96" }]
     }
   ]

@@ -6,8 +6,8 @@ import { useSEO } from "../../hooks/useSEO";
 
 const Experience: React.FC = () => {
   useSEO({
-    title: "الخبرات العملية - إيمان",
-    description: "الخبرات العملية والمسار المهني.",
+    title: "الخبرات العملية والمسار المهني",
+    description: "استعرض خبرات إيمان جميل العملية ومسيرتها في تصميم UI/UX وتطوير التطبيقات والتصميم الجرافيكي.",
     keywords: "خبرات, إيمان, UX/UI, خبرة عملية",
     url: "/experience",
   });

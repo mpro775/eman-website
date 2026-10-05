@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { DEFAULT_SEO_IMAGE, SITE_NAME, SITE_URL, toAbsoluteUrl, toCanonicalUrl } from '../../config/seo';
 
 interface BreadcrumbItem {
     name: string;
@@ -13,6 +14,7 @@ interface ArticleSchema {
     datePublished?: string;
     dateModified?: string;
     category?: string;
+    url?: string;
 }
 
 interface ServiceSchema {
@@ -34,8 +36,6 @@ interface SEOSchemaProps {
     type: 'article' | 'service' | 'project' | 'breadcrumb' | 'faq';
     data: ArticleSchema | ServiceSchema | ProjectSchema | BreadcrumbItem[] | { question: string; answer: string }[];
 }
-
-const SITE_URL = 'https://eman.dev';
 
 /**
  * Component for injecting structured data (JSON-LD) into the page
@@ -61,14 +61,14 @@ export const SEOSchema: React.FC<SEOSchemaProps> = ({ type, data }) => {
                     '@type': 'Article',
                     headline: articleData.title,
                     description: articleData.description,
-                    image: articleData.image || '/logo.png',
+                    image: toAbsoluteUrl(articleData.image || DEFAULT_SEO_IMAGE),
                     author: {
                         '@type': 'Person',
-                        name: articleData.author || 'إيمان',
+                        name: articleData.author || SITE_NAME,
                     },
                     publisher: {
                         '@type': 'Organization',
-                        name: 'إيمان',
+                        name: SITE_NAME,
                         logo: {
                             '@type': 'ImageObject',
                             url: `${SITE_URL}/logo.png`,
@@ -78,7 +78,7 @@ export const SEOSchema: React.FC<SEOSchemaProps> = ({ type, data }) => {
                     dateModified: articleData.dateModified || articleData.datePublished,
                     mainEntityOfPage: {
                         '@type': 'WebPage',
-                        '@id': SITE_URL,
+                        '@id': toCanonicalUrl(articleData.url),
                     },
                     articleSection: articleData.category,
                 };
@@ -92,10 +92,10 @@ export const SEOSchema: React.FC<SEOSchemaProps> = ({ type, data }) => {
                     '@type': 'Service',
                     name: serviceData.name,
                     description: serviceData.description,
-                    image: serviceData.image || '/logo.png',
+                    image: toAbsoluteUrl(serviceData.image || DEFAULT_SEO_IMAGE),
                     provider: {
                         '@type': 'Person',
-                        name: 'إيمان',
+                        name: SITE_NAME,
                         url: SITE_URL,
                     },
                     areaServed: {
@@ -114,14 +114,14 @@ export const SEOSchema: React.FC<SEOSchemaProps> = ({ type, data }) => {
                     '@type': 'CreativeWork',
                     name: projectData.name,
                     description: projectData.description,
-                    image: projectData.image || '/logo.png',
+                    image: toAbsoluteUrl(projectData.image || DEFAULT_SEO_IMAGE),
                     creator: {
                         '@type': 'Person',
-                        name: 'إيمان',
+                        name: SITE_NAME,
                         url: SITE_URL,
                     },
                     ...(projectData.category && { genre: projectData.category }),
-                    ...(projectData.url && { url: projectData.url }),
+                    ...(projectData.url && { url: toCanonicalUrl(projectData.url) }),
                 };
                 break;
             }
@@ -135,7 +135,7 @@ export const SEOSchema: React.FC<SEOSchemaProps> = ({ type, data }) => {
                         '@type': 'ListItem',
                         position: index + 1,
                         name: item.name,
-                        item: `${SITE_URL}${item.url}`,
+                        item: toCanonicalUrl(item.url),
                     })),
                 };
                 break;
