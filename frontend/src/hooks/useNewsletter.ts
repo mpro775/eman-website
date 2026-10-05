@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-
+import { newsletterService } from "../services/newsletter.service";
 
 /**
  * Custom hook for managing the newsletter subscription state and submission
@@ -20,9 +20,7 @@ export const useNewsletter = () => {
         setIsSubmitting(true);
 
         try {
-            // Simulate API call
-            console.log("Submitting newsletter subscription for:", email);
-            await new Promise((resolve) => setTimeout(resolve, 800));
+            await newsletterService.subscribe(email);
 
             setIsSuccess(true);
             setEmail("");

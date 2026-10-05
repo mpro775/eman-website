@@ -1,6 +1,7 @@
 import api from './api';
 import type { ApiResponse, PaginatedResponse } from '../types/api.types';
 import type { ContactMessage, MessageStatus } from '../types/contact.types';
+import { trackAnalyticsEvent } from './analytics.service';
 
 export const contactService = {
   async getMessages(
@@ -44,6 +45,7 @@ export const contactService = {
     phone?: string | undefined;
   }): Promise<ContactMessage> {
     const response = await api.post<ApiResponse<ContactMessage>>('/contact', data);
+    trackAnalyticsEvent('contact_submit');
     return response.data.data;
   },
 };

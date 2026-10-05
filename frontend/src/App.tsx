@@ -6,6 +6,7 @@ import { ErrorBoundary } from './components/common';
 import { ProtectedRoute } from './admin/components/ProtectedRoute';
 import { AdminLayout } from './admin/components/layout/AdminLayout';
 import { initSoundKit, playSwipe, playTap, stopProgressLoop } from './utils/soundManager';
+import { AnalyticsTracker } from './components/analytics/AnalyticsTracker';
 
 // Lazy load public pages
 const Home = lazy(() => import('./pages/Home/Home'));
@@ -39,6 +40,7 @@ const ProgramForm = lazy(() => import('./admin/pages/Programs/ProgramForm').then
 const NewsletterSubscribers = lazy(() => import('./admin/pages/Newsletter/NewsletterSubscribers').then(module => ({ default: module.NewsletterSubscribers })));
 const ProfileEdit = lazy(() => import('./admin/pages/Profile/ProfileEdit').then(module => ({ default: module.ProfileEdit })));
 const ExperiencesList = lazy(() => import('./admin/pages/Experiences/ExperiencesList').then(module => ({ default: module.ExperiencesList })));
+const Analytics = lazy(() => import('./admin/pages/Analytics/Analytics').then(module => ({ default: module.Analytics })));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -173,6 +175,7 @@ function App() {
         <Router>
           <ViewProvider>
             <SoundBridge />
+            <AnalyticsTracker />
             <div className="App">
               <SplashCursor RAINBOW_MODE={false} COLOR="#7A464D" />
               <Suspense fallback={<PageLoader />}>
@@ -199,6 +202,7 @@ function App() {
             >
               <Route index element={<Navigate to="/admin/dashboard" replace />} />
               <Route path="dashboard" element={<Dashboard />} />
+              <Route path="analytics" element={<Analytics />} />
               <Route path="projects" element={<ProjectsList />} />
               <Route path="projects/new" element={<ProjectForm />} />
               <Route path="projects/:id" element={<ProjectForm />} />

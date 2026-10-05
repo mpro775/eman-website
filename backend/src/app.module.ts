@@ -24,6 +24,7 @@ import cloudflareConfig from './config/cloudflare.config';
 import appConfig from './config/app.config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { AppService } from './app.service';
     ExperiencesModule,
     UploadModule,
     ErrorsModule,
+    AnalyticsModule,
   ],
   controllers: [AppController],
   providers: [

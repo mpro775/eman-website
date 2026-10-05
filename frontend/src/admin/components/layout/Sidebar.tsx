@@ -13,6 +13,7 @@ import {
   FiChevronDown,
   FiGrid,
   FiBriefcase,
+  FiBarChart2,
 } from 'react-icons/fi';
 
 interface SidebarSubItem {
@@ -29,6 +30,7 @@ interface SidebarItem {
 
 const sidebarItems: SidebarItem[] = [
   { path: '/admin/dashboard', label: 'لوحة التحكم', icon: <FiHome /> },
+  { path: '/admin/analytics', label: 'تحليلات الزيارات', icon: <FiBarChart2 /> },
   {
     path: '/admin/projects',
     label: 'أعمالي',

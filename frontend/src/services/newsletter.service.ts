@@ -4,8 +4,14 @@ import type {
   NewsletterSubscriber,
   FilterSubscribersDto,
 } from '../types/newsletter.types';
+import { trackAnalyticsEvent } from './analytics.service';
 
 export const newsletterService = {
+  async subscribe(email: string): Promise<void> {
+    await api.post('/newsletter/subscribe', { email });
+    trackAnalyticsEvent('newsletter_subscribe');
+  },
+
   async getSubscribers(
     filters?: FilterSubscribersDto
   ): Promise<PaginatedResponse<NewsletterSubscriber>> {
