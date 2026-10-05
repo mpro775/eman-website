@@ -1,39 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BlogCard, { type BlogPost } from "./BlogCard";
 import { playTap } from "../../../utils/soundManager";
+import { blogService } from "../../../services/blog.service";
 
-import card1 from "../../../assets/blog/card1.png";
-import card2 from "../../../assets/blog/card2.png";
-import card3 from "../../../assets/blog/card3.png";
+const FALLBACK_IMAGE =
+    "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=250&fit=crop";
 
-// Placeholder posts text-matched to Figma node 820:1818 ("المدونة").
-const POSTS: BlogPost[] = [
-    {
-        id: 1,
-        title: "A Decisive Victory for Progressive Policies",
-        category: "Politics",
-        image: card1,
-        shares: "124",
-        likes: "10k",
-    },
-    {
-        id: 2,
-        title: "Tech Giants Unveil Cutting-Edge AI Innovations",
-        category: "Technology",
-        image: card2,
-        shares: "124",
-        likes: "10k",
-    },
-    {
-        id: 3,
-        title: "COVID-19 Variants",
-        category: "Health",
-        image: card3,
-        shares: "124",
-        likes: "10k",
-    },
-];
+const formatCount = (count = 0): string =>
+    count >= 1000 ? `${(count / 1000).toFixed(1)}k` : `${count}`;
 
 /**
  * Blog teaser section ("المدونة") — pixel-matched to Figma node 820:1818.
@@ -41,6 +16,45 @@ const POSTS: BlogPost[] = [
  * gradient "view all" button. Static CSS (no rAF) so it works backgrounded.
  */
 const BlogSection: React.FC = () => {
+    const [posts, setPosts] = useState<BlogPost[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const fetchLatestPosts = async () => {
+            try {
+                const response = await blogService.getPosts({ limit: 3 });
+
+                if (!isMounted) return;
+
+                setPosts(
+                    response.data.map((post) => ({
+                        id: post._id,
+                        title: post.title,
+                        category:
+                            typeof post.category === "object"
+                                ? post.category.name
+                                : "غير مصنف",
+                        image: post.featuredImage || FALLBACK_IMAGE,
+                        shares: formatCount(post.shares),
+                        likes: formatCount(post.loves),
+                    })),
+                );
+            } catch (error) {
+                console.error("Failed to load homepage blog posts:", error);
+            } finally {
+                if (isMounted) setLoading(false);
+            }
+        };
+
+        fetchLatestPosts();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
     return (
         <section
             id="blog"
@@ -90,10 +104,18 @@ const BlogSection: React.FC = () => {
 
                 {/* Cards grid (Figma 820:1824) */}
                 <div dir="ltr" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[30px] w-full">
-                    {POSTS.map((post) => (
+                    {posts.map((post) => (
                         <BlogCard key={post.id} post={post} />
                     ))}
                 </div>
+
+                {loading && (
+                    <p className="text-[#98989a] text-lg">جاري تحميل المقالات...</p>
+                )}
+
+                {!loading && posts.length === 0 && (
+                    <p className="text-[#98989a] text-lg">لا توجد مقالات منشورة حالياً</p>
+                )}
 
                 {/* View all button (Figma 820:1885) */}
                 <Link
