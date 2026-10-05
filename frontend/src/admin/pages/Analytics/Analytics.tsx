@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { FiActivity, FiDownload, FiEye, FiMousePointer, FiUsers } from 'react-icons/fi';
-import { analyticsService, type AnalyticsReport, type BreakdownItem } from '../../../services/analytics.service';
+import { analyticsService, type AnalyticsReport, type BreakdownItem, type LiveAnalytics } from '../../../services/analytics.service';
 import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
 import { Card } from '../../components/ui/Card';
 
@@ -10,6 +10,7 @@ const labels: Record<string, string> = {
 };
 const n = new Intl.NumberFormat('ar-SA');
 const duration = (seconds: number) => seconds < 60 ? `${seconds} ث` : `${Math.floor(seconds / 60)} د ${seconds % 60} ث`;
+const liveEventLabel = (type: string) => type === 'page_view' ? 'مشاهدة صفحة' : labels[type] || type;
 
 function Bars({ items }: { items: BreakdownItem[] }) {
   const max = Math.max(1, ...items.map(item => item.views));
@@ -31,12 +32,21 @@ export const Analytics = () => {
   const [campaignFields, setCampaignFields] = useState({ url: window.location.origin, source: '', medium: 'social', name: '' });
   const [copied, setCopied] = useState(false);
   const [trackingDisabled, setTrackingDisabled] = useState(() => localStorage.getItem('em_analytics_disabled') === 'true');
+  const [live, setLive] = useState<LiveAnalytics | null>(null);
 
   useEffect(() => {
     const params = period === 'custom' ? { from, to } : { days: period };
     if (period === 'custom' && (!from || !to)) return;
     analyticsService.getReport(params).then(setReport).catch(() => setError('تعذر تحميل بيانات التحليلات.')).finally(() => setLoading(false));
   }, [period, from, to]);
+
+  useEffect(() => {
+    let active = true;
+    const refresh = () => analyticsService.getLive().then(data => { if (active) setLive(data); }).catch(() => undefined);
+    void refresh();
+    const timer = window.setInterval(refresh, 5000);
+    return () => { active = false; window.clearInterval(timer); };
+  }, []);
 
   const points = useMemo(() => {
     if (!report?.timeline.length) return '';
@@ -94,6 +104,13 @@ export const Analytics = () => {
     </div>
     {error && <div className="rounded-xl bg-red-500/10 text-red-300 p-4 mb-5">{error}</div>}
     {!report ? <Card><p className="text-center text-[color:var(--color-admin-text-muted)]">اختر تاريخ البداية والنهاية.</p></Card> : <>
+      <Card className="mb-5 border border-emerald-400/20">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-5"><div className="flex items-center gap-3"><span className="relative flex h-3 w-3"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60"></span><span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-400"></span></span><div><h2 className="text-xl font-bold">الزيارات المباشرة</h2><p className="text-xs text-[color:var(--color-admin-text-muted)]">تُحدّث تلقائيًا كل 5 ثوانٍ · نشاط آخر 5 دقائق</p></div></div><div className="flex gap-5 text-center"><div><div className="text-2xl font-bold text-emerald-400">{live?.activeVisitors ?? 0}</div><div className="text-xs text-[color:var(--color-admin-text-muted)]">زائر نشط</div></div><div><div className="text-2xl font-bold">{live?.pageViews ?? 0}</div><div className="text-xs text-[color:var(--color-admin-text-muted)]">مشاهدة</div></div><div><div className="text-2xl font-bold">{live?.goalEvents ?? 0}</div><div className="text-xs text-[color:var(--color-admin-text-muted)]">تفاعل مهم</div></div></div></div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div><h3 className="text-sm font-semibold mb-3 text-[color:var(--color-admin-text-muted)]">الصفحات النشطة الآن</h3><div className="space-y-2">{live?.topPages.length ? live.topPages.map(page => <div key={page.path} className="flex justify-between gap-3 rounded-lg bg-white/[.03] px-3 py-2 text-sm"><span className="truncate" dir="ltr">{page.path}</span><span className="text-emerald-400">{page.views}</span></div>) : <p className="text-sm text-[color:var(--color-admin-text-muted)]">لا يوجد نشاط خلال آخر 5 دقائق.</p>}</div></div>
+          <div><h3 className="text-sm font-semibold mb-3 text-[color:var(--color-admin-text-muted)]">آخر الأحداث</h3><div className="space-y-2 max-h-52 overflow-y-auto">{live?.recentEvents.length ? live.recentEvents.map((event, index) => <div key={`${event.occurredAt}-${index}`} className="flex items-center justify-between gap-3 rounded-lg bg-white/[.03] px-3 py-2 text-sm"><div className="min-w-0"><span className="text-[#4a9eff]">{liveEventLabel(event.type)}</span><span className="mx-2 text-white/30">·</span><span className="truncate text-[color:var(--color-admin-text-muted)]" dir="ltr">{event.path}</span></div><span className="shrink-0 text-xs text-[color:var(--color-admin-text-muted)]">{new Date(event.occurredAt).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span></div>) : <p className="text-sm text-[color:var(--color-admin-text-muted)]">ستظهر الأحداث الجديدة هنا فور وصولها.</p>}</div></div>
+        </div>
+      </Card>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-5">{cards.map(([title, value, icon, trend]) => <Card key={title}>
         <div className="flex justify-between"><div><p className="text-sm text-[color:var(--color-admin-text-muted)]">{title}</p><p className="text-3xl font-bold mt-2">{n.format(value)}</p><p className={`text-xs mt-2 ${trend >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>{trend >= 0 ? '↑' : '↓'} {Math.abs(trend)}% عن الفترة السابقة</p></div><div className="text-2xl text-[#4a9eff]">{icon}</div></div>
       </Card>)}</div>

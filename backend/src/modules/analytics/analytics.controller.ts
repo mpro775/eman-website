@@ -37,4 +37,12 @@ export class AnalyticsController {
       data: await this.analytics.report(query),
     };
   }
+
+  @Get('live')
+  async live(): Promise<{ message: string; data: unknown }> {
+    return {
+      message: 'تم جلب الزيارات المباشرة بنجاح',
+      data: await this.analytics.live(),
+    };
+  }
 }

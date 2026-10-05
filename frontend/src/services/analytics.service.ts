@@ -18,6 +18,23 @@ export interface AnalyticsReport {
   events: Array<{ type: string; count: number }>;
 }
 
+export interface LiveAnalytics {
+  generatedAt: string;
+  windowMinutes: number;
+  activeVisitors: number;
+  pageViews: number;
+  goalEvents: number;
+  topPages: Array<{ path: string; views: number }>;
+  recentEvents: Array<{
+    type: string;
+    path: string;
+    source: string;
+    device: string;
+    country?: string;
+    occurredAt: string;
+  }>;
+}
+
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://api.emanjameel.pro/api';
 const VISITOR_KEY = 'em_analytics_visitor';
 const SESSION_KEY = 'em_analytics_session';
@@ -56,6 +73,10 @@ export const trackAnalyticsEvent = (type: string, extra: Record<string, unknown>
 export const analyticsService = {
   async getReport(params: { days?: string; from?: string; to?: string }): Promise<AnalyticsReport> {
     const response = await api.get<{ data: AnalyticsReport }>('/analytics/report', { params });
+    return response.data.data;
+  },
+  async getLive(): Promise<LiveAnalytics> {
+    const response = await api.get<{ data: LiveAnalytics }>('/analytics/live');
     return response.data.data;
   },
 };

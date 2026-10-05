@@ -251,6 +251,52 @@ export class AnalyticsService {
     ]);
   }
 
+  async live() {
+    const now = new Date();
+    const since = new Date(now.getTime() - 5 * 60 * 1000);
+    const match = { occurredAt: { $gte: since, $lte: now } };
+
+    const [activeVisitorIds, pageViews, goalEvents, topPages, recentEvents] =
+      await Promise.all([
+        this.eventModel.distinct('visitorId', match),
+        this.eventModel.countDocuments({ ...match, type: 'page_view' }),
+        this.eventModel.countDocuments({
+          ...match,
+          type: {
+            $in: [
+              'contact_click',
+              'contact_submit',
+              'newsletter_subscribe',
+              'external_click',
+            ],
+          },
+        }),
+        this.eventModel.aggregate<{ path: string; views: number }>([
+          { $match: { ...match, type: 'page_view' } },
+          { $group: { _id: '$path', views: { $sum: 1 } } },
+          { $sort: { views: -1 } },
+          { $limit: 6 },
+          { $project: { _id: 0, path: '$_id', views: 1 } },
+        ]),
+        this.eventModel
+          .find(match)
+          .sort({ occurredAt: -1 })
+          .limit(12)
+          .select('type path source device country occurredAt -_id')
+          .lean(),
+      ]);
+
+    return {
+      generatedAt: now,
+      windowMinutes: 5,
+      activeVisitors: activeVisitorIds.length,
+      pageViews,
+      goalEvents,
+      topPages,
+      recentEvents,
+    };
+  }
+
   async report(query: AnalyticsQueryDto) {
     const { from, to, previousFrom } = this.range(query);
     const [
