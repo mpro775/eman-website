@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ContactService } from './contact.service';
 import { ContactController } from './contact.controller';
+import { ContactNotifierService } from './contact-notifier.service';
 import {
   ContactMessage,
   ContactMessageSchema,
@@ -14,7 +15,7 @@ import {
     ]),
   ],
   controllers: [ContactController],
-  providers: [ContactService],
+  providers: [ContactService, ContactNotifierService],
   exports: [ContactService],
 })
 export class ContactModule {}

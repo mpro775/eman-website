@@ -22,6 +22,7 @@ import databaseConfig from './config/database.config';
 import jwtConfig from './config/jwt.config';
 import cloudflareConfig from './config/cloudflare.config';
 import appConfig from './config/app.config';
+import notificationsConfig from './config/notifications.config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
@@ -30,7 +31,13 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, jwtConfig, cloudflareConfig, appConfig],
+      load: [
+        databaseConfig,
+        jwtConfig,
+        cloudflareConfig,
+        appConfig,
+        notificationsConfig,
+      ],
     }),
     ThrottlerModule.forRoot([
       {

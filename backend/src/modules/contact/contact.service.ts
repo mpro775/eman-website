@@ -7,12 +7,14 @@ import {
 } from './schemas/contact-message.schema';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { createPaginatedResponse } from '../../common/utils/pagination.util';
+import { ContactNotifierService } from './contact-notifier.service';
 
 @Injectable()
 export class ContactService {
   constructor(
     @InjectModel(ContactMessage.name)
     private contactMessageModel: Model<ContactMessage>,
+    private readonly contactNotifier: ContactNotifierService,
   ) {}
 
   async create(
@@ -25,7 +27,15 @@ export class ContactService {
     });
 
     const savedMessage = await message.save();
-    return savedMessage.populate('selectedService', 'name description icon');
+    const populated = await savedMessage.populate(
+      'selectedService',
+      'name description icon',
+    );
+
+    // Fire-and-forget: notification failures must not block the visitor
+    void this.contactNotifier.notify(populated);
+
+    return populated;
   }
 
   async findAll(page: number = 1, limit: number = 10, status?: MessageStatus) {
