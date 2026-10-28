@@ -102,7 +102,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                         <p
                             className="text-gray-100 font-normal leading-relaxed text-sm sm:text-base md:text-lg line-clamp-4 sm:line-clamp-5"
                             style={{
-                                fontFamily: '"Thmanyah Sans", "Tajawal", "Sora", sans-serif',
+                                fontFamily: "var(--font-thmanyah)",
                             }}
                         >
                             "{quoteText}"

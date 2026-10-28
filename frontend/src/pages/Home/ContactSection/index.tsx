@@ -4,7 +4,7 @@ import ContactForm from "./ContactForm";
 import ContactInfo from "./ContactInfo";
 import FooterContent from "./FooterContent";
 
-const FONT = '"Thmanyah Sans", "Tajawal", sans-serif';
+const FONT = "var(--font-thmanyah)";
 
 /**
  * Contact section ("تواصل معي") — pixel-matched to Figma node 820:1886.
@@ -39,7 +39,7 @@ const ContactSection: React.FC = () => {
                             className="text-white text-center whitespace-nowrap"
                             style={{
                                 fontFamily: FONT,
-                                fontWeight: 500,
+                                fontWeight: 700,
                                 fontSize: "clamp(2rem, 5vw, 48px)",
                                 lineHeight: 1,
                                 letterSpacing: "-0.72px",

@@ -117,8 +117,8 @@ const ProjectDetail: React.FC = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#040404] flex items-center justify-center" dir="rtl">
-                <p className="text-[#a5a0c8] text-lg" style={{ fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif' }}>
+            <div className="min-h-screen bg-[#040404] flex items-center justify-center font-thmanyah" dir="rtl">
+                <p className="text-[#a5a0c8] text-lg" style={{ fontFamily: "var(--font-thmanyah)" }}>
                     جاري تحميل تفاصيل المشروع...
                 </p>
             </div>
@@ -127,8 +127,8 @@ const ProjectDetail: React.FC = () => {
 
     if (!project) {
         return (
-            <div className="min-h-screen bg-[#040404] flex flex-col items-center justify-center gap-4" dir="rtl">
-                <p className="text-white text-xl" style={{ fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif' }}>
+            <div className="min-h-screen bg-[#040404] flex flex-col items-center justify-center gap-4 font-thmanyah" dir="rtl">
+                <p className="text-white text-xl" style={{ fontFamily: "var(--font-thmanyah)" }}>
                     المشروع غير موجود
                 </p>
                 <Link to="/" className="text-[#c67588] hover:underline">
@@ -143,7 +143,7 @@ const ProjectDetail: React.FC = () => {
     const goBack = () => (window.history.length > 1 ? navigate(-1) : navigate("/"));
 
     return (
-        <div dir="rtl" className="min-h-screen bg-[#040404]">
+        <div dir="rtl" className="min-h-screen bg-[#040404] font-thmanyah">
             <SEOSchema
                 type="project"
                 data={{
@@ -163,7 +163,7 @@ const ProjectDetail: React.FC = () => {
                         onClick={goBack}
                         data-no-splash="true"
                         className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/80 cursor-pointer hover:text-white hover:border-[rgba(255,92,131,0.5)] transition-all duration-300"
-                        style={{ fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif' }}
+                        style={{ fontFamily: "var(--font-thmanyah)" }}
                     >
                         <span>العودة إلى الأعمال</span>
                         <HiArrowRight className="text-base" />

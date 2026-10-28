@@ -100,7 +100,7 @@ const ScrollPagination: React.FC = () => {
   const isLastItem = (index: number) => index === sections.length - 1;
 
   return (
-    <div className="hidden lg:flex fixed right-6 top-1/2 -translate-y-1/2 z-[90] flex-col gap-4">
+    <div className="hidden lg:flex fixed right-6 top-1/2 -translate-y-1/2 z-[90] flex-col gap-4 font-thmanyah">
       {sections.map((section, index) => {
         const isActive = activeSection === section.id;
         return (

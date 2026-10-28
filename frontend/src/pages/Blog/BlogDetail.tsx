@@ -376,7 +376,7 @@ const BlogDetail: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-bg-primary flex items-center justify-center">
+      <div className="min-h-screen bg-bg-primary flex items-center justify-center font-thmanyah">
         <p className="text-text-secondary text-lg">جاري تحميل تفاصيل المقال...</p>
       </div>
     );
@@ -384,7 +384,7 @@ const BlogDetail: React.FC = () => {
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-bg-primary flex flex-col items-center justify-center gap-4">
+      <div className="min-h-screen bg-bg-primary flex flex-col items-center justify-center gap-4 font-thmanyah">
         <p className="text-text-secondary text-lg">المقال غير موجود</p>
         <Link to="/blog" className="text-accent-pink hover:underline">العودة للمدونة</Link>
       </div>
@@ -392,7 +392,7 @@ const BlogDetail: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-bg-primary">
+    <div className="min-h-screen bg-bg-primary font-thmanyah">
       {/* SEO Schema for Article */}
       <SEOSchema
         type="article"
@@ -754,7 +754,7 @@ const BlogDetail: React.FC = () => {
             }`}
             dir="rtl"
           >
-            <span className="font-arabic text-sm font-medium">{toast.message}</span>
+            <span className="font-thmanyah text-sm font-medium">{toast.message}</span>
             <button
               onClick={() => setToast(null)}
               className="text-white/60 hover:text-white transition-colors text-lg font-bold mr-2 cursor-pointer"

@@ -17,7 +17,7 @@ interface ServiceCardProps {
     service: ServiceItem;
 }
 
-const FONT = '"Thmanyah Sans", "Tajawal", sans-serif';
+const FONT = "var(--font-thmanyah)";
 
 /**
  * Individual service card — pixel-matched to Figma 820:1553 cards

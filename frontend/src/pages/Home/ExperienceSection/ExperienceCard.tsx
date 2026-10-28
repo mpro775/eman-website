@@ -52,7 +52,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, delay }) =>
                 dir="auto"
                 className="relative z-10 text-right whitespace-nowrap shrink-0"
                 style={{
-                    fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                    fontFamily: "var(--font-thmanyah)",
                     fontWeight: 300,
                     fontSize: "clamp(13px, 1.6vw, 18px)",
                     color: "#bba1fe",
@@ -68,7 +68,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, delay }) =>
                     dir="auto"
                     className="text-right whitespace-nowrap"
                     style={{
-                        fontFamily: '"Thmanyah Sans", "Urbanist", "Tajawal", sans-serif',
+                        fontFamily: "var(--font-thmanyah)",
                         fontWeight: 700,
                         fontSize: "clamp(17px, 2.4vw, 27.375px)",
                         color: "#bba1fe",
@@ -82,7 +82,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, delay }) =>
                     dir="auto"
                     className="text-right"
                     style={{
-                        fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                        fontFamily: "var(--font-thmanyah)",
                         fontWeight: 300,
                         fontSize: "clamp(13px, 1.6vw, 18px)",
                         color: "#b2b3b4",

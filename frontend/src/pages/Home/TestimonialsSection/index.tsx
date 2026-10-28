@@ -87,7 +87,7 @@ const TestimonialsSection: React.FC = () => {
     return (
         <section
             id="testimonials"
-            className="scroll-section relative min-h-screen w-full bg-[#040209] flex flex-col items-center justify-center overflow-hidden py-24 px-4"
+            className="scroll-section relative min-h-screen w-full bg-[#040209] flex flex-col items-center justify-center overflow-hidden py-24 px-4 font-thmanyah"
         >
             {/* Background Ambient Glows (Zid Style Purple & Violet Flares) */}
             <div
@@ -121,7 +121,7 @@ const TestimonialsSection: React.FC = () => {
                     <h2
                         className="text-white text-center font-bold tracking-tight text-3xl sm:text-4xl md:text-5xl drop-shadow-md"
                         style={{
-                            fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                            fontFamily: "var(--font-thmanyah)",
                         }}
                     >
                         آراء العمــــلاء

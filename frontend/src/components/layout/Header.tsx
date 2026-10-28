@@ -245,7 +245,7 @@ const Header: React.FC = () => {
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={({ isActive }) =>
                           `
-                          text-xl transition-all duration-300 relative whitespace-nowrap font-arabic
+                          text-xl transition-all duration-300 relative whitespace-nowrap font-thmanyah
                           ${isActive
                             ? "font-bold text-[#C67588]"
                             : "text-white hover:text-[#C67588] font-normal"
@@ -260,7 +260,7 @@ const Header: React.FC = () => {
                         href={link.href}
                         onClick={(e) => handleScrollNavClick(e, link.id)}
                         className={`
-                          text-xl transition-all duration-300 relative whitespace-nowrap font-arabic
+                          text-xl transition-all duration-300 relative whitespace-nowrap font-thmanyah
                           ${isActiveScroll
                             ? "font-bold text-[#C67588]"
                             : "text-white hover:text-[#C67588] font-normal"
@@ -305,8 +305,8 @@ const Header: React.FC = () => {
                 <span
                   className="transition-colors duration-300"
                   style={{
-                    fontFamily: '"Urbanist", "Tajawal", sans-serif',
-                    fontWeight: 600,
+                    fontFamily: 'var(--font-thmanyah)',
+                    fontWeight: 700,
                     fontSize: '24px',
                     lineHeight: '100%',
                     letterSpacing: '0%',

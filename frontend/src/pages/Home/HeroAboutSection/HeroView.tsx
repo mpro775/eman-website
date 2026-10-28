@@ -77,7 +77,7 @@ const HeroView: React.FC<HeroViewProps> = ({ heroElementsVariants }) => {
                     >
                         <h2
                             style={{
-                                fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                                fontFamily: "var(--font-thmanyah-text)",
                                 fontWeight: 500,
                                 fontSize: "83.48px",
                                 lineHeight: 1.05,
@@ -98,7 +98,7 @@ const HeroView: React.FC<HeroViewProps> = ({ heroElementsVariants }) => {
                         </h2>
                         <h1
                             style={{
-                                fontFamily: '"Thmanyah Sans", "Urbanist", "Tajawal", sans-serif',
+                                fontFamily: "var(--font-thmanyah-text)",
                                 fontWeight: 500,
                                 fontSize: "83.48px",
                                 lineHeight: 1.05,
@@ -145,8 +145,8 @@ const HeroView: React.FC<HeroViewProps> = ({ heroElementsVariants }) => {
                     radius={100}
                     falloff="linear"
                     style={{
-                        fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
-                        fontWeight: 500,
+                        fontFamily: "var(--font-thmanyah)",
+                        fontWeight: 400,
                         fontSize: "24px",
                         lineHeight: 1.34,
                         letterSpacing: "-0.36px",

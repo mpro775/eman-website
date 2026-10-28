@@ -122,14 +122,14 @@ export const CategoryCardStack: React.FC<CategoryCardStackProps> = ({
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-[#2a1d40] to-[#120d20] flex flex-col items-center justify-center gap-3">
               <FiFolder className="w-12 h-12 text-[#c67588]" />
-              <span className="text-white/40 text-xs font-arabic">لا توجد أعمال بعد</span>
+              <span className="text-white/40 text-xs font-thmanyah">لا توجد أعمال بعد</span>
             </div>
           )}
           {/* Overlay gradient for front card text/badge readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 
           {/* Top Badge */}
-          <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/30 text-white text-xs font-medium font-arabic flex items-center gap-1.5 shadow-lg">
+          <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/30 text-white text-xs font-medium font-thmanyah flex items-center gap-1.5 shadow-lg">
             <span className="w-2 h-2 rounded-full bg-[#c67588] animate-pulse" />
             <span>{count} {count === 1 ? "عمل" : "أعمال"}</span>
           </div>
@@ -139,8 +139,8 @@ export const CategoryCardStack: React.FC<CategoryCardStackProps> = ({
       {/* Category Info Footer */}
       <div className="mt-4 text-center flex flex-col items-center gap-2 z-40 w-full px-2">
         <h3
-          className="text-white text-xl sm:text-2xl font-bold font-arabic tracking-wide group-hover:text-[#c67588] transition-colors duration-300"
-          style={{ fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif' }}
+          className="text-white text-xl sm:text-2xl font-bold font-thmanyah tracking-wide group-hover:text-[#c67588] transition-colors duration-300"
+          style={{ fontFamily: "var(--font-thmanyah)" }}
         >
           {category.name}
         </h3>

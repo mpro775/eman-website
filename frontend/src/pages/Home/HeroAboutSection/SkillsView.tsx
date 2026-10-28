@@ -118,7 +118,7 @@ const AboutView: React.FC<AboutViewProps> = () => {
                 <p
                     className="text-center"
                     style={{
-                        fontFamily: '"Thmanyah Sans", "Urbanist", "Tajawal", sans-serif',
+                        fontFamily: "var(--font-thmanyah-sans)",
                         fontWeight: 500,
                         fontSize: "71.949px",
                         lineHeight: 1.05,

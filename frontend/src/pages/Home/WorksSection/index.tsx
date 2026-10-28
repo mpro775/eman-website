@@ -39,7 +39,7 @@ const WorksSection: React.FC = () => {
     return (
         <section
             id="portfolio"
-            className="scroll-section relative min-h-screen w-full bg-[#040404] flex items-center justify-center overflow-hidden py-20"
+            className="scroll-section relative min-h-screen w-full bg-[#040404] flex items-center justify-center overflow-hidden py-20 font-thmanyah"
         >
             {/* Rotated glow — right side (Figma 826:3266) */}
             <div
@@ -62,7 +62,7 @@ const WorksSection: React.FC = () => {
                     <h2
                         className="text-white text-center whitespace-nowrap"
                         style={{
-                            fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                            fontFamily: "var(--font-thmanyah)",
                             fontWeight: 500,
                             fontSize: "clamp(2rem, 5vw, 48px)",
                             lineHeight: 1,
@@ -85,7 +85,7 @@ const WorksSection: React.FC = () => {
                 {/* Subtitle / Hint */}
                 <p
                     dir="rtl"
-                    className="mt-4 text-[#a5a0c8] text-center max-w-lg font-arabic text-sm sm:text-base"
+                    className="mt-4 text-[#a5a0c8] text-center max-w-lg font-thmanyah text-sm sm:text-base"
                 >
                     اختر إحدى فئات الأعمال التالية لاستكشاف جميع المشاريع والتصاميم الخاصة بها
                 </p>
@@ -94,7 +94,7 @@ const WorksSection: React.FC = () => {
                 {loading || categories.length === 0 ? (
                     <p
                         dir="rtl"
-                        className="mt-16 text-center font-arabic"
+                        className="mt-16 text-center font-thmanyah"
                         style={{
                             fontWeight: 500,
                             fontSize: "18px",

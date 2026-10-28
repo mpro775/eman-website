@@ -24,7 +24,7 @@ interface BlogCardProps {
 
 const statPill = "flex items-center justify-center gap-1 rounded-full bg-[rgba(42,51,80,0.3)] border border-[#262626]";
 const statText: React.CSSProperties = {
-    fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+    fontFamily: "var(--font-thmanyah)",
     fontWeight: 500,
     fontSize: "14px",
     lineHeight: "1.5",
@@ -61,7 +61,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
                     dir="auto"
                     className="text-white w-full"
                     style={{
-                        fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                        fontFamily: "var(--font-thmanyah)",
                         fontWeight: 500,
                         fontSize: "18px",
                         lineHeight: "1.5",
@@ -76,7 +76,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
                     dir="auto"
                     className="w-full"
                     style={{
-                        fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                        fontFamily: "var(--font-thmanyah)",
                         fontWeight: 300,
                         fontSize: "18px",
                         lineHeight: "1.5",
@@ -101,7 +101,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
                     <img src={readMoreIcon} alt="" className="w-5 h-5 shrink-0" />
                     <span
                         style={{
-                            fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                            fontFamily: "var(--font-thmanyah)",
                             fontWeight: 500,
                             fontSize: "14px",
                             lineHeight: "1.5",

@@ -102,7 +102,7 @@ const Blog: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg-primary">
+    <div className="min-h-screen bg-bg-primary font-thmanyah">
       <Header />
 
       <main className="pt-32 pb-20">

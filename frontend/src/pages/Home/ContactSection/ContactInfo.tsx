@@ -17,7 +17,7 @@ import emailIcon from "../../../assets/icons/email.svg";
 import { playTap } from "../../../utils/soundManager";
 import { profileService, type SocialLink, SOCIAL_PLATFORMS } from "../../../services/profile.service";
 
-const FONT = '"Thmanyah Sans", "Tajawal", sans-serif';
+const FONT = "var(--font-thmanyah)";
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
     linkedin: FaLinkedinIn,
@@ -154,7 +154,7 @@ const ContactInfo: React.FC = () => {
             <div className="rounded-[16px] bg-[rgba(42,51,80,0.6)] flex flex-col items-end gap-4 px-5 pt-[23px] pb-8 sm:px-8">
                 <p
                     className="text-right w-full"
-                    style={{ fontFamily: "Urbanist, sans-serif", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#fff" }}
+                    style={{ fontFamily: "var(--font-thmanyah)", fontWeight: 400, fontSize: "16px", lineHeight: "24px", color: "#fff" }}
                 >
                     تابعني على منصات التواصل الاجتماعي
                 </p>

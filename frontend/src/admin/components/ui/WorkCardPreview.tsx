@@ -46,7 +46,7 @@ export const WorkCardPreview: React.FC<WorkCardPreviewProps> = ({
                     ) : (
                         <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-white/30 p-4 text-center bg-gradient-to-b from-white/5 to-transparent">
                             <FiImage className="w-10 h-10 stroke-[1.5]" />
-                            <span className="text-xs font-medium" style={{ fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif' }}>
+                            <span className="text-xs font-medium" style={{ fontFamily: "var(--font-thmanyah)" }}>
                                 اختر صورة لبطاقة المشروع
                             </span>
                         </div>
@@ -62,7 +62,7 @@ export const WorkCardPreview: React.FC<WorkCardPreviewProps> = ({
                             className="opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 ease-out flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#C67588] text-white shadow-[0_0_20px_rgba(198,117,136,0.5)] border border-white/20 font-medium text-sm"
                         >
                             <FiEye className="w-4 h-4 text-white transition-all duration-300" />
-                            <span style={{ fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif' }}>معاينة المشروع</span>
+                            <span style={{ fontFamily: "var(--font-thmanyah)" }}>معاينة المشروع</span>
                             <FiArrowUpRight className="w-4 h-4 text-white transition-transform duration-300" />
                         </span>
                     </div>
@@ -79,7 +79,7 @@ export const WorkCardPreview: React.FC<WorkCardPreviewProps> = ({
                             dir="auto"
                             className="text-white font-bold truncate transition-colors duration-300 group-hover:text-[#ffd6e0]"
                             style={{
-                                fontFamily: '"Thmanyah Sans", "Urbanist", "Tajawal", sans-serif',
+                                fontFamily: "var(--font-thmanyah)",
                                 fontWeight: 700,
                                 fontSize: "clamp(16px, 2.2vw, 24px)",
                                 lineHeight: "27px",
@@ -99,7 +99,7 @@ export const WorkCardPreview: React.FC<WorkCardPreviewProps> = ({
                                     dir="auto"
                                     className="whitespace-nowrap"
                                     style={{
-                                        fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                                        fontFamily: "var(--font-thmanyah)",
                                         fontWeight: 500,
                                         fontSize: "12px",
                                         lineHeight: "16px",

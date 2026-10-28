@@ -60,7 +60,7 @@ const SkillCard: React.FC<SkillCardProps> = ({
                             <span
                                 className="text-white text-center whitespace-nowrap"
                                 style={{
-                                    fontFamily: '"Thmanyah Sans", "Urbanist", "Tajawal", sans-serif',
+                                    fontFamily: "var(--font-thmanyah)",
                                     fontWeight: 600,
                                     fontSize: "16.8px",
                                     letterSpacing: "-0.21px",
@@ -82,7 +82,7 @@ const SkillCard: React.FC<SkillCardProps> = ({
                     <p
                         className="text-white text-right"
                         style={{
-                            fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                            fontFamily: "var(--font-thmanyah)",
                             fontWeight: 500,
                             fontSize: "14.4px",
                             lineHeight: 1.56,

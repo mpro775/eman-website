@@ -19,7 +19,7 @@ import sendIcon from "../../../assets/footer/send.svg";
 import { playTap, playType } from "../../../utils/soundManager";
 import { profileService, type SocialLink, SOCIAL_PLATFORMS } from "../../../services/profile.service";
 
-const FONT = '"Thmanyah Sans", "Tajawal", sans-serif';
+const FONT = "var(--font-thmanyah)";
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
     linkedin: FaLinkedinIn,

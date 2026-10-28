@@ -64,7 +64,7 @@ const SkillsMobile: React.FC = () => {
             <h2
                 className="z-10 mt-3 text-white"
                 style={{
-                    fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                    fontFamily: "var(--font-thmanyah)",
                     fontWeight: 500,
                     fontSize: "clamp(1.5rem, 6vw, 2rem)",
                     lineHeight: 1.2,
@@ -97,7 +97,7 @@ const SkillsMobile: React.FC = () => {
                     <p
                         className="text-center"
                         style={{
-                            fontFamily: '"Thmanyah Sans", "Urbanist", "Tajawal", sans-serif',
+                            fontFamily: "var(--font-thmanyah-sans)",
                             fontWeight: 600,
                             fontSize: "52px",
                             lineHeight: 1,

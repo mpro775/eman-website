@@ -12,7 +12,7 @@
   font-style: normal;
 }
 
-/* Thmanyah Sans (خط ثمانية) — used for the Eman hero headings & quote */
+/* Thmanyah Sans (خط ثمانية) — now only the Skills "UX UI" watermark (Figma 822:2883) */
 @font-face {
   font-family: 'Thmanyah Sans';
   src: url('./assets/fonts/ThmanyahSans-Light.otf') format('opentype');
@@ -42,7 +42,63 @@
   font-display: swap;
 }
 
+/* Thmanyah Serif Display — the site's main typeface since the Figma switch
+   away from Thmanyah Sans (Sans now only backs the Skills "UX UI" watermark). */
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('./assets/fonts/thmanyahserifdisplay-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('./assets/fonts/thmanyahserifdisplay-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('./assets/fonts/thmanyahserifdisplay-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('./assets/fonts/thmanyahserifdisplay-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('./assets/fonts/thmanyahserifdisplay-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Thmanyah Serif Text — only the hero heading uses it (Figma 820:2070). */
+@font-face {
+  font-family: 'Thmanyah Serif Text';
+  src: url('./assets/fonts/thmanyahseriftext-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* 1. الخطوط */
+
+/* خطوط ثمانية — static so the variables are always emitted: most of the
+   site sets font-family through inline styles that read them directly, and
+   Tailwind v4 otherwise drops theme variables no utility class uses. */
+@theme static {
+  --font-thmanyah: "Thmanyah Serif Display", "Tajawal", sans-serif;
+  --font-thmanyah-text: "Thmanyah Serif Text", "Thmanyah Serif Display", "Tajawal", sans-serif;
+  --font-thmanyah-sans: "Thmanyah Sans", "Urbanist", "Tajawal", sans-serif;
+}
 
 /* 2. الثيم */
 @theme {
@@ -52,8 +108,6 @@
   --font-heading: "Urbanist", "Tajawal", sans-serif;
   /* خط البادج (مرحباً) في الـ Hero */
   --font-zain: "Zain", "Tajawal", sans-serif;
-  /* خط Thmanyah sans المستخدم في عناوين/اقتباس إيمان (مع Tajawal كبديل احتياطي) */
-  --font-thmanyah: "Thmanyah Sans", "Tajawal", sans-serif;
 
   /* أحجام النصوص */
   --text-hero: clamp(3rem, 7vw, 5rem);
@@ -214,6 +268,13 @@
   h6 {
     @apply font-heading font-bold;
     line-height: 1.2;
+  }
+
+  /* Inside a font-thmanyah container, headings keep the container's face
+     instead of the Urbanist heading face above. Same layer, higher
+     specificity — so an explicit font utility on a heading still wins. */
+  .font-thmanyah :is(h1, h2, h3, h4, h5, h6) {
+    font-family: inherit;
   }
 
   /* هنا كان الخطأ وتم إصلاحه */

@@ -55,7 +55,7 @@ const ProjectSidebar: React.FC<ProjectSidebarProps> = ({
                         dir="auto"
                         className="flex items-center h-[30px] px-2.5 rounded-[10px] bg-[rgba(255,92,131,0.15)] border border-[rgba(255,92,131,0.25)] whitespace-nowrap"
                         style={{
-                            fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                            fontFamily: "var(--font-thmanyah)",
                             fontWeight: 500,
                             fontSize: "12px",
                             color: "rgb(220, 137, 156)",
@@ -100,7 +100,7 @@ const ProjectSidebar: React.FC<ProjectSidebarProps> = ({
                     dir="auto"
                     className="text-white"
                     style={{
-                        fontFamily: '"Thmanyah Sans", "Urbanist", "Tajawal", sans-serif',
+                        fontFamily: "var(--font-thmanyah)",
                         fontWeight: 700,
                         fontSize: "clamp(22px, 3vw, 32px)",
                         lineHeight: 1.25,
@@ -114,7 +114,7 @@ const ProjectSidebar: React.FC<ProjectSidebarProps> = ({
                         dir="auto"
                         className="text-[#a5a0c8]"
                         style={{
-                            fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                            fontFamily: "var(--font-thmanyah)",
                             fontWeight: 300,
                             fontSize: "15px",
                             lineHeight: "28px",
@@ -172,7 +172,7 @@ const ProjectSidebar: React.FC<ProjectSidebarProps> = ({
                         rel="noopener noreferrer"
                         className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-white font-medium transition-all duration-300 hover:shadow-[0_0_24px_rgba(255,92,131,0.45)] active:scale-[0.99]"
                         style={{
-                            fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                            fontFamily: "var(--font-thmanyah)",
                             background: "linear-gradient(252.89deg, #c67588 1.84%, #603942 98.17%)",
                         }}
                     >
@@ -188,7 +188,7 @@ const ProjectSidebar: React.FC<ProjectSidebarProps> = ({
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center gap-3 w-full py-3.5 px-4 rounded-xl bg-white/[0.03] border border-white/15 hover:border-[rgba(162,89,255,0.6)] hover:bg-[#181236] text-white/90 hover:text-white transition-all duration-300 group shadow-sm hover:shadow-[0_0_20px_rgba(162,89,255,0.25)] active:scale-[0.99]"
-                        style={{ fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif' }}
+                        style={{ fontFamily: "var(--font-thmanyah)" }}
                     >
                         <span className="text-sm font-medium">على Figma Community</span>
                         <FaFigma className="w-4 h-4 text-[#a259ff] group-hover:text-white transition-colors duration-300 shrink-0" />

@@ -57,7 +57,7 @@ const ProgramIcon: React.FC<ProgramIconProps> = ({ program }) => {
             <span
                 className="relative whitespace-nowrap"
                 style={{
-                    fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                    fontFamily: "var(--font-thmanyah)",
                     fontWeight: 500,
                     fontSize: "18px",
                     lineHeight: "26px",

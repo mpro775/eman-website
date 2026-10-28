@@ -69,7 +69,7 @@ export const CategoryWorks: React.FC = () => {
     });
 
     return (
-        <div className="min-h-screen bg-[#040404] text-white flex flex-col justify-between" dir="rtl">
+        <div className="min-h-screen bg-[#040404] text-white flex flex-col justify-between font-thmanyah" dir="rtl">
             {/* Background rotated glow */}
             <div
                 className="fixed pointer-events-none z-0"
@@ -95,12 +95,12 @@ export const CategoryWorks: React.FC = () => {
                             className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-text-secondary hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300 group cursor-pointer"
                         >
                             <HiArrowRight className="w-5 h-5 text-accent-pink group-hover:-translate-x-1 transition-transform" />
-                            <span className="font-arabic font-medium text-sm sm:text-base">العودة للرئيسية</span>
+                            <span className="font-thmanyah font-medium text-sm sm:text-base">العودة للرئيسية</span>
                         </button>
 
                         <Link
                             to="/"
-                            className="text-xs sm:text-sm text-text-muted hover:text-white transition-colors font-arabic"
+                            className="text-xs sm:text-sm text-text-muted hover:text-white transition-colors font-thmanyah"
                         >
                             إيمان جميل / أعمالي
                         </Link>
@@ -108,18 +108,18 @@ export const CategoryWorks: React.FC = () => {
 
                     {/* Category Title Header */}
                     <div className="flex flex-col items-start mb-12 border-b border-white/10 pb-8">
-                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent-pink/10 border border-accent-pink/20 text-accent-pink text-xs font-medium font-arabic mb-4">
+                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent-pink/10 border border-accent-pink/20 text-accent-pink text-xs font-medium font-thmanyah mb-4">
                             <span>فئة أعمال</span>
                         </div>
 
                         <h1
                             className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4"
-                            style={{ fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif' }}
+                            style={{ fontFamily: "var(--font-thmanyah)" }}
                         >
                             {category?.name || "جاري التحميل..."}
                         </h1>
 
-                        <p className="text-text-secondary text-sm sm:text-base font-arabic">
+                        <p className="text-text-secondary text-sm sm:text-base font-thmanyah">
                             {loading
                                 ? "جاري تحميل أعمال الفئة..."
                                 : `تم العثور على ${projects.length} ${projects.length === 1 ? "عمل" : "أعمال"} في هذه الفئة.`}
@@ -130,26 +130,26 @@ export const CategoryWorks: React.FC = () => {
                     {loading ? (
                         <div className="py-20 text-center">
                             <div className="w-12 h-12 border-4 border-accent-pink/20 border-t-accent-pink rounded-full animate-spin mx-auto mb-4" />
-                            <p className="text-text-muted font-arabic">جاري تحميل الأعمال...</p>
+                            <p className="text-text-muted font-thmanyah">جاري تحميل الأعمال...</p>
                         </div>
                     ) : error ? (
                         <div className="py-20 text-center">
-                            <p className="text-red-400 font-arabic text-lg mb-4">تعذّر تحميل أعمال هذه الفئة.</p>
+                            <p className="text-red-400 font-thmanyah text-lg mb-4">تعذّر تحميل أعمال هذه الفئة.</p>
                             <button
                                 type="button"
                                 onClick={() => window.location.reload()}
-                                className="px-6 py-2 bg-accent-pink/20 text-accent-pink rounded-full hover:bg-accent-pink/30 transition-colors font-arabic"
+                                className="px-6 py-2 bg-accent-pink/20 text-accent-pink rounded-full hover:bg-accent-pink/30 transition-colors font-thmanyah"
                             >
                                 إعادة المحاولة
                             </button>
                         </div>
                     ) : workItems.length === 0 ? (
                         <div className="py-20 text-center bg-white/5 rounded-3xl border border-white/10">
-                            <p className="text-text-muted font-arabic text-lg mb-4">لا توجد أعمال مضافة تحت هذه الفئة حتى الآن.</p>
+                            <p className="text-text-muted font-thmanyah text-lg mb-4">لا توجد أعمال مضافة تحت هذه الفئة حتى الآن.</p>
                             <button
                                 type="button"
                                 onClick={() => navigate("/#portfolio")}
-                                className="px-6 py-2.5 bg-accent-pink text-white rounded-full hover:bg-accent-pink/80 transition-colors font-arabic text-sm"
+                                className="px-6 py-2.5 bg-accent-pink text-white rounded-full hover:bg-accent-pink/80 transition-colors font-thmanyah text-sm"
                             >
                                 تصفح الفئات الأخرى
                             </button>

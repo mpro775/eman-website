@@ -81,8 +81,8 @@ const BlogSection: React.FC = () => {
                     <h2
                         className="text-white text-center whitespace-nowrap"
                         style={{
-                            fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
-                            fontWeight: 500,
+                            fontFamily: "var(--font-thmanyah)",
+                            fontWeight: 700,
                             fontSize: "clamp(2rem, 5vw, 48px)",
                             lineHeight: 1,
                             letterSpacing: "-0.72px",
@@ -132,7 +132,7 @@ const BlogSection: React.FC = () => {
                     <span
                         className="text-white capitalize"
                         style={{
-                            fontFamily: '"Thmanyah Sans", "Tajawal", sans-serif',
+                            fontFamily: "var(--font-thmanyah)",
                             fontWeight: 500,
                             fontSize: "20px",
                             lineHeight: "64px",

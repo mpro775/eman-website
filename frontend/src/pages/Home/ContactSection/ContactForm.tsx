@@ -17,7 +17,7 @@ interface ContactFormProps {
     onSubmit: (e: React.FormEvent) => void;
 }
 
-const FONT = '"Thmanyah Sans", "Tajawal", sans-serif';
+const FONT = "var(--font-thmanyah)";
 const fieldClass =
     "w-full bg-[rgba(42,51,80,0.2)] border border-[#2a3350] rounded-[6px] px-4 text-white text-right placeholder:text-[#87909d] focus:border-[#c67588] focus:outline-none transition-colors duration-300";
 const fieldStyle: React.CSSProperties = { fontFamily: FONT, fontWeight: 500, fontSize: "16px", height: "55px" };
